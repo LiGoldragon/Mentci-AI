@@ -6,9 +6,14 @@
     flake-utils.url = "github:numtide/flake-utils";
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
+
+    criomos.url = "github:Criome/CriomOS";
+    sema.url = "github:Criome/sema";
+    lojix.url = "github:Criome/lojix";
+    webpublish.url = "github:LiGoldragon/WebPublish";
   };
 
-  outputs = { self, nixpkgs, flake-utils, crane }:
+  outputs = { self, nixpkgs, flake-utils, crane, criomos, sema, lojix, webpublish }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -23,6 +28,14 @@
         };
 
         mentciAi = craneLib.buildPackage commonArgs;
+
+        # Import jail configuration
+        jail = import ./jail.nix {
+          inherit pkgs;
+          inputs = { inherit criomos sema lojix webpublish; };
+          # Default input path is "inputs", can be overridden here
+        };
+
       in {
         packages = {
           default = mentciAi;
@@ -34,6 +47,7 @@
         };
 
         devShells.default = pkgs.mkShell {
+          inputsFrom = [ jail ];
           packages = [
             pkgs.capnproto
             pkgs.cargo
@@ -44,6 +58,7 @@
           ];
           shellHook = ''
             export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
+            ${jail.shellHook}
           '';
         };
       });
