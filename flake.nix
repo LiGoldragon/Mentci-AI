@@ -7,13 +7,27 @@
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Level 5 / Criome Ecosystem Inputs
     criomos.url = "github:Criome/CriomOS";
     sema.url = "github:Criome/sema";
     lojix.url = "github:Criome/lojix";
+    seahawk.url = "github:Criome/seahawk";
+    skrips.url = "github:Criome/skrips";
+    mkZolaWebsite.url = "github:Criome/mkZolaWebsite";
+
+    # LiGoldragon Inputs
     webpublish.url = "github:LiGoldragon/WebPublish";
+    goldragon.url = "github:LiGoldragon/goldragon";
+    maisiliym.url = "github:LiGoldragon/maisiliym";
+    ndi.url = "github:LiGoldragon/ndi";
+    kibord.url = "github:LiGoldragon/kibord";
   };
 
-  outputs = { self, nixpkgs, flake-utils, crane, criomos, sema, lojix, webpublish }:
+  outputs = { 
+    self, nixpkgs, flake-utils, crane, 
+    criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
+    webpublish, goldragon, maisiliym, ndi, kibord
+  }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -32,8 +46,10 @@
         # Import jail configuration
         jail = import ./jail.nix {
           inherit pkgs;
-          inputs = { inherit criomos sema lojix webpublish; };
-          # Default input path is "inputs", can be overridden here
+          inputs = { 
+            inherit criomos sema lojix seahawk skrips mkZolaWebsite;
+            inherit webpublish goldragon maisiliym ndi kibord;
+          };
         };
 
       in {

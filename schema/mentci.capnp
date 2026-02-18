@@ -35,10 +35,21 @@ struct Input {
 enum InputType {
   generic @0;
   mentci @1;      # Self-reference
+  
+  # Criome Ecosystem
   criomos @2;
   sema @3;
   lojix @4;
-  webpublish @5;
+  seahawk @5;
+  skrips @6;
+  mkZolaWebsite @7;
+
+  # LiGoldragon Ecosystem
+  webpublish @8;
+  goldragon @9;
+  maisiliym @10;
+  ndi @11;
+  kibord @12;
 }
 
 struct JailConfig {

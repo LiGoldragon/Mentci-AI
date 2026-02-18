@@ -19,12 +19,23 @@ pkgs.mkShell {
 
     # Link inputs to the defined path for easy access
     # Using 'ln -sfn' to force link creation/update without dereferencing if it's a directory
+    
+    # Criome Ecosystem
     ln -sfn ${inputs.criomos} "${inputsPath}/criomos"
     ln -sfn ${inputs.sema} "${inputsPath}/sema"
     ln -sfn ${inputs.lojix} "${inputsPath}/lojix"
-    ln -sfn ${inputs.webpublish} "${inputsPath}/webpublish"
+    ln -sfn ${inputs.seahawk} "${inputsPath}/seahawk"
+    ln -sfn ${inputs.skrips} "${inputsPath}/skrips"
+    ln -sfn ${inputs.mkZolaWebsite} "${inputsPath}/mkZolaWebsite"
 
-    # Also link the current directory as 'mentci-ai' to simulate self-loading
+    # LiGoldragon Ecosystem
+    ln -sfn ${inputs.webpublish} "${inputsPath}/webpublish"
+    ln -sfn ${inputs.goldragon} "${inputsPath}/goldragon"
+    ln -sfn ${inputs.maisiliym} "${inputsPath}/maisiliym"
+    ln -sfn ${inputs.ndi} "${inputsPath}/ndi"
+    ln -sfn ${inputs.kibord} "${inputsPath}/kibord"
+
+    # Self-reference
     ln -sfn $(pwd) "${inputsPath}/mentci-ai"
 
     echo "Linked Level 5 repositories in '${inputsPath}/':"
