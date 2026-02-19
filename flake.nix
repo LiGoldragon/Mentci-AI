@@ -71,22 +71,26 @@
           '';
         };
 
-        # -- Core Tooling --
+        # -- Pure Clojure Shell Factory --
+        mkClojureShell = import ./nix/mk-shell.nix { inherit pkgs; };
+
+        # -- Core Tooling (Pure Clojure Stack) --
+        # Purpose: Level 5 orchestration via Babashka and JVM Clojure.
         commonPackages = [
-          pkgs.capnproto
-          pkgs.cargo
-          pkgs.git
-          pkgs.nixpkgs-fmt
-          pkgs.rustc
-          pkgs.rust-analyzer
+          pkgs.babashka
+          pkgs.clojure
+          pkgs.clojure-lsp
           pkgs.jet
           pkgs.jujutsu
+          pkgs.capnproto
+          pkgs.cargo
+          pkgs.rustc
+          pkgs.rust-analyzer
+          pkgs.git
           pkgs.gdb
           pkgs.strace
           pkgs.valgrind
           pkgs.rsync
-          pkgs.babashka
-          pkgs.clojure
           (pkgs.writeShellScriptBin "mentci-commit" ''
             ${pkgs.babashka}/bin/bb ${./scripts/commit.clj} "$@"
           '')
@@ -112,35 +116,30 @@
           drv = mentciAi;
         };
 
-        devShells.default = pkgs.mkShell {
+        devShells.default = mkClojureShell {
           name = "mentci-ai-dev";
-          inputsFrom = [ jail ];
           packages = commonPackages;
+          env = {
+            MENTCI_MODE = "ADMIN";
+            MENTCI_RO_INDICATOR = "RW (Admin)";
+            RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
+            MENTCI_REPO_ROOT = "$(pwd)";
+            MENTCI_COMMIT_TARGET = "dev";
+            MENTCI_WORKSPACE = "$(pwd)/workspace";
+            JJ_CONFIG = "$(pwd)/jj-project-config.toml";
+          };
           shellHook = ''
-            export MENTCI_MODE="ADMIN"
-            export MENTCI_RO_INDICATOR="RW (Admin)"
-            export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
-            export MENTCI_REPO_ROOT="$(pwd)"
-            export MENTCI_COMMIT_TARGET="dev"
-            export MENTCI_WORKSPACE="$(pwd)/workspace"
-
-            # 0. Global JJ Configuration
-            # Explicitly include the tracked project config for all jj operations in this shell
-            export JJ_CONFIG="$MENTCI_REPO_ROOT/jj-project-config.toml"
-
             # 1. Workspace Initialization (jj workspace)
             if [ ! -d "$MENTCI_WORKSPACE" ]; then
               echo "Initializing Agent Workspace..."
-              # jj workspace add creates a checkout of the current branch in a subfolder
-              # This folder is ignored by the main repo's .gitignore
               jj workspace add "$MENTCI_WORKSPACE"
             fi
 
             # 2. Run Jail Launcher to organize read-only inputs
-            ${jail.shellHook}
+            bb ${./scripts/launcher.clj}
 
             echo "--------------------------------------------------"
-            echo "Mentci-AI Development Environment Active."
+            echo "Mentci-AI Pure Clojure Development Environment Active."
             echo "Main Repo: $MENTCI_REPO_ROOT (RO Intent)"
             echo "Workspace: $MENTCI_WORKSPACE (RW Implementation)"
             echo "Commit Target: $MENTCI_COMMIT_TARGET"
