@@ -103,6 +103,10 @@
             export MENTCI_COMMIT_TARGET="dev"
             export MENTCI_WORKSPACE="$(pwd)/workspace"
 
+            # 0. Global JJ Configuration
+            # Explicitly include the tracked project config for all jj operations in this shell
+            export JJ_CONFIG="$MENTCI_REPO_ROOT/jj-project-config.toml"
+
             # 1. Workspace Initialization (jj workspace)
             if [ ! -d "$MENTCI_WORKSPACE" ]; then
               echo "Initializing Agent Workspace..."
