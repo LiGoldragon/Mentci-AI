@@ -7,13 +7,20 @@ The environment must support "Level 5" programming (machine-level interaction, d
 
 ## Critical Requirements
 1.  **Inputs**: Incorporate `criomos` and `webpublish` (GitHub) as flake inputs.
-2.  **Level 5 Tooling**: Provide tools for machine-level programming (as discussed in the context of "Level 5" concepts: GDB, introspection, potentially assembly utils).
-3.  **Jail Environment**: Implement `jail.nix` to define a "pure flake jail" — a highly isolated, reproducible development environment where the agent can operate with all inputs available.
+2.  **Level 5 Tooling**: Provide tools for machine-level programming (GDB, strace, valgrind, and high-authority orchestration utils).
+3.  **Jail Environment**: Implement a "pure flake jail" where the agent can operate with all inputs available in a writable workspace.
 
 ## Current State
 - [x] **Repository Initialized**: `Mentci-AI` created with `jj` (git backend).
-- [x] **Scaffolding**: Basic `flake.nix`, `Cargo.toml`, and `src/main.rs` created.
-- [x] **Locking**: `flake.lock` and `Cargo.lock` generated.
-- [ ] **Inputs Integration**: `criomos` and `webpublish` are not yet added to `flake.nix`.
-- [ ] **Level 5 Tools**: "Level 5" tools (e.g., GDB, low-level debuggers) need to be explicitly added to the dev shell.
-- [ ] **Jail Construction**: `jail.nix` does not yet exist.
+- [x] **Scaffolding**: `flake.nix`, `Cargo.toml`, and `src/main.rs` established.
+- [x] **Locking**: `flake.lock` and `Cargo.lock` managed.
+- [x] **Inputs Integration**: `criomos`, `webpublish`, `sema`, `attractor`, and `opencode` integrated as flake inputs.
+- [x] **Level 5 Tools**: GDB, Strace, Valgrind, and Rsync added to the unified `nix develop` shell.
+- [x] **Jail Construction**: `jail.nix` and `jail_launcher.py` implemented; multi-workspace model (Root vs. `workspace/`) active.
+- [x] **Shipping Protocol**: `mentci-commit` tool and "Commit-on-Success" mandate established.
+- [x] **Version Control**: Ecliptic Chronographic Versioning enforced (Current: v0.12.1.14).
+
+## Active Objectives
+1.  **Level 4 Orchestration**: Define Cap'n Proto RPCs for agent-to-agent communication in `schema/mentci.capnp`.
+2.  **Engine Expansion**: Implement the `Codergen` and `Wait.human` handlers in the Rust daemon (`src/main.rs`).
+3.  **Migration Path**: Execute the transition from Gemini CLI to the OpenCode/DeepSeek-V4 stack as per `MIGRATION_GEMINI_TO_OPENCODE.md`.

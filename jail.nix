@@ -34,18 +34,14 @@ pkgs.mkShell {
   };
 
   buildInputs = [
-    pkgs.python3
-    pkgs.python3Packages.ply
-    pkgs.python3Packages.pyrfc3339
-    pkgs.python3Packages.pytz
-    pkgs.python3Packages.six
+    pkgs.babashka
+    pkgs.clojure
     pkgs.nix-prefetch-git
     pkgs.tree
   ];
 
   shellHook = ''
-    # Minimal Shim: Call Python launcher
-    # The .attrs.json path is provided by Nix when __structuredAttrs is enabled
-    python3 ${./jail_launcher.py}
+    # Minimal Shim: Call Clojure launcher
+    bb ${./scripts/launcher.clj}
   '';
 }
