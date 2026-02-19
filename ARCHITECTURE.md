@@ -7,7 +7,7 @@ graph TD
     subgraph "Layer 0: Environment (Nix Jail)"
         A[nix develop] --> B(jail.nix)
         B --> C[__structuredAttrs]
-        C --> D(jail_launcher.py)
+        C --> D(scripts/launcher.clj)
         D --> E{inputs/}
         E --> E1[Atom Inputs]
         E --> E2[Flake Inputs]
@@ -24,7 +24,7 @@ graph TD
 
     subgraph "Layer 2: Semantic Truth & Persistence"
         L[schema/*.capnp] -.-> F
-        M[scripts/logger.py] ==> N[Logs/*.edn]
+        M[scripts/logger.clj] ==> N[Logs/*.edn]
         I -- Handshake Logging --> M
     end
 
@@ -35,7 +35,7 @@ graph TD
 ## Architectural Components
 
 ### 1. Nix Jail (Isolation)
-The project operates within a **Pure Nix Jail**. `jail.nix` uses structured attributes to pass data to `jail_launcher.py`, which organizes all inputs into a standardized filesystem ontology under `inputs/`.
+The project operates within a **Pure Nix Jail**. `jail.nix` uses structured attributes to pass data to `scripts/launcher.clj`, which organizes all inputs into a standardized filesystem ontology under `inputs/`.
 
 ### 2. Mentci Daemon (Rust)
 A **Level 5 Pipeline Engine** built in Rust. It implements the **Attractor** specification:
@@ -45,7 +45,7 @@ A **Level 5 Pipeline Engine** built in Rust. It implements the **Attractor** spe
 
 ### 3. Semantic Layer
 *   **Cap'n Proto (`schema/`)**: Defines the "Truth" of the system (Filesystem Atoms, RPCs, Graph structures).
-*   **EDN Logging (`Logs/`)**: Durable, symbolic record of agent intent and model metadata, following the Handshake Logging Protocol.
+*   **EDN Logging (`Logs/`)**: Durable, symbolic record of agent intent and model metadata, following the Handshake Logging Protocol (implemented in Babashka).
 
 ---
 *The Great Work continues.*

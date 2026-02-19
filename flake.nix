@@ -52,6 +52,25 @@
 
         mentciAi = craneLib.buildPackage commonArgs;
 
+        # -- Clojure Orchestrator Derivation --
+        mentciClj = pkgs.stdenv.mkDerivation {
+          pname = "mentci-clj-orchestrator";
+          version = "0.1.0";
+          src = ./scripts;
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          buildInputs = [ pkgs.babashka ];
+          installPhase = ''
+            mkdir -p $out/bin
+            cp *.clj $out/bin/
+            for f in $out/bin/*.clj; do
+              chmod +x "$f"
+              # Wrap with babashka
+              mv "$f" "$f.orig"
+              makeWrapper ${pkgs.babashka}/bin/bb "$f" --add-flags "$f.orig"
+            done
+          '';
+        };
+
         # -- Core Tooling --
         commonPackages = [
           pkgs.capnproto
@@ -61,14 +80,15 @@
           pkgs.rustc
           pkgs.rust-analyzer
           pkgs.jet
-          pkgs.python3
           pkgs.jujutsu
           pkgs.gdb
           pkgs.strace
           pkgs.valgrind
           pkgs.rsync
+          pkgs.babashka
+          pkgs.clojure
           (pkgs.writeShellScriptBin "mentci-commit" ''
-            ${pkgs.python3}/bin/python3 ${./scripts/jail_commit.py} "$@"
+            ${pkgs.babashka}/bin/bb ${./scripts/commit.clj} "$@"
           '')
         ];
 
@@ -85,6 +105,7 @@
         packages = {
           default = mentciAi;
           mentciAi = mentciAi;
+          mentciClj = mentciClj;
         };
 
         apps.default = flake-utils.lib.mkApp {

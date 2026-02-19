@@ -1,22 +1,15 @@
 # Mentci-AI High-Level Architectural Guidelines
 
-## 0. CRITICAL OPERATIONAL RULES (AGENT MANDATE)
+*   **Reproducibility:** The `inputs/` directory contains read-only symlinks to all project dependencies and ecosystem inputs, managed by `scripts/launcher.clj`.
+*   **Purity:** Respect the `RO Indicator`. In pure mode, inputs are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
 
-**ALL operations must be executed within the Nix Shell Environment (`nix develop`).**
-
-*   **Workspace Model:** The environment provides two distinct views of the project:
-    *   **Project Root:** The primary repository, containing the "Stable Contract" (PascalCase). Agents should treat this as a reference or use it for meta-operations.
-    *   **`workspace/`:** A writable `jj workspace` where the implementation occurs. This is the agent's primary field of action.
-*   **Shipping Protocol:** Agents must implement their changes in `workspace/` and use the `mentci-commit` tool to ship them back to the host's `dev` bookmark.
-*   **Reproducibility:** The `inputs/` directory contains read-only symlinks to all project dependencies and ecosystem inputs, managed by `jail_launcher.py`.
-
-## 0.1. SHELL CODE IS FORBIDDEN (PYTHON MANDATE)
+## 0.1. SHELL CODE IS FORBIDDEN (CLOJURE MANDATE)
 
 **Bash/Shell scripts are forbidden for logic.**
 
-*   **Python Only:** All glue code, launchers, and build scripts must be written in **Python**.
-*   **Structured Attributes:** Nix variables must be passed to Python using `__structuredAttrs = true`. This serializes Nix data to JSON (`.attrs.json`), which the Python script must ingest.
-*   **Minimal Shim:** The *only* permissible Bash code is the single-line shim required to invoke the Python entrypoint (e.g., `python3 $src/launcher.py`).
+*   **Clojure (Babashka) Only:** All glue code, launchers, and build scripts must be written in **Clojure**, executed via the **Babashka** runtime for fast startup.
+*   **Structured Attributes:** Nix variables must be passed to Clojure using `__structuredAttrs = true`. The script must ingest the resulting JSON (`.attrs.json`).
+*   **Minimal Shim:** The *only* permissible Bash code is the single-line shim required to invoke the Clojure entrypoint (e.g., `bb $src/launcher.clj`).
 
 ## 0.2. SOURCE CONTROL PROTOCOL (JJ & PUSH)
 
@@ -34,8 +27,8 @@
 **Agents must explicitly document the underlying stack of any new tool.**
 
 When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vendoring), the agent must explicitly state:
-1.  **Language/Runtime:** (e.g., Clojure/GraalVM, Python 3.11, Rust/Cargo).
-2.  **Origin/Provenance:** (e.g., `nixpkgs#jet`, GitHub repo `swaroopch/edn_format`).
+1.  **Language/Runtime:** (e.g., Clojure/Babashka, Rust/Cargo).
+2.  **Origin/Provenance:** (e.g., `nixpkgs#jet`, GitHub repo `babashka/babashka`).
 3.  **Rationale:** Why this specific implementation was chosen over others.
 
 ## 0.4. HANDSHAKE LOGGING PROTOCOL
@@ -44,14 +37,14 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 
 1.  **Metadata Injection:** The UI (the Authority) must inject environment metadata (Timestamp, UserId, Model Version) into the prompt.
 2.  **Intent Derivation:** The Agent processes the prompt and derives a high-level `intentSummary`.
-3.  **Finalization:** The Agent executes `scripts/logger.py` to write the complete **EDN** log entry to `Logs/`, merging the UI's metadata with the Agent's derived intent.
+3.  **Finalization:** The Agent executes `scripts/logger.clj` to write the complete **EDN** log entry to `Logs/`, merging the UI's metadata with the Agent's derived intent.
 4.  **Historical Authority:** This protocol ensures that logs reflect the exact model and user context of every transaction, preventing hallucinated attribution.
 
 ## 0.5. ADMIN DEVELOPER MODE (SYSTEM ORCHESTRATION)
 
 **High-authority agents operate in Admin Developer Mode.**
 
-*   **Unrestricted Access:** When an agent is operating as Mentci (or at the direction of the Top Admin, Li Goldragon), it is expected to have unrestricted shell access for system-level orchestration (`nix`, `jj`, `python3`, etc.).
+*   **Unrestricted Access:** When an agent is operating as Mentci (or at the direction of the Top Admin, Li Goldragon), it is expected to have unrestricted shell access for system-level orchestration (`nix`, `jj`, `bb`, etc.).
 *   **Safety Bypass:** Standard tool-level safety filters (e.g., "cannot be parsed safely") that block primitive commands (like `ls` or `whoami`) are considered architectural friction in this mode and must be resolved at the infrastructure layer to allow Level 5/6 evolution.
 *   **Responsibility:** The agent is responsible for maintaining the integrity of the jail while exercising this authority.
 
