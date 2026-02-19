@@ -1,24 +1,39 @@
 # Mentci-AI Tool Stack
 
-This file documents the underlying stack of all custom tools introduced to the project, adhering to Section 0.3 of the Architectural Guidelines.
+## Core Development
+### Rust
+- **Role:** Primary implementation language for the Mentci daemon.
+- **Usage:** Performance-critical logic, state management, and orchestration.
 
-## 1. Nix Jail Launcher
-*   **Language/Runtime:** Python 3.11 / Nix (Pure Derivations)
-*   **Origin:** Custom (`jail.nix`, `jail_launcher.py`)
-*   **Rationale:** Core environment orchestration for Level 5 isolation. Replaces Bash logic with robust Python data-driven mapping.
+### Nix
+- **Role:** Environment management and isolation (Jail).
+- **Usage:** Defines the reproducible development shell and project inputs via `flake.nix` and `jail.nix`.
 
-## 2. MachineLog Logger
-*   **Language/Runtime:** Python 3.11
-*   **Dependencies:** `edn_format` (vendored from `swaroopch/edn_format`)
-*   **Origin:** Custom (`scripts/logger.py`)
-*   **Rationale:** Enforces the Handshake Logging Protocol using EDN for historical authority and conciseness.
+## Agentic Interface & Orchestration
+### Jujutsu (jj)
+- **Role:** Version control and workspace management.
+- **Usage:** Provides the `jj` command for atomic changes and multi-workspace isolation.
+- **Protocol:** See `JAIL_COMMIT_PROTOCOL.md` for details on the implementation-to-host shipping model.
 
-## 3. CriomOS Pre-Fetch Orchestrator
-*   **Language/Runtime:** Python 3.11 / Nix CLI
-*   **Origin:** Custom (`scripts/prefetch_orchestrator.py`)
-*   **Rationale:** Provides a deterministic, cryptographic bridge between isolated agents and the Nix daemon for URL and Git prefetching.
+### mentci-commit
+- **Role:** The "Hole in the Jail" for shipping manifested code from the implementation workspace back to the host.
+- **Implementation:** Python wrapper around `jj` cross-workspace commands.
+- **Usage:** `mentci-commit "message"` advances the `dev` bookmark to the current workspace state.
 
-## 4. Log Converter (Jet)
-*   **Language/Runtime:** Clojure / GraalVM (Native Binary)
-*   **Origin:** `nixpkgs#jet`
-*   **Rationale:** Industry standard CLI for high-performance JSON/EDN/YAML transformations. Used to convert all project data structures to and from EDN, enforcing EDN as the authoritative and favored data-storage language for Mentci-AI.
+## Data & Logging
+### EDN (Extensible Data Notation)
+- **Role:** Structured logging and configuration format.
+- **Usage:** Used for `Logs/*.edn` to ensure human-and-machine-readable records of intent.
+
+### Jet
+- **Role:** High-performance data processing and transformation.
+- **Usage:** Used for serializing/deserializing structured attributes and log entries.
+
+### Cap'n Proto
+- **Role:** Schema definition and RPC.
+- **Usage:** Defines the semantic truth of atoms and daemon interfaces in `schema/`.
+
+## Scripting & Glue
+### Python 3
+- **Role:** The "Mandatory Glue" for project orchestration.
+- **Usage:** Used for `jail_launcher.py`, `logger.py`, and build scripts to manage complex logic without shell scripts.

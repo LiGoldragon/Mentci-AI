@@ -2,12 +2,13 @@
 
 ## 0. CRITICAL OPERATIONAL RULES (AGENT MANDATE)
 
-**ALL operations must be executed within the Nix Jail Launcher environment.**
+**ALL operations must be executed within the Nix Shell Environment (`nix develop`).**
 
-*   **Launch Command:** `nix develop` (activates the `jail.nix` shell hook).
-*   **Purpose:** This environment places all project inputs into scope as **pure Nix derivations**.
-*   **Organization:** Inputs are strictly organized into directories corresponding to their **Input Type** (e.g., `Flake`, `AtomV0`, `Git`, `TypedAtom`) as defined in the Cap'n Proto schema.
-*   **Purity:** Respect the `RO Indicator`. In pure mode, inputs are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
+*   **Workspace Model:** The environment provides two distinct views of the project:
+    *   **Project Root:** The primary repository, containing the "Stable Contract" (PascalCase). Agents should treat this as a reference or use it for meta-operations.
+    *   **`workspace/`:** A writable `jj workspace` where the implementation occurs. This is the agent's primary field of action.
+*   **Shipping Protocol:** Agents must implement their changes in `workspace/` and use the `mentci-commit` tool to ship them back to the host's `dev` bookmark.
+*   **Reproducibility:** The `inputs/` directory contains read-only symlinks to all project dependencies and ecosystem inputs, managed by `jail_launcher.py`.
 
 ## 0.1. SHELL CODE IS FORBIDDEN (PYTHON MANDATE)
 
@@ -21,9 +22,12 @@
 
 **Commit structural changes atomically and frequently.**
 
-*   **Branch:** All active development occurs on the **`dev`** bookmark (short for `develop`).
-*   **Push Cadence:** Every structural change (defined by the most concise commit message possible) must be immediately committed and pushed to `dev`.
-*   **Authority:** Li Goldragon is the highest authority (Top Admin). All intent moving forward must be documented at the corresponding level of authority.
+*   **Branch:** All active development occurs on the **`dev`** bookmark.
+*   **Push Cadence:** Every structural change must be immediately committed and pushed to `dev`.
+*   **Commit-on-Success (Level 5):** The Mentci Engine must automatically execute a `jj` commit after every successful tool call that modifies the workspace. Each commit represents an atomic state transition in the Dark Factory.
+*   **Authority:** Li Goldragon is the highest authority (Top Admin).
+*   **Shipping Protocol (Jail):** Isolated agents in a Jail environment must use the `mentci-commit` tool to ship changes. This tool synchronizes a writable implementation workspace back to the project root and performs a `jj` commit to the target bookmark specified in `MENTCI_COMMIT_TARGET`.
+*   **Usage:** `mentci-commit "Message" ./path/to/workspace`
 
 ## 0.3. TOOL STACK TRANSPARENCY
 
