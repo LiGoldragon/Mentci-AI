@@ -1,5 +1,56 @@
 # Mentci-AI High-Level Architectural Guidelines
 
+## 0. CRITICAL OPERATIONAL RULES (AGENT MANDATE)
+
+**ALL operations must be executed within the Nix Jail Launcher environment.**
+
+*   **Launch Command:** `nix develop` (activates the `jail.nix` shell hook).
+*   **Purpose:** This environment places all project inputs into scope as **pure Nix derivations**.
+*   **Organization:** Inputs are strictly organized into directories corresponding to their **Input Type** (e.g., `Flake`, `AtomV0`, `Git`, `TypedAtom`) as defined in the Cap'n Proto schema.
+*   **Purity:** Respect the `RO Indicator`. In pure mode, inputs are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
+
+## 0.1. SHELL CODE IS FORBIDDEN (PYTHON MANDATE)
+
+**Bash/Shell scripts are forbidden for logic.**
+
+*   **Python Only:** All glue code, launchers, and build scripts must be written in **Python**.
+*   **Structured Attributes:** Nix variables must be passed to Python using `__structuredAttrs = true`. This serializes Nix data to JSON (`.attrs.json`), which the Python script must ingest.
+*   **Minimal Shim:** The *only* permissible Bash code is the single-line shim required to invoke the Python entrypoint (e.g., `python3 $src/launcher.py`).
+
+## 0.2. SOURCE CONTROL PROTOCOL (JJ & PUSH)
+
+**Commit structural changes atomically and frequently.**
+
+*   **Branch:** All active development occurs on the **`dev`** bookmark (short for `develop`).
+*   **Push Cadence:** Every structural change (defined by the most concise commit message possible) must be immediately committed and pushed to `dev`.
+*   **Authority:** Li Goldragon is the highest authority (Top Admin). All intent moving forward must be documented at the corresponding level of authority.
+
+## 0.3. TOOL STACK TRANSPARENCY
+
+**Agents must explicitly document the underlying stack of any new tool.**
+
+When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vendoring), the agent must explicitly state:
+1.  **Language/Runtime:** (e.g., Clojure/GraalVM, Python 3.11, Rust/Cargo).
+2.  **Origin/Provenance:** (e.g., `nixpkgs#jet`, GitHub repo `swaroopch/edn_format`).
+3.  **Rationale:** Why this specific implementation was chosen over others.
+
+## 0.4. HANDSHAKE LOGGING PROTOCOL
+
+**Logs are a collaborative record of truth between UI and Agent.**
+
+1.  **Metadata Injection:** The UI (the Authority) must inject environment metadata (Timestamp, UserId, Model Version) into the prompt.
+2.  **Intent Derivation:** The Agent processes the prompt and derives a high-level `intentSummary`.
+3.  **Finalization:** The Agent executes `scripts/logger.py` to write the complete **EDN** log entry to `Logs/`, merging the UI's metadata with the Agent's derived intent.
+4.  **Historical Authority:** This protocol ensures that logs reflect the exact model and user context of every transaction, preventing hallucinated attribution.
+
+## 0.5. ADMIN DEVELOPER MODE (SYSTEM ORCHESTRATION)
+
+**High-authority agents operate in Admin Developer Mode.**
+
+*   **Unrestricted Access:** When an agent is operating as Mentci (or at the direction of the Top Admin, Li Goldragon), it is expected to have unrestricted shell access for system-level orchestration (`nix`, `jj`, `python3`, etc.).
+*   **Safety Bypass:** Standard tool-level safety filters (e.g., "cannot be parsed safely") that block primitive commands (like `ls` or `whoami`) are considered architectural friction in this mode and must be resolved at the infrastructure layer to allow Level 5/6 evolution.
+*   **Responsibility:** The agent is responsible for maintaining the integrity of the jail while exercising this authority.
+
 This document synthesizes the architectural, naming, and durability rules inherited from the **CriomOS** and **Sema** lineage. These rules are structural and non-negotiable. Violations indicate category errors, not stylistic choices.
 
 ## 1. Core Philosophy: The Semantic Layer
@@ -54,3 +105,25 @@ Meaning is distributed across repository names, directory paths, module names, a
 *   Behavior is stated as fact.
 *   **Self-Documenting Code:** Preferred over comments.
 *   **Comments:** Mandatory *only* when the "why" cannot be structural (e.g., specific timeouts, protocol quirks). Boilerplate is never documented.
+
+## 6. Ontology Resides in Data
+
+**Type is an intrinsic property, not a procedural side effect.**
+The classification of an entity must be encoded within its data structure. Do not hardcode taxonomy into function calls or script logic. Define the universe of types in a schema, manifest, or data structure, and write generic logic that iterates over that truth.
+
+*   **Forbidden:** `process_item(item, "TYPE_A")`
+*   **Required:** `manifest = { TYPE_A = [items...]; }; map(process, manifest)`
+
+## 8. ECLIPTIC CHRONOGRAPHIC VERSIONING
+
+**All versions and dates must adhere to the Ecliptic Longitude and Anno Mundi systems.**
+
+*   **Year System:** **Anno Mundi (AM)** as specified by the Archaix.com timeline. (Current Year: 5919 AM).
+*   **New Year:** The Point of Aries (♈︎ 0° / ♈︎ 1.1.1).
+*   **Version Format:** `Cycle.Sign.Degree.Minute`
+    *   **Cycle:** Major release or epoch (0 for the current pre-Aries cycle; 1 for the first major release starting at Aries).
+    *   **Sign:** The zodiac sign ordinal (1 = ♈︎ Aries, 12 = ♓︎ Pisces).
+    *   **Degree:** The 1-based degree within the current sign (1–30).
+    *   **Minute:** The 1-based minute within the current degree (1–60).
+*   **Filenaming:** Reports and durable artifacts must include the full ecliptic date in the format `YEAR_SIGN_DEGREE_MINUTE` (e.g., `5919_12_1_13`).
+*   **Rationale:** This system aligns the project with cosmic and historical cycles, ensuring that versioning is not arbitrary but tied to the observable ecliptic position.
