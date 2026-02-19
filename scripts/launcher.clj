@@ -1,13 +1,27 @@
 #!/usr/bin/env bb
 
+(require '[babashka.deps :as deps])
+(deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
+
 (require '[clojure.java.io :as io]
          '[cheshire.core :as json]
          '[clojure.java.shell :refer [sh]]
-         '[clojure.string :as str])
+         '[clojure.string :as str]
+         '[malli.core :as m]
+         '[malli.error :as me])
+
+;; Load local types
+(load-file (str (.getParent (io/file *file*)) "/types.clj"))
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
+;; Typing: Malli
 ;; Rationale: High-level data manipulation for Nix structured attributes and filesystem orchestration.
+
+(defn validate-config [config]
+  (when-not (m/validate :types/JailConfig config)
+    (throw (ex-info "Invalid Jail Configuration"
+                    {:errors (me/humanize (m/explain :types/JailConfig config))}))))
 
 (defn link-input [name category source-path inputs-root]
   (let [target-dir (io/file inputs-root category)
@@ -28,6 +42,9 @@
         (binding [*out* *err*]
           (println (str "Error linking " name ": " (.getMessage e))))))))
 
+(defn keywordize-keys [m]
+  (into {} (for [[k v] m] [(keyword k) (if (map? v) (keywordize-keys v) v)])))
+
 (defn main []
   (println "Initializing Mentci-AI Level 5 Jail Environment (Clojure/Babashka)...")
   
@@ -42,9 +59,11 @@
       (do (binding [*out* *err*] (println "Error: .attrs.json not found and jailConfig not in env."))
           (System/exit 1))
       
-      (let [inputs-path-str (get config "inputsPath" "inputs")
-            inputs-root (io/file inputs-path-str)
-            input-manifest (get config "inputManifest" {})]
+      (let [config (keywordize-keys config)] ; Ensure keys are keywords for Malli
+        (validate-config config)
+        (let [inputs-path-str (get config :inputsPath "inputs")
+              inputs-root (io/file inputs-path-str)
+              input-manifest (get config :inputManifest {})]
         
         ;; 2. Determine Purity Mode
         (let [is-impure (or (.exists (io/file "/usr/local")) (System/getenv "NIX_SHELL_PRESERVE_PROMPT"))
