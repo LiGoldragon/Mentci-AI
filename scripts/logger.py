@@ -75,7 +75,12 @@ def log_prompt(intent_summary, model="unknown-model", user_id=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Log high-level intent to MachineLog.")
     parser.add_argument("intent", help="Short summary of the high-level intent")
-    parser.add_argument("--model", default="deepseek-v4", help="The AI model used (Defaulting to deepseek-v4 per project switch)")
+    
+    # Check for MENTCI_MODEL environment variable
+    env_model = os.environ.get("MENTCI_MODEL")
+    default_model = env_model if env_model else "gemini-3-flash-preview"
+    
+    parser.add_argument("--model", default=default_model, help=f"The AI model used (Defaulting to {default_model})")
     parser.add_argument("--user", default=None, help="Override user ID")
 
     args = parser.parse_args()
