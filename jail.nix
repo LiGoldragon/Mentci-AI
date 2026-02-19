@@ -1,53 +1,56 @@
 { pkgs, inputs, inputsPath ? "inputs" }:
 
+let
+  lib = pkgs.lib;
+
+  # Helper to convert a list of input names to an attribute set mapping Name -> Store Path
+  mkInputMap = names: 
+    lib.genAttrs names (name: "${inputs.${name}.outPath}");
+
+  # -- Ontology Resides in Data --
+  inputManifest = {
+    atom = {
+      mentci-ai = "${./.}"; 
+    };
+    flake = mkInputMap [
+      "lojix" "seahawk" "skrips" "mkZolaWebsite"
+      "webpublish" "goldragon" "maisiliym" "kibord"
+    ];
+    untyped = mkInputMap [
+      "attractor" "opencode"
+    ];
+  };
+
+in
 pkgs.mkShell {
   name = "mentci-jail";
 
+  # Pass variables via structured attributes
+  __structuredAttrs = true;
+  
+  # This will be available in .attrs.json
+  jailConfig = {
+    inherit inputsPath inputManifest;
+  };
+
   buildInputs = [
+    pkgs.python3
+    pkgs.python3Packages.ply
+    pkgs.python3Packages.pyrfc3339
+    pkgs.python3Packages.pytz
+    pkgs.python3Packages.six
     pkgs.capnproto
     pkgs.gdb
     pkgs.strace
     pkgs.valgrind
-    # Add other "Level 5" tools here as needed
+    pkgs.jet
+    pkgs.nix-prefetch-git
+    pkgs.tree
   ];
 
   shellHook = ''
-    echo "Initializing Mentci-AI Level 5 Jail Environment..."
-
-    # Ensure the inputs directory exists
-    mkdir -p "${inputsPath}"
-
-    # Link inputs to the defined path for easy access
-    # Using 'ln -sfn' to force link creation/update without dereferencing if it's a directory
-    
-    # Criome Ecosystem
-    ln -sfn ${inputs.criomos} "${inputsPath}/criomos"
-    ln -sfn ${inputs.sema} "${inputsPath}/sema"
-    ln -sfn ${inputs.lojix} "${inputsPath}/lojix"
-    ln -sfn ${inputs.seahawk} "${inputsPath}/seahawk"
-    ln -sfn ${inputs.skrips} "${inputsPath}/skrips"
-    ln -sfn ${inputs.mkZolaWebsite} "${inputsPath}/mkZolaWebsite"
-
-    # LiGoldragon Ecosystem
-    ln -sfn ${inputs.webpublish} "${inputsPath}/webpublish"
-    ln -sfn ${inputs.goldragon} "${inputsPath}/goldragon"
-    ln -sfn ${inputs.maisiliym} "${inputsPath}/maisiliym"
-    ln -sfn ${inputs.ndi} "${inputsPath}/ndi"
-    ln -sfn ${inputs.kibord} "${inputsPath}/kibord"
-
-    # Self-reference
-    ln -sfn $(pwd) "${inputsPath}/mentci-ai"
-
-    echo "Linked Level 5 repositories in '${inputsPath}/':"
-    ls -l "${inputsPath}/"
-
-    # Display Level 5 Programming Context
-    if [ -f Level5-Ai-Coding.md ]; then
-      echo -e "\n--- Level 5 Programming Context ---\n"
-      cat Level5-Ai-Coding.md
-      echo -e "\n-----------------------------------\n"
-    fi
-
-    echo "Welcome to the Mentci-AI Jail."
+    # Minimal Shim: Call Python launcher
+    # The .attrs.json path is provided by Nix when __structuredAttrs is enabled
+    python3 ${./jail_launcher.py}
   '';
 }

@@ -1,0 +1,9 @@
+{:timestamp "2026-02-19T13:02:15.411613", :userId "LiGoldragon", :intentSummary "Initial setup of Mentci-AI infrastructure and Level 5 guidelines", :model "gemini-2.0-flash", :signature nil}
+{:timestamp "2026-02-19T13:03:10.314115", :userId "LiGoldragon", :intentSummary "Renamed logs directory to Logs to emphasize historical authority", :model "gemini-2.0-flash", :signature nil}
+{:timestamp "2026-02-19T14:48:08.450330" :userId "LiGoldragon" :intentSummary "Documented Gemini context restart bug in BUGS.md." :model "DeepSeek-V4" :signature nil}
+{:timestamp "2026-02-19T15:57:59.667667" :userId "LiGoldragon" :intentSummary "Created ARCHITECTURE.md with Mermaid flowchart." :model "DeepSeek-V4" :signature nil}
+{:timestamp "2026-02-19T16:01:34.898800" :userId "LiGoldragon" :intentSummary "Generated Manifestation Report for 5919 AM (♓︎ 1°)." :model "DeepSeek-V4" :signature nil}
+{:timestamp "2026-02-19T16:04:28.204802" :userId "LiGoldragon" :intentSummary "Corrected manifestation report versioning to 0.12.1.13." :model "DeepSeek-V4" :signature nil}
+{:timestamp "2026-02-19T16:06:08.680996" :userId "LiGoldragon" :intentSummary "Renamed manifestation report to include full ecliptic date in filename (5919_12_1_13)." :model "DeepSeek-V4" :signature nil}
+{:timestamp "2026-02-19T16:06:49.523937" :userId "LiGoldragon" :intentSummary "Documented Ecliptic Chronographic Versioning in ARCHITECTURAL_GUIDELINES.md." :model "DeepSeek-V4" :signature nil}
+{:timestamp "2026-02-19T16:08:02.291857" :userId "LiGoldragon" :intentSummary "Prepared RESTART_CONTEXT.md for session transition." :model "DeepSeek-V4" :signature nil}

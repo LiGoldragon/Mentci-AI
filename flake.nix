@@ -19,14 +19,23 @@
     webpublish.url = "github:LiGoldragon/WebPublish";
     goldragon.url = "github:LiGoldragon/goldragon";
     maisiliym.url = "github:LiGoldragon/maisiliym";
-    ndi.url = "github:LiGoldragon/ndi";
     kibord.url = "github:LiGoldragon/kibord";
+
+    # External Collaborations
+    attractor = {
+      url = "github:strongdm/attractor";
+      flake = false;
+    };
+    opencode = {
+      url = "github:opencode-ai/opencode";
+      flake = false;
+    };
   };
 
   outputs = { 
     self, nixpkgs, flake-utils, crane, 
     criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
-    webpublish, goldragon, maisiliym, ndi, kibord
+    webpublish, goldragon, maisiliym, kibord, attractor, opencode
   }:
     flake-utils.lib.eachDefaultSystem (system:
       let
@@ -48,7 +57,7 @@
           inherit pkgs;
           inputs = { 
             inherit criomos sema lojix seahawk skrips mkZolaWebsite;
-            inherit webpublish goldragon maisiliym ndi kibord;
+            inherit webpublish goldragon maisiliym kibord attractor opencode;
           };
         };
 
@@ -71,6 +80,7 @@
             pkgs.nixpkgs-fmt
             pkgs.rustc
             pkgs.rust-analyzer
+            pkgs.jet
           ];
           shellHook = ''
             export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
