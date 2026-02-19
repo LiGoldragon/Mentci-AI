@@ -17,7 +17,7 @@
 
 *   **Branch:** All active development occurs on the **`dev`** bookmark.
 *   **Push Cadence:** Every structural change must be immediately committed and pushed to `dev`.
-*   **Commit-on-Success (Level 5):** The Mentci Engine must automatically execute a `jj` commit after every successful tool call that modifies the workspace. Each commit represents an atomic state transition in the Dark Factory.
+*   **Commit-Every-Intent (Level 5):** The Mentci Engine must automatically execute a `jj` commit after **every single atomic modification** (e.g., one file write, one replacement). Each commit represents exactly one intention. Combining multiple unrelated modifications into a single "success" commit is forbidden.
 *   **Authority:** Li Goldragon is the highest authority (Top Admin).
 *   **Shipping Protocol (Jail):** Isolated agents in a Jail environment must use the `mentci-commit` tool to ship changes. This tool synchronizes a writable implementation workspace back to the project root and performs a `jj` commit to the target bookmark specified in `MENTCI_COMMIT_TARGET`.
 *   **Usage:** `mentci-commit "Message" ./path/to/workspace`
@@ -101,6 +101,9 @@ Meaning is distributed across repository names, directory paths, module names, a
 *   No humor or evaluation.
 *   Behavior is stated as fact.
 *   **Self-Documenting Code:** Preferred over comments.
+*   **Chronographic Style:** All dates must prioritize the **Ecliptic Chronographic format** (e.g., `♓︎ 1° 15' 1" | 5919 AM`). Gregorian dates should be included in parentheses or otherwise de-emphasized (e.g., `(Feb 19, 2026)`). 
+    *   **Ordinality:** Seconds and minutes are 1-based ordinals (0 on ephemeris = 1st ordinal).
+    *   **Adaptive Precision:** High-precision units (seconds, minutes) may be omitted if unknown or if the context only requires lower granularity (e.g., `♓︎ 1° | 5919 AM` for broad milestones). Truncation must always occur from right-to-left.
 *   **Comments:** Mandatory *only* when the "why" cannot be structural (e.g., specific timeouts, protocol quirks). Boilerplate is never documented.
 
 ## 6. Ontology Resides in Data
@@ -113,14 +116,14 @@ The classification of an entity must be encoded within its data structure. Do no
 
 ## 8. ECLIPTIC CHRONOGRAPHIC VERSIONING
 
-**All versions and dates must adhere to the Ecliptic Longitude and Anno Mundi systems.**
+**All versions and dates must adhere to the True Solar Ordinal-Zodiac system.**
 
-*   **Year System:** **Anno Mundi (AM)** as specified by the Archaix.com timeline. (Current Year: 5919 AM).
-*   **New Year:** The Point of Aries (♈︎ 0° / ♈︎ 1.1.1).
-*   **Version Format:** `Cycle.Sign.Degree.Minute`
-    *   **Cycle:** Major release or epoch (0 for the current pre-Aries cycle; 1 for the first major release starting at Aries).
-    *   **Sign:** The zodiac sign ordinal (1 = ♈︎ Aries, 12 = ♓︎ Pisces).
-    *   **Degree:** The 1-based degree within the current sign (1–30).
-    *   **Minute:** The 1-based minute within the current degree (1–60).
-*   **Filenaming:** Reports and durable artifacts must include the full ecliptic date in the format `YEAR_SIGN_DEGREE_MINUTE` (e.g., `5919_12_1_13`).
-*   **Rationale:** This system aligns the project with cosmic and historical cycles, ensuring that versioning is not arbitrary but tied to the observable ecliptic position.
+See **`CHRONOGRAPHY.md`** for the complete technical specification of the 1-based ordinal system.
+
+*   **Year System:** Anno Mundi (AM). (Current Year: 5919 AM).
+*   **Version Format:** `Cycle.Sign.Degree.Minute.Second`
+    *   **Sign:** 1 (Aries) to 12 (Pisces).
+    *   **Degree:** 1 to 30.
+    *   **Minute:** 1 to 60.
+    *   **Second:** 1 to 60.
+*   **Rationale:** Aligning project state with true solar coordinates.
