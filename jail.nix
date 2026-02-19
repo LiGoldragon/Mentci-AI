@@ -39,11 +39,6 @@ pkgs.mkShell {
     pkgs.python3Packages.pyrfc3339
     pkgs.python3Packages.pytz
     pkgs.python3Packages.six
-    pkgs.capnproto
-    pkgs.gdb
-    pkgs.strace
-    pkgs.valgrind
-    pkgs.jet
     pkgs.nix-prefetch-git
     pkgs.tree
   ];
