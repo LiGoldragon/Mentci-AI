@@ -2,7 +2,7 @@
   description = "Mentci-AI Rust Daemon";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/fb7944c166a3b630f177938e478f0378e64ce108";
     flake-utils.url = "github:numtide/flake-utils";
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
@@ -52,6 +52,26 @@
 
         mentciAi = craneLib.buildPackage commonArgs;
 
+        # -- Core Tooling --
+        commonPackages = [
+          pkgs.capnproto
+          pkgs.cargo
+          pkgs.git
+          pkgs.nixpkgs-fmt
+          pkgs.rustc
+          pkgs.rust-analyzer
+          pkgs.jet
+          pkgs.python3
+          pkgs.jujutsu
+          pkgs.gdb
+          pkgs.strace
+          pkgs.valgrind
+          pkgs.rsync
+          (pkgs.writeShellScriptBin "mentci-commit" ''
+            ${pkgs.python3}/bin/python3 ${./scripts/jail_commit.py} "$@"
+          '')
+        ];
+
         # Import jail configuration
         jail = import ./jail.nix {
           inherit pkgs;
@@ -72,19 +92,34 @@
         };
 
         devShells.default = pkgs.mkShell {
+          name = "mentci-ai-dev";
           inputsFrom = [ jail ];
-          packages = [
-            pkgs.capnproto
-            pkgs.cargo
-            pkgs.git
-            pkgs.nixpkgs-fmt
-            pkgs.rustc
-            pkgs.rust-analyzer
-            pkgs.jet
-          ];
+          packages = commonPackages;
           shellHook = ''
+            export MENTCI_MODE="ADMIN"
+            export MENTCI_RO_INDICATOR="RW (Admin)"
             export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
+            export MENTCI_REPO_ROOT="$(pwd)"
+            export MENTCI_COMMIT_TARGET="dev"
+            export MENTCI_WORKSPACE="$(pwd)/workspace"
+
+            # 1. Workspace Initialization (jj workspace)
+            if [ ! -d "$MENTCI_WORKSPACE" ]; then
+              echo "Initializing Agent Workspace..."
+              # jj workspace add creates a checkout of the current branch in a subfolder
+              # This folder is ignored by the main repo's .gitignore
+              jj workspace add "$MENTCI_WORKSPACE"
+            fi
+
+            # 2. Run Jail Launcher to organize read-only inputs
             ${jail.shellHook}
+
+            echo "--------------------------------------------------"
+            echo "Mentci-AI Development Environment Active."
+            echo "Main Repo: $MENTCI_REPO_ROOT (RO Intent)"
+            echo "Workspace: $MENTCI_WORKSPACE (RW Implementation)"
+            echo "Commit Target: $MENTCI_COMMIT_TARGET"
+            echo "--------------------------------------------------"
           '';
         };
       });
