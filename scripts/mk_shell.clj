@@ -27,7 +27,7 @@
         spec-json (if (.exists attrs-file)
                     (get (json/parse-string (slurp attrs-file)) "spec")
                     (System/getenv "spec"))
-        spec (assoc (json/parse-string spec-json true) :sema/type "ShellSpec")
+        spec (json/parse-string spec-json true)
         out (System/getenv "out")
         out-bin (io/file out "bin")
         setup-file (io/file out "setup")]

@@ -16,21 +16,18 @@
 ;; Rationale: High-level orchestration of unique intent namespaces using jj-style hashes.
 
 (def GenerateHashInput
-  [:map
-   [:sema/type [:= "GenerateHashInput"]]])
+  [:map])
 
 (def SanitizeNameInput
   [:map
-   [:sema/type [:= "SanitizeNameInput"]]
    [:name :string]])
 
 (def IntentMainInput
   [:map
-   [:sema/type [:= "IntentMainInput"]]
    [:args [:vector :string]]])
 
 (defn generate-hash []
-  (let [input {:sema/type "GenerateHashInput"}]
+  (let [input {}]
     (when-not (m/validate GenerateHashInput input)
       (throw (ex-info "Invalid generate-hash input"
                       {:errors (me/humanize (m/explain GenerateHashInput input))}))))
@@ -38,8 +35,7 @@
   (subs (str (java.util.UUID/randomUUID)) 0 8))
 
 (defn sanitize-name [name]
-  (let [input {:sema/type "SanitizeNameInput"
-               :name name}]
+  (let [input {:name name}]
     (when-not (m/validate SanitizeNameInput input)
       (throw (ex-info "Invalid sanitize-name input"
                       {:errors (me/humanize (m/explain SanitizeNameInput input))}))))
@@ -55,8 +51,7 @@
 
 (defn main []
   (let [args *command-line-args*
-        input {:sema/type "IntentMainInput"
-               :args (vec args)}]
+        input {:args (vec args)}]
     (when-not (m/validate IntentMainInput input)
       (throw (ex-info "Invalid main input"
                       {:errors (me/humanize (m/explain IntentMainInput input))})))
@@ -67,8 +62,7 @@
       (let [intent-name (sanitize-name (first args))
             intent-hash (generate-hash)
             bookmark-name (str intent-hash "-" intent-name)
-            config {:sema/type "IntentInit"
-                    :rawIntent (first args)
+            config {:rawIntent (first args)
                     :intentName intent-name
                     :intentHash intent-hash
                     :bookmarkName bookmark-name}]

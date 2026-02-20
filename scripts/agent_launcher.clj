@@ -21,40 +21,33 @@
 
 (def FailInput
   [:map
-   [:sema/type [:= "LauncherFailInput"]]
    [:message :string]])
 
 (def ParseArgsInput
   [:map
-   [:sema/type [:= "LauncherParseArgsInput"]]
    [:args [:vector :string]]])
 
 (def ResolveEntryInput
   [:map
-   [:sema/type [:= "LauncherResolveEntryInput"]]
    [:prefix :string]
    [:provider :string]
    [:entry [:maybe :string]]])
 
 (def ResolveEnvVarInput
   [:map
-   [:sema/type [:= "LauncherResolveEnvVarInput"]]
    [:provider :string]
    [:envVar [:maybe :string]]])
 
 (def GopassSecretInput
   [:map
-   [:sema/type [:= "LauncherGopassSecretInput"]]
    [:entry :string]])
 
 (def LauncherMainInput
   [:map
-   [:sema/type [:= "LauncherMainInput"]]
    [:args [:vector :string]]])
 
 (defn fail [msg]
-  (let [input {:sema/type "LauncherFailInput"
-               :message msg}]
+  (let [input {:message msg}]
     (when-not (m/validate FailInput input)
       (throw (ex-info "Invalid fail input"
                       {:errors (me/humanize (m/explain FailInput input))}))))
@@ -63,8 +56,7 @@
   (System/exit 1))
 
 (defn parse-args [args]
-  (let [input {:sema/type "LauncherParseArgsInput"
-               :args (vec args)}]
+  (let [input {:args (vec args)}]
     (when-not (m/validate ParseArgsInput input)
       (throw (ex-info "Invalid parse-args input"
                       {:errors (me/humanize (m/explain ParseArgsInput input))}))))
@@ -93,8 +85,7 @@
           (assoc opts :command (vec remaining)))))))
 
 (defn resolve-entry [prefix provider entry]
-  (let [input {:sema/type "LauncherResolveEntryInput"
-               :prefix prefix
+  (let [input {:prefix prefix
                :provider provider
                :entry entry}]
     (when-not (m/validate ResolveEntryInput input)
@@ -103,8 +94,7 @@
   (or entry (str prefix "/" provider "/api-key")))
 
 (defn resolve-env-var [provider env-var]
-  (let [input {:sema/type "LauncherResolveEnvVarInput"
-               :provider provider
+  (let [input {:provider provider
                :envVar env-var}]
     (when-not (m/validate ResolveEnvVarInput input)
       (throw (ex-info "Invalid resolve-env-var input"
@@ -114,8 +104,7 @@
       (fail (str "Unknown provider '" provider "'. Use --env-var or extend env-by-provider."))))
 
 (defn gopass-secret [entry]
-  (let [input {:sema/type "LauncherGopassSecretInput"
-               :entry entry}]
+  (let [input {:entry entry}]
     (when-not (m/validate GopassSecretInput input)
       (throw (ex-info "Invalid gopass-secret input"
                       {:errors (me/humanize (m/explain GopassSecretInput input))}))))
@@ -130,8 +119,7 @@
                     {:errors (me/humanize (m/explain types/AgentLauncherConfig config))}))))
 
 (defn -main [& args]
-  (let [input {:sema/type "LauncherMainInput"
-               :args (vec args)}]
+  (let [input {:args (vec args)}]
     (when-not (m/validate LauncherMainInput input)
       (throw (ex-info "Invalid -main input"
                       {:errors (me/humanize (m/explain LauncherMainInput input))}))))
@@ -144,8 +132,7 @@
         cmd (if (seq command) command default-command)
         cmd (if (= (first cmd) "--") (vec (rest cmd)) cmd)
         cmd (if (seq cmd) cmd default-command)
-        config {:sema/type "AgentLauncherConfig"
-                :provider provider
+        config {:provider provider
                 :gopassPrefix prefix
                 :entry entry
                 :envVar env-var

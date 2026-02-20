@@ -86,7 +86,6 @@
             (if-not config-raw
               (do (println "Error: Configuration not found.") (System/exit 1))
               (let [config (keywordize-keys config-raw)
-                    config (assoc config :sema/type "JailConfig")
                     _ (validate-config config)
                     inputs-path (get config :inputsPath "inputs")
                     inputs-root (io/file inputs-path)
