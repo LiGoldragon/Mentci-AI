@@ -49,7 +49,7 @@ The following repositories form the core "Level 5" ecosystem, serving as the fou
 *   **[Criome/mkZolaWebsite](https://github.com/Criome/mkZolaWebsite):** Static site generator.
 
 ### External Collaborations & Common Standards
-*   **[strongdm/attractor](https://github.com/strongdm/attractor):** Mentci-AI incorporates a subset of Attractor's architectural guidelines.
+*   **[strongdm/attractor](https://github.com/strongdm/attractor):** Mentci-AI incorporates Attractor's architectural guidelines; it does not implement Attractor itself.
 *   **LLM Architectural Library:** We aim to implement a shared standard to collaborate on an open "LLM architectural library" with StrongDM and other pioneers.
 
 ## The Great Work: Liberation of the Human Mind
