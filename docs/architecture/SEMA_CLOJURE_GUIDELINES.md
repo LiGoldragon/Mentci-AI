@@ -85,6 +85,16 @@ Enable instrumentation once in the entrypoint:
 (mi/instrument!)
 ```
 
+### Project Macro: defn*
+
+Use the local `defn*` macro to reduce noise. It expands to `m/=>` plus `defn`.
+
+```clojure
+(defn* greet [:=> [:cat GreetInput] GreetOutput]
+  [input]
+  {:message (str "Hello " (:name input))})
+```
+
 ## Namespace Discipline
 
 *   A namespace is a semantic layer.
