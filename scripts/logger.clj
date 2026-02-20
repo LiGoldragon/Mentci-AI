@@ -30,6 +30,9 @@
    [:model :string]
    [:userId :string]])
 
+(def CurrentEclipticInput
+  [:map])
+
 (def LoggerMainInput
   [:map
    [:args [:vector :string]]])
@@ -43,11 +46,17 @@
 (defn* validate-entry [:=> [:cat types/IntentLog] :any] [entry]
   entry)
 
+(defn* current-ecliptic [:=> [:cat CurrentEclipticInput] :string] [_]
+  (let [{:keys [exit out]} (sh/sh "chronos" "--format" "numeric")]
+    (if (zero? exit)
+      (str/trim out)
+      "12.1.28.44 | 5919 AM")))
+
 (defn* log-prompt [:=> [:cat LogPromptInput] :any] [input]
   (let [{:keys [intentSummary model userId]} input
         log-file (io/file logs-dir (str "user_" userId ".edn"))
         timestamp (.toString (java.time.LocalDateTime/now))
-        ecliptic "12.1.28.44 | 5919 AM" ; TODO: Implement dynamic ecliptic calculation
+        ecliptic (current-ecliptic {})
         entry {:timestamp timestamp
                :ecliptic ecliptic
                :userId userId

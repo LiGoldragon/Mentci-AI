@@ -1,5 +1,6 @@
-use anyhow::{Result, Context};
+use anyhow::Result;
 use dot_parser::ast::Graph as AstGraph;
+use dot_parser::canonical::AttrStmt;
 use dot_parser::canonical::Graph as CanonicalGraph;
 use std::collections::HashMap;
 use std::convert::TryFrom;
@@ -47,19 +48,35 @@ impl DotLoader {
         let mut nodes = HashMap::new();
         let mut edges = Vec::new();
         let mut graph_attrs = HashMap::new();
-        let graph_id = Some(canonical_graph.name.to_string());
+        let graph_id = canonical_graph
+            .name
+            .clone()
+            .map(|name| name.trim_matches('"').to_string());
+
+        for attr in &canonical_graph.attr {
+            if let AttrStmt::Graph((k, v)) = attr {
+                let key: String = k.clone().into();
+                let value: String = v.clone().into();
+                graph_attrs.insert(
+                    key.trim_matches('"').to_string(),
+                    value.trim_matches('"').to_string(),
+                );
+            }
+        }
 
         // Process Attributes (Graph level)
         // Canonical graph might flatten attributes differently.
         // Let's assume we can access them if needed, but for now focus on nodes/edges.
 
         // Process Nodes
-        for c_node in canonical_graph.nodes.0 {
+        for c_node in canonical_graph.nodes.set.into_values() {
             let id = c_node.id.to_string();
             let mut attrs = HashMap::new();
             
-            for (k, v) in c_node.attr.0 {
-                attrs.insert(k.to_string(), v.to_string().trim_matches('"').to_string());
+            for (k, v) in c_node.attr.elems {
+                let key: String = k.into();
+                let value: String = v.into();
+                attrs.insert(key, value.trim_matches('"').to_string());
             }
 
             let label = attrs.get("label").cloned();
@@ -78,13 +95,15 @@ impl DotLoader {
         }
 
         // Process Edges
-        for c_edge in canonical_graph.edges.0 {
+        for c_edge in canonical_graph.edges.set {
             let from = c_edge.from.to_string();
             let to = c_edge.to.to_string();
             
             let mut attrs = HashMap::new();
-            for (k, v) in c_edge.attr.0 {
-                attrs.insert(k.to_string(), v.to_string().trim_matches('"').to_string());
+            for (k, v) in c_edge.attr.elems {
+                let key: String = k.into();
+                let value: String = v.into();
+                attrs.insert(key, value.trim_matches('"').to_string());
             }
 
             let label = attrs.get("label").cloned();
@@ -101,11 +120,7 @@ impl DotLoader {
             });
         }
         
-        // Extract goal from attributes if possible (Graph attributes might be tricky in canonical)
-        // For now, ignore graph attrs or try to find them if canonical exposes them.
-        // It seems canonical might not expose top-level graph attributes directly in a simple map?
-        // We will skip graph attrs for now unless critical.
-        let goal = None;
+        let goal = graph_attrs.get("goal").cloned();
 
         Ok(Graph {
             id: graph_id,
