@@ -1,0 +1,18 @@
+;; Re-implementation of Attractor: pipelines/factory/specify.dot
+
+[ (ClarifyScope
+    {:label "Clarify Scope"
+     :prompt "@prompts/specify/clarify.md"
+     :reasoning_effort "high"})
+
+  (WriteRequirements
+    {:label "Write Requirements"
+     :prompt "@prompts/specify/require.md"
+     :reasoning_effort "high"})
+
+  (ApproveRequirements
+    {:label "Approve Requirements"
+     :shape "hexagon"})
+  {:accept :next
+   :revise WriteRequirements}
+]
