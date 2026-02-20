@@ -126,6 +126,15 @@ struct JailConfig {
   pure @1 :Bool;
 }
 
+struct JailBootstrapRequest {
+  repoRoot @0 :Text;
+  outputsDir @1 :Text;
+  outputName @2 :Text;
+  workingBookmark @3 :Text;
+  targetBookmark @4 :Text;
+  commitMessage @5 :Text;
+}
+
 struct NixFlake {
   description @0 :Text;
   inputs @1 :List(FlakeInputEntry);
