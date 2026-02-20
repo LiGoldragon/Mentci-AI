@@ -16,7 +16,9 @@ pub mod mentci_capnp {
 
 // --- Local Modules ---
 pub mod dot_loader;
+pub mod edn_loader;
 use dot_loader::DotLoader;
+use edn_loader::EdnLoader;
 
 // --- Execution Environment ---
 
@@ -365,14 +367,20 @@ fn main() -> Result<()> {
     
     let args: Vec<String> = std::env::args().collect();
     if args.len() < 2 {
-        println!("Usage: mentci <workflow.dot>");
+        println!("Usage: mentci <workflow.dot|workflow.aski-flow>");
         return Ok(());
     }
 
-    let dot_path = PathBuf::from(&args[1]);
-    let content = std::fs::read_to_string(&dot_path).context("Failed to read DOT file")?;
+    let path = PathBuf::from(&args[1]);
+    let extension = path.extension().and_then(|s| s.to_str()).unwrap_or("");
     
-    let dot_graph = DotLoader::parse(&content).context("Failed to parse DOT")?;
+    let content = std::fs::read_to_string(&path).context("Failed to read workflow file")?;
+    
+    let dot_graph = match extension {
+        "dot" => DotLoader::parse(&content).context("Failed to parse DOT")?,
+        "edn" | "aski-flow" => EdnLoader::parse(&content).context("Failed to parse Aski-Flow")?,
+        _ => return Err(anyhow::anyhow!("Unsupported workflow format: .{}", extension)),
+    };
     
     // Hydrate Graph
     let mut nodes = HashMap::new();

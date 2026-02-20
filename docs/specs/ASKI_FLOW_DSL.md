@@ -9,6 +9,8 @@
 
 It replaces the verbosity of DOT (`A -> B`) with the structural density of Lisp Vectors (`[A B]`).
 
+**File Extension:** `.aski-flow` (EDN-compatible)
+
 ## 2. The Core Axioms
 
 1.  **The Vector is the Flow.**
