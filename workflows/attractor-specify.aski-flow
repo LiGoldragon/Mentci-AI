@@ -1,6 +1,10 @@
 ;; Re-implementation of Attractor: pipelines/factory/specify.dot
 
-[ (clarify
+[ (start
+    {:shape "Mdiamond"
+     :label "Start"})
+
+  (clarify
     {:label "Clarify Scope"
      :prompt "@prompts/specify/clarify.md"
      :reasoning_effort "high"})
@@ -13,8 +17,12 @@
   (approve
     {:label "Approve Requirements"
      :shape "hexagon"})
-  {:accept :next
+  {:accept exit
    :revise require}
+
+  (exit
+    {:shape "Msquare"
+     :label "Exit"})
 ]
 
 ;; DOT equivalent:
