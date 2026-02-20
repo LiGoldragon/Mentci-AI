@@ -37,6 +37,7 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 *   **Clojure (Babashka) Mandate:** All glue code and scripts must be written in Clojure (Babashka). No Bash logic beyond the one-line bb shim.
 *   **Script Typing:** All Clojure scripts must define Malli schemas for inputs/config and validate them.
 *   **Script Guard:** Run `bb scripts/validate_scripts.clj` when adding or editing scripts. Python is forbidden under `scripts/`.
+*   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_RUST_GUIDELINES.md`, and `docs/architecture/SEMA_NIX_GUIDELINES.md`.
 *   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
 *   **Sema Object Style:** Strictly follow the ontology defined in `schema/*.capnp`.
 *   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `docs/architecture/VERSION_CONTROL.md`.
