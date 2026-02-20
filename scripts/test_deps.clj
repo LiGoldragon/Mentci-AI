@@ -1,13 +1,26 @@
 #!/usr/bin/env bb
 
+(require '[babashka.deps :as deps])
+(deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
+
 (require '[clojure.java.shell :refer [sh]]
-         '[clojure.string :as str])
+         '[clojure.string :as str]
+         '[malli.core :as m]
+         '[malli.error :as me]
+         '[clojure.java.io :as io])
+
+(load-file (str (.getParent (io/file *file*)) "/types.clj"))
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
 ;; Rationale: Verified environment audit for the Level 5 stack.
 
 (def deps ["nix" "cargo" "rustc" "bb" "clojure" "jj" "jet" "gdb"])
+
+(defn validate-config [config]
+  (when-not (m/validate types/DependencyCheckConfig config)
+    (throw (ex-info "Invalid Dependency Check Configuration"
+                    {:errors (me/humanize (m/explain types/DependencyCheckConfig config))}))))
 
 (defn check-dep [name]
   (let [res (sh "which" name)]
@@ -18,6 +31,9 @@
           false))))
 
 (defn main []
+  (let [config {:sema/type "DependencyCheckConfig"
+                :deps deps}]
+    (validate-config config))
   (println "Mentci-AI Dependency Audit (Clojure)")
   (println "------------------------------")
   (let [results (map check-dep deps)
