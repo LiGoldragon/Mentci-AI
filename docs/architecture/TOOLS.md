@@ -13,7 +13,7 @@
 ### Jujutsu (jj)
 - **Role:** Version control and workspace management.
 - **Usage:** Provides the `jj` command for atomic changes and multi-workspace isolation.
-- **Automation:** See `docs/architecture/JjAutomation.md` for the operational workflow.
+- **Automation:** See `docs/architecture/VERSION_CONTROL.md` for the operational workflow.
 - **Protocol:** See `JAIL_COMMIT_PROTOCOL.md` for details on the implementation-to-host shipping model.
 
 ### mentci-commit
