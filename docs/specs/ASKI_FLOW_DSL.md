@@ -90,5 +90,15 @@ A Vector can be a target, allowing for hierarchical workflow definition.
     *   Map entries override default connections.
 *   **Runtime:** The existing `src/main.rs` engine can be adapted to run this Graph structure easily.
 
+## 6. DOT Structured-Data Conversion Standard
+
+Canonical EDN conversion model:
+- `schema/dot_graph_conversion.edn`
+
+This schema defines:
+- DOT graph object structure (`:DotGraph`, `:DotNode`, `:DotEdge`)
+- Aski-Flow routing conversion semantics (`:AskiFlowConversion`)
+- Deterministic rules for default sequential edges and routing-map overrides
+
 ---
 *Created for the Mentci-AI Level 5 Stack.*
