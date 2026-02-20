@@ -15,6 +15,14 @@
 ;; Runtime: Babashka
 ;; Rationale: Direct orchestration of VCS commands with cleaner error handling.
 
+(def CommitMainInput
+  [:map
+   [:sema/type [:= "CommitMainInput"]]
+   [:args [:vector :string]]
+   [:targetBookmark :string]
+   [:repoRoot :string]
+   [:workspaceRoot :string]])
+
 (defn validate-config [config]
   (when-not (m/validate types/CommitContext config)
     (throw (ex-info "Invalid Commit Context"
@@ -23,7 +31,16 @@
 (defn main []
   (let [target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "dev")
         repo-root (System/getenv "MENTCI_REPO_ROOT")
-        workspace-root (System/getenv "MENTCI_WORKSPACE")]
+        workspace-root (System/getenv "MENTCI_WORKSPACE")
+        args *command-line-args*
+        input {:sema/type "CommitMainInput"
+               :args (vec args)
+               :targetBookmark target-bookmark
+               :repoRoot (or repo-root "")
+               :workspaceRoot (or workspace-root "")}]
+    (when-not (m/validate CommitMainInput input)
+      (throw (ex-info "Invalid main input"
+                      {:errors (me/humanize (m/explain CommitMainInput input))})))
     
     (if (or (not repo-root) (not workspace-root))
       (do (println "Error: MENTCI_REPO_ROOT or MENTCI_WORKSPACE not set.")
