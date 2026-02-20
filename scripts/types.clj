@@ -14,7 +14,7 @@
    [:signature [:maybe :string]]])
 
 (def InputManifest
-  [:map-of :string [:map-of :string :string]])
+  [:map-of :keyword [:map-of :keyword :string]])
 
 (def JailConfig
   [:map

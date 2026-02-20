@@ -1,0 +1,4 @@
+{:providers 
+ {:deepseek 
+  {:api-key "ENV_DEEPSEEK_API_KEY"
+   :model "deepseek-reasoner"}}}

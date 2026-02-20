@@ -10,9 +10,16 @@ The `nix develop` environment (defined in `flake.nix`) partitions the project in
 2.  **`workspace/` (`MENTCI_WORKSPACE`)**: A secondary Jujutsu workspace created via `jj workspace add`. This is a fully writable implementation area where the agent manifests code, runs tests, and iterates. It is ignored by the main repository's `.gitignore`.
 
 ## 3. The `mentci-commit` Tool
-Since the agent is isolated, it cannot directly manipulate the main repository's bookmarks without coordination. The `mentci-commit` tool (wrapping `scripts/jail_commit.py`) provides the "Hole in the Jail" for shipping code.
+Since the agent is isolated, it cannot directly manipulate the main repository's bookmarks without coordination. The `mentci-commit` tool provides the "Hole in the Jail" for shipping code.
 
-### Execution Flow:
+### 3.1. Unique Intent IDs
+Every agent session generates a **Unique Intent ID** consisting of a short hash and a descriptive name (e.g., `a7b2c9d4-implement-codergen`). This ID is used as a temporary Jujutsu bookmark for the session's work.
+
+- **Generation:** Handled by `scripts/intent.clj`.
+- **Targeting:** The `MENTCI_COMMIT_TARGET` environment variable is automatically set to this unique bookmark upon `nix develop` entry.
+- **Traceability:** This ensures that every implementation attempt is isolated in its own namespace before being merged into `dev`.
+
+### 3.2. Execution Flow
 1.  **Work**: Agent writes code in `workspace/`.
 2.  **Trigger**: Agent executes `mentci-commit "Feature: Implement Codergen"`.
 3.  **Process**:

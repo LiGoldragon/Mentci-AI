@@ -20,90 +20,113 @@
     goldragon.url = "github:LiGoldragon/goldragon";
     maisiliym.url = "github:LiGoldragon/maisiliym";
     kibord.url = "github:LiGoldragon/kibord";
+    aski = {
+      url = "github:Criome/aski";
+      flake = false;
+    };
 
     # External Collaborations
-    attractor = {
-      url = "github:strongdm/attractor";
-      flake = false;
-    };
-    opencode = {
-      url = "github:opencode-ai/opencode";
-      flake = false;
-    };
-  };
-
-  outputs = { 
-    self, nixpkgs, flake-utils, crane, 
-    criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
-    webpublish, goldragon, maisiliym, kibord, attractor, opencode
-  }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-        craneLib = crane.lib.${system};
-        src = craneLib.cleanCargoSource ./.;
-
-        commonArgs = {
-          pname = "mentci-ai";
-          version = "0.1.0";
-          inherit src;
-          nativeBuildInputs = [ pkgs.capnproto ];
+        attractor = {
+          url = "github:strongdm/attractor";
+          flake = false;
         };
-
-        mentciAi = craneLib.buildPackage commonArgs;
-
-        # -- Clojure Orchestrator Derivation --
-        mentciClj = pkgs.stdenv.mkDerivation {
-          pname = "mentci-clj-orchestrator";
-          version = "0.1.0";
-          src = ./scripts;
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          buildInputs = [ pkgs.babashka ];
-          installPhase = ''
-            mkdir -p $out/bin
-            cp *.clj $out/bin/
-            for f in $out/bin/*.clj; do
-              chmod +x "$f"
-              # Wrap with babashka
-              mv "$f" "$f.orig"
-              makeWrapper ${pkgs.babashka}/bin/bb "$f" --add-flags "$f.orig"
-            done
-          '';
+        brynary-attractor = {
+          url = "github:brynary/attractor";
+          flake = false;
         };
-
-        # -- Pure Clojure Shell Factory --
-        mkClojureShell = import ./nix/mk-shell.nix { inherit pkgs; };
-
-        # -- Core Tooling (Pure Clojure Stack) --
-        # Purpose: Level 5 orchestration via Babashka and JVM Clojure.
-        commonPackages = [
-          pkgs.babashka
-          pkgs.clojure
-          pkgs.clojure-lsp
-          pkgs.jet
-          pkgs.jujutsu
-          pkgs.capnproto
-          pkgs.cargo
-          pkgs.rustc
-          pkgs.rust-analyzer
-          pkgs.git
-          pkgs.gdb
-          pkgs.strace
-          pkgs.valgrind
-          pkgs.rsync
-          (pkgs.writeShellScriptBin "mentci-commit" ''
-            ${pkgs.babashka}/bin/bb ${./scripts/commit.clj} "$@"
-          '')
-        ];
-
-        # Import jail configuration
-        jail = import ./jail.nix {
-          inherit pkgs;
-          inputs = { 
-            inherit criomos sema lojix seahawk skrips mkZolaWebsite;
-            inherit webpublish goldragon maisiliym kibord attractor opencode;
-          };
+    
+        opencode = {
+          url = "github:opencode-ai/opencode";
+          flake = false;
         };
+      };
+    
+      outputs = { 
+        self, nixpkgs, flake-utils, crane, 
+        criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
+        webpublish, goldragon, maisiliym, kibord, aski, attractor, brynary-attractor, opencode
+      }:
+        flake-utils.lib.eachDefaultSystem (system:
+          let
+            pkgs = import nixpkgs { inherit system; };
+            craneLib = crane.mkLib pkgs;
+            src = craneLib.cleanCargoSource ./.;
+    
+            commonArgs = {
+              pname = "mentci-ai";
+              version = "0.1.0";
+              inherit src;
+              nativeBuildInputs = [ pkgs.capnproto ];
+            };
+    
+            mentciAi = craneLib.buildPackage commonArgs;
+    
+            # -- OpenCode Agentic Interface --
+            opencodePkg = pkgs.python3Packages.buildPythonApplication {
+              pname = "opencode";
+              version = "0.1.0";
+              src = opencode;
+              pyproject = true;
+              build-system = [ pkgs.python3Packages.setuptools ];
+              # OpenCode is a specialized tool, we wrap it to ensure it has its dependencies.
+              # For now, we assume it's a standard Python app.
+              doCheck = false;
+              catchConflicts = false;
+            };
+    
+            # -- Clojure Orchestrator Derivation --
+            mentciClj = pkgs.stdenv.mkDerivation {
+              pname = "mentci-clj-orchestrator";
+              version = "0.1.0";
+              src = ./scripts;
+              nativeBuildInputs = [ pkgs.makeWrapper ];
+              buildInputs = [ pkgs.babashka ];
+              installPhase = ''
+                mkdir -p $out/bin
+                cp *.clj $out/bin/
+                for f in $out/bin/*.clj; do
+                  chmod +x "$f"
+                  # Wrap with babashka
+                  mv "$f" "$f.orig"
+                  makeWrapper ${pkgs.babashka}/bin/bb "$f" --add-flags "$f.orig"
+                done
+              '';
+            };
+    
+            # -- Pure Clojure Shell Factory --
+            mkClojureShell = import ./nix/mk-shell.nix { inherit pkgs; };
+    
+            # -- Core Tooling (Pure Clojure Stack) --
+            # Purpose: Level 5 orchestration via Babashka and JVM Clojure.
+            commonPackages = [
+              pkgs.babashka
+              pkgs.clojure
+              pkgs.clojure-lsp
+              pkgs.jet
+              pkgs.jujutsu
+              pkgs.capnproto
+              pkgs.cargo
+              pkgs.rustc
+              pkgs.rust-analyzer
+              pkgs.git
+              pkgs.gdb
+              pkgs.strace
+              pkgs.valgrind
+              pkgs.rsync
+              (pkgs.writeShellScriptBin "mentci-commit" ''
+                ${pkgs.babashka}/bin/bb ${./scripts/commit.clj} "$@"
+              '')
+            ];
+    
+            # Import jail configuration
+            jail = import ./jail.nix {
+              inherit pkgs;
+              inputs = { 
+                inherit criomos sema lojix seahawk skrips mkZolaWebsite;
+                inherit webpublish goldragon maisiliym kibord aski attractor brynary-attractor opencode;
+              };
+            };
+    
 
       in {
         packages = {
@@ -124,12 +147,18 @@
             MENTCI_RO_INDICATOR = "RW (Admin)";
             RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
             MENTCI_REPO_ROOT = "$(pwd)";
-            MENTCI_COMMIT_TARGET = "dev";
             MENTCI_WORKSPACE = "$(pwd)/workspace";
             JJ_CONFIG = "$(pwd)/jj-project-config.toml";
+            jailConfig = builtins.toJSON jail.jailConfig;
           };
           shellHook = ''
-            # 1. Workspace Initialization (jj workspace)
+            # 1. Unique Intent Initialization
+            # Generate a unique bookmark for this session if not provided
+            if [ -z "$MENTCI_COMMIT_TARGET" ]; then
+              export MENTCI_COMMIT_TARGET=$(bb ${./scripts/intent.clj} "automated-session" | tail -n 1)
+            fi
+
+            # 2. Workspace Initialization (jj workspace)
             if [ ! -d "$MENTCI_WORKSPACE" ]; then
               echo "Initializing Agent Workspace..."
               jj workspace add "$MENTCI_WORKSPACE"
