@@ -20,19 +20,20 @@ Mentci-AI is a Nix-and-Rust based AI daemon designed to implement **Level 5 "Dar
 ## 3. Current State & Intent
 *   **Filesystem:** The entire project is typed as a "Repo Atom". Documentation is organized into `docs/`.
 *   **Orchestration:** Rust daemon (`mentci-ai`) implements a basic traversal engine.
-    *   **Parsers:** Functional DOT parser (`src/dot_loader.rs`).
-    *   **Engine:** Executes workflows, saves checkpoints (`src/main.rs`).
+    *   **Parsers:** DOT parser (`src/dot_loader.rs`) is being migrated to `dot-parser` 0.6.1 canonical representation.
+    *   **Aski-Flow:** EDN loader (`src/edn_loader.rs`) implemented for Noun-Sequence DSL. Supported extension: `.aski-flow`.
+    *   **Engine:** Executes workflows, saves checkpoints (`src/main.rs`). Supports switching between DOT and Aski-Flow based on file extension.
 *   **Workflow Definition:**
     *   **Visual:** DOT (`workflows/*.dot`) is supported for legacy/visualization.
-    *   **Internal:** **Aski-Flow** (`docs/specs/ASKI_FLOW_DSL.md`) is the adopted standard for future definitions, prioritizing "Structure as Logic".
+    *   **Internal:** **Aski-Flow** (`docs/specs/ASKI_FLOW_DSL.md`) is the adopted standard for future definitions (Extension: `.aski-flow`).
 *   **Jail:** Managed by `scripts/launcher.clj`. Supports **Materialized (Mutable) Inputs** in Admin mode via `rsync`.
-*   **Input Whitelist:** `agent-inputs.edn` controls which flake inputs are mounted for agent use. Current whitelist: `attractor`, `brynary-attractor`, `criomos`, `webpublish`.
-*   **Version Control:** **Jujutsu (jj)** is the primary VCS. The **"Commit-Every-Intent"** mandate is in effect. 
 
 ## 4. Immediate Tasks for New Session
-1.  **Implement Aski-Flow**: Create an EDN loader in Rust (`src/edn_loader.rs`) to parse the Noun-Sequence DSL defined in `docs/specs/ASKI_FLOW_DSL.md`.
-2.  **Schema Definition**: Update `schema/mentci.capnp` to formally define `Workflow`, `Node`, and `Edge` structures to match the Aski-Flow spec.
-3.  **Engine Refinement**: Update `src/main.rs` to support the "Map-based Control Flow" of Aski-Flow (implicit edges, branching maps).
+1.  **Resolve Compilation Errors**: 
+    *   Fix `src/dot_loader.rs` to correctly interface with `dot-parser` 0.6.1 `canonical::Graph` (handle `NodeSet`/`EdgeSet` iteration and private fields).
+    *   Fix `src/edn_loader.rs` ownership/private field issues with `edn-rs` (Map/List conversion and iteration).
+2.  **Verify Aski-Flow Parsing**: Use `workflows/test.aski-flow` to verify the `EdnLoader` correctly extracts nodes and implicit/explicit edges once compiled.
+3.  **Schema Alignment**: Ensure the updated `schema/mentci.capnp` is correctly utilized in `src/main.rs`.
 4.  **Dynamic Chronography**: Implement a native solar coordinate calculator in Clojure to replace static placeholders in `scripts/logger.clj`.
 
 ## 5. Philosophical Anchors

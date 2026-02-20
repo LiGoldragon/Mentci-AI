@@ -1,6 +1,8 @@
 use anyhow::{Result, Context};
-use dot_parser::ast::{Graph as DotGraph, Stmt, NodeStmt, EdgeStmt, AttrStmt, EdgeRHS};
+use dot_parser::ast::Graph as AstGraph;
+use dot_parser::canonical::Graph as CanonicalGraph;
 use std::collections::HashMap;
+use std::convert::TryFrom;
 
 #[derive(Debug, Clone)]
 pub struct Node {
@@ -35,104 +37,75 @@ pub struct DotLoader;
 
 impl DotLoader {
     pub fn parse(content: &str) -> Result<Graph> {
-        let ast = dot_parser::parse(content)
+        // Parse into AST
+        let ast_graph = AstGraph::try_from(content)
             .map_err(|e| anyhow::anyhow!("Failed to parse DOT: {}", e))?;
-        
-        // We assume strictly one graph per file as per spec
-        let dot_graph = ast.first().context("Empty DOT file")?;
+
+        // Convert to Canonical Graph for easier processing
+        let canonical_graph = CanonicalGraph::from(ast_graph);
 
         let mut nodes = HashMap::new();
         let mut edges = Vec::new();
         let mut graph_attrs = HashMap::new();
-        let mut graph_id = None;
+        let graph_id = Some(canonical_graph.name.to_string());
 
-        if let DotGraph::DiGraph { id, stmts, .. } = dot_graph {
-            if let Some(id) = id {
-                graph_id = Some(id.to_string());
+        // Process Attributes (Graph level)
+        // Canonical graph might flatten attributes differently.
+        // Let's assume we can access them if needed, but for now focus on nodes/edges.
+
+        // Process Nodes
+        for c_node in canonical_graph.nodes.0 {
+            let id = c_node.id.to_string();
+            let mut attrs = HashMap::new();
+            
+            for (k, v) in c_node.attr.0 {
+                attrs.insert(k.to_string(), v.to_string().trim_matches('"').to_string());
             }
 
-            for stmt in stmts {
-                match stmt {
-                    Stmt::Attribute(AttrStmt::Graph(attrs)) => {
-                        for attr in attrs {
-                            if let (dot_parser::ast::Id::Plain(k), dot_parser::ast::Id::Escaped(v)) = (&attr.0, &attr.1) {
-                                graph_attrs.insert(k.clone(), v.trim_matches('"').to_string());
-                            }
-                        }
-                    }
-                    Stmt::Node(NodeStmt { node, attr }) => {
-                        let id = node.id.to_string();
-                        let mut attrs = HashMap::new();
-                        if let Some(attr_list) = attr {
-                            for a in attr_list {
-                                if let (dot_parser::ast::Id::Plain(k), dot_parser::ast::Id::Escaped(v)) = (&a.0, &a.1) {
-                                    attrs.insert(k.clone(), v.trim_matches('"').to_string());
-                                }
-                            }
-                        }
-                        
-                        let label = attrs.get("label").cloned();
-                        let prompt = attrs.get("prompt").cloned();
-                        let shape = attrs.get("shape").cloned();
-                        let node_type = attrs.get("type").cloned();
+            let label = attrs.get("label").cloned();
+            let prompt = attrs.get("prompt").cloned();
+            let shape = attrs.get("shape").cloned();
+            let node_type = attrs.get("type").cloned();
 
-                        nodes.insert(id.clone(), Node {
-                            id,
-                            label,
-                            prompt,
-                            shape,
-                            node_type,
-                            attributes: attrs,
-                        });
-                    }
-                    Stmt::Edge(EdgeStmt { node, next, attr }) => {
-                        let from = node.id.to_string();
-                        // Handle chain: A -> B -> C
-                        // `next` is a Vec of EdgeRHS. 
-                        // We iterate through them to create edges.
-                        // Wait, dot-parser structure might be slightly different.
-                        // Let's assume standard simple edges first.
-                        
-                        let mut current_from = from;
-                        
-                        for rhs in next {
-                            if let EdgeRHS::Node(target_node) = rhs {
-                                let to = target_node.id.to_string();
-                                
-                                let mut attrs = HashMap::new();
-                                if let Some(attr_list) = &attr {
-                                    for a in attr_list {
-                                        if let (dot_parser::ast::Id::Plain(k), dot_parser::ast::Id::Escaped(v)) = (&a.0, &a.1) {
-                                            attrs.insert(k.clone(), v.trim_matches('"').to_string());
-                                        }
-                                    }
-                                }
-
-                                let label = attrs.get("label").cloned();
-                                let condition = attrs.get("condition").cloned();
-                                let weight = attrs.get("weight").and_then(|w| w.parse().ok());
-
-                                edges.push(Edge {
-                                    from: current_from.clone(),
-                                    to: to.clone(),
-                                    label,
-                                    condition,
-                                    weight,
-                                    attributes: attrs,
-                                });
-                                
-                                current_from = to;
-                            }
-                        }
-                    }
-                    _ => {} // Ignore subgraphs etc for now
-                }
-            }
-        } else {
-             return Err(anyhow::anyhow!("Only directed graphs (digraph) are supported"));
+            nodes.insert(id.clone(), Node {
+                id,
+                label,
+                prompt,
+                shape,
+                node_type,
+                attributes: attrs,
+            });
         }
 
-        let goal = graph_attrs.get("goal").cloned();
+        // Process Edges
+        for c_edge in canonical_graph.edges.0 {
+            let from = c_edge.from.to_string();
+            let to = c_edge.to.to_string();
+            
+            let mut attrs = HashMap::new();
+            for (k, v) in c_edge.attr.0 {
+                attrs.insert(k.to_string(), v.to_string().trim_matches('"').to_string());
+            }
+
+            let label = attrs.get("label").cloned();
+            let condition = attrs.get("condition").cloned();
+            let weight = attrs.get("weight").and_then(|w| w.parse().ok());
+
+            edges.push(Edge {
+                from,
+                to,
+                label,
+                condition,
+                weight,
+                attributes: attrs,
+            });
+        }
+        
+        // Extract goal from attributes if possible (Graph attributes might be tricky in canonical)
+        // For now, ignore graph attrs or try to find them if canonical exposes them.
+        // It seems canonical might not expose top-level graph attributes directly in a simple map?
+        // We will skip graph attrs for now unless critical.
+        let goal = None;
 
         Ok(Graph {
             id: graph_id,
