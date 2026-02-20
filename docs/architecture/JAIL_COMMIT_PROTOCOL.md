@@ -2,6 +2,7 @@
 
 ## 1. Overview
 In a Level 5 "Dark Factory" environment, the agent operates within a restricted Nix Jail. To ensure the integrity of the "Stable Contract" while allowing autonomous manifestation, Mentci-AI employs a **Jujutsu (jj) Workspace** model.
+Operational steps live in `docs/architecture/VERSION_CONTROL.md`.
 
 ## 2. The Multi-Workspace Architecture
 The `nix develop` environment (defined in `flake.nix`) partitions the project into two distinct areas:
