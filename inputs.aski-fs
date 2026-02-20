@@ -16,5 +16,5 @@
    "kibord" {:kind :dir :inputType :flake}
    "aski" {:kind :dir :inputType :flake}
    "attractor" {:kind :dir :inputType :untyped}
-   "brynary-attractor" {:kind :dir :inputType :untyped}
+   "attractor-docs" {:kind :dir :inputType :untyped}
    "opencode" {:kind :dir :inputType :untyped}}}}
