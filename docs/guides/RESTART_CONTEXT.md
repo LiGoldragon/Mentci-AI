@@ -48,6 +48,21 @@ Mentci-AI is a Nix-and-Rust based AI daemon designed to implement **Level 5 "Dar
 3.  **Schema Alignment**: Keep `schema/mentci.capnp` in sync with `src/main.rs` and any new DSL schema changes.
 4.  **Dev Shell Tooling**: Ensure `nix develop -c` picks up project tools (PATH export or shell hooks).
 
+## 4.1 Latest Goal Run (Goal 1)
+*   **Date:** 2026-02-20
+*   **Goal:** Attractor DOT Job Handoff (first real call)
+*   **Pipeline ID:** `7746ead5-72fd-4821-92e3-9dfab8bd04f1`
+*   **Final Status:** `completed`
+*   **DOT Artifact:** `workflows/first_real_call.dot`
+*   **Run Artifacts:**
+    *   `Logs/attractor-first-call-request.json`
+    *   `Logs/attractor-first-call-create-response.json`
+    *   `Logs/attractor-first-call-status-last.json`
+    *   `Logs/attractor-first-call-graph.out`
+    *   `Logs/attractor-first-call-context.json`
+    *   `Logs/attractor-first-call-checkpoint.json`
+    *   `Logs/attractor-first-call-server.log`
+
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.
 *   **Sema Object Style:** Everything is an Object. Direction encodes Action.
