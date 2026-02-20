@@ -1,6 +1,6 @@
 # Attractor DOT Data Reference
 
-Extracted from `inputs/untyped/attractor/attractor-spec.md`. For the live implementation,
+Extracted from `inputs/untyped/attractor/attractor-spec.md` for incorporation. For the live implementation,
 use `inputs/untyped/brynary-attractor/attractor`.
 
 ## Overview

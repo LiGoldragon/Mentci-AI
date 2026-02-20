@@ -5,9 +5,9 @@
 
 ## Executive Summary
 
-**Mentci-AI** has adopted the **Attractor Workflow Standard** as its "Algorithm of Thought". The focus has shifted from building a monolithic execution engine to defining a rigorous **standard** for agentic processes.
+**Mentci-AI** incorporates the **Attractor Workflow Standard** as its "Algorithm of Thought". The focus is on standard adoption and alignment, not reimplementing Attractor.
 
-The "Attractor" spec has been re-documented as the **Mentci Workflow Standard** (`docs/specs/WORKFLOW_STANDARD.md`). A reference implementation of the DOT parser and basic traversal logic now exists in Rust.
+The Attractor spec is re-documented as the **Mentci Workflow Standard** (`docs/specs/WORKFLOW_STANDARD.md`) for incorporation. A reference DOT parser and basic traversal logic exists in Rust, but Mentci-AI is not an Attractor reimplementation.
 
 ---
 

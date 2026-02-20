@@ -1,7 +1,7 @@
 # Mentci Workflow Standard (Attractor Specification)
 
 **Version:** 1.0 (Draft)
-**Based on:** Attractor Specification
+**Based on:** Attractor Specification (incorporated, not reimplemented)
 **Context:** Guidelines for Agentic Thought Processes
 
 This document defines the standard for constructing **Agentic Workflows** using the Graphviz DOT language. These workflows represent the "Algorithm of Thought" for autonomous agents within the Mentci ecosystem.

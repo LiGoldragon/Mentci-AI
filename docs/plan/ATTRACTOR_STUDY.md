@@ -5,7 +5,7 @@
 **Goal:** Establish a standard for defining, validating, and sharing "Agentic Thought Processes" using Graphviz DOT syntax.
 
 ## 1. Vision
-The Attractor Study aims to formalize **how agents think and act** when solving complex engineering tasks. Instead of opaque, hard-coded loops, we define workflows as **Directed Acyclic Graphs (DAGs)**.
+The Attractor Study formalizes **how agents think and act** when solving complex engineering tasks. Mentci-AI does not implement Attractor; it incorporates the Attractor standard and aligns its workflows to it.
 
 These graphs are not just for execution; they are **shared artifacts** that describe the "Algorithm of Thought" for a specific task (e.g., "Fix a Bug", "Implement a Feature", "Review a PR").
 
@@ -24,7 +24,7 @@ We will define the formal structure of a Workflow in `schema/mentci.capnp`. This
 *   `Context`: The state passed between nodes.
 
 ### B. The Standard (Guidelines)
-We will adapt `inputs/untyped/attractor/attractor-spec.md` into `docs/specs/WORKFLOW_STANDARD.md`. This document will serve as the "RFC" for how to write valid Mentci Workflows.
+We adapt `inputs/untyped/attractor/attractor-spec.md` into `docs/specs/WORKFLOW_STANDARD.md`. This document serves as the "RFC" for how to write valid Mentci workflows that incorporate Attractor.
 
 **Key Concepts:**
 *   **Declarative vs. Imperative:** Define *what* to do, not just *how*.
@@ -44,7 +44,7 @@ Instead of a full "Execution Engine" (which is a larger undertaking), we will bu
 
 ## 3. Roadmap
 
-1.  **Re-Document:** Port and refine the Attractor Spec into `docs/specs/`.
+1.  **Re-Document:** Port and refine the Attractor Spec into `docs/specs/` for incorporation, not reimplementation.
 2.  **Define Schema:** Update `schema/mentci.capnp` with `Workflow` types.
 3.  **Implement Parser:** Upgrade `src/dot_loader.rs` to a proper parser (using `graphviz-rust` or similar, or a robust custom parser).
 4.  **Implement Linter:** Add validation logic to `src/main.rs`.
