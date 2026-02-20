@@ -1,0 +1,39 @@
+{:namespace :mentci.dot
+ :version "0.1.0"
+ :description "Canonical structured-data model for DOT graph conversion."
+ :types
+ [{:name :DotGraph
+   :kind :struct
+   :fields [{:id 0 :name :graph/id :type :Text}
+            {:id 1 :name :graph/attributes :type [:map :Text :Text]}
+            {:id 2 :name :graph/nodes :type [:vector :DotNode]}
+            {:id 3 :name :graph/edges :type [:vector :DotEdge]}]}
+  {:name :DotNode
+   :kind :struct
+   :fields [{:id 0 :name :node/id :type :Text}
+            {:id 1 :name :node/attributes :type [:map :Text :Text]}]}
+  {:name :DotEdge
+   :kind :struct
+   :fields [{:id 0 :name :edge/from :type :Text}
+            {:id 1 :name :edge/to :type :Text}
+            {:id 2 :name :edge/attributes :type [:map :Text :Text]}]}
+  {:name :AskiFlowNode
+   :kind :enum
+   :values [:symbol-node :list-node]}
+  {:name :AskiFlowRouting
+   :kind :struct
+   :fields [{:id 0 :name :route/condition :type :Text}
+            {:id 1 :name :route/target :type :Text}
+            {:id 2 :name :route/isNext :type :Bool}]}
+  {:name :AskiFlowConversion
+   :kind :struct
+   :fields [{:id 0 :name :conversion/input :type :Any}
+            {:id 1 :name :conversion/output :type :DotGraph}
+            {:id 2 :name :conversion/rules :type [:vector :Text]}]}]
+ :rules
+ ["Vector order implies default edges i -> i+1."
+  "A map immediately after a node defines explicit routing for that node."
+  "Route target :next resolves to the next node in sequence."
+  "If a routing map exists and does not define :next, default i -> i+1 remains."
+  "List node form (Name {:k v}) emits DOT node attributes from map entries."
+  "Symbol node form Name emits DOT node with id=Name and no explicit attributes."]}
