@@ -119,6 +119,22 @@
         "type": "github"
       }
     },
+    "attractor-docs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771181781,
+        "narHash": "sha256-bLG6NmmDg0szxDhfnNbCQkT9B5GjL6lhu2KLEL6hjZU=",
+        "owner": "brynary",
+        "repo": "attractor",
+        "rev": "55d3d7e1fbc8f56425c4aef330c28b2aa052745b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "brynary",
+        "repo": "attractor",
+        "type": "github"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -216,22 +232,6 @@
         "owner": "tinted-theming",
         "repo": "base16-vim",
         "rev": "577fe8125d74ff456cf942c733a85d769afe58b7",
-        "type": "github"
-      }
-    },
-    "brynary-attractor": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1771181781,
-        "narHash": "sha256-bLG6NmmDg0szxDhfnNbCQkT9B5GjL6lhu2KLEL6hjZU=",
-        "owner": "brynary",
-        "repo": "attractor",
-        "rev": "55d3d7e1fbc8f56425c4aef330c28b2aa052745b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "brynary",
-        "repo": "attractor",
         "type": "github"
       }
     },
@@ -1430,7 +1430,7 @@
       "inputs": {
         "aski": "aski",
         "attractor": "attractor",
-        "brynary-attractor": "brynary-attractor",
+        "attractor-docs": "attractor-docs",
         "codex-cli-nix": "codex-cli-nix",
         "crane": "crane",
         "criomos": "criomos",
