@@ -107,6 +107,8 @@
             inputs-path (get config :inputsPath "inputs")
             inputs-root (io/file inputs-path)
             input-manifest (get config :inputManifest {})
+            outputs-path (get config :outputsPath "Outputs")
+            policy-path (get config :policyPath nil)
             mentci-mode (System/getenv "MENTCI_MODE")
             is-impure (or (= mentci-mode "ADMIN")
                           (.exists (io/file "/usr/local"))
@@ -114,6 +116,9 @@
             mode (if is-impure "IMPURE" "PURE")
             ro-indicator (if is-impure "RW (Admin)" "RO (Pure)")]
         (println (format "Running in %s mode (%s)" mode ro-indicator))
+        (println (format "Outputs root: %s" outputs-path))
+        (when policy-path
+          (println (format "Jail policy file (read-only): %s" policy-path)))
         ;; Load Whitelist
         (let [whitelist-path (io/file "agent-inputs.edn")
               whitelist (if (.exists whitelist-path)
