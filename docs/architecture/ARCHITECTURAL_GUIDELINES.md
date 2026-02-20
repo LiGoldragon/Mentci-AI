@@ -21,7 +21,7 @@
 *   **Authority:** Li Goldragon is the highest authority (Top Admin).
 *   **Shipping Protocol (Jail):** Isolated agents in a Jail environment must use the `mentci-commit` tool to ship changes. This tool synchronizes a writable implementation workspace back to the project root and performs a `jj` commit to the target bookmark specified in `MENTCI_COMMIT_TARGET`.
 *   **Usage:** `mentci-commit "intent: <message>"`
-*   **Operational Steps:** See `docs/architecture/JjAutomation.md`.
+*   **Operational Steps:** See `docs/architecture/VERSION_CONTROL.md`.
 
 ## 0.3. TOOL STACK TRANSPARENCY
 
