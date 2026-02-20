@@ -4,11 +4,18 @@
 (deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
 
 (require '[clojure.java.io :as io]
-         '[clojure.string :as str]
-         '[malli.core :as m]
-         '[malli.error :as me])
+         '[clojure.string :as str])
 
 (load-file (str (.getParent (io/file *file*)) "/types.clj"))
+(load-file (str (.getParent (io/file *file*)) "/malli.clj"))
+(require '[mentci.malli :refer [defn* enable!]])
+
+(enable!)
+
+(def ScriptValidationConfig
+  [:map
+   [:scriptsDir :string]
+   [:allowlist [:set :string]]])
 
 (def ScriptFailInput
   [:map
@@ -45,108 +52,67 @@
   [:map
    [:args [:vector :string]]])
 
-(def ScriptValidationConfig
-  [:map
-   [:scriptsDir :string]
-   [:allowlist [:set :string]]])
-
-(defn fail [msg]
-  (let [input {:message msg}]
-    (when-not (m/validate ScriptFailInput input)
-      (throw (ex-info "Invalid fail input"
-                      {:errors (me/humanize (m/explain ScriptFailInput input))}))))
+(defn* fail [:=> [:cat ScriptFailInput] :any] [input]
   (binding [*out* *err*]
-    (println msg))
+    (println (:message input)))
   (System/exit 1))
 
-(defn parse-args [args]
-  (let [input {:args (vec args)}]
-    (when-not (m/validate ScriptParseArgsInput input)
-      (throw (ex-info "Invalid parse-args input"
-                      {:errors (me/humanize (m/explain ScriptParseArgsInput input))}))))
-  (loop [remaining args
-         opts {}]
-    (if (empty? remaining)
-      opts
-      (let [[arg & more] remaining]
-        (cond
-          (= arg "--scripts-dir")
-          (recur (nnext remaining) (assoc opts :scripts-dir (second remaining)))
+(defn* parse-args [:=> [:cat ScriptParseArgsInput] :map] [input]
+  (let [args (:args input)]
+    (loop [remaining args
+           opts {}]
+      (if (empty? remaining)
+        opts
+        (let [[arg & _more] remaining]
+          (cond
+            (= arg "--scripts-dir")
+            (recur (nnext remaining) (assoc opts :scripts-dir (second remaining)))
 
-          :else
-          (fail (str "Unknown argument: " arg)))))))
+            :else
+            (fail {:message (str "Unknown argument: " arg)})))))))
 
-(defn validate-config [config]
-  (let [input {:config config}]
-    (when-not (m/validate ScriptValidateConfigInput input)
-      (throw (ex-info "Invalid validate-config input"
-                      {:errors (me/humanize (m/explain ScriptValidateConfigInput input))}))))
-  (when-not (m/validate ScriptValidationConfig config)
-    (throw (ex-info "Invalid Script Validation Configuration"
-                    {:errors (me/humanize (m/explain ScriptValidationConfig config))}))))
+(defn* validate-config [:=> [:cat ScriptValidateConfigInput] :any] [input]
+  (:config input))
 
-(defn clj-file? [file]
-  (let [input {:file file}]
-    (when-not (m/validate ScriptFileCheckInput input)
-      (throw (ex-info "Invalid clj-file? input"
-                      {:errors (me/humanize (m/explain ScriptFileCheckInput input))}))))
-  (str/ends-with? (.getName file) ".clj"))
+(defn* clj-file? [:=> [:cat ScriptFileCheckInput] :boolean] [input]
+  (str/ends-with? (.getName (:file input)) ".clj"))
 
-(defn py-file? [file]
-  (let [input {:file file}]
-    (when-not (m/validate ScriptFileCheckInput input)
-      (throw (ex-info "Invalid py-file? input"
-                      {:errors (me/humanize (m/explain ScriptFileCheckInput input))}))))
-  (str/ends-with? (.getName file) ".py"))
+(defn* py-file? [:=> [:cat ScriptFileCheckInput] :boolean] [input]
+  (str/ends-with? (.getName (:file input)) ".py"))
 
-(defn scan-files [root]
-  (let [input {:root root}]
-    (when-not (m/validate ScriptScanFilesInput input)
-      (throw (ex-info "Invalid scan-files input"
-                      {:errors (me/humanize (m/explain ScriptScanFilesInput input))}))))
-  (->> (file-seq (io/file root))
-       (filter #(.isFile %))))
+(defn* scan-files [:=> [:cat ScriptScanFilesInput] [:vector :any]] [input]
+  (->> (file-seq (io/file (:root input)))
+       (filter #(.isFile %))
+       vec))
 
-(defn contains-substring? [content substring]
-  (let [input {:content content
-               :substring substring}]
-    (when-not (m/validate ScriptContainsSubstringInput input)
-      (throw (ex-info "Invalid contains-substring? input"
-                      {:errors (me/humanize (m/explain ScriptContainsSubstringInput input))}))))
-  (not (nil? (str/index-of content substring))))
+(defn* contains-substring? [:=> [:cat ScriptContainsSubstringInput] :boolean] [input]
+  (let [{:keys [content substring]} input]
+    (not (nil? (str/index-of content substring)))))
 
-(defn validate-clj [path content allowlist]
-  (let [input {:path path
-               :content content
-               :allowlist allowlist}]
-    (when-not (m/validate ScriptValidateCljInput input)
-      (throw (ex-info "Invalid validate-clj input"
-                      {:errors (me/humanize (m/explain ScriptValidateCljInput input))}))))
-  (when-not (contains? allowlist path)
-    (when-not (contains-substring? content "malli.core")
-      (fail (str "Missing Malli dependency in " path)))
-    (when-not (contains-substring? content "m/validate")
-      (fail (str "Missing m/validate usage in " path)))))
+(defn* validate-clj [:=> [:cat ScriptValidateCljInput] :any] [input]
+  (let [{:keys [path content allowlist]} input]
+    (when-not (contains? allowlist path)
+      (when-not (contains-substring? {:content content :substring "defn*"})
+        (fail {:message (str "Missing defn* usage in " path)}))
+      (when-not (contains-substring? {:content content :substring "mentci.malli"})
+        (fail {:message (str "Missing mentci.malli require in " path)})))))
 
-(defn -main [& args]
-  (let [input {:args (vec args)}]
-    (when-not (m/validate ScriptMainInput input)
-      (throw (ex-info "Invalid -main input"
-                      {:errors (me/humanize (m/explain ScriptMainInput input))}))))
-  (let [{:keys [scripts-dir]} (parse-args args)
+(defn* -main [:=> [:cat ScriptMainInput] :any] [input]
+  (let [{:keys [scripts-dir]} (parse-args {:args (:args input)})
         scripts-dir (or scripts-dir "scripts")
         config {:scriptsDir scripts-dir
-                :allowlist #{}}
-        _ (validate-config config)
-        files (scan-files scripts-dir)
-        py-files (filter py-file? files)]
+                :allowlist #{"scripts/types.clj"
+                             "scripts/malli.clj"}}
+        _ (validate-config {:config config})
+        files (scan-files {:root scripts-dir})
+        py-files (filter #(py-file? {:file %}) files)]
     (when (seq py-files)
       (doseq [file py-files]
-        (fail (str "Python script found in scripts/: " (.getPath file)))))
-    (doseq [file (filter clj-file? files)]
+        (fail {:message (str "Python script found in scripts/: " (.getPath file))})))
+    (doseq [file (filter #(clj-file? {:file %}) files)]
       (let [path (.getPath file)
             content (slurp file)]
-        (validate-clj path content (:allowlist config))))
+        (validate-clj {:path path :content content :allowlist (:allowlist config)})))
     (println (str "Script validation passed for " scripts-dir))))
 
-(apply -main *command-line-args*)
+(-main {:args (vec *command-line-args*)})
