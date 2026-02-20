@@ -48,6 +48,18 @@ Every tagged release commit must include an update to:
 
 The `RESTART_CONTEXT.md` update is part of the release changeset and must be committed in the same release commit that is tagged.
 
+## 3.2 Admin-Mode Main Push (Pending Security Protocol)
+When operating in Admin Developer Mode, a tagged release must be pushed to `main` after the release commit and tag are created.
+
+Required sequence:
+1. Create the release commit.
+2. Create the annotated release tag.
+3. Push `main` and the release tag together.
+
+Security note:
+- The security protocol for authorizing `main` pushes in Admin Developer Mode is not finalized yet.
+- Until finalized, treat this as a policy requirement with implementation details pending.
+
 ## 4. Source of Truth
 Use `jj log` and `jj diff` to determine the change list since the last tag.
 
