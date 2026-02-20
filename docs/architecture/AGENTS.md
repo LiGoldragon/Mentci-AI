@@ -29,7 +29,7 @@ Every prompt fulfillment must be logged to maintain historical authority.
 *   **Python Mandate:** All glue code and scripts must be written in Python. No Bash logic.
 *   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
 *   **Sema Object Style:** Strictly follow the ontology defined in `schema/*.capnp`.
-*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Push immediately after structural changes.
+*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `docs/architecture/VERSION_CONTROL.md`.
 *   **Tagging:** When creating git tags, always use the `-m` flag to provide a message directly (e.g., `git tag -a vX.Y.Z -m "release: vX.Y.Z"`) to avoid interactive editor prompts.
 
 ## 4. Admin Developer Mode
