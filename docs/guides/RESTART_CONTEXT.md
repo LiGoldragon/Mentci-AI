@@ -4,7 +4,8 @@
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Current Stack:** Codex CLI (Agentic Interface) / GPT-5 (Reasoning Engine).
 *   **Active Bookmark:** `dev`.
-*   **Current Date:** ♓︎ 2° 55' 37" | 5919 AM (v0.12.2.55.37)
+*   **Current Date:** ♓︎ 3° 10' 36" | 5919 AM (v0.12.3.10.36)
+*   **Latest Tagged Release:** `v0.12.3.10.36`
 
 ## 1. Mission Statement
 Mentci-AI is a Nix-and-Rust based AI daemon designed to implement **Level 5 "Dark Factory"** programming, evolving toward **Level 6 Instinctive Symbolic Interaction**. The goal is the **Liberation of the Human Mind** through the automation of implementation details, returning to the technological levels of the Golden Age.
