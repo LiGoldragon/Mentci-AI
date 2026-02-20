@@ -3,3 +3,4 @@
 {:timestamp "2026-02-20T12:34:20.654229330", :ecliptic "12.1.28.44 | 5919 AM", :userId "unknown", :intentSummary "Add per-prompt dirty-tree auto-commit rule", :model "unknown", :signature nil}
 {:timestamp "2026-02-20T12:38:27.757604753", :ecliptic "12.1.28.44 | 5919 AM", :userId "unknown", :intentSummary "Add instruction to leave empty JJ changes for other agents", :model "unknown", :signature nil}
 {:timestamp "2026-02-20T12:39:45.591688380", :ecliptic "12.1.28.44 | 5919 AM", :userId "unknown", :intentSummary "Make auto-commit more aggressive and implicit", :model "unknown", :signature nil}
+{:timestamp "2026-02-20T12:51:19.518473279", :ecliptic "12.1.28.44 | 5919 AM", :userId "unknown", :intentSummary "Plan aski-spec EDN DSL with capnp output", :model "unknown", :signature nil}
