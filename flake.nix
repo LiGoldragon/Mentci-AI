@@ -53,7 +53,7 @@
             craneLib = crane.mkLib pkgs;
             src = craneLib.cleanCargoSource ./.;
     
-            nixns = import ./nix {
+            namespace = import ./nix {
               inherit pkgs craneLib system inputs src;
               codex_cli_nix = codex-cli-nix;
               attractor_docs = attractorDocs;
@@ -64,26 +64,26 @@
 
             jail = import ./jail.nix {
               inherit pkgs;
-              inputs = nixns.jail_inputs;
+              inputs = namespace.jail_inputs;
             };
 
-            devShell = nixns.dev_shell { inherit jail; };
+            devShell = namespace.dev_shell { inherit jail; };
     
 
       in {
         packages = {
-          default = nixns.mentci_ai;
-          mentciAi = nixns.mentci_ai;
-          mentciClj = nixns.mentci_clj;
-          attractor = nixns.attractor;
+          default = namespace.mentci_ai;
+          mentciAi = namespace.mentci_ai;
+          mentciClj = namespace.mentci_clj;
+          attractor = namespace.attractor;
         };
 
         checks = {
-          attractor = nixns.attractor;
+          attractor = namespace.attractor;
         };
 
         apps.default = flake-utils.lib.mkApp {
-          drv = nixns.mentci_ai;
+          drv = namespace.mentci_ai;
         };
 
         devShells.default = devShell;
