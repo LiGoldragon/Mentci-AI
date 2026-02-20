@@ -1,7 +1,16 @@
 #!/usr/bin/env bb
+
+(require '[babashka.deps :as deps])
+(deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
+
 (ns agent-launcher
   (:require [clojure.string :as str]
-            [clojure.java.shell :as sh]))
+            [clojure.java.shell :as sh]
+            [malli.core :as m]
+            [malli.error :as me]
+            [clojure.java.io :as io]))
+
+(load-file (str (.getParent (io/file *file*)) "/types.clj"))
 
 (def default-gopass-prefix "mentci/ai")
 (def default-command ["opencode"])
@@ -54,6 +63,11 @@
       (fail (str "gopass failed for " entry ": " (str/trim (or err out)))))
     (str/trim out)))
 
+(defn validate-config [config]
+  (when-not (m/validate types/AgentLauncherConfig config)
+    (throw (ex-info "Invalid Agent Launcher Configuration"
+                    {:errors (me/humanize (m/explain types/AgentLauncherConfig config))}))))
+
 (defn -main [& args]
   (let [{:keys [provider gopass-prefix entry env-var command]}
         (parse-args args)
@@ -61,10 +75,17 @@
         prefix (or gopass-prefix (System/getenv "MENTCI_GOPASS_PREFIX") default-gopass-prefix)
         entry (resolve-entry prefix provider entry)
         env-var (resolve-env-var provider env-var)
-        api-key (gopass-secret entry)
         cmd (if (seq command) command default-command)
         cmd (if (= (first cmd) "--") (vec (rest cmd)) cmd)
-        cmd (if (seq cmd) cmd default-command)]
+        cmd (if (seq cmd) cmd default-command)
+        config {:sema/type "AgentLauncherConfig"
+                :provider provider
+                :gopassPrefix prefix
+                :entry entry
+                :envVar env-var
+                :command cmd}
+        _ (validate-config config)
+        api-key (gopass-secret entry)]
     (let [env (assoc (into {} (System/getenv)) env-var api-key)
           {:keys [exit]} (apply sh/sh {:env env} cmd)]
       (System/exit exit))))

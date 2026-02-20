@@ -40,6 +40,6 @@
 - **Usage:** Defines the semantic truth of atoms and daemon interfaces in `schema/`.
 
 ## Scripting & Glue
-### Python 3
+### Clojure (Babashka)
 - **Role:** The "Mandatory Glue" for project orchestration.
 - **Usage:** Used for launchers and build scripts to manage complex logic without shell scripts.
