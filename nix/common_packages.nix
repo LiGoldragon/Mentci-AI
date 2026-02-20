@@ -1,5 +1,10 @@
 { pkgs, codex_cli_nix, system, scripts_dir }:
 
+let
+  mentci_jj = import ./mentci_jj.nix {
+    inherit pkgs scripts_dir;
+  };
+in
 [
   pkgs.babashka
   pkgs.clojure
@@ -19,9 +24,7 @@
   (pkgs.writeShellScriptBin "mentci-commit" ''
     ${pkgs.babashka}/bin/bb ${scripts_dir}/commit.clj --runtime "$(pwd)/workspace/.mentci/runtime.json" "$@"
   '')
-  (pkgs.writeShellScriptBin "mentci-jj" ''
-    ${pkgs.babashka}/bin/bb ${scripts_dir}/jj_workflow.clj --runtime "$(pwd)/workspace/.mentci/runtime.json" "$@"
-  '')
+  mentci_jj
   (pkgs.writeShellScriptBin "mentci-bootstrap" ''
     ${pkgs.cargo}/bin/cargo run --quiet --bin mentci-ai -- job/jails bootstrap "$@"
   '')
