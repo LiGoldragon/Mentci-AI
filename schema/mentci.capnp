@@ -133,6 +133,7 @@ struct JailBootstrapRequest {
   workingBookmark @3 :Text;
   targetBookmark @4 :Text;
   commitMessage @5 :Text;
+  policyPath @6 :Text;
 }
 
 struct NixFlake {

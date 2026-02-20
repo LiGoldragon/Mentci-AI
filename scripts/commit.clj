@@ -20,11 +20,21 @@
 
 (def CommitMainInput
   [:map
-   [:args [:vector :string]]
+   [:message :string]
+   [:runtimePath :string]
    [:workingBookmark :string]
    [:targetBookmark :string]
    [:repoRoot :string]
-   [:workspaceRoot :string]])
+   [:workspaceRoot :string]
+   [:policyPath [:maybe :string]]])
+
+(def ParseCommitArgsInput
+  [:map
+   [:args [:vector :string]]])
+
+(def LoadRuntimeInput
+  [:map
+   [:runtimePath :string]])
 
 (def LoadPolicyInput
   [:map
@@ -35,6 +45,30 @@
    [:targetBookmark :string]
    [:allowedPushBookmarks [:set :string]]])
 
+(defn* parse-commit-args [:=> [:cat ParseCommitArgsInput] :map] [input]
+  (let [args (:args input)]
+    (if (and (>= (count args) 2) (= (first args) "--runtime"))
+      {:runtimePath (second args)
+       :message (str/join " " (drop 2 args))}
+      {:runtimePath nil
+       :message (str/join " " args)})))
+
+(defn* default-runtime-path [:=> [:cat] :string] []
+  (let [workspace-runtime (io/file "workspace/.mentci/runtime.json")
+        local-runtime (io/file ".mentci/runtime.json")]
+    (cond
+      (.exists workspace-runtime) (.getPath workspace-runtime)
+      (.exists local-runtime) (.getPath local-runtime)
+      :else (.getPath workspace-runtime))))
+
+(defn* load-runtime [:=> [:cat LoadRuntimeInput] :map] [input]
+  (let [runtime-path (:runtimePath input)
+        runtime-file (io/file runtime-path)]
+    (when-not (.exists runtime-file)
+      (println (str "Error: runtime file not found: " runtime-path))
+      (System/exit 1))
+    (json/parse-string (slurp runtime-file) true)))
+
 (defn* load-allowed-push-bookmarks [:=> [:cat LoadPolicyInput] [:set :string]] [input]
   (let [policy-path (:policyPath input)]
     (if (str/blank? policy-path)
@@ -42,7 +76,7 @@
       (let [policy-file (io/file policy-path)]
         (if-not (.exists policy-file)
           (do
-            (println (str "Error: MENTCI_JAIL_POLICY points to missing file: " policy-path))
+            (println (str "Error: policyPath points to missing file: " policy-path))
             (System/exit 1))
           (let [policy (json/parse-string (slurp policy-file) true)
                 bookmarks (get policy :allowedPushBookmarks [])]
@@ -56,50 +90,44 @@
       (System/exit 1))))
 
 (defn* run-commit [:=> [:cat CommitMainInput] :any] [input]
-  (let [{:keys [args workingBookmark targetBookmark repoRoot workspaceRoot]} input]
-    (if (or (not repoRoot) (not workspaceRoot))
-      (do (println "Error: MENTCI_REPO_ROOT or MENTCI_WORKSPACE not set.")
+  (let [{:keys [message workingBookmark targetBookmark repoRoot workspaceRoot policyPath]} input]
+    (if (or (str/blank? repoRoot) (str/blank? workspaceRoot))
+      (do (println "Error: runtime missing repoRoot or workspaceRoot.")
           (System/exit 1))
-      
-      (let [args args
-            working-bookmark workingBookmark
+      (let [working-bookmark workingBookmark
             target-bookmark targetBookmark
-            repo-root repoRoot
             workspace-root workspaceRoot
-            allowed-push-bookmarks (load-allowed-push-bookmarks {:policyPath (System/getenv "MENTCI_JAIL_POLICY")})]
+            allowed-push-bookmarks (load-allowed-push-bookmarks {:policyPath policyPath})]
         (when (= working-bookmark target-bookmark)
           (println (str "Error: target bookmark '" target-bookmark "' must differ from working bookmark '" working-bookmark "'."))
           (System/exit 1))
         (assert-target-allowed {:targetBookmark target-bookmark
                                 :allowedPushBookmarks allowed-push-bookmarks})
-        (if (empty? args)
-          (do (println "Usage: mentci-commit <message>")
+        (if (str/blank? message)
+          (do (println "Usage: mentci-commit [--runtime <path>] <message>")
               (System/exit 1))
-          
-          (let [message (first args)
-                _ (println (str "Shipping manifestation from workspace: " message))]
-            
-            ;; 1. Update description
-            (let [res1 (sh "jj" "describe" "-m" message "-R" workspace-root)]
-              (if (not= 0 (:exit res1))
-                (do (println "Error during jj describe:" (:err res1))
-                    (System/exit (:exit res1)))
-                
-                ;; 2. Advance bookmark
-                (let [res2 (sh "jj" "bookmark" "set" target-bookmark "-r" "@" "-R" workspace-root)]
-                  (if (not= 0 (:exit res2))
-                    (do (println "Error during jj bookmark set:" (:err res2))
-                        (System/exit (:exit res2)))
-                    (println (str "Successfully committed and advanced bookmark '" target-bookmark "' from workspace."))))))))))))
+          (let [_ (println (str "Shipping manifestation from workspace: " message))
+                res1 (sh "jj" "describe" "-m" message "-R" workspace-root)]
+            (if (not= 0 (:exit res1))
+              (do (println "Error during jj describe:" (:err res1))
+                  (System/exit (:exit res1)))
+              (let [res2 (sh "jj" "bookmark" "set" target-bookmark "-r" "@" "-R" workspace-root)]
+                (if (not= 0 (:exit res2))
+                  (do (println "Error during jj bookmark set:" (:err res2))
+                      (System/exit (:exit res2)))
+                  (println (str "Successfully committed and advanced bookmark '" target-bookmark "' from workspace.")))))))))))
 
 (defn* -main [:=> [:cat [:* :string]] :any] [& args]
-  (let [working-bookmark (or (System/getenv "MENTCI_WORKING_BOOKMARK") "dev")
-        target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "jailCommit")
-        repo-root (System/getenv "MENTCI_REPO_ROOT")
-        workspace-root (System/getenv "MENTCI_WORKSPACE")
-        input {:args (vec args)
-               :workingBookmark working-bookmark
-               :targetBookmark target-bookmark
-               :repoRoot (or repo-root "")
-               :workspaceRoot (or workspace-root "")}]
+  (let [{:keys [runtimePath message]} (parse-commit-args {:args (vec args)})
+        runtime-path (or runtimePath (default-runtime-path))
+        runtime (load-runtime {:runtimePath runtime-path})
+        input {:message message
+               :runtimePath runtime-path
+               :workingBookmark (get runtime :workingBookmark "dev")
+               :targetBookmark (get runtime :targetBookmark "jailCommit")
+               :repoRoot (get runtime :repoRoot "")
+               :workspaceRoot (get runtime :workspaceRoot "")
+               :policyPath (get runtime :policyPath nil)}]
     (run-commit input)))
+
+(-main (vec *command-line-args*))
