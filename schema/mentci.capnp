@@ -149,6 +149,13 @@ struct FlakeOutputs {
 
 # -- Runtime Orchestration (Attractor Alignment) --
 
+struct Workflow {
+  id @0 :Text;
+  goal @1 :Text;
+  graph @2 :Graph;
+  attributes @3 :List(Entry);
+}
+
 struct Graph {
   nodes @0 :List(Node);
   edges @1 :List(Edge);
@@ -161,6 +168,7 @@ struct Node {
   shape @2 :Text;
   type @3 :Text;
   prompt @4 :Text;
+  props @5 :List(Entry);
 }
 
 struct Edge {
