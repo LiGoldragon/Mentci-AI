@@ -20,7 +20,8 @@
 *   **Commit-Every-Intent (Level 5):** The Mentci Engine must automatically execute a `jj` commit after **every single atomic modification** (e.g., one file write, one replacement). Each commit represents exactly one intention. Combining multiple unrelated modifications into a single "success" commit is forbidden.
 *   **Authority:** Li Goldragon is the highest authority (Top Admin).
 *   **Shipping Protocol (Jail):** Isolated agents in a Jail environment must use the `mentci-commit` tool to ship changes. This tool synchronizes a writable implementation workspace back to the project root and performs a `jj` commit to the target bookmark specified in `MENTCI_COMMIT_TARGET`.
-*   **Usage:** `mentci-commit "Message" ./path/to/workspace`
+*   **Usage:** `mentci-commit "intent: <message>"`
+*   **Operational Steps:** See `docs/architecture/JjAutomation.md`.
 
 ## 0.3. TOOL STACK TRANSPARENCY
 
@@ -49,6 +50,20 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 *   **Responsibility:** The agent is responsible for maintaining the integrity of the jail while exercising this authority.
 
 This document synthesizes the architectural, naming, and durability rules inherited from the **CriomOS** and **Sema** lineage. These rules are structural and non-negotiable. Violations indicate category errors, not stylistic choices.
+
+## 0.6. NIX STORE ACCESS
+
+**Do not scan `/nix/store` directly.**
+
+*   **Efficiency:** The store is large and filesystem searches are wasteful.
+*   **Protocol:** Query store metadata through the Nix CLI (daemon-backed) instead of filesystem traversal.
+
+## 0.7. JJ LOGGING WITHOUT SIGNING
+
+**When reading history, prefer `jj log` (and similar) with signing disabled.**
+
+*   **Reliability:** Disable signing for read-only history inspection to avoid GPG/agent failures.
+*   **Scope:** This applies to log/describe/show commands that do not modify history.
 
 ## 1. Core Philosophy: The Semantic Layer
 

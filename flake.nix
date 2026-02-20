@@ -116,6 +116,9 @@
               (pkgs.writeShellScriptBin "mentci-commit" ''
                 ${pkgs.babashka}/bin/bb ${./scripts/commit.clj} "$@"
               '')
+              (pkgs.writeShellScriptBin "mentci-jj" ''
+                ${pkgs.babashka}/bin/bb ${./scripts/jj_workflow.clj} "$@"
+              '')
             ];
     
             # Import jail configuration
