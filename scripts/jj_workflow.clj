@@ -4,6 +4,7 @@
 (deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
 
 (require '[clojure.java.shell :refer [sh]]
+         '[cheshire.core :as json]
          '[clojure.string :as str]
          '[clojure.java.io :as io])
 
@@ -39,6 +40,15 @@
    [:workingBookmark :string]
    [:targetBookmark :string]
    [:message :string]])
+
+(def LoadPolicyInput
+  [:map
+   [:policyPath [:maybe :string]]])
+
+(def AllowedTargetInput
+  [:map
+   [:targetBookmark :string]
+   [:allowedPushBookmarks [:set :string]]])
 
 (def UsageInput
   [:map])
@@ -79,13 +89,33 @@
       (print (:out res))
       (die {:message (str "Error during jj status: " (:err res))}))))
 
+(defn* load-allowed-push-bookmarks [:=> [:cat LoadPolicyInput] [:set :string]] [input]
+  (let [policy-path (:policyPath input)]
+    (if (str/blank? policy-path)
+      #{}
+      (let [policy-file (io/file policy-path)]
+        (when-not (.exists policy-file)
+          (die {:message (str "Error: MENTCI_JAIL_POLICY points to missing file: " policy-path)}))
+        (let [policy (json/parse-string (slurp policy-file) true)
+              bookmarks (get policy :allowedPushBookmarks [])]
+          (set (map str bookmarks)))))))
+
+(defn* assert-target-allowed [:=> [:cat AllowedTargetInput] :any] [input]
+  (let [{:keys [targetBookmark allowedPushBookmarks]} input]
+    (when (and (seq allowedPushBookmarks)
+               (not (contains? allowedPushBookmarks targetBookmark)))
+      (die {:message (str "Error: target bookmark '" targetBookmark "' is not allowed by jail policy. Allowed: " (vec allowedPushBookmarks))}))))
+
 (defn* run-jj-commit [:=> [:cat RunJJCommitInput] :any] [input]
   (let [message (:message input)
         working-bookmark (:workingBookmark input)
         target-bookmark (:targetBookmark input)
+        allowed-push-bookmarks (load-allowed-push-bookmarks {:policyPath (System/getenv "MENTCI_JAIL_POLICY")})
         res1 (run-jj {:args ["describe" "-m" message]})]
     (when (= working-bookmark target-bookmark)
       (die {:message (str "Error: target bookmark '" target-bookmark "' must differ from working bookmark '" working-bookmark "'.")}))
+    (assert-target-allowed {:targetBookmark target-bookmark
+                            :allowedPushBookmarks allowed-push-bookmarks})
     (if (not= 0 (:exit res1))
       (die {:message (str "Error during jj describe: " (:err res1))})
       (let [res2 (run-jj {:args ["bookmark" "set" target-bookmark "-r" "@"]})]

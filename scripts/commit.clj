@@ -4,6 +4,7 @@
 (deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
 
 (require '[clojure.java.shell :refer [sh]]
+         '[cheshire.core :as json]
          '[clojure.java.io :as io]
          '[clojure.string :as str])
 
@@ -25,6 +26,35 @@
    [:repoRoot :string]
    [:workspaceRoot :string]])
 
+(def LoadPolicyInput
+  [:map
+   [:policyPath [:maybe :string]]])
+
+(def AllowedTargetInput
+  [:map
+   [:targetBookmark :string]
+   [:allowedPushBookmarks [:set :string]]])
+
+(defn* load-allowed-push-bookmarks [:=> [:cat LoadPolicyInput] [:set :string]] [input]
+  (let [policy-path (:policyPath input)]
+    (if (str/blank? policy-path)
+      #{}
+      (let [policy-file (io/file policy-path)]
+        (if-not (.exists policy-file)
+          (do
+            (println (str "Error: MENTCI_JAIL_POLICY points to missing file: " policy-path))
+            (System/exit 1))
+          (let [policy (json/parse-string (slurp policy-file) true)
+                bookmarks (get policy :allowedPushBookmarks [])]
+            (set (map str bookmarks))))))))
+
+(defn* assert-target-allowed [:=> [:cat AllowedTargetInput] :any] [input]
+  (let [{:keys [targetBookmark allowedPushBookmarks]} input]
+    (when (and (seq allowedPushBookmarks)
+               (not (contains? allowedPushBookmarks targetBookmark)))
+      (println (str "Error: target bookmark '" targetBookmark "' is not allowed by jail policy. Allowed: " (vec allowedPushBookmarks)))
+      (System/exit 1))))
+
 (defn* run-commit [:=> [:cat CommitMainInput] :any] [input]
   (let [{:keys [args workingBookmark targetBookmark repoRoot workspaceRoot]} input]
     (if (or (not repoRoot) (not workspaceRoot))
@@ -35,10 +65,13 @@
             working-bookmark workingBookmark
             target-bookmark targetBookmark
             repo-root repoRoot
-            workspace-root workspaceRoot]
+            workspace-root workspaceRoot
+            allowed-push-bookmarks (load-allowed-push-bookmarks {:policyPath (System/getenv "MENTCI_JAIL_POLICY")})]
         (when (= working-bookmark target-bookmark)
           (println (str "Error: target bookmark '" target-bookmark "' must differ from working bookmark '" working-bookmark "'."))
           (System/exit 1))
+        (assert-target-allowed {:targetBookmark target-bookmark
+                                :allowedPushBookmarks allowed-push-bookmarks})
         (if (empty? args)
           (do (println "Usage: mentci-commit <message>")
               (System/exit 1))

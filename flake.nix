@@ -152,6 +152,9 @@
             RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
             MENTCI_REPO_ROOT = "$(pwd)";
             MENTCI_WORKSPACE = "$(pwd)/workspace";
+            MENTCI_WORKING_BOOKMARK = "dev";
+            MENTCI_COMMIT_TARGET = "jailCommit";
+            MENTCI_JAIL_POLICY = jail.jailConfig.policyPath;
             JJ_CONFIG = "$(pwd)/jj-project-config.toml";
             jailConfig = builtins.toJSON jail.jailConfig;
           };
