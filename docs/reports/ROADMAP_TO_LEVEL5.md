@@ -1,5 +1,7 @@
 # Roadmap to Level 5 Agentic Engineering
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 This document tracks the technical milestones required to reach Level 5 (The Dark Factory) and beyond. 
 
 ## Level 1: Completion (Assistive)

@@ -1,5 +1,7 @@
 # Sema Object Style — Nix
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 This document defines the mandatory Sema object rules for Nix. The rules are
 structural. Violations indicate category error, not style.
 

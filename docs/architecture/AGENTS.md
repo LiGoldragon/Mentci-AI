@@ -1,15 +1,18 @@
 # Mentci-AI Agent Instructions
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 This document provides non-negotiable instructions for AI agents operating within the Mentci-AI ecosystem. These rules ensure architectural integrity and cryptographic provenance.
 
 ## -1. Enforcement Contract (Load First)
 
 The following files are mandatory authority sources and must be loaded before edits:
 
-1. `docs/architecture/ARCHITECTURAL_GUIDELINES.md`
-2. `docs/architecture/VERSION_CONTROL.md`
-3. `docs/architecture/HIGH_LEVEL_GOALS.md`
-4. `docs/architecture/SEMA_RUST_GUIDELINES.md`, `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
+1. `docs/architecture/ASKI_POSITIONING.md`
+2. `docs/architecture/ARCHITECTURAL_GUIDELINES.md`
+3. `docs/architecture/VERSION_CONTROL.md`
+4. `docs/architecture/HIGH_LEVEL_GOALS.md`
+5. `docs/architecture/SEMA_RUST_GUIDELINES.md`, `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
 
 Enforcement requirements:
 

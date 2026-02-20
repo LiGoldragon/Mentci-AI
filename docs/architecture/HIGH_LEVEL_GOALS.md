@@ -1,5 +1,7 @@
 # High-Level Goals
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 This file defines durable, repository-level goals that guide orchestration and implementation priorities.
 
 ## Goal 1: Attractor DOT Job Handoff
