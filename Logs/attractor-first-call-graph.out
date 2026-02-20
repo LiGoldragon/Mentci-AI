@@ -1,0 +1,9 @@
+digraph FirstRealCall {
+  graph [label="Mentci First Real Attractor Call", goal="Validate deterministic DOT handoff"]
+  rankdir=LR
+
+  start [shape=Mdiamond, label="Start"]
+  exit  [shape=Msquare, label="Exit"]
+
+  start -> exit
+}
