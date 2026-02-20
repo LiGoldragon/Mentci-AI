@@ -29,7 +29,7 @@
           url = "github:strongdm/attractor";
           flake = false;
         };
-        brynary-attractor = {
+        attractor-docs = {
           url = "github:brynary/attractor";
           flake = false;
         };
@@ -41,13 +41,14 @@
         codex-cli-nix.url = "github:sadjow/codex-cli-nix";
       };
     
-      outputs = { 
+      outputs = inputs@{ 
         self, nixpkgs, flake-utils, crane, 
         criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
-        webpublish, goldragon, maisiliym, kibord, aski, attractor, brynary-attractor, opencode, codex-cli-nix
+        webpublish, goldragon, maisiliym, kibord, aski, attractor, opencode, codex-cli-nix, ...
       }:
         flake-utils.lib.eachDefaultSystem (system:
           let
+            attractorDocs = inputs."attractor-docs";
             pkgs = import nixpkgs { inherit system; };
             craneLib = crane.mkLib pkgs;
             src = craneLib.cleanCargoSource ./.;
@@ -61,10 +62,10 @@
     
             mentciAi = craneLib.buildPackage commonArgs;
 
-            attractor = pkgs.stdenv.mkDerivation {
+            attractorPkg = pkgs.stdenv.mkDerivation {
               pname = "attractor";
               version = "0.1.0";
-              src = "${brynary-attractor}/attractor";
+              src = "${attractorDocs}/attractor";
               nativeBuildInputs = [ pkgs.bun pkgs.makeWrapper ];
               dontBuild = true;
               doCheck = true;
@@ -149,7 +150,8 @@
               inherit pkgs;
               inputs = { 
                 inherit criomos sema lojix seahawk skrips mkZolaWebsite;
-                inherit webpublish goldragon maisiliym kibord aski attractor brynary-attractor opencode;
+                inherit webpublish goldragon maisiliym kibord aski attractor opencode;
+                attractor-docs = attractorDocs;
               };
             };
     
@@ -159,11 +161,11 @@
           default = mentciAi;
           mentciAi = mentciAi;
           mentciClj = mentciClj;
-          attractor = attractor;
+          attractor = attractorPkg;
         };
 
         checks = {
-          inherit attractor;
+          attractor = attractorPkg;
         };
 
         apps.default = flake-utils.lib.mkApp {

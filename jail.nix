@@ -25,7 +25,7 @@ let
     kibord = mkInput "kibord" "flake";
     aski = mkInput "aski" "flake";
     attractor = mkInput "attractor" "untyped";
-    brynary-attractor = mkInput "brynary-attractor" "untyped";
+    attractor-docs = mkInput "attractor-docs" "untyped";
     opencode = mkInput "opencode" "untyped";
   };
 
