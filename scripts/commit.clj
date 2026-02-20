@@ -5,15 +5,17 @@
 
 (require '[clojure.java.shell :refer [sh]]
          '[clojure.java.io :as io]
-         '[clojure.string :as str]
-         '[malli.core :as m]
-         '[malli.error :as me])
+         '[clojure.string :as str])
 
 (load-file (str (.getParent (io/file *file*)) "/types.clj"))
+(load-file (str (.getParent (io/file *file*)) "/malli.clj"))
+(require '[mentci.malli :refer [defn* enable!]])
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
 ;; Rationale: Direct orchestration of VCS commands with cleaner error handling.
+
+(enable!)
 
 (def CommitMainInput
   [:map
@@ -22,40 +24,22 @@
    [:repoRoot :string]
    [:workspaceRoot :string]])
 
-(defn validate-config [config]
-  (when-not (m/validate types/CommitContext config)
-    (throw (ex-info "Invalid Commit Context"
-                    {:errors (me/humanize (m/explain types/CommitContext config))}))))
-
-(defn main []
-  (let [target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "dev")
-        repo-root (System/getenv "MENTCI_REPO_ROOT")
-        workspace-root (System/getenv "MENTCI_WORKSPACE")
-        args *command-line-args*
-        input {:args (vec args)
-               :targetBookmark target-bookmark
-               :repoRoot (or repo-root "")
-               :workspaceRoot (or workspace-root "")}]
-    (when-not (m/validate CommitMainInput input)
-      (throw (ex-info "Invalid main input"
-                      {:errors (me/humanize (m/explain CommitMainInput input))})))
-    
-    (if (or (not repo-root) (not workspace-root))
+(defn* run-commit [:=> [:cat CommitMainInput] :any] [input]
+  (let [{:keys [args targetBookmark repoRoot workspaceRoot]} input]
+    (if (or (not repoRoot) (not workspaceRoot))
       (do (println "Error: MENTCI_REPO_ROOT or MENTCI_WORKSPACE not set.")
           (System/exit 1))
       
-      (let [args *command-line-args*]
+      (let [args args
+            target-bookmark targetBookmark
+            repo-root repoRoot
+            workspace-root workspaceRoot]
         (if (empty? args)
           (do (println "Usage: mentci-commit <message>")
               (System/exit 1))
           
           (let [message (first args)
-                context {:message message
-                         :bookmark target-bookmark
-                         :repoRoot repo-root
-                         :workspaceRoot workspace-root}]
-            (validate-config context)
-            (println (str "Shipping manifestation from workspace: " message))
+                _ (println (str "Shipping manifestation from workspace: " message))]
             
             ;; 1. Update description
             (let [res1 (sh "jj" "describe" "-m" message "-R" workspace-root)]
@@ -70,4 +54,12 @@
                         (System/exit (:exit res2)))
                     (println (str "Successfully committed and advanced bookmark '" target-bookmark "' from workspace."))))))))))))
 
-(main)
+(defn* -main [:=> [:cat [:* :string]] :any] [& args]
+  (let [target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "dev")
+        repo-root (System/getenv "MENTCI_REPO_ROOT")
+        workspace-root (System/getenv "MENTCI_WORKSPACE")
+        input {:args (vec args)
+               :targetBookmark target-bookmark
+               :repoRoot (or repo-root "")
+               :workspaceRoot (or workspace-root "")}]
+    (run-commit input)))
