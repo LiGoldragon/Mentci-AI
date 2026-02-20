@@ -29,8 +29,9 @@ Mentci-AI is a Nix-and-Rust based AI daemon designed to implement **Level 5 "Dar
     *   **Parsers:** DOT parser (`src/dot_loader.rs`) migrated to `dot-parser` canonical representation. EDN loader (`src/edn_loader.rs`) supports `.aski-flow`.
     *   **Engine:** Executes workflows, saves checkpoints (`src/main.rs`). Switches between DOT and Aski-Flow based on file extension.
 *   **Workflow Definition:**
-    *   **Visual:** DOT (`workflows/*.dot`) for legacy/visualization.
+    *   **Visual:** DOT (`workflows/*.dot`) for legacy/visualization, aligned to Attractor.
     *   **Internal:** **Aski-Flow** (`docs/specs/ASKI_FLOW_DSL.md`) is the standard for new definitions.
+*   **Attractor Alignment:** Mentci-AI incorporates the Attractor standard rather than reimplementing Attractor.
 *   **Chronography:** `src/bin/chronos.rs` outputs solar time (version/unicode/etc). Use Nix dev environments for non-standard tools.
 *   **Version Control:** JJ is authoritative; audit trail is `jj log`. Aggressive auto-commit and intent-splitting rules apply.
 *   **Jail:** Managed by `scripts/launcher.clj`. Supports **Materialized (Mutable) Inputs** in Admin mode via `rsync`.

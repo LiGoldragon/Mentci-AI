@@ -3,7 +3,7 @@
 **Date:** Feb 20, 2026
 **Status:** In Practice (Draft)
 
-Brynary-Attractor is an **orchestration standard for autonomous agents**. Unlike chat-based agents (which loop until they decide to stop) or simple state machines (which are rigid), Attractor treats **workflows as graphs** and **execution as a compilation process**.
+Brynary-Attractor is an **orchestration standard for autonomous agents**. Unlike chat-based agents (which loop until they decide to stop) or simple state machines (which are rigid), Attractor treats **workflows as graphs** and **execution as a compilation process**. Mentci-AI incorporates this standard; it does not implement Attractor.
 
 It separates the **definition of work** (the Graph) from the **doing of work** (the Handlers), allowing for crash-proof, inspectable, and steerable agent behaviors.
 
