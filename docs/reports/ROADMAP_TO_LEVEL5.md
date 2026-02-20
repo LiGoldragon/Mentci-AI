@@ -19,7 +19,7 @@ This document tracks the technical milestones required to reach Level 5 (The Dar
 - [x] **Sandboxed Environment:** Implementation of the **Nix Jail** (`jail.nix` and `jail_launcher.py`).
 - [x] **Source Control Awareness:** Native integration with Git/JJ for atomic changes.
 - [x] **Machine-Level Tooling:** Access to GDB, Strace, and Valgrind within the jail.
-- [x] **Handshake Logging:** Structured EDN logs documenting intent vs. action (`scripts/logger.py`).
+- [x] **Audit Trail:** Jujutsu history (`jj log`) documents intent vs. action.
 
 ## Level 4: Multi-Agent (Orchestration)
 *Focus: Decomposition of complex tasks into specialized sub-tasks.*

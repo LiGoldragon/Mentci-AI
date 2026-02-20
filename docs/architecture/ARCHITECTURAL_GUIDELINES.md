@@ -32,14 +32,11 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 2.  **Origin/Provenance:** (e.g., `nixpkgs#jet`, GitHub repo `babashka/babashka`).
 3.  **Rationale:** Why this specific implementation was chosen over others.
 
-## 0.4. HANDSHAKE LOGGING PROTOCOL
+## 0.4. AUDIT TRAIL
 
-**Logs are a collaborative record of truth between UI and Agent.**
+**The authoritative audit trail is the Jujutsu history.**
 
-1.  **Metadata Injection:** The UI (the Authority) must inject environment metadata (Timestamp, UserId, Model Version) into the prompt.
-2.  **Intent Derivation:** The Agent processes the prompt and derives a high-level `intentSummary`.
-3.  **Finalization:** The Agent executes `scripts/logger.clj` to write the complete **EDN** log entry to `Logs/`, merging the UI's metadata with the Agent's derived intent.
-4.  **Historical Authority:** This protocol ensures that logs reflect the exact model and user context of every transaction, preventing hallucinated attribution.
+Use `jj log` for provenance and review.
 
 ## 0.5. ADMIN DEVELOPER MODE (SYSTEM ORCHESTRATION)
 

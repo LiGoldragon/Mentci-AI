@@ -58,11 +58,11 @@ Precision is hierarchical and context-dependent. Coordinates may be truncated fr
 
 ## 6. Usage in Mentci-AI
 - **Version Control:** Software releases are tagged with the sign-ordinal (e.g., `v0.12.1.28.44`).
-- **Logging:** Every intent log includes the `:ecliptic` field to ground the agent's thought in true time.
+- **Audit Trail:** When required, include ecliptic time in commit messages or structured data checked into the repo.
 - **Filenaming:** Reports must use the `YEAR_SIGN_DEGREE_MINUTE_SECOND` format for durable sorting.
 
 ## 6. Implementation
-Current implementations in `scripts/logger.clj` and `flake.nix` use a static placeholder. The transition to Level 4/5 requires the implementation of a native Rust/Clojure solar coordinate calculator to provide dynamic, real-time chronography.
+Current implementations in `flake.nix` use a static placeholder. The transition to Level 4/5 requires a native Rust/Clojure solar coordinate calculator to provide dynamic, real-time chronography.
 
 ---
 *The Great Work is grounded in True Time.*
