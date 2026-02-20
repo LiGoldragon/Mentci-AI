@@ -20,7 +20,7 @@ Migrate existing scripts one-by-one, ensuring atomic commits for each.
 
 | Python Script | Clojure Equivalent | Responsibility |
 | :--- | :--- | :--- |
-| `logger.py` | `logger.clj` | Writing intent logs to `Logs/*.edn`. |
+| `logger.py` | `logger.clj` | Deprecated: logging is no longer required; use `jj log` for audit. |
 | `jail_launcher.py` | `launcher.clj` | Ingesting `.attrs.json` and symlinking `inputs/`. |
 | `jail_commit.py` | `commit.clj` | Wrapping `jj` for workspace-to-host shipping. |
 | `test_deps.py` | `test_deps.clj` | Verifying Clojure/Nix environment integrity. |
@@ -48,7 +48,7 @@ mentci-clj = pkgs.stdenv.mkDerivation {
 - Update `ARCHITECTURAL_GUIDELINES.md` to reflect the **Clojure Mandate**.
 
 ## 6. Verification Matrix
-- [ ] `bb logger.clj` correctly appends to EDN logs.
+- [ ] Remove logger tooling references once no longer in use.
 - [ ] `bb launcher.clj` correctly processes structured Nix attributes.
 - [ ] `nix build .#mentci-clj` succeeds in a pure environment.
 - [ ] `nix develop` provides a python-free shell.

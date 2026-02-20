@@ -36,15 +36,14 @@ Level 5 agents struggle with "spaghetti code." To succeed, the architecture must
 ### 4.1. Tool Stack Transparency
 Agents must have deep access to system-level tools to debug their own implementation.
 *   **Level 5 Toolkit:** GDB, `strace`, `valgrind`, and Nix-based reproduction environments (Jails).
-*   **Reflection:** Agents must log their own "thought process" (Intent Derivation) in structured formats like EDN for human auditing.
 
 ### 4.2. Capitalization-Based Durability
 Use naming conventions to signal to the agent which parts of the system are "stable contracts" vs. "mutable implementations."
 *   **Stable (PascalCase):** The agent must respect these as immutable laws.
 *   **Mutable (lowercase):** The agent is encouraged to refactor and optimize these.
 
-### 4.3. Handshake Logging
-The human "Director" provides the *Intent*, and the AI provides the *Execution*. The log is the permanent record of this handshake. This prevents "hallucinated attribution" and maintains a clear audit trail of the factory's output.
+### 4.3. Audit Trail
+The Jujutsu history (`jj log`) is the audit trail for intent and execution.
 
 ## 5. Transitioning to Level 6: Symbolic Interaction
 While Level 5 automates the *how*, Level 6 (The Vision of Mentci) aims to automate the *what*. 
