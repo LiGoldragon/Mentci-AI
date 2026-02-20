@@ -15,6 +15,7 @@ Enforcement requirements:
 *   **No-Edit Without Architecture Context:** If these files are unavailable, stop and report the blocker before changing code.
 *   **Architecture Gate:** Any change conflicting with the hierarchy in `ARCHITECTURAL_GUIDELINES.md` is forbidden.
 *   **Version-Control Gate:** `VERSION_CONTROL.md` is mandatory procedure, not guidance.
+*   **Data Transport Gate:** Pass orchestration state through versioned data files (Cap'n Proto / JSON), not ad-hoc environment variables.
 *   **Pre-Work Dirty Tree Rule:** If the tree is dirty at prompt start, commit an intent-separating snapshot before new edits.
 *   **Auto-Commit Rule:** Every atomic filesystem change must be committed immediately.
 *   **Post-Work Rule:** At least one commit must represent the prompt's delivered work.

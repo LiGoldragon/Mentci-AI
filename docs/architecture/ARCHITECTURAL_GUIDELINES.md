@@ -33,6 +33,14 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 3.  **Rationale:** Why this specific implementation was chosen over others.
 4.  **Execution Context:** Use `nix develop` for non-standard tools, libraries, or dependencies.
 
+## 0.3.1. STATE TRANSPORT PROTOCOL
+
+**Operational state must be passed via data files, not process environment variables.**
+
+*   **Required:** Use structured files (Cap'n Proto or JSON) for runtime state exchange between launcher, daemon, and commit tooling.
+*   **Forbidden:** Ad-hoc routing state through env vars when a data-file channel exists.
+*   **Rationale:** Data files are auditable, reproducible, and schema-validated.
+
 ## 0.4. AUDIT TRAIL
 
 **The authoritative audit trail is the Jujutsu history.**

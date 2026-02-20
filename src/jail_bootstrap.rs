@@ -14,6 +14,7 @@ struct BootstrapConfig {
     working_bookmark: String,
     target_bookmark: String,
     commit_message: Option<String>,
+    policy_path: Option<PathBuf>,
 }
 
 pub fn run_from_args(mut args: Vec<String>) -> Result<()> {
@@ -32,6 +33,7 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
     let mut cli_working_bookmark: Option<String> = None;
     let mut cli_target_bookmark: Option<String> = None;
     let mut cli_commit_message: Option<String> = None;
+    let mut cli_policy_path: Option<PathBuf> = None;
 
     let mut i = 0usize;
     while i < args.len() {
@@ -71,6 +73,11 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
                 let value = args.get(i).context("missing value for --commit-message")?;
                 cli_commit_message = Some(value.clone());
             }
+            "--policy-path" => {
+                i += 1;
+                let value = args.get(i).context("missing value for --policy-path")?;
+                cli_policy_path = Some(PathBuf::from(value));
+            }
             "--help" | "-h" => {
                 print_help();
                 std::process::exit(0);
@@ -98,7 +105,10 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
     let target_bookmark = cli_target_bookmark
         .or_else(|| capnp_cfg.as_ref().map(|cfg| cfg.target_bookmark.clone()))
         .unwrap_or_else(|| "jailCommit".to_string());
-    let commit_message = cli_commit_message.or_else(|| capnp_cfg.and_then(|cfg| cfg.commit_message));
+    let commit_message = cli_commit_message
+        .or_else(|| capnp_cfg.as_ref().and_then(|cfg| cfg.commit_message.clone()));
+    let policy_path = cli_policy_path
+        .or_else(|| capnp_cfg.as_ref().and_then(|cfg| cfg.policy_path.clone()));
 
     Ok(BootstrapConfig {
         repo_root,
@@ -107,6 +117,7 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
         working_bookmark,
         target_bookmark,
         commit_message,
+        policy_path,
     })
 }
 
@@ -119,6 +130,7 @@ fn print_help() {
     println!("  --working-bookmark <name>    Working bookmark (default: dev)");
     println!("  --target-bookmark <name>     Commit target bookmark (default: jailCommit)");
     println!("  --commit-message <message>   Optional commit message for immediate jail commit");
+    println!("  --policy-path <path>         Read-only jail policy JSON path");
 }
 
 fn load_capnp_request(path: &Path) -> Result<BootstrapConfig> {
@@ -137,6 +149,7 @@ fn load_capnp_request(path: &Path) -> Result<BootstrapConfig> {
     let working_bookmark = request.get_working_bookmark()?.to_str()?.to_string();
     let target_bookmark = request.get_target_bookmark()?.to_str()?.to_string();
     let commit_message_raw = request.get_commit_message()?.to_str()?.to_string();
+    let policy_path_raw = request.get_policy_path()?.to_str()?.to_string();
 
     Ok(BootstrapConfig {
         repo_root: PathBuf::from(repo_root),
@@ -148,6 +161,11 @@ fn load_capnp_request(path: &Path) -> Result<BootstrapConfig> {
             None
         } else {
             Some(commit_message_raw)
+        },
+        policy_path: if policy_path_raw.is_empty() {
+            None
+        } else {
+            Some(PathBuf::from(policy_path_raw))
         },
     })
 }
@@ -204,10 +222,27 @@ fn run(cfg: BootstrapConfig) -> Result<()> {
         .context("failed to set target bookmark from workspace")?;
     }
 
-    println!("MENTCI_REPO_ROOT={}", repo_root.display());
-    println!("MENTCI_WORKSPACE={}", workspace_path.display());
-    println!("MENTCI_WORKING_BOOKMARK={}", cfg.working_bookmark);
-    println!("MENTCI_COMMIT_TARGET={}", cfg.target_bookmark);
+    let runtime_dir = workspace_path.join(".mentci");
+    fs::create_dir_all(&runtime_dir)
+        .with_context(|| format!("failed to create runtime dir {:?}", runtime_dir))?;
+    let runtime_path = runtime_dir.join("runtime.json");
+    let runtime_json = serde_json::json!({
+        "repoRoot": repo_root.to_string_lossy(),
+        "workspaceRoot": workspace_path.to_string_lossy(),
+        "workingBookmark": cfg.working_bookmark,
+        "targetBookmark": cfg.target_bookmark,
+        "policyPath": cfg.policy_path.as_ref().map(|p| p.to_string_lossy().to_string()),
+    });
+    fs::write(
+        &runtime_path,
+        serde_json::to_vec_pretty(&runtime_json).context("failed to encode runtime json")?,
+    )
+    .with_context(|| format!("failed to write runtime file {:?}", runtime_path))?;
+
+    println!("workspaceRoot={}", workspace_path.display());
+    println!("workingBookmark={}", cfg.working_bookmark);
+    println!("targetBookmark={}", cfg.target_bookmark);
+    println!("runtimeFile={}", runtime_path.display());
     Ok(())
 }
 
@@ -277,6 +312,7 @@ mod tests {
             root.set_working_bookmark("dev");
             root.set_target_bookmark("jailCommit");
             root.set_commit_message("intent: capnp bootstrap");
+            root.set_policy_path("/tmp/policy.json");
         }
 
         let file = std::fs::File::create(&request_path).expect("create request file");
@@ -296,5 +332,9 @@ mod tests {
         assert_eq!(parsed.working_bookmark, "dev");
         assert_eq!(parsed.target_bookmark, "jailCommit");
         assert_eq!(parsed.commit_message.as_deref(), Some("intent: capnp bootstrap"));
+        assert_eq!(
+            parsed.policy_path.as_ref().map(|p| p.to_string_lossy().to_string()),
+            Some("/tmp/policy.json".to_string())
+        );
     }
 }
