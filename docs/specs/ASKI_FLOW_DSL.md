@@ -1,5 +1,7 @@
 # Aski-Flow: The Noun-Sequence DSL
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 **Status:** Draft / Specification
 **Date:** 2026-02-20
 **Context:** Standard for defining Agentic Workflows in Mentci-AI

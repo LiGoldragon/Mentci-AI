@@ -1,5 +1,7 @@
 # Migration Draft: Gemini CLI → OpenCode CLI
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 ## 1. Overview
 This document outlines the transition from the temporary **Gemini CLI** (running `gemini-3-flash-preview`) to the target **OpenCode CLI** (integrated with **DeepSeek-V4**). This shift completes the Level 5 agentic stack as defined in `RESTART_CONTEXT.md`.
 

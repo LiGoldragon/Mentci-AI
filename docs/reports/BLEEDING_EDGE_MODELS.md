@@ -1,5 +1,7 @@
 # Bleeding-Edge Open Models for Level 5/6 Coding (Feb 2026)
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 This document tracks models that surpass standard flagship performance for repository-scale reasoning and autonomous manifestation.
 
 ## 1. The "Ultimate Agentic" Tier
