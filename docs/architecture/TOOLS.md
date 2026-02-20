@@ -13,12 +13,18 @@
 ### Jujutsu (jj)
 - **Role:** Version control and workspace management.
 - **Usage:** Provides the `jj` command for atomic changes and multi-workspace isolation.
+- **Automation:** See `docs/architecture/JjAutomation.md` for the operational workflow.
 - **Protocol:** See `JAIL_COMMIT_PROTOCOL.md` for details on the implementation-to-host shipping model.
 
 ### mentci-commit
 - **Role:** The "Hole in the Jail" for shipping manifested code from the implementation workspace back to the host.
-- **Implementation:** Python wrapper around `jj` cross-workspace commands.
+- **Implementation:** Babashka wrapper around `jj` cross-workspace commands.
 - **Usage:** `mentci-commit "message"` advances the `dev` bookmark to the current workspace state.
+
+### mentci-jj
+- **Role:** Standardized `jj` entrypoints for status, log, and commit in the active workspace.
+- **Implementation:** Babashka command router for common `jj` flows.
+- **Usage:** `mentci-jj status`, `mentci-jj log`, `mentci-jj commit "message"`.
 
 ## Data & Logging
 ### EDN (Extensible Data Notation)
