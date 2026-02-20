@@ -60,7 +60,9 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
             }
             "--working-bookmark" => {
                 i += 1;
-                let value = args.get(i).context("missing value for --working-bookmark")?;
+                let value = args
+                    .get(i)
+                    .context("missing value for --working-bookmark")?;
                 cli_working_bookmark = Some(value.clone());
             }
             "--target-bookmark" => {
@@ -105,10 +107,13 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
     let target_bookmark = cli_target_bookmark
         .or_else(|| capnp_cfg.as_ref().map(|cfg| cfg.target_bookmark.clone()))
         .unwrap_or_else(|| "jailCommit".to_string());
-    let commit_message = cli_commit_message
-        .or_else(|| capnp_cfg.as_ref().and_then(|cfg| cfg.commit_message.clone()));
-    let policy_path = cli_policy_path
-        .or_else(|| capnp_cfg.as_ref().and_then(|cfg| cfg.policy_path.clone()));
+    let commit_message = cli_commit_message.or_else(|| {
+        capnp_cfg
+            .as_ref()
+            .and_then(|cfg| cfg.commit_message.clone())
+    });
+    let policy_path =
+        cli_policy_path.or_else(|| capnp_cfg.as_ref().and_then(|cfg| cfg.policy_path.clone()));
 
     Ok(BootstrapConfig {
         repo_root,
@@ -262,7 +267,16 @@ fn sanitize_workspace_name(value: &str) -> String {
 fn ensure_revision_exists(repo_root: &Path, revset: &str) -> Result<()> {
     run_jj(
         repo_root,
-        &["log", "-r", revset, "-n", "1", "--no-graph", "-T", "commit_id"],
+        &[
+            "log",
+            "-r",
+            revset,
+            "-n",
+            "1",
+            "--no-graph",
+            "-T",
+            "commit_id",
+        ],
     )
     .with_context(|| format!("working bookmark/revset '{revset}' does not exist"))?;
     Ok(())
@@ -294,8 +308,8 @@ mod tests {
     use super::parse_args;
     use capnp::message::Builder;
     use capnp::serialize_packed;
-    use std::io::Write;
     use std::io::BufWriter;
+    use std::io::Write;
     use tempfile::tempdir;
 
     #[test]
@@ -305,7 +319,8 @@ mod tests {
 
         let mut message = Builder::new_default();
         {
-            let mut root = message.init_root::<crate::mentci_capnp::jail_bootstrap_request::Builder<'_>>();
+            let mut root =
+                message.init_root::<crate::mentci_capnp::jail_bootstrap_request::Builder<'_>>();
             root.set_repo_root("/tmp/repo");
             root.set_outputs_dir("Outputs");
             root.set_output_name("mentci-ai");
@@ -331,9 +346,15 @@ mod tests {
         assert_eq!(parsed.output_name, "mentci-ai");
         assert_eq!(parsed.working_bookmark, "dev");
         assert_eq!(parsed.target_bookmark, "jailCommit");
-        assert_eq!(parsed.commit_message.as_deref(), Some("intent: capnp bootstrap"));
         assert_eq!(
-            parsed.policy_path.as_ref().map(|p| p.to_string_lossy().to_string()),
+            parsed.commit_message.as_deref(),
+            Some("intent: capnp bootstrap")
+        );
+        assert_eq!(
+            parsed
+                .policy_path
+                .as_ref()
+                .map(|p| p.to_string_lossy().to_string()),
             Some("/tmp/policy.json".to_string())
         );
     }

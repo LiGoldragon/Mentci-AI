@@ -35,7 +35,9 @@ fn run_ok(cmd: &mut Command) {
 }
 
 fn run_check(cmd: &mut Command) -> Result<(), String> {
-    let output = cmd.output().map_err(|e| format!("failed to start command: {e}"))?;
+    let output = cmd
+        .output()
+        .map_err(|e| format!("failed to start command: {e}"))?;
     if output.status.success() {
         Ok(())
     } else {
@@ -114,7 +116,12 @@ fn start_sshd(
 #[test]
 #[ignore = "requires local sshd/bb/jj tooling and network loopback"]
 fn jail_commit_pushes_to_ssh_git_remote() {
-    if !has_tool("sshd") || !has_tool("ssh-keygen") || !has_tool("bb") || !has_tool("jj") || !has_tool("git") {
+    if !has_tool("sshd")
+        || !has_tool("ssh-keygen")
+        || !has_tool("bb")
+        || !has_tool("jj")
+        || !has_tool("git")
+    {
         eprintln!("skipping test: required tools missing");
         return;
     }
@@ -135,7 +142,14 @@ fn jail_commit_pushes_to_ssh_git_remote() {
     );
     run_ok(
         Command::new("jj")
-            .args(["config", "set", "--repo", "user.email", "jail@test.local", "-R"])
+            .args([
+                "config",
+                "set",
+                "--repo",
+                "user.email",
+                "jail@test.local",
+                "-R",
+            ])
             .arg(&repo),
     );
     run_ok(
@@ -234,11 +248,8 @@ fn jail_commit_pushes_to_ssh_git_remote() {
         fs::write(workspace.join("payload.txt"), "jail push payload\n").expect("write payload");
 
         let policy_path = root.join("jail-policy.json");
-        fs::write(
-            &policy_path,
-            r#"{"allowedPushBookmarks":["jailCommit"]}"#,
-        )
-        .expect("write policy");
+        fs::write(&policy_path, r#"{"allowedPushBookmarks":["jailCommit"]}"#)
+            .expect("write policy");
 
         let repo_scripts = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("scripts/commit.clj");
         let runtime_path = workspace.join(".mentci/runtime.json");
@@ -279,12 +290,11 @@ fn jail_commit_pushes_to_ssh_git_remote() {
                 ),
         )?;
 
-        run_check(
-            Command::new("git")
-                .arg("--git-dir")
-                .arg(&bare)
-                .args(["show-ref", "--verify", "refs/heads/jailCommit"]),
-        )?;
+        run_check(Command::new("git").arg("--git-dir").arg(&bare).args([
+            "show-ref",
+            "--verify",
+            "refs/heads/jailCommit",
+        ]))?;
         Ok(())
     })();
 
