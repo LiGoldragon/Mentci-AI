@@ -39,12 +39,13 @@
           url = "github:opencode-ai/opencode";
           flake = false;
         };
+        codex-cli-nix.url = "github:sadjow/codex-cli-nix";
       };
     
       outputs = { 
         self, nixpkgs, flake-utils, crane, 
         criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
-        webpublish, goldragon, maisiliym, kibord, aski, attractor, brynary-attractor, opencode
+        webpublish, goldragon, maisiliym, kibord, aski, attractor, brynary-attractor, opencode, codex-cli-nix
       }:
         flake-utils.lib.eachDefaultSystem (system:
           let
@@ -93,11 +94,7 @@
               '';
             };
     
-            # -- Pure Clojure Shell Factory --
-            mkClojureShell = import ./nix/mk-shell.nix { inherit pkgs; };
-    
-            # -- Core Tooling (Pure Clojure Stack) --
-            # Purpose: Level 5 orchestration via Babashka and JVM Clojure.
+            # -- Core Tooling --
             commonPackages = [
               pkgs.babashka
               pkgs.clojure
@@ -113,6 +110,7 @@
               pkgs.strace
               pkgs.valgrind
               pkgs.rsync
+              codex-cli-nix.packages.${system}.default
               (pkgs.writeShellScriptBin "mentci-commit" ''
                 ${pkgs.babashka}/bin/bb ${./scripts/commit.clj} "$@"
               '')
@@ -142,7 +140,7 @@
           drv = mentciAi;
         };
 
-        devShells.default = mkClojureShell {
+        devShells.default = pkgs.mkShell {
           name = "mentci-ai-dev";
           packages = commonPackages;
           env = {
@@ -154,29 +152,6 @@
             JJ_CONFIG = "$(pwd)/jj-project-config.toml";
             jailConfig = builtins.toJSON jail.jailConfig;
           };
-          shellHook = ''
-            # 1. Unique Intent Initialization
-            # Generate a unique bookmark for this session if not provided
-            if [ -z "$MENTCI_COMMIT_TARGET" ]; then
-              export MENTCI_COMMIT_TARGET=$(bb ${./scripts/intent.clj} "automated-session" | tail -n 1)
-            fi
-
-            # 2. Workspace Initialization (jj workspace)
-            if [ ! -d "$MENTCI_WORKSPACE" ]; then
-              echo "Initializing Agent Workspace..."
-              jj workspace add "$MENTCI_WORKSPACE"
-            fi
-
-            # 2. Run Jail Launcher to organize read-only inputs
-            bb ${./scripts/launcher.clj}
-
-            echo "--------------------------------------------------"
-            echo "Mentci-AI Pure Clojure Development Environment Active."
-            echo "Main Repo: $MENTCI_REPO_ROOT (RO Intent)"
-            echo "Workspace: $MENTCI_WORKSPACE (RW Implementation)"
-            echo "Commit Target: $MENTCI_COMMIT_TARGET"
-            echo "--------------------------------------------------"
-          '';
         };
       });
 }

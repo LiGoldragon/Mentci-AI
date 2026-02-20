@@ -21,7 +21,7 @@
 (def ProvisionInput
   [:map
    [:name :string]
-   [:category :string]
+   [:inputType :string]
    [:sourcePath :string]
    [:inputsRoot :string]
    [:isImpure :boolean]])
@@ -38,10 +38,10 @@
   config)
 
 (defn* provision-input [:=> [:cat ProvisionInput] :any] [input]
-  (let [{:keys [name category sourcePath inputsRoot isImpure]} input
-        target-dir (io/file inputsRoot category)
-        target-path (io/file target-dir name)]
-    (.mkdirs target-dir)
+  (let [{:keys [name inputType sourcePath inputsRoot isImpure]} input
+        target-root (io/file inputsRoot)
+        target-path (io/file target-root name)]
+    (.mkdirs target-root)
     (if isImpure
       ;; Impure Mode: Mutable Copy
       (if (and (.exists target-path)
@@ -53,7 +53,7 @@
         (do
           (when (.exists target-path)
             (io/delete-file target-path)) ;; Deletes symlink
-          (println (str "Materializing " name " (Mutable)..."))
+          (println (str "Materializing " name " [" inputType "] (Mutable)..."))
           (let [{:keys [exit err]} (sh "rsync" "-aL" "--chmod=u+w" (str sourcePath "/") (.getPath target-path))]
             (when-not (zero? exit)
               (println (str "Error materializing " name ": " err))))))
@@ -121,20 +121,21 @@
                           #{})]
           (println (format "Mounting inputs from whitelist: %s" whitelist))
           (println "Launching Nix Jail...")
-          (doseq [[category items] input-manifest]
-            (doseq [[item-name path] items]
-              (let [name-str (clojure.core/name item-name)]
-                (if (contains? whitelist name-str)
-                  (do
-                    (println (str "Mounting " name-str "..."))
-                    (provision-input {:name name-str
-                                      :category (clojure.core/name category)
-                                      :sourcePath path
-                                      :inputsRoot (.getPath inputs-root)
-                                      :isImpure is-impure}))
-                  (println (str "Skipping " name-str " (Not in whitelist)")))))))
+          (doseq [[item-name item-spec] input-manifest]
+            (let [name-str (clojure.core/name item-name)
+                  source-path (:sourcePath item-spec)
+                  input-type (:inputType item-spec "unknown")]
+              (if (contains? whitelist name-str)
+                (do
+                  (println (str "Mounting " name-str " [" input-type "]..."))
+                  (provision-input {:name name-str
+                                    :inputType input-type
+                                    :sourcePath source-path
+                                    :inputsRoot (.getPath inputs-root)
+                                    :isImpure is-impure}))
+                (println (str "Skipping " name-str " (Not in whitelist)"))))))
         (println "Jail Launcher Complete.")
-        (let [context-file (io/file "Level5-Ai-Coding.md")]
+        (let [context-file (io/file "docs/guides/Level5-Ai-Coding.md")]
           (when (.exists context-file)
             (println "\n--- Level 5 Programming Context ---\n")
             (println (slurp context-file))

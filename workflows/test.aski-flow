@@ -10,7 +10,7 @@
   {:success Review}
 
   (Review
-    {:type "wait_human"
+    {:type "wait.human"
      :label "Human Review Gate"})
   {:pass Exit
    :fail ImplementationPlan}

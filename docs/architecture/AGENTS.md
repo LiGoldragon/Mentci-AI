@@ -2,6 +2,24 @@
 
 This document provides non-negotiable instructions for AI agents operating within the Mentci-AI ecosystem. These rules ensure architectural integrity and cryptographic provenance.
 
+## -1. Enforcement Contract (Load First)
+
+The following files are mandatory authority sources and must be loaded before edits:
+
+1. `docs/architecture/ARCHITECTURAL_GUIDELINES.md`
+2. `docs/architecture/VERSION_CONTROL.md`
+3. `docs/architecture/SEMA_RUST_GUIDELINES.md`, `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
+
+Enforcement requirements:
+
+*   **No-Edit Without Architecture Context:** If these files are unavailable, stop and report the blocker before changing code.
+*   **Architecture Gate:** Any change conflicting with the hierarchy in `ARCHITECTURAL_GUIDELINES.md` is forbidden.
+*   **Version-Control Gate:** `VERSION_CONTROL.md` is mandatory procedure, not guidance.
+*   **Pre-Work Dirty Tree Rule:** If the tree is dirty at prompt start, commit an intent-separating snapshot before new edits.
+*   **Auto-Commit Rule:** Every atomic filesystem change must be committed immediately.
+*   **Post-Work Rule:** At least one commit must represent the prompt's delivered work.
+*   **Commit Path Rule:** Prefer `mentci-jj` and `mentci-commit` when available; use raw `jj` only when Mentci wrappers are unavailable.
+
 ## 0. Core Sema Object Principles (Primary)
 
 These are the highest-order rules for all languages and scripts.
@@ -38,7 +56,7 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 *   **Script Typing:** All Clojure scripts must define Malli schemas for inputs/config and validate them.
 *   **Script Guard:** Run `bb scripts/validate_scripts.clj` when adding or editing scripts. Python is forbidden under `scripts/` except `scripts/prefetch_orchestrator.py`.
 *   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_RUST_GUIDELINES.md`, and `docs/architecture/SEMA_NIX_GUIDELINES.md`.
-*   **Attractor Code Reference:** Implementation lives in `inputs/untyped/brynary-attractor/attractor`. The `inputs/untyped/attractor` folder is specs only.
+*   **Attractor Code Reference:** Implementation lives in `inputs/brynary-attractor/attractor`. The `inputs/attractor` folder is specs only.
 *   **Attractor Backend Behavior:** `CliAgentBackend` spawns a subprocess with env merged from `process.env` and backend config. `SessionBackend` uses `unified-llm` `Client.fromEnv` (API keys via standard env vars).
 *   **Inputs Directory Rule:** Do not edit anything under `inputs/`. Treat it as read-only reference material.
 *   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
