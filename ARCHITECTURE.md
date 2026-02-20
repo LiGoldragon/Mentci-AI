@@ -41,7 +41,7 @@ The project operates within a **Pure Nix Jail**. `jail.nix` uses structured attr
 A **Level 5 Pipeline Engine** built in Rust. It implements the **Attractor** specification:
 *   **ExecutionEnvironment**: Decouples daemon logic from the jail's shell.
 *   **PipelineEngine**: Manages graph traversal and node state.
-*   **Handlers**: Atomic units of work (Start, Exit, Codergen).
+*   **Handlers**: Atomic units of work (Start, Exit, Codergen, WaitHuman, Agent).
 
 ### 3. Semantic Layer
 *   **Cap'n Proto (`schema/`)**: Defines the "Truth" of the system (Filesystem Atoms, RPCs, Graph structures).

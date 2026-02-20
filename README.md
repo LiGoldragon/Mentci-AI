@@ -16,14 +16,15 @@ To automate implementation details and liberate the human mind through autonomou
 - `schema/`: The semantic truth (Cap'n Proto).
 - `jail.nix`: The isolated dev environment definition.
 - `src/main.rs`: The Rust daemon implementation (Pipeline Engine).
-- `scripts/`: Python-based orchestration and logging (Python Mandate).
+- `scripts/`: Babashka/Clojure orchestration and logging.
 - `workflows/`: DOT files defining agent execution graphs.
 - `docs/`: Organized documentation (guides, reports, architecture).
 
 ## Usage
 - `nix develop`: Enter the Level 5 Jail environment.
 - `cargo build`: Compile the daemon and Cap'n Proto schemas.
-- `python3 scripts/logger.py`: Log intents to the MachineLog.
+- `cargo run -- workflows/example.dot`: Run the workflow engine.
+- `bb scripts/logger.clj "<intent>" --model "<model>" --user "<user>"`: Optional legacy intent log entry (`jj log` is preferred for audit trails).
 
 ---
 *The Great Work continues.*

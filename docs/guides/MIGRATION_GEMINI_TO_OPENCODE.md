@@ -6,7 +6,7 @@ This document outlines the transition from the temporary **Gemini CLI** (running
 ## 2. Infrastructure Changes
 
 ### 2.1. Nix Packaging for OpenCode
-Currently, `opencode` is included as a raw source input (`inputs/untyped/opencode`). To make it operational:
+Currently, `opencode` is included as a raw source input (`inputs/opencode`). To make it operational:
 - **Action:** Define a `pkgs.opencode` derivation in `flake.nix`.
 - **Implementation:** Use `python3Packages.buildPythonApplication` to wrap the OpenCode source.
 - **Exposure:** Add `pkgs.opencode` to `devShells.default` packages.

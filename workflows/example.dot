@@ -5,7 +5,7 @@ digraph "MentciExample" {
     // Node Definitions
     start [label="Start" type="start"];
     codergen [label="Generate Code" type="codergen" prompt="Write a hello world program in Rust"];
-    wait_human [label="Human Review" type="wait_human"];
+    wait_human [label="Human Review" type="wait.human"];
     exit [label="Exit" type="exit"];
 
     // Edge Definitions
