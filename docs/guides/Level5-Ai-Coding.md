@@ -1,5 +1,7 @@
 # Level 5 AI Coding & Project Philosophy
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 ## Current Level 5 Programming Intention
 Based on **Nate Jones's "The 5 Levels of AI Coding"** ([Watch Video](https://youtu.be/bDcgHzCBgmQ)), **Level 5 Programming** represents the transition from a "Code Writer" to a **"Modular Architect"** operating a **Dark Factory**.
 

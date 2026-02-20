@@ -1,5 +1,7 @@
 # Version Control Protocol (JJ)
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 This document is the source of truth for Jujutsu workflows, commit discipline, and push cadence.
 
 ## 1. Core Rules

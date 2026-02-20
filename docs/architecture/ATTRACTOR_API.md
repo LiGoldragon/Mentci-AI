@@ -1,5 +1,7 @@
 # Attractor API and Use-Cases
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 This document records the Attractor API surface currently referenced by Mentci-AI and the primary use-cases it enables.
 
 Mentci-AI incorporates the Attractor standard and API patterns. The reference implementation is read-only under:

@@ -1,5 +1,7 @@
 # Mentci-AI: Agent Session Resumption Context
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Current Stack:** Codex CLI (Agentic Interface) / GPT-5 (Reasoning Engine).
