@@ -15,11 +15,58 @@
 ;; Runtime: Babashka
 ;; Rationale: Centralized, safe JJ entrypoints with consistent workspace targeting.
 
+(def DieInput
+  [:map
+   [:sema/type [:= "DieInput"]]
+   [:message :string]])
+
+(def WorkspaceRootInput
+  [:map
+   [:sema/type [:= "WorkspaceRootInput"]]])
+
+(def RunJJInput
+  [:map
+   [:sema/type [:= "RunJJInput"]]
+   [:args [:vector :string]]
+   [:workspaceRoot :string]])
+
+(def RunJJLogInput
+  [:map
+   [:sema/type [:= "RunJJLogInput"]]])
+
+(def RunJJStatusInput
+  [:map
+   [:sema/type [:= "RunJJStatusInput"]]])
+
+(def RunJJCommitInput
+  [:map
+   [:sema/type [:= "RunJJCommitInput"]]
+   [:message :string]])
+
+(def UsageInput
+  [:map
+   [:sema/type [:= "UsageInput"]]])
+
+(def JJMainInput
+  [:map
+   [:sema/type [:= "JJMainInput"]]
+   [:args [:vector :string]]
+   [:command :string]])
+
 (defn die [message]
+  (let [input {:sema/type "DieInput"
+               :message message}]
+    (when-not (m/validate DieInput input)
+      (throw (ex-info "Invalid die input"
+                      {:errors (me/humanize (m/explain DieInput input))}))))
   (println message)
   (System/exit 1))
 
 (defn workspace-root []
+  (let [input {:sema/type "WorkspaceRootInput"}]
+    (when-not (m/validate WorkspaceRootInput input)
+      (throw (ex-info "Invalid workspace-root input"
+                      {:errors (me/humanize (m/explain WorkspaceRootInput input))}))))
   (or (System/getenv "MENTCI_WORKSPACE")
       (System/getenv "MENTCI_REPO_ROOT")))
 
@@ -30,11 +77,21 @@
 
 (defn run-jj [args]
   (let [root (workspace-root)]
+    (let [input {:sema/type "RunJJInput"
+                 :args (vec args)
+                 :workspaceRoot (or root "")}]
+      (when-not (m/validate RunJJInput input)
+        (throw (ex-info "Invalid run-jj input"
+                        {:errors (me/humanize (m/explain RunJJInput input))}))))
     (when-not root
       (die "Error: MENTCI_WORKSPACE or MENTCI_REPO_ROOT not set."))
     (apply sh "jj" (concat args ["-R" root]))))
 
 (defn run-jj-log []
+  (let [input {:sema/type "RunJJLogInput"}]
+    (when-not (m/validate RunJJLogInput input)
+      (throw (ex-info "Invalid run-jj-log input"
+                      {:errors (me/humanize (m/explain RunJJLogInput input))}))))
   (let [res (run-jj ["log" "--no-signing"])]
     (if (zero? (:exit res))
       (print (:out res))
@@ -44,12 +101,21 @@
           (die (str "Error during jj log: " (:err fallback))))))))
 
 (defn run-jj-status []
+  (let [input {:sema/type "RunJJStatusInput"}]
+    (when-not (m/validate RunJJStatusInput input)
+      (throw (ex-info "Invalid run-jj-status input"
+                      {:errors (me/humanize (m/explain RunJJStatusInput input))}))))
   (let [res (run-jj ["status"])]
     (if (zero? (:exit res))
       (print (:out res))
       (die (str "Error during jj status: " (:err res))))))
 
 (defn run-jj-commit [message]
+  (let [input {:sema/type "RunJJCommitInput"
+               :message message}]
+    (when-not (m/validate RunJJCommitInput input)
+      (throw (ex-info "Invalid run-jj-commit input"
+                      {:errors (me/humanize (m/explain RunJJCommitInput input))}))))
   (let [target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "dev")
         res1 (run-jj ["describe" "-m" message])]
     (if (not= 0 (:exit res1))
@@ -60,6 +126,10 @@
           (println (str "Successfully committed and advanced bookmark '" target-bookmark "'.")))))))
 
 (defn usage []
+  (let [input {:sema/type "UsageInput"}]
+    (when-not (m/validate UsageInput input)
+      (throw (ex-info "Invalid usage input"
+                      {:errors (me/humanize (m/explain UsageInput input))}))))
   (println "Usage: mentci-jj <command> [args]")
   (println "")
   (println "Commands:")
@@ -77,7 +147,13 @@
                 :command (or cmd "")
                 :workspaceRoot (or root "")
                 :targetBookmark target-bookmark
-                :message message}]
+                :message message}
+        main-input {:sema/type "JJMainInput"
+                    :args (vec args)
+                    :command (or cmd "")}]
+    (when-not (m/validate JJMainInput main-input)
+      (throw (ex-info "Invalid -main input"
+                      {:errors (me/humanize (m/explain JJMainInput main-input))})))
     (when (= cmd "commit")
       (when (str/blank? message)
         (die "Error: commit requires a message.")))
