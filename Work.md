@@ -18,9 +18,21 @@ The environment must support "Level 5" programming (machine-level interaction, d
 - [x] **Level 5 Tools**: GDB, Strace, Valgrind, and Rsync added to the unified `nix develop` shell.
 - [x] **Jail Construction**: `jail.nix` and `jail_launcher.py` implemented; multi-workspace model (Root vs. `workspace/`) active.
 - [x] **Shipping Protocol**: `mentci-commit` tool and "Commit-on-Success" mandate established.
-- [x] **Version Control**: Ecliptic Chronographic Versioning enforced (Current: v0.12.1.14).
+- [x] **Version Control**: Ecliptic Chronographic Versioning enforced (Current: v0.12.1.28.44).
 
 ## Active Objectives
-1.  **Level 4 Orchestration**: Define Cap'n Proto RPCs for agent-to-agent communication in `schema/mentci.capnp`.
-2.  **Engine Expansion**: Implement the `Codergen` and `Wait.human` handlers in the Rust daemon (`src/main.rs`).
-3.  **Migration Path**: Execute the transition from Gemini CLI to the OpenCode/DeepSeek-V4 stack as per `MIGRATION_GEMINI_TO_OPENCODE.md`.
+
+1.  [x] **Level 4 Orchestration**: Define Cap'n Proto RPCs for agent-to-agent communication in `schema/mentci.capnp`.
+
+2.  [x] **Engine Expansion**: Implement the `Codergen` and `Wait.human` handlers in the Rust daemon (`src/main.rs`).
+
+3.  [x] **Migration Path**: Execute the transition from Gemini CLI to the OpenCode/DeepSeek-V4 stack as per `docs/guides/MIGRATION_GEMINI_TO_OPENCODE.md`. (Infrastructure established).
+
+4.  [x] **Graph Syntax**: Implement DOT parser (`src/dot_loader.rs`) for defining agent workflows (`workflows/*.dot`).
+
+5.  [x] **State Persistence**: Implement `CheckpointManager` to save execution state to `.checkpoints/`.
+
+6.  [x] **Documentation**: Reorganized project documentation into `docs/` structure.
+7.  [x] **Attractor Specs**: Extracted DOT data schema from `inputs/untyped/attractor` into `docs/specs/ATTRACTOR_DOT_REFERENCE.md`.
+
+

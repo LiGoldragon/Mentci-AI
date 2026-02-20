@@ -1,18 +1,25 @@
 use std::path::PathBuf;
 use std::process::Command;
-use anyhow::Result;
+use anyhow::{Result, Context as AnyhowContext};
 use std::collections::HashMap;
-use tracing::{info, error, debug};
+use tracing::{info, error, warn};
+use serde::{Serialize, Deserialize};
 
 pub mod atom_filesystem_capnp {
     include!(concat!(env!("OUT_DIR"), "/atom_filesystem_capnp.rs"));
 }
 
+#[allow(unused_parens)]
 pub mod mentci_capnp {
     include!(concat!(env!("OUT_DIR"), "/mentci_capnp.rs"));
 }
 
-/// # The Execution Environment Abstraction
+// --- Local Modules ---
+pub mod dot_loader;
+use dot_loader::DotLoader;
+
+// --- Execution Environment ---
+
 pub trait ExecutionEnvironment {
     fn read_file(&self, path: &PathBuf) -> Result<String>;
     fn write_file(&self, path: &PathBuf, content: &str) -> Result<()>;
@@ -20,20 +27,18 @@ pub trait ExecutionEnvironment {
     fn working_directory(&self) -> PathBuf;
 }
 
-/// # Execution Result
 pub struct ExecResult {
     pub stdout: String,
     pub stderr: String,
     pub exit_code: i32,
 }
 
-/// # Local Execution Environment
 pub struct LocalExecutionEnvironment {
     pub workdir: PathBuf,
 }
 
 impl LocalExecutionEnvironment {
-    pub fn from_path(path: PathBuf) -> Self {
+    pub fn new(path: PathBuf) -> Self {
         Self { workdir: path }
     }
 }
@@ -72,34 +77,22 @@ impl ExecutionEnvironment for LocalExecutionEnvironment {
     }
 }
 
-/// # Task Context
-/// Bundles shared state and environment into a single object for handler execution.
-/// Adheres to Sema Rule 3: Single Object In/Out.
-pub struct TaskContext<'a> {
-    pub context: &'a mut Context,
-    pub env: &'a dyn ExecutionEnvironment,
-}
+// --- Context & State ---
 
-/// # Handler
-pub trait Handler {
-    fn execute(&self, task: &mut TaskContext) -> Result<Outcome>;
-}
-
-/// # Context
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Context {
     pub values: HashMap<String, String>,
 }
 
 impl Context {
-    pub fn from_empty() -> Self {
+    pub fn new() -> Self {
         Self {
             values: HashMap::new(),
         }
     }
 }
 
-/// # Outcome
-/// Result of executing a node handler, aligned with the Attractor spec.
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Outcome {
     pub status: StageStatus,
     pub notes: Option<String>,
@@ -107,7 +100,7 @@ pub struct Outcome {
     pub preferred_label: Option<String>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum StageStatus {
     Success,
     PartialSuccess,
@@ -116,10 +109,123 @@ pub enum StageStatus {
     Skipped,
 }
 
-/// # Node and Edge definitions for the Graph
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Checkpoint {
+    pub node_id: String,
+    pub timestamp: u64,
+    pub context: Context,
+    pub outcome: Outcome,
+}
+
+pub struct CheckpointManager {
+    pub checkpoint_dir: PathBuf,
+}
+
+impl CheckpointManager {
+    pub fn new(workdir: &PathBuf) -> Self {
+        let checkpoint_dir = workdir.join(".checkpoints");
+        if !checkpoint_dir.exists() {
+            let _ = std::fs::create_dir_all(&checkpoint_dir);
+        }
+        Self { checkpoint_dir }
+    }
+
+    pub fn save(&self, checkpoint: &Checkpoint) -> Result<()> {
+        let filename = format!("{}_{}.json", checkpoint.timestamp, checkpoint.node_id);
+        let path = self.checkpoint_dir.join(filename);
+        let json = serde_json::to_string_pretty(checkpoint)?;
+        std::fs::write(&path, json)?;
+        info!("Checkpoint saved: {:?}", path);
+        Ok(())
+    }
+}
+
+// --- Handlers ---
+
+pub struct TaskContext<'a> {
+    pub context: &'a mut Context,
+    pub env: &'a dyn ExecutionEnvironment,
+}
+
+pub trait Handler {
+    fn execute(&self, task: &mut TaskContext) -> Result<Outcome>;
+}
+
+struct StartHandler;
+impl Handler for StartHandler {
+    fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
+        Ok(Outcome { 
+            status: StageStatus::Success, 
+            notes: Some("Start node executed.".to_string()),
+            context_updates: HashMap::new(),
+            preferred_label: None 
+        })
+    }
+}
+
+struct ExitHandler;
+impl Handler for ExitHandler {
+    fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
+        Ok(Outcome { 
+            status: StageStatus::Success, 
+            notes: Some("Workflow exited.".to_string()),
+            context_updates: HashMap::new(),
+            preferred_label: None 
+        })
+    }
+}
+
+struct CodergenHandler { prompt: String }
+impl Handler for CodergenHandler {
+    fn execute(&self, task: &mut TaskContext) -> Result<Outcome> {
+        info!("Executing Codergen: {}", self.prompt);
+        // Simulate LLM call
+        let response = format!("// Generated code for: {}", self.prompt);
+        let mut updates = HashMap::new();
+        updates.insert("last_response".to_string(), response);
+        
+        Ok(Outcome {
+            status: StageStatus::Success,
+            notes: Some("Codergen completed.".to_string()),
+            context_updates: updates,
+            preferred_label: None,
+        })
+    }
+}
+
+struct WaitHumanHandler;
+impl Handler for WaitHumanHandler {
+    fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
+        info!("Waiting for human intervention...");
+        println!(">>> HUMAN GATE <<<");
+        println!("Press Enter to continue, or type 'fail' to abort.");
+        
+        let mut input = String::new();
+        if std::io::stdin().read_line(&mut input).is_ok() {
+            if input.trim().to_lowercase() == "fail" {
+                return Ok(Outcome {
+                    status: StageStatus::Fail,
+                    notes: Some("Aborted by user.".to_string()),
+                    context_updates: HashMap::new(),
+                    preferred_label: None,
+                });
+            }
+        }
+        Ok(Outcome {
+            status: StageStatus::Success,
+            notes: Some("Approved by user.".to_string()),
+            context_updates: HashMap::new(),
+            preferred_label: None,
+        })
+    }
+}
+
+// --- Engine ---
+
 pub struct Node {
     pub id: String,
     pub handler: Box<dyn Handler>,
+    pub prompt: Option<String>,
 }
 
 pub struct Edge {
@@ -127,6 +233,7 @@ pub struct Edge {
     pub to: String,
     pub label: Option<String>,
     pub condition: Option<String>,
+    pub weight: i32,
 }
 
 pub struct Graph {
@@ -135,32 +242,37 @@ pub struct Graph {
     pub start_node: String,
 }
 
-/// # Routing Context
-/// Bundles parameters for edge selection logic.
 pub struct RoutingContext<'a> {
     pub current_node_id: &'a str,
     pub outcome: &'a Outcome,
     pub context: &'a Context,
 }
 
-/// # Pipeline Engine
 pub struct PipelineEngine {
     pub graph: Graph,
     pub env: Box<dyn ExecutionEnvironment>,
+    pub checkpoint_manager: CheckpointManager,
 }
 
 impl PipelineEngine {
-    pub fn from_graph(graph: Graph, env: Box<dyn ExecutionEnvironment>) -> Self {
-        Self { graph, env }
+    pub fn new(graph: Graph, env: Box<dyn ExecutionEnvironment>) -> Self {
+        let workdir = env.working_directory();
+        Self { 
+            graph, 
+            env,
+            checkpoint_manager: CheckpointManager::new(&workdir),
+        }
     }
 
     pub fn run(&mut self) -> Result<()> {
-        let mut context = Context::from_empty();
+        let mut context = Context::new();
         let mut current_node_id = self.graph.start_node.clone();
 
         loop {
-            let node = self.graph.nodes.get(&current_node_id).ok_or_else(|| anyhow::anyhow!("Node not found"))?;
-            info!("Executing node: {}", node.id);
+            let node = self.graph.nodes.get(&current_node_id)
+                .ok_or_else(|| anyhow::anyhow!("Node not found: {}", current_node_id))?;
+            
+            info!(">>> NODE: {} <<<", node.id);
 
             let mut task = TaskContext {
                 context: &mut context,
@@ -168,84 +280,159 @@ impl PipelineEngine {
             };
 
             let outcome = node.handler.execute(&mut task)?;
-            info!("Node {} finished with status: {:?}", node.id, outcome.status);
+            
+            // Checkpoint
+            let checkpoint = Checkpoint {
+                node_id: current_node_id.clone(),
+                timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)?.as_secs(),
+                context: context.clone(),
+                outcome: outcome.clone(),
+            };
+            self.checkpoint_manager.save(&checkpoint)?;
 
-            // Apply context updates
-            for (k, v) in outcome.context_updates {
-                context.values.insert(k, v);
+            // Apply updates
+            for (k, v) in &outcome.context_updates {
+                context.values.insert(k.clone(), v.clone());
             }
 
-            if current_node_id == "exit" || outcome.status == StageStatus::Fail {
+            if outcome.status == StageStatus::Fail {
+                error!("Node {} failed.", current_node_id);
                 break;
             }
 
+            // Routing
             let routing = RoutingContext {
                 current_node_id: &current_node_id,
                 outcome: &outcome,
                 context: &context,
             };
 
-            let next_node_id = self.select_next_node(routing)?;
-            current_node_id = next_node_id;
+            match self.select_next_node(routing) {
+                Ok(next_id) => {
+                    if next_id == "exit" || self.graph.nodes.get(&next_id).is_none() { // Exit implicit or explicit
+                         // If explicit exit node exists, we run it next loop.
+                         // But if select_next_node returns "exit" and it's NOT in nodes, we stop.
+                         if !self.graph.nodes.contains_key(&next_id) {
+                             info!("Exiting workflow (terminal).");
+                             break;
+                         }
+                    }
+                    current_node_id = next_id;
+                }
+                Err(e) => {
+                    // Check if we are at a terminal node (no outgoing edges)
+                    info!("Workflow ended: {}", e);
+                    break;
+                }
+            }
         }
-
         Ok(())
     }
 
     fn select_next_node(&self, routing: RoutingContext) -> Result<String> {
+        let mut candidates = Vec::new();
         for edge in &self.graph.edges {
             if edge.from == routing.current_node_id {
-                if let Some(ref preferred) = routing.outcome.preferred_label {
-                    if edge.label.as_ref() == Some(preferred) {
-                        return Ok(edge.to.clone());
-                    }
-                } else {
+                candidates.push(edge);
+            }
+        }
+
+        if candidates.is_empty() {
+             return Err(anyhow::anyhow!("No outgoing edges"));
+        }
+
+        // Simple routing: Look for preferred label match, else take first unconditional
+        if let Some(preferred) = &routing.outcome.preferred_label {
+            for edge in &candidates {
+                if edge.label.as_ref() == Some(preferred) {
                     return Ok(edge.to.clone());
                 }
             }
         }
-        Err(anyhow::anyhow!("No next node found"))
+        
+        // Fallback to first edge (naive weight support)
+        // Sort by weight desc?
+        candidates.sort_by(|a, b| b.weight.cmp(&a.weight));
+        
+        Ok(candidates[0].to.clone())
     }
 }
 
-/// # Mock Start Handler
-struct StartHandler;
-impl Handler for StartHandler {
-    fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
-        Ok(Outcome { 
-            status: StageStatus::Success, 
-            notes: Some("Start node executed successfully".to_string()),
-            context_updates: HashMap::new(),
-            preferred_label: None 
-        })
-    }
-}
+// --- Main ---
 
-fn main() {
+fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
-    info!("Mentci-AI initialized.");
     
-    let workdir = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
-    let env = Box::new(LocalExecutionEnvironment::from_path(workdir));
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() < 2 {
+        println!("Usage: mentci <workflow.dot>");
+        return Ok(());
+    }
+
+    let dot_path = PathBuf::from(&args[1]);
+    let content = std::fs::read_to_string(&dot_path).context("Failed to read DOT file")?;
     
+    let dot_graph = DotLoader::parse(&content).context("Failed to parse DOT")?;
+    
+    // Hydrate Graph
     let mut nodes = HashMap::new();
-    nodes.insert("start".to_string(), Node { id: "start".to_string(), handler: Box::new(StartHandler) });
-    nodes.insert("exit".to_string(), Node { id: "exit".to_string(), handler: Box::new(StartHandler) });
-    
-    let edges = vec![
-        Edge { from: "start".to_string(), to: "exit".to_string(), label: None, condition: None },
-    ];
-    
+    let mut start_node = None;
+
+    for (id, d_node) in dot_graph.nodes {
+        // Determine Handler
+        let shape = d_node.shape.as_deref().unwrap_or("box");
+        let n_type = d_node.node_type.as_deref().unwrap_or("");
+        
+        let handler: Box<dyn Handler> = if id == "start" || shape == "Mdiamond" || n_type == "start" {
+            if start_node.is_none() { start_node = Some(id.clone()); }
+            Box::new(StartHandler)
+        } else if id == "exit" || shape == "Msquare" || n_type == "exit" {
+            Box::new(ExitHandler)
+        } else if n_type == "wait.human" || shape == "hexagon" {
+            Box::new(WaitHumanHandler)
+        } else {
+            // Default to Codergen
+            let prompt = d_node.prompt.clone().unwrap_or_else(|| d_node.label.clone().unwrap_or(id.clone()));
+            Box::new(CodergenHandler { prompt })
+        };
+
+        nodes.insert(id.clone(), Node {
+            id,
+            handler,
+            prompt: d_node.prompt,
+        });
+    }
+
+    // Edges
+    let mut edges = Vec::new();
+    for d_edge in dot_graph.edges {
+        edges.push(Edge {
+            from: d_edge.from,
+            to: d_edge.to,
+            label: d_edge.label,
+            condition: d_edge.condition,
+            weight: d_edge.weight.unwrap_or(0),
+        });
+    }
+
+    let start_node_id = start_node.unwrap_or_else(|| "start".to_string());
+    if !nodes.contains_key(&start_node_id) {
+        error!("Start node '{}' not found in graph.", start_node_id);
+        std::process::exit(1);
+    }
+
     let graph = Graph {
         nodes,
         edges,
-        start_node: "start".to_string(),
+        start_node: start_node_id,
     };
+
+    info!("Loaded graph with {} nodes and {} edges.", graph.nodes.len(), graph.edges.len());
+
+    let env = Box::new(LocalExecutionEnvironment::new(std::env::current_dir()?));
+    let mut engine = PipelineEngine::new(graph, env);
     
-    let mut engine = PipelineEngine::from_graph(graph, env);
-    if let Err(e) = engine.run() {
-        error!("Pipeline execution failed: {}", e);
-    } else {
-        info!("Pipeline execution completed successfully.");
-    }
+    engine.run()?;
+
+    Ok(())
 }

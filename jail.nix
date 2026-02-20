@@ -13,11 +13,12 @@ let
       mentci-ai = "${./.}"; 
     };
     flake = mkInputMap [
+      "criomos"
       "lojix" "seahawk" "skrips" "mkZolaWebsite"
-      "webpublish" "goldragon" "maisiliym" "kibord"
+      "webpublish" "goldragon" "maisiliym" "kibord" "aski"
     ];
     untyped = mkInputMap [
-      "attractor" "opencode"
+      "attractor" "brynary-attractor" "opencode"
     ];
   };
 

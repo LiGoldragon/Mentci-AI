@@ -1,0 +1,15 @@
+// Mentci-AI Example Workflow
+// Defines a simple Agentic Pipeline: Start -> Generate Code -> Human Review -> Exit
+
+digraph "MentciExample" {
+    // Node Definitions
+    start [label="Start" type="start"];
+    codergen [label="Generate Code" type="codergen" prompt="Write a hello world program in Rust"];
+    wait_human [label="Human Review" type="wait_human"];
+    exit [label="Exit" type="exit"];
+
+    // Edge Definitions
+    start -> codergen [label="begin"];
+    codergen -> wait_human [label="generated"];
+    wait_human -> exit [label="approved"];
+}
