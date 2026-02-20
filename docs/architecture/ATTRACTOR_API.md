@@ -167,3 +167,27 @@ Required integration stance:
 - Treat Attractor API contracts as external reference contracts.
 - Keep Mentci orchestration data auditable and deterministic when constructing DOT job artifacts and invoking Attractor.
 
+## 4. Achieved Milestone: First Gemini Editing Job
+
+Date:
+- 2026-02-20
+
+Milestone status:
+- Achieved
+
+Recorded runs:
+1. Gemini codergen validation run
+- Pipeline id: `1bcfe935-12ec-449c-82d6-1a724b8b66b9`
+- Outcome: `completed` / `success`
+- Evidence: context `last_response` was `GEMINI_OK`
+
+2. First Attractor DOT repo-editing job (Gemini + tool stages)
+- Pipeline id: `b378d76b-7962-46bf-a770-f5ca8701d9ca`
+- Outcome: `completed` / `success`
+- Completed nodes: `start`, `plan`, `format`, `test`, `commit`
+- Job shape: `codergen` planning stage + `tool` execution stages (`format`, `test`, conditional `jj commit`)
+- Commit-stage result: no-op when no diff remained (`No style changes to commit`)
+
+Operational note:
+- Gemini was executed through Attractor `GeminiBackend` (CLI subprocess path), using the locally authenticated CLI session.
+- No repository secrets were written into versioned files as part of this milestone.
