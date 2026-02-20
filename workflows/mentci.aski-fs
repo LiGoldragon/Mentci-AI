@@ -1,0 +1,64 @@
+{:root
+ {:path "/home/li/git/Mentci-AI"
+  :kind :dir
+  :children
+  {"README.md" {:kind :file :role :entrypoint :durability :stable}
+   ".gitignore" {:kind :file :role :tooling :durability :mutable}
+
+   "flake.nix" {:kind :file :role :tooling :durability :stable}
+   "flake.lock" {:kind :file :role :tooling :durability :mutable}
+   "jail.nix" {:kind :file :role :tooling :durability :stable}
+
+   "Cargo.toml" {:kind :file :role :entrypoint :durability :stable}
+   "Cargo.lock" {:kind :file :role :tooling :durability :mutable}
+
+   "schema" {:kind :dir
+             :children {"mentci.capnp" {:kind :file :role :schema :durability :stable}
+                        "atom_filesystem.capnp" {:kind :file :role :schema :durability :stable}}}
+
+   "src" {:kind :dir
+          :children {"main.rs" {:kind :file :role :entrypoint :durability :mutable}
+                     "edn_loader.rs" {:kind :file :role :tooling :durability :mutable}
+                     "dot_loader.rs" {:kind :file :role :tooling :durability :mutable}}}
+
+   "scripts" {:kind :dir
+              :children {"launcher.clj" {:kind :file :role :tooling :durability :mutable}
+                         "commit.clj" {:kind :file :role :tooling :durability :mutable}
+                         "intent.clj" {:kind :file :role :tooling :durability :mutable}
+                         "logger.clj" {:kind :file :role :tooling :durability :mutable}
+                         "jj_workflow.clj" {:kind :file :role :tooling :durability :mutable}
+                         "mk_shell.clj" {:kind :file :role :tooling :durability :mutable}
+                         "test_deps.clj" {:kind :file :role :tooling :durability :mutable}
+                         "types.clj" {:kind :file :role :tooling :durability :mutable}}}
+
+   "docs" {:kind :dir
+           :children {"architecture" {:kind :dir
+                                      :children {"AGENTS.md" {:kind :file :role :spec :durability :stable}
+                                                 "ARCHITECTURAL_GUIDELINES.md" {:kind :file :role :spec :durability :stable}
+                                                 "JAIL_COMMIT_PROTOCOL.md" {:kind :file :role :spec :durability :stable}
+                                                 "TOOLS.md" {:kind :file :role :spec :durability :stable}
+                                                 "VERSION_CONTROL.md" {:kind :file :role :spec :durability :stable}
+                                                 "CHRONOGRAPHY.md" {:kind :file :role :spec :durability :stable}
+                                                 "JjAutomation.md" {:kind :file :role :spec :durability :stable}}
+                      "specs" {:kind :dir
+                               :children {"ASKI_DSL_GUIDELINES.md" {:kind :file :role :spec :durability :stable}
+                                          "ASKI_FLOW_DSL.md" {:kind :file :role :spec :durability :stable}
+                                          "ASKI_FS_DSL.md" {:kind :file :role :spec :durability :stable}
+                                          "ATTRACTOR_DOT_REFERENCE.md" {:kind :file :role :spec :durability :stable}
+                                          "WORKFLOW_STANDARD.md" {:kind :file :role :spec :durability :stable}}}
+                      "guides" {:kind :dir
+                                :children {"Level5-Ai-Coding.md" {:kind :file :role :spec :durability :stable}
+                                           "RESTART_CONTEXT.md" {:kind :file :role :spec :durability :stable}}}
+                      "reports" {:kind :dir
+                                 :children {"REFERENCES.md" {:kind :file :role :spec :durability :stable}}}}}
+
+   "workflows" {:kind :dir
+                :children {"example.dot" {:kind :file :role :workflow :durability :mutable}
+                           "idea_pipeline.dot" {:kind :file :role :workflow :durability :mutable}
+                           "test.aski-flow" {:kind :file :role :workflow :durability :mutable}
+                           "mentci.aski-fs" {:kind :file :role :workflow :durability :mutable}}}
+
+   "inputs" {:kind :dir :role :tooling :durability :mutable}
+   "Logs" {:kind :dir :role :tooling :durability :mutable}
+   "target" {:kind :dir :role :tooling :durability :mutable}
+   "workspace" {:kind :dir :role :tooling :durability :mutable}}}}
