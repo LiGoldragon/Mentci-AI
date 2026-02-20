@@ -15,6 +15,15 @@
 ;; Runtime: Babashka
 ;; Rationale: Verified environment audit for the Level 5 stack.
 
+(def CheckDepInput
+  [:map
+   [:sema/type [:= "CheckDepInput"]]
+   [:name :string]])
+
+(def TestDepsMainInput
+  [:map
+   [:sema/type [:= "TestDepsMainInput"]]])
+
 (def deps ["nix" "cargo" "rustc" "bb" "clojure" "jj" "jet" "gdb"])
 
 (defn validate-config [config]
@@ -23,6 +32,11 @@
                     {:errors (me/humanize (m/explain types/DependencyCheckConfig config))}))))
 
 (defn check-dep [name]
+  (let [input {:sema/type "CheckDepInput"
+               :name name}]
+    (when-not (m/validate CheckDepInput input)
+      (throw (ex-info "Invalid check-dep input"
+                      {:errors (me/humanize (m/explain CheckDepInput input))}))))
   (let [res (sh "which" name)]
     (if (= 0 (:exit res))
       (do (println (format "[OK] %-10s -> %s" name (str/trim (:out res))))
@@ -31,6 +45,10 @@
           false))))
 
 (defn main []
+  (let [input {:sema/type "TestDepsMainInput"}]
+    (when-not (m/validate TestDepsMainInput input)
+      (throw (ex-info "Invalid main input"
+                      {:errors (me/humanize (m/explain TestDepsMainInput input))}))))
   (let [config {:sema/type "DependencyCheckConfig"
                 :deps deps}]
     (validate-config config))

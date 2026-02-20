@@ -19,12 +19,55 @@
    "openai" "OPENAI_API_KEY"
    "anthropic" "ANTHROPIC_API_KEY"})
 
+(def FailInput
+  [:map
+   [:sema/type [:= "LauncherFailInput"]]
+   [:message :string]])
+
+(def ParseArgsInput
+  [:map
+   [:sema/type [:= "LauncherParseArgsInput"]]
+   [:args [:vector :string]]])
+
+(def ResolveEntryInput
+  [:map
+   [:sema/type [:= "LauncherResolveEntryInput"]]
+   [:prefix :string]
+   [:provider :string]
+   [:entry [:maybe :string]]])
+
+(def ResolveEnvVarInput
+  [:map
+   [:sema/type [:= "LauncherResolveEnvVarInput"]]
+   [:provider :string]
+   [:envVar [:maybe :string]]])
+
+(def GopassSecretInput
+  [:map
+   [:sema/type [:= "LauncherGopassSecretInput"]]
+   [:entry :string]])
+
+(def LauncherMainInput
+  [:map
+   [:sema/type [:= "LauncherMainInput"]]
+   [:args [:vector :string]]])
+
 (defn fail [msg]
+  (let [input {:sema/type "LauncherFailInput"
+               :message msg}]
+    (when-not (m/validate FailInput input)
+      (throw (ex-info "Invalid fail input"
+                      {:errors (me/humanize (m/explain FailInput input))}))))
   (binding [*out* *err*]
     (println msg))
   (System/exit 1))
 
 (defn parse-args [args]
+  (let [input {:sema/type "LauncherParseArgsInput"
+               :args (vec args)}]
+    (when-not (m/validate ParseArgsInput input)
+      (throw (ex-info "Invalid parse-args input"
+                      {:errors (me/humanize (m/explain ParseArgsInput input))}))))
   (loop [remaining args
          {:keys [provider] :as opts} {}]
     (if (empty? remaining)
@@ -50,14 +93,32 @@
           (assoc opts :command (vec remaining)))))))
 
 (defn resolve-entry [prefix provider entry]
+  (let [input {:sema/type "LauncherResolveEntryInput"
+               :prefix prefix
+               :provider provider
+               :entry entry}]
+    (when-not (m/validate ResolveEntryInput input)
+      (throw (ex-info "Invalid resolve-entry input"
+                      {:errors (me/humanize (m/explain ResolveEntryInput input))}))))
   (or entry (str prefix "/" provider "/api-key")))
 
 (defn resolve-env-var [provider env-var]
+  (let [input {:sema/type "LauncherResolveEnvVarInput"
+               :provider provider
+               :envVar env-var}]
+    (when-not (m/validate ResolveEnvVarInput input)
+      (throw (ex-info "Invalid resolve-env-var input"
+                      {:errors (me/humanize (m/explain ResolveEnvVarInput input))}))))
   (or env-var
       (get env-by-provider provider)
       (fail (str "Unknown provider '" provider "'. Use --env-var or extend env-by-provider."))))
 
 (defn gopass-secret [entry]
+  (let [input {:sema/type "LauncherGopassSecretInput"
+               :entry entry}]
+    (when-not (m/validate GopassSecretInput input)
+      (throw (ex-info "Invalid gopass-secret input"
+                      {:errors (me/humanize (m/explain GopassSecretInput input))}))))
   (let [{:keys [exit out err]} (sh/sh "gopass" "show" "--password" entry)]
     (when-not (zero? exit)
       (fail (str "gopass failed for " entry ": " (str/trim (or err out)))))
@@ -69,6 +130,11 @@
                     {:errors (me/humanize (m/explain types/AgentLauncherConfig config))}))))
 
 (defn -main [& args]
+  (let [input {:sema/type "LauncherMainInput"
+               :args (vec args)}]
+    (when-not (m/validate LauncherMainInput input)
+      (throw (ex-info "Invalid -main input"
+                      {:errors (me/humanize (m/explain LauncherMainInput input))}))))
   (let [{:keys [provider gopass-prefix entry env-var command]}
         (parse-args args)
         provider (or provider (fail "Missing --provider"))
