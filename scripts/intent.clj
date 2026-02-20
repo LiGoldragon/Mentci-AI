@@ -15,11 +15,34 @@
 ;; Runtime: Babashka
 ;; Rationale: High-level orchestration of unique intent namespaces using jj-style hashes.
 
+(def GenerateHashInput
+  [:map
+   [:sema/type [:= "GenerateHashInput"]]])
+
+(def SanitizeNameInput
+  [:map
+   [:sema/type [:= "SanitizeNameInput"]]
+   [:name :string]])
+
+(def IntentMainInput
+  [:map
+   [:sema/type [:= "IntentMainInput"]]
+   [:args [:vector :string]]])
+
 (defn generate-hash []
+  (let [input {:sema/type "GenerateHashInput"}]
+    (when-not (m/validate GenerateHashInput input)
+      (throw (ex-info "Invalid generate-hash input"
+                      {:errors (me/humanize (m/explain GenerateHashInput input))}))))
   ;; jj uses short unique hashes. We'll simulate this with a small slice of a random UUID.
   (subs (str (java.util.UUID/randomUUID)) 0 8))
 
 (defn sanitize-name [name]
+  (let [input {:sema/type "SanitizeNameInput"
+               :name name}]
+    (when-not (m/validate SanitizeNameInput input)
+      (throw (ex-info "Invalid sanitize-name input"
+                      {:errors (me/humanize (m/explain SanitizeNameInput input))}))))
   (-> name
       (str/lower-case)
       (str/replace #"\s+" "-")
@@ -31,7 +54,12 @@
                     {:errors (me/humanize (m/explain types/IntentInit config))}))))
 
 (defn main []
-  (let [args *command-line-args*]
+  (let [args *command-line-args*
+        input {:sema/type "IntentMainInput"
+               :args (vec args)}]
+    (when-not (m/validate IntentMainInput input)
+      (throw (ex-info "Invalid main input"
+                      {:errors (me/humanize (m/explain IntentMainInput input))})))
     (if (empty? args)
       (do (println "Usage: intent.clj <MeaningfulIntentName>")
           (System/exit 1))

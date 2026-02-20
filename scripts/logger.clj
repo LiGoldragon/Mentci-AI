@@ -19,8 +19,23 @@
 (def logs-dir (io/file "Logs"))
 (def default-github-user "LiGoldragon")
 
+(def GetCurrentUserIdInput
+  [:map
+   [:sema/type [:= "GetCurrentUserIdInput"]]])
+
+(def LogPromptInput
+  [:map
+   [:sema/type [:= "LogPromptInput"]]
+   [:intentSummary :string]
+   [:model :string]
+   [:userId :string]])
+
 (defn get-current-user-id []
-  (let [system-user (System/getProperty "user.name")]
+  (let [input {:sema/type "GetCurrentUserIdInput"}
+        _ (when-not (m/validate GetCurrentUserIdInput input)
+            (throw (ex-info "Invalid get-current-user-id input"
+                            {:errors (me/humanize (m/explain GetCurrentUserIdInput input))})))
+        system-user (System/getProperty "user.name")]
     (if (= system-user "li")
       default-github-user
       system-user)))
@@ -33,6 +48,13 @@
 (defn log-prompt [intent-summary & {:keys [model user-id] 
                                    :or {model "gemini-3-flash-preview"}}]
   (let [user (or user-id (get-current-user-id))
+        input {:sema/type "LogPromptInput"
+               :intentSummary intent-summary
+               :model model
+               :userId user}
+        _ (when-not (m/validate LogPromptInput input)
+            (throw (ex-info "Invalid log-prompt input"
+                            {:errors (me/humanize (m/explain LogPromptInput input))})))
         log-file (io/file logs-dir (str "user_" user ".edn"))
         timestamp (.toString (java.time.LocalDateTime/now))
         ecliptic "12.1.28.44 | 5919 AM" ; TODO: Implement dynamic ecliptic calculation
