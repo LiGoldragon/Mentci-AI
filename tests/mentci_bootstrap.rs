@@ -39,9 +39,10 @@ fn bootstrap_creates_jail_commit_bookmark_from_output_workspace() {
             .arg(&repo),
     );
 
-    let bin = env!("CARGO_BIN_EXE_mentci-bootstrap");
+    let bin = env!("CARGO_BIN_EXE_mentci-ai");
     run_ok(
         Command::new(bin)
+            .args(["job/jails", "bootstrap"])
             .args(["--repo-root"])
             .arg(&repo)
             .args([
@@ -65,6 +66,7 @@ fn bootstrap_creates_jail_commit_bookmark_from_output_workspace() {
 
     run_ok(
         Command::new(bin)
+            .args(["job/jails", "bootstrap"])
             .args(["--repo-root"])
             .arg(&repo)
             .args([
@@ -123,8 +125,9 @@ fn bootstrap_rejects_same_working_and_target_bookmarks() {
             .arg(&repo),
     );
 
-    let bin = env!("CARGO_BIN_EXE_mentci-bootstrap");
+    let bin = env!("CARGO_BIN_EXE_mentci-ai");
     let output = Command::new(bin)
+        .args(["job/jails", "bootstrap"])
         .args(["--repo-root"])
         .arg(&repo)
         .args([

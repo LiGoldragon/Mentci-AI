@@ -3,10 +3,6 @@ name = "mentci-ai"
 version = "0.1.0"
 edition = "2021"
 
-[[bin]]
-name = "mentci-bootstrap"
-path = "tools/mentci-bootstrap/src/main.rs"
-
 [dependencies]
 anyhow = "1.0"
 tokio = { version = "1.0", features = ["full"] }
