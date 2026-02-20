@@ -1,5 +1,5 @@
 use std::f64::consts::PI;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 #[derive(Debug, Clone, Copy)]
 struct EclipticTime {
@@ -131,17 +131,7 @@ fn format_unicode_suffix(time: EclipticTime, precision: Precision) -> String {
 }
 
 fn solar_ecliptic_time(now: SystemTime) -> EclipticTime {
-    let jd = julian_day(now);
-    let t = (jd - 2451545.0) / 36525.0;
-
-    let mean_long = normalize_degrees(280.46646 + 36000.76983 * t + 0.0003032 * t * t);
-    let mean_anomaly = normalize_degrees(357.52911 + 35999.05029 * t - 0.0001537 * t * t);
-
-    let c = (1.914602 - 0.004817 * t - 0.000014 * t * t) * deg_sin(mean_anomaly)
-        + (0.019993 - 0.000101 * t) * deg_sin(2.0 * mean_anomaly)
-        + 0.000289 * deg_sin(3.0 * mean_anomaly);
-
-    let true_long = normalize_degrees(mean_long + c);
+    let true_long = solar_longitude_deg(now);
     let (sign_index, degree, minute, second) = zodiac_ordinals(true_long);
     let (symbol, name) = zodiac_symbol(sign_index);
 
@@ -164,6 +154,20 @@ fn julian_day(time: SystemTime) -> f64 {
         .unwrap_or_default()
         .as_secs_f64();
     2440587.5 + unix_seconds / 86400.0
+}
+
+fn solar_longitude_deg(time: SystemTime) -> f64 {
+    let jd = julian_day(time);
+    let t = (jd - 2451545.0) / 36525.0;
+
+    let mean_long = normalize_degrees(280.46646 + 36000.76983 * t + 0.0003032 * t * t);
+    let mean_anomaly = normalize_degrees(357.52911 + 35999.05029 * t - 0.0001537 * t * t);
+
+    let c = (1.914602 - 0.004817 * t - 0.000014 * t * t) * deg_sin(mean_anomaly)
+        + (0.019993 - 0.000101 * t) * deg_sin(2.0 * mean_anomaly)
+        + 0.000289 * deg_sin(3.0 * mean_anomaly);
+
+    normalize_degrees(mean_long + c)
 }
 
 fn deg_sin(deg: f64) -> f64 {
@@ -230,7 +234,12 @@ fn gregorian_to_am_year(time: SystemTime) -> i32 {
         .as_secs();
     let days = unix_seconds / 86_400;
     let (year, _, _) = civil_from_days(days as i64);
-    year + 3893
+    let equinox = vernal_equinox_utc(year);
+    if time < equinox {
+        year + 3893
+    } else {
+        year + 3894
+    }
 }
 
 // Civil date conversion from days since 1970-01-01.
@@ -246,4 +255,51 @@ fn civil_from_days(days: i64) -> (i32, u32, u32) {
     let m = mp + if mp < 10 { 3 } else { -9 };
     let year = (y + if m <= 2 { 1 } else { 0 }) as i32;
     (year, m as u32, d as u32)
+}
+
+fn vernal_equinox_utc(year: i32) -> SystemTime {
+    let start = system_time_from_utc_date(year, 3, 20);
+    let mut estimate = start;
+
+    for _ in 0..3 {
+        let longitude = solar_longitude_deg(estimate);
+        let delta = normalize_signed(longitude);
+        let days = -delta / 360.0 * 365.2422;
+        estimate = add_seconds(estimate, days * 86_400.0);
+    }
+
+    estimate
+}
+
+fn system_time_from_utc_date(year: i32, month: u32, day: u32) -> SystemTime {
+    let days = days_from_civil(year, month, day);
+    UNIX_EPOCH + Duration::from_secs((days as i64 * 86_400) as u64)
+}
+
+fn days_from_civil(year: i32, month: u32, day: u32) -> i64 {
+    let y = year as i64 - if month <= 2 { 1 } else { 0 };
+    let era = if y >= 0 { y } else { y - 399 } / 400;
+    let yoe = y - era * 400;
+    let m = month as i64;
+    let d = day as i64;
+    let mp = m + if m > 2 { -3 } else { 9 };
+    let doy = (153 * mp + 2) / 5 + d - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    (era * 146097 + doe - 719468) as i64
+}
+
+fn normalize_signed(degrees: f64) -> f64 {
+    let mut value = normalize_degrees(degrees);
+    if value > 180.0 {
+        value -= 360.0;
+    }
+    value
+}
+
+fn add_seconds(time: SystemTime, seconds: f64) -> SystemTime {
+    if seconds >= 0.0 {
+        time + Duration::from_secs_f64(seconds)
+    } else {
+        time - Duration::from_secs_f64(-seconds)
+    }
 }
