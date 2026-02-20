@@ -15,7 +15,7 @@
   {:when {:touch "docs/specs/WORKFLOW_STANDARD.md"}
    :read [{:path "docs/specs/ATTRACTOR_DOT_REFERENCE.md" :section "DOT DSL Subset"}]}
   {:when {:touch "docs/specs/ATTRACTOR_DOT_REFERENCE.md"}
-   :read [{:path "inputs/untyped/attractor/attractor-spec.md" :section "DOT DSL Schema"}]}
+   :read [{:path "inputs/attractor/attractor-spec.md" :section "DOT DSL Schema"}]}
   {:when {:touch "docs/guides/RESTART_CONTEXT.md"}
    :read [{:path "docs/architecture/AGENTS.md" :section "Core Sema Object Principles (Primary)"}]}
   {:when {:touch "scripts/launcher.clj"}

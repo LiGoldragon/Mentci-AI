@@ -2,7 +2,7 @@ use std::path::PathBuf;
 use std::process::Command;
 use anyhow::{Result, Context as AnyhowContext};
 use std::collections::HashMap;
-use tracing::{info, error, warn};
+use tracing::{info, error};
 use serde::{Serialize, Deserialize};
 
 pub mod atom_filesystem_capnp {
@@ -179,7 +179,7 @@ impl Handler for ExitHandler {
 
 struct CodergenHandler { prompt: String }
 impl Handler for CodergenHandler {
-    fn execute(&self, task: &mut TaskContext) -> Result<Outcome> {
+    fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
         info!("Executing Codergen: {}", self.prompt);
         // Simulate LLM call
         let response = format!("// Generated code for: {}", self.prompt);
@@ -408,7 +408,7 @@ fn main() -> Result<()> {
     
     let args: Vec<String> = std::env::args().collect();
     if args.len() < 2 {
-        println!("Usage: mentci <workflow.dot|workflow.aski-flow>");
+        println!("Usage: mentci-ai <workflow.dot|workflow.aski-flow|workflow.edn>");
         return Ok(());
     }
 
@@ -442,7 +442,7 @@ fn main() -> Result<()> {
             Box::new(StartHandler)
         } else if id == "exit" || shape == "Msquare" || n_type == "exit" {
             Box::new(ExitHandler)
-        } else if n_type == "wait.human" || shape == "hexagon" {
+        } else if n_type == "wait.human" || n_type == "wait_human" || shape == "hexagon" {
             Box::new(WaitHumanHandler)
         } else if n_type == "agent" || agent_command.is_some() {
             let prompt = d_node.prompt.clone().unwrap_or_else(|| d_node.label.clone().unwrap_or(id.clone()));

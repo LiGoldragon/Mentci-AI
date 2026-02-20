@@ -3,23 +3,30 @@
 let
   lib = pkgs.lib;
 
-  # Helper to convert a list of input names to an attribute set mapping Name -> Store Path
-  mkInputMap = names: 
-    lib.genAttrs names (name: "${inputs.${name}.outPath}");
+  mkInput = name: inputType: {
+    sourcePath = "${inputs.${name}.outPath}";
+    inherit inputType;
+  };
 
   # -- Ontology Resides in Data --
   inputManifest = {
-    atom = {
-      mentci-ai = "${./.}"; 
+    mentci-ai = {
+      sourcePath = "${./.}";
+      inputType = "atom";
     };
-    flake = mkInputMap [
-      "criomos"
-      "lojix" "seahawk" "skrips" "mkZolaWebsite"
-      "webpublish" "goldragon" "maisiliym" "kibord" "aski"
-    ];
-    untyped = mkInputMap [
-      "attractor" "brynary-attractor" "opencode"
-    ];
+    criomos = mkInput "criomos" "flake";
+    lojix = mkInput "lojix" "flake";
+    seahawk = mkInput "seahawk" "flake";
+    skrips = mkInput "skrips" "flake";
+    mkZolaWebsite = mkInput "mkZolaWebsite" "flake";
+    webpublish = mkInput "webpublish" "flake";
+    goldragon = mkInput "goldragon" "flake";
+    maisiliym = mkInput "maisiliym" "flake";
+    kibord = mkInput "kibord" "flake";
+    aski = mkInput "aski" "flake";
+    attractor = mkInput "attractor" "untyped";
+    brynary-attractor = mkInput "brynary-attractor" "untyped";
+    opencode = mkInput "opencode" "untyped";
   };
 
 in
