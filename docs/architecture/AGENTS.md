@@ -2,6 +2,19 @@
 
 This document provides non-negotiable instructions for AI agents operating within the Mentci-AI ecosystem. These rules ensure architectural integrity and cryptographic provenance.
 
+## 0. Core Sema Object Principles (Primary)
+
+These are the highest-order rules for all languages and scripts.
+
+*   **Single Object In/Out:** All boundary-crossing values are Sema objects. Every function accepts exactly one explicit object argument and returns exactly one object. When multiple inputs/outputs are required, define an input/output object.
+*   **Everything Is an Object:** Reusable behavior belongs to named objects or traits. Free functions exist only as orchestration shells.
+*   **Naming Is a Semantic Layer:** Meaning appears once at the highest valid layer. Repetition across layers is forbidden.
+*   **Capitalization Is Ontology:** `PascalCase` denotes durable objects. `lowercase` denotes flow and transient logic.
+*   **Direction Encodes Action:** Prefer `from_*`, `to_*`, `into_*`. Avoid verbs like `read`, `write`, `load`, `save` when direction already conveys meaning.
+*   **Schema Is Sema:** Schemas define truth. Encodings are incidental. Do not name domain logic after wire formats.
+*   **Filesystem Is Semantic:** Repo/dir/module boundaries carry meaning. Inner layers assume outer context.
+*   **Documentation Protocol:** Impersonal, timeless, precise. Document only non-boilerplate behavior.
+
 ## 1. Environment & Isolation
 
 Agents execute within a **Nix Jail**. All operations must be performed using the provided tools. Direct network access from the sandbox is forbidden.
