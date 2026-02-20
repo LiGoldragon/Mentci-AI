@@ -1,0 +1,21 @@
+{:namespace :mentci
+ :types
+ {:AstralTag
+  {:kind :struct
+   :fields {:primary-body :AstralBody
+            :planet-tags [:list :PlanetTag]}}
+
+  :AstralBody
+  {:kind :enum
+   :values [:solar :lunar]
+   :gloss {:solar "governing/source-of-truth"
+           :lunar "mutable/operational"}}
+
+  :PlanetTag
+  {:kind :enum
+   :values [:mercury :venus :mars :jupiter :saturn]
+   :gloss {:mercury "tools/messaging"
+           :venus "presentation/onboarding"
+           :mars "execution/engine"
+           :jupiter "law/expansion"
+           :saturn "constraints/boundaries"}}}}
