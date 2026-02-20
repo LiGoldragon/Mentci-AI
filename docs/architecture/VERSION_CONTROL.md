@@ -36,6 +36,9 @@ When the working copy is dirty and multiple change-intents may be present:
 
 If splitting cannot be done safely, stop and request direction.
 
+Empty working changes:
+- Do not abandon or close empty JJ working changes by default; they may belong to another agent or worktree.
+
 ## 5. Jailed Shipping (Workspace -> dev)
 When operating in the jailed workspace, always use `mentci-commit` to advance the target bookmark:
 
