@@ -55,3 +55,4 @@ Use `mentci-jj log` to prefer `--no-signing` and avoid GPG failures.
 ## 7. Related References
 - Conceptual model: `docs/architecture/JAIL_COMMIT_PROTOCOL.md`
 - Tooling overview: `docs/architecture/TOOLS.md`
+- Release protocol: `docs/architecture/RELEASE_PROTOCOL.md`
