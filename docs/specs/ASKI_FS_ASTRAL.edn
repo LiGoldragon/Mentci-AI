@@ -1,0 +1,14 @@
+{:namespace :mentci
+ :types
+ {:FsAstral
+  {:kind :struct
+   :fields {:primary-body :AstralBody
+            :planet-tags [:list :PlanetTag]}}
+
+  :AstralBody
+  {:kind :enum
+   :values [:solar :lunar]}
+
+  :PlanetTag
+  {:kind :enum
+   :values [:mercury :venus :mars :jupiter :saturn]}}}
