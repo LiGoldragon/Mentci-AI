@@ -5,7 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/fb7944c166a3b630f177938e478f0378e64ce108";
     flake-utils.url = "github:numtide/flake-utils";
     crane.url = "github:ipetkov/crane";
-    crane.inputs.nixpkgs.follows = "nixpkgs";
 
     # Level 5 / Criome Ecosystem Inputs
     criomos.url = "github:Criome/CriomOS";
