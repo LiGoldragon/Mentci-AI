@@ -20,8 +20,9 @@ Mentci-AI is a Nix-and-Rust based AI daemon designed to implement **Level 5 "Dar
 8.  **`docs/specs/ASKI_FLOW_DSL.md`**: Noun-Sequence DSL for workflows in EDN (prefer over DOT for new definitions).
 9.  **`docs/specs/ASKI_ASTRAL_DSL.md`** & **`schema/aski_astral.edn`**: Astral DSL schema and example.
 10. **`docs/specs/ASKI_FS_DSL.md`** & **`docs/specs/ASKI_FS_ASTRAL_DSL.md`**: Filesystem DSLs and astral mapping.
-11. **`schema/mentci.capnp`** & **`schema/atom_filesystem.capnp`**: Semantic truth of the system (Filesystem Atoms, Orchestrator RPCs).
-12. **`docs/reports/BRYNARY_ATTRACTOR_SUMMARY.md`**: High-level summary of the Attractor approach vs chat loops.
+11. **`workflows/mentci.aski-fs`** & **`workflows/mentci.aski-fs.deps.edn`**: Canonical FS map and dependency-read rules.
+12. **`schema/mentci.capnp`** & **`schema/atom_filesystem.capnp`**: Semantic truth of the system (Filesystem Atoms, Orchestrator RPCs).
+13. **`docs/reports/BRYNARY_ATTRACTOR_SUMMARY.md`**: High-level summary of the Attractor approach vs chat loops.
 
 ## 3. Current State & Intent
 *   **Filesystem:** The entire project is typed as a "Repo Atom". Documentation is organized into `docs/`.
@@ -35,6 +36,8 @@ Mentci-AI is a Nix-and-Rust based AI daemon designed to implement **Level 5 "Dar
 *   **Chronography:** `src/bin/chronos.rs` outputs solar time (version/unicode/etc). Use Nix dev environments for non-standard tools.
 *   **Version Control:** JJ is authoritative; audit trail is `jj log`. Aggressive auto-commit and intent-splitting rules apply.
 *   **Jail:** Managed by `scripts/launcher.clj`. Supports **Materialized (Mutable) Inputs** in Admin mode via `rsync`.
+*   **Scripts:** Babashka + Malli via `defn*` and instrumentation (`scripts/malli.clj`). `scripts/prefetch_orchestrator.py` is the only allowed Python script.
+*   **Inputs:** `inputs/` is read-only reference material; do not edit.
 
 ## 4. Immediate Tasks for New Session
 1.  **Verify Chronos Accuracy**: Compare `chronos` output against Solar Fire if needed; adjust solar longitude math if drift is confirmed.
