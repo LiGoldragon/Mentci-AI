@@ -8,7 +8,8 @@ The following files are mandatory authority sources and must be loaded before ed
 
 1. `docs/architecture/ARCHITECTURAL_GUIDELINES.md`
 2. `docs/architecture/VERSION_CONTROL.md`
-3. `docs/architecture/SEMA_RUST_GUIDELINES.md`, `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
+3. `docs/architecture/HIGH_LEVEL_GOALS.md`
+4. `docs/architecture/SEMA_RUST_GUIDELINES.md`, `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
 
 Enforcement requirements:
 
