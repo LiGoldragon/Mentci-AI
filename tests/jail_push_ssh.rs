@@ -229,26 +229,42 @@ fn jail_commit_pushes_to_ssh_git_remote() {
         .expect("write policy");
 
         let repo_scripts = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("scripts/commit.clj");
+        let runtime_path = workspace.join(".mentci/runtime.json");
+        let runtime_json = serde_json::json!({
+            "repoRoot": repo.to_string_lossy(),
+            "workspaceRoot": workspace.to_string_lossy(),
+            "workingBookmark": "dev",
+            "targetBookmark": "jailCommit",
+            "policyPath": policy_path.to_string_lossy(),
+        });
+        fs::write(
+            &runtime_path,
+            serde_json::to_vec_pretty(&runtime_json).expect("encode runtime json"),
+        )
+        .expect("write runtime file");
+
         run_check(
             Command::new("bb")
                 .arg(repo_scripts)
-                .arg("intent: ssh jail push")
-                .env("MENTCI_REPO_ROOT", &repo)
-                .env("MENTCI_WORKSPACE", &workspace)
-                .env("MENTCI_WORKING_BOOKMARK", "dev")
-                .env("MENTCI_COMMIT_TARGET", "jailCommit")
-                .env("MENTCI_JAIL_POLICY", &policy_path),
+                .arg("--runtime")
+                .arg(&runtime_path)
+                .arg("intent: ssh jail push"),
         )?;
 
-        let ssh_cmd = format!(
-            "ssh -i {} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p {port}",
-            client_key.display()
-        );
+        let repo_jj = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("scripts/jj_workflow.clj");
         run_check(
-            Command::new("jj")
-                .args(["git", "push", "--bookmark", "jailCommit", "-R"])
-                .arg(&workspace)
-                .env("GIT_SSH_COMMAND", ssh_cmd),
+            Command::new("bb")
+                .arg(repo_jj)
+                .arg("--runtime")
+                .arg(&runtime_path)
+                .args(["push", "origin", "jailCommit"])
+                .env(
+                    "GIT_SSH_COMMAND",
+                    format!(
+                        "ssh -i {} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p {port}",
+                        client_key.display()
+                    ),
+                ),
         )?;
 
         run_check(

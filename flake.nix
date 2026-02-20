@@ -111,10 +111,10 @@
               pkgs.rsync
               codex-cli-nix.packages.${system}.default
               (pkgs.writeShellScriptBin "mentci-commit" ''
-                ${pkgs.babashka}/bin/bb ${./scripts/commit.clj} "$@"
+                ${pkgs.babashka}/bin/bb ${./scripts/commit.clj} --runtime "$(pwd)/workspace/.mentci/runtime.json" "$@"
               '')
               (pkgs.writeShellScriptBin "mentci-jj" ''
-                ${pkgs.babashka}/bin/bb ${./scripts/jj_workflow.clj} "$@"
+                ${pkgs.babashka}/bin/bb ${./scripts/jj_workflow.clj} --runtime "$(pwd)/workspace/.mentci/runtime.json" "$@"
               '')
               (pkgs.writeShellScriptBin "mentci-bootstrap" ''
                 ${pkgs.cargo}/bin/cargo run --quiet --bin mentci-ai -- job/jails bootstrap "$@"
@@ -150,10 +150,6 @@
             MENTCI_RO_INDICATOR = "RW (Admin)";
             RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
             MENTCI_REPO_ROOT = "$(pwd)";
-            MENTCI_WORKSPACE = "$(pwd)/workspace";
-            MENTCI_WORKING_BOOKMARK = "dev";
-            MENTCI_COMMIT_TARGET = "jailCommit";
-            MENTCI_JAIL_POLICY = jail.jailConfig.policyPath;
             JJ_CONFIG = "$(pwd)/jj-project-config.toml";
             jailConfig = builtins.toJSON jail.jailConfig;
           };
