@@ -38,9 +38,17 @@ let
   };
 
   allowedPushBookmarks = builtins.map (item: item.targetBookmark) (lib.attrValues outputManifest);
+  networkPolicy = {
+    mode = "push-only";
+    allowedGitHosts = [
+      "127.0.0.1"
+      "localhost"
+      "internal-git.test"
+    ];
+  };
 
   jailPolicyFile = pkgs.writeText "mentci-jail-policy.json" (builtins.toJSON {
-    inherit outputsPath outputManifest allowedPushBookmarks;
+    inherit outputsPath outputManifest allowedPushBookmarks networkPolicy;
   });
 
 in
