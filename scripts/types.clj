@@ -35,3 +35,11 @@
    [:shellHook :string]
    [:env [:map-of :keyword :any]]])
 
+(def AgentLauncherConfig
+  [:map
+   [:sema/type [:= "AgentLauncherConfig"]]
+   [:provider :string]
+   [:gopassPrefix :string]
+   [:entry :string]
+   [:envVar :string]
+   [:command [:vector :string]]])
