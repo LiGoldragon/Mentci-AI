@@ -1,0 +1,46 @@
+;; Re-implementation of Attractor: pipelines/factory/implement.dot
+
+[ (ChooseDecompositionStrategy
+    {:label "Choose decomposition strategy:"
+     :shape "hexagon"})
+  {:layer_by_layer PlanImplementation
+   :feature_slice PlanImplementation
+   :embarrassingly_parallel PlanImplementation
+   :sequential_linear PlanImplementation}
+
+  (PlanImplementation
+    {:label "Plan Implementation"
+     :prompt "@prompts/implement/plan.md"
+     :reasoning_effort "high"
+     :thread_id "impl"
+     :fidelity "full"})
+
+  (Implement
+    {:label "Implement"
+     :prompt "@prompts/implement/implement.md"
+     :thread_id "impl"
+     :fidelity "full"})
+
+  (Review
+    {:label "Review"
+     :prompt "@prompts/implement/review.md"
+     :thread_id "impl"
+     :fidelity "full"})
+
+  (Validate
+    {:label "Validate"
+     :prompt "@prompts/implement/validate.md"
+     :goal_gate true
+     :thread_id "impl"
+     :fidelity "full"})
+  {:success :next
+   :failure FixFailures}
+
+  (FixFailures
+    {:label "Fix Failures"
+     :prompt "@prompts/implement/fix.md"
+     :max_visits 3
+     :thread_id "impl"
+     :fidelity "full"})
+  {:next Validate}
+]
