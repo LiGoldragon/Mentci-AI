@@ -20,20 +20,25 @@
 (def CommitMainInput
   [:map
    [:args [:vector :string]]
+   [:workingBookmark :string]
    [:targetBookmark :string]
    [:repoRoot :string]
    [:workspaceRoot :string]])
 
 (defn* run-commit [:=> [:cat CommitMainInput] :any] [input]
-  (let [{:keys [args targetBookmark repoRoot workspaceRoot]} input]
+  (let [{:keys [args workingBookmark targetBookmark repoRoot workspaceRoot]} input]
     (if (or (not repoRoot) (not workspaceRoot))
       (do (println "Error: MENTCI_REPO_ROOT or MENTCI_WORKSPACE not set.")
           (System/exit 1))
       
       (let [args args
+            working-bookmark workingBookmark
             target-bookmark targetBookmark
             repo-root repoRoot
             workspace-root workspaceRoot]
+        (when (= working-bookmark target-bookmark)
+          (println (str "Error: target bookmark '" target-bookmark "' must differ from working bookmark '" working-bookmark "'."))
+          (System/exit 1))
         (if (empty? args)
           (do (println "Usage: mentci-commit <message>")
               (System/exit 1))
@@ -55,10 +60,12 @@
                     (println (str "Successfully committed and advanced bookmark '" target-bookmark "' from workspace."))))))))))))
 
 (defn* -main [:=> [:cat [:* :string]] :any] [& args]
-  (let [target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "dev")
+  (let [working-bookmark (or (System/getenv "MENTCI_WORKING_BOOKMARK") "dev")
+        target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "jailCommit")
         repo-root (System/getenv "MENTCI_REPO_ROOT")
         workspace-root (System/getenv "MENTCI_WORKSPACE")
         input {:args (vec args)
+               :workingBookmark working-bookmark
                :targetBookmark target-bookmark
                :repoRoot (or repo-root "")
                :workspaceRoot (or workspace-root "")}]
