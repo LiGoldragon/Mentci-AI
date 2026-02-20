@@ -36,6 +36,8 @@
 
 (def RunJJCommitInput
   [:map
+   [:workingBookmark :string]
+   [:targetBookmark :string]
    [:message :string]])
 
 (def UsageInput
@@ -79,8 +81,11 @@
 
 (defn* run-jj-commit [:=> [:cat RunJJCommitInput] :any] [input]
   (let [message (:message input)
-        target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "dev")
+        working-bookmark (:workingBookmark input)
+        target-bookmark (:targetBookmark input)
         res1 (run-jj {:args ["describe" "-m" message]})]
+    (when (= working-bookmark target-bookmark)
+      (die {:message (str "Error: target bookmark '" target-bookmark "' must differ from working bookmark '" working-bookmark "'.")}))
     (if (not= 0 (:exit res1))
       (die {:message (str "Error during jj describe: " (:err res1))})
       (let [res2 (run-jj {:args ["bookmark" "set" target-bookmark "-r" "@"]})]
@@ -99,6 +104,8 @@
 (defn* -main [:=> [:cat JJMainInput] :any] [input]
   (let [args (:args input)
         cmd (first args)
+        working-bookmark (or (System/getenv "MENTCI_WORKING_BOOKMARK") "dev")
+        target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "jailCommit")
         message (when (= cmd "commit") (str/join " " (rest args)))]
     (when (= cmd "commit")
       (when (str/blank? message)
@@ -106,7 +113,9 @@
     (case cmd
       "status" (run-jj-status {})
       "log" (run-jj-log {})
-      "commit" (run-jj-commit {:message message})
+      "commit" (run-jj-commit {:message message
+                               :workingBookmark working-bookmark
+                               :targetBookmark target-bookmark})
       (usage {}))))
 
 (-main {:args (vec *command-line-args*)

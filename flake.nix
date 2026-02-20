@@ -117,6 +117,9 @@
               (pkgs.writeShellScriptBin "mentci-jj" ''
                 ${pkgs.babashka}/bin/bb ${./scripts/jj_workflow.clj} "$@"
               '')
+              (pkgs.writeShellScriptBin "mentci-bootstrap" ''
+                ${pkgs.cargo}/bin/cargo run --quiet --bin mentci-bootstrap -- "$@"
+              '')
             ];
     
             # Import jail configuration
