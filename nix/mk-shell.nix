@@ -14,6 +14,10 @@ let
   
   # Ensure all packages are built and available as paths
   packagePaths = map (p: "${p}") packages;
+  binPath = builtins.concatStringsSep ":" (map (p: "${p}/bin") packages);
+  envWithPath = env // {
+    PATH = if env ? PATH then "${binPath}:${env.PATH}" else binPath;
+  };
 
   shellSpec = {
     inherit name shellHook env;
@@ -38,7 +42,7 @@ let
     
     # Dependencies needed by the builder or the shell
     inherit packages;
-  } // (env);
+  } // (envWithPath);
 
 in
 # We return an attribute set that looks like a derivation
