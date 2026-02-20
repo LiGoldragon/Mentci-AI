@@ -1,0 +1,17 @@
+;; Re-implementation of Attractor: pipelines/factory/seed.dot
+
+[ (IngestArtifacts
+    {:label "Ingest Artifacts"
+     :prompt "@prompts/seed/ingest.md"
+     :reasoning_effort "high"})
+
+  (DraftProductDocs
+    {:label "Draft Product Docs"
+     :prompt "@prompts/seed/draft.md"})
+
+  (ReviewProductDocs
+    {:label "Review Product Docs"
+     :shape "hexagon"})
+  {:accept :next
+   :revise DraftProductDocs}
+]
