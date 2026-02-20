@@ -1,22 +1,22 @@
 # Transition Plan: Python to Clojure (Babashka)
 
 ## 1. Rationale
-Mentci-AI currently uses Python for glue code and orchestration. However, the system's "Semantic Truth" is recorded in **EDN (Extensible Data Notation)**. Clojure is the native environment for EDN, offering superior data manipulation capabilities and alignment with the **Criome/Sema** ecosystem.
+Mentci-AI previously used Python for glue code and orchestration. The current mandate is Clojure (Babashka) for scripts. The system's "Semantic Truth" is recorded in **EDN (Extensible Data Notation)**. Clojure is the native environment for EDN, offering superior data manipulation capabilities and alignment with the **Criome/Sema** ecosystem.
 
 To maintain fast startup times for CLI operations (launchers, loggers), we will use **Babashka** (a fast-starting Clojure scripting runtime) for the immediate transition, with the option to compile to GraalVM native images later.
 
 ## 2. Phase 1: Infrastructure (Nix)
-Transition the `flake.nix` from a Python-centric environment to a Clojure-centric one.
+Transitioned `flake.nix` from a Python-centric environment to a Clojure-centric one.
 
 ### 2.1. Tooling Integration
-- **Runtime:** Add `pkgs.babashka` and `pkgs.clojure` to `commonPackages`.
-- **Derivation:** Implement `mkDerivation` using `babashka` to wrap the orchestration logic.
+- **Runtime:** `pkgs.babashka` and `pkgs.clojure` are in `commonPackages`.
+- **Derivation:** Clojure scripts are first-class entrypoints (no Python glue).
 
 ### 2.2. Pure Clojure Shell
-Create a `mkShell` that eliminates Python dependencies entirely, providing only the JVM, Babashka, and necessary Clojure CLI tools.
+Prefer a Clojure-first `mkShell`. Python is not required for Mentci scripts.
 
 ## 3. Phase 2: Logic Migration
-Migrate existing scripts one-by-one, ensuring atomic commits for each.
+Migration completed. Scripts are in Clojure and validated with Malli.
 
 | Python Script | Clojure Equivalent | Responsibility |
 | :--- | :--- | :--- |
@@ -43,15 +43,14 @@ mentci-clj = pkgs.stdenv.mkDerivation {
 ```
 
 ## 5. Phase 4: Cleanup
-- Remove `pkgs.python3` and `python3Packages` from `flake.nix` and `jail.nix`.
-- Delete all `.py` files once parity is verified.
-- Update `ARCHITECTURAL_GUIDELINES.md` to reflect the **Clojure Mandate**.
+- Keep Python out of Mentci scripts. The only exception is `scripts/prefetch_orchestrator.py`.
+- Do not add new `.py` scripts under `scripts/`.
 
 ## 6. Verification Matrix
-- [ ] Remove logger tooling references once no longer in use.
-- [ ] `bb launcher.clj` correctly processes structured Nix attributes.
+- [x] Remove logger tooling references once no longer in use.
+- [x] `bb launcher.clj` correctly processes structured Nix attributes.
 - [ ] `nix build .#mentci-clj` succeeds in a pure environment.
-- [ ] `nix develop` provides a python-free shell.
+- [ ] `nix develop` provides a Clojure-first shell (Python not required for Mentci scripts).
 
 ---
 *Target Completion: ♈︎ 1.1.1 (5920 Anno Mundi)*
