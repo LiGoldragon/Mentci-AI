@@ -1,20 +1,20 @@
-use anyhow::{Result, Context as AnyhowContext};
-use edn_rs::{Edn};
-use std::str::FromStr;
+use crate::dot_loader::{Edge, Graph, Node};
+use anyhow::{Context as AnyhowContext, Result};
+use edn_rs::Edn;
 use std::collections::HashMap;
-use crate::dot_loader::{Graph, Node, Edge};
+use std::str::FromStr;
 
 pub struct EdnLoader;
 
 impl EdnLoader {
     pub fn parse(content: &str) -> Result<Graph> {
-        let edn = Edn::from_str(content)
-            .map_err(|e| anyhow::anyhow!("Failed to parse EDN: {}", e))?;
-        
+        let edn =
+            Edn::from_str(content).map_err(|e| anyhow::anyhow!("Failed to parse EDN: {}", e))?;
+
         if let Edn::Vector(vec) = edn {
             let mut nodes = HashMap::new();
             let mut edges = Vec::new();
-            
+
             let elements = vec.to_vec();
             let mut i = 0;
             let mut node_ids_in_order: Vec<String> = Vec::new();
@@ -33,15 +33,15 @@ impl EdnLoader {
                             node_type: None,
                             attributes: HashMap::new(),
                         })
-                    },
+                    }
                     Edn::List(l) => {
                         let list = l.clone().to_vec();
                         let id_sym = list.first().context("Empty list node")?;
                         let id = id_sym.to_string();
-                        
+
                         let mut attrs = HashMap::new();
                         if let Some(Edn::Map(m)) = list.get(1) {
-                           for (k, v) in m.clone().to_map().iter() {
+                            for (k, v) in m.clone().to_map().iter() {
                                 let key = k.to_string().trim_matches(':').to_string();
                                 let val = v.to_string().trim_matches('"').to_string();
                                 attrs.insert(key, val);
@@ -56,7 +56,7 @@ impl EdnLoader {
                             node_type: attrs.get("type").cloned(),
                             attributes: attrs,
                         })
-                    },
+                    }
                     Edn::Map(_) => None, // Handled in second pass
                     _ => None,
                 };
@@ -74,10 +74,12 @@ impl EdnLoader {
             let mut current_node_idx = 0;
             while i < elements.len() {
                 let item = &elements[i];
-                
+
                 // If it's a node (Symbol or List)
                 if matches!(item, Edn::Symbol(_) | Edn::List(_)) {
-                    if current_node_idx >= node_ids_in_order.len() { break; }
+                    if current_node_idx >= node_ids_in_order.len() {
+                        break;
+                    }
                     let current_id = &node_ids_in_order[current_node_idx];
                     let next_node_id = node_ids_in_order.get(current_node_idx + 1);
 
@@ -90,7 +92,9 @@ impl EdnLoader {
 
                             let final_target = if target == "next" {
                                 has_next_override = true;
-                                next_node_id.context("Used :next in map but no next node exists")?.clone()
+                                next_node_id
+                                    .context("Used :next in map but no next node exists")?
+                                    .clone()
                             } else {
                                 target
                             };
@@ -106,8 +110,8 @@ impl EdnLoader {
                         }
 
                         if !has_next_override && next_node_id.is_some() {
-                             // Add default implicit edge if not overridden
-                             edges.push(Edge {
+                            // Add default implicit edge if not overridden
+                            edges.push(Edge {
                                 from: current_id.clone(),
                                 to: next_node_id.unwrap().clone(),
                                 label: None,
