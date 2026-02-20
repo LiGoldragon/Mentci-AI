@@ -92,13 +92,16 @@ A Vector can be a target, allowing for hierarchical workflow definition.
 
 ## 6. DOT Structured-Data Conversion Standard
 
-Canonical EDN conversion model:
-- `schema/dot_graph_conversion.edn`
+Canonical conversion medium:
+- **Graphviz JSON** (`dot -Tjson`)
+- Schema: `schema/graphviz_json_standard.edn`
 
-This schema defines:
-- DOT graph object structure (`:DotGraph`, `:DotNode`, `:DotEdge`)
-- Aski-Flow routing conversion semantics (`:AskiFlowConversion`)
-- Deterministic rules for default sequential edges and routing-map overrides
+Required conversion path:
+- `Aski-Flow -> Graphviz JSON -> DOT`
+- `DOT -> Graphviz JSON`
+
+Direct pairwise conversion contracts that bypass Graphviz JSON are forbidden.
+Expanded DOT text must be a 1-to-1 expansion from the Graphviz JSON medium (`objects` and `edges` with attributes).
 
 ---
 *Created for the Mentci-AI Level 5 Stack.*
