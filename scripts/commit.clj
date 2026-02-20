@@ -17,7 +17,6 @@
 
 (def CommitMainInput
   [:map
-   [:sema/type [:= "CommitMainInput"]]
    [:args [:vector :string]]
    [:targetBookmark :string]
    [:repoRoot :string]
@@ -33,8 +32,7 @@
         repo-root (System/getenv "MENTCI_REPO_ROOT")
         workspace-root (System/getenv "MENTCI_WORKSPACE")
         args *command-line-args*
-        input {:sema/type "CommitMainInput"
-               :args (vec args)
+        input {:args (vec args)
                :targetBookmark target-bookmark
                :repoRoot (or repo-root "")
                :workspaceRoot (or workspace-root "")}]
@@ -52,8 +50,7 @@
               (System/exit 1))
           
           (let [message (first args)
-                context {:sema/type "CommitContext"
-                         :message message
+                context {:message message
                          :bookmark target-bookmark
                          :repoRoot repo-root
                          :workspaceRoot workspace-root}]

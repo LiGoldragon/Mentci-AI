@@ -17,12 +17,10 @@
 
 (def CheckDepInput
   [:map
-   [:sema/type [:= "CheckDepInput"]]
    [:name :string]])
 
 (def TestDepsMainInput
-  [:map
-   [:sema/type [:= "TestDepsMainInput"]]])
+  [:map])
 
 (def deps ["nix" "cargo" "rustc" "bb" "clojure" "jj" "jet" "gdb"])
 
@@ -32,8 +30,7 @@
                     {:errors (me/humanize (m/explain types/DependencyCheckConfig config))}))))
 
 (defn check-dep [name]
-  (let [input {:sema/type "CheckDepInput"
-               :name name}]
+  (let [input {:name name}]
     (when-not (m/validate CheckDepInput input)
       (throw (ex-info "Invalid check-dep input"
                       {:errors (me/humanize (m/explain CheckDepInput input))}))))
@@ -45,12 +42,11 @@
           false))))
 
 (defn main []
-  (let [input {:sema/type "TestDepsMainInput"}]
+  (let [input {}]
     (when-not (m/validate TestDepsMainInput input)
       (throw (ex-info "Invalid main input"
                       {:errors (me/humanize (m/explain TestDepsMainInput input))}))))
-  (let [config {:sema/type "DependencyCheckConfig"
-                :deps deps}]
+  (let [config {:deps deps}]
     (validate-config config))
   (println "Mentci-AI Dependency Audit (Clojure)")
   (println "------------------------------")
