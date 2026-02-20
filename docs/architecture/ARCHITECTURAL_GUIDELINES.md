@@ -31,6 +31,7 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 1.  **Language/Runtime:** (e.g., Clojure/Babashka, Rust/Cargo).
 2.  **Origin/Provenance:** (e.g., `nixpkgs#jet`, GitHub repo `babashka/babashka`).
 3.  **Rationale:** Why this specific implementation was chosen over others.
+4.  **Execution Context:** Use `nix develop` for non-standard tools, libraries, or dependencies.
 
 ## 0.4. AUDIT TRAIL
 
