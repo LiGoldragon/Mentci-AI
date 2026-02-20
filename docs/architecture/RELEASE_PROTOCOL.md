@@ -41,6 +41,13 @@ release: v0.12.1.28.44 - stabilize level-5 workflow standards
 - Established DSL guidelines for delimiter-driven typing
 ```
 
+## 3.1 Required Companion Change
+Every tagged release commit must include an update to:
+
+- `docs/guides/RESTART_CONTEXT.md`
+
+The `RESTART_CONTEXT.md` update is part of the release changeset and must be committed in the same release commit that is tagged.
+
 ## 4. Source of Truth
 Use `jj log` and `jj diff` to determine the change list since the last tag.
 
