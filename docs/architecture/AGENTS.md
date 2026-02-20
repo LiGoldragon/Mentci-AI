@@ -36,7 +36,7 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 
 *   **Clojure (Babashka) Mandate:** All glue code and scripts must be written in Clojure (Babashka). No Bash logic beyond the one-line bb shim.
 *   **Script Typing:** All Clojure scripts must define Malli schemas for inputs/config and validate them.
-*   **Script Guard:** Run `bb scripts/validate_scripts.clj` when adding or editing scripts. Python is forbidden under `scripts/`.
+*   **Script Guard:** Run `bb scripts/validate_scripts.clj` when adding or editing scripts. Python is forbidden under `scripts/` except `scripts/prefetch_orchestrator.py`.
 *   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_RUST_GUIDELINES.md`, and `docs/architecture/SEMA_NIX_GUIDELINES.md`.
 *   **Attractor Code Reference:** Implementation lives in `inputs/untyped/brynary-attractor/attractor`. The `inputs/untyped/attractor` folder is specs only.
 *   **Attractor Backend Behavior:** `CliAgentBackend` spawns a subprocess with env merged from `process.env` and backend config. `SessionBackend` uses `unified-llm` `Client.fromEnv` (API keys via standard env vars).
