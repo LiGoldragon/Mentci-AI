@@ -61,7 +61,15 @@ Precision is hierarchical and context-dependent. Coordinates may be truncated fr
 - **Audit Trail:** When required, include ecliptic time in commit messages or structured data checked into the repo.
 - **Filenaming:** Reports must use the `YEAR_SIGN_DEGREE_MINUTE_SECOND` format for durable sorting.
 
-## 6. Implementation
+## 7. Chronography Tool
+The `chronos` binary prints the current zodiac-ordinal time in multiple formats.
+
+Examples:
+- `cargo run --bin chronos` (unicode default)
+- `cargo run --bin chronos -- --format version`
+- `cargo run --bin chronos -- --format numeric --precision minute`
+
+## 8. Implementation
 Current implementations in `flake.nix` use a static placeholder. The transition to Level 4/5 requires a native Rust/Clojure solar coordinate calculator to provide dynamic, real-time chronography.
 
 ---
