@@ -116,3 +116,44 @@ impl DotLoader {
         })
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::DotLoader;
+
+    #[test]
+    fn parses_basic_dot_workflow() {
+        let dot = r#"
+digraph "TestFlow" {
+  start [shape="Mdiamond"];
+  plan [shape="box" label="Plan" prompt="Write a plan"];
+  exit [shape="Msquare"];
+
+  start -> plan [label="ok" weight="2"];
+  plan -> exit [condition="outcome=success"];
+}
+"#;
+
+        let graph = DotLoader::parse(dot).expect("DOT parse should succeed");
+
+        assert_eq!(graph.id.as_deref(), Some("TestFlow"));
+        assert!(graph.nodes.contains_key("start"));
+        assert!(graph.nodes.contains_key("plan"));
+        assert!(graph.nodes.contains_key("exit"));
+
+        let plan = graph.nodes.get("plan").expect("plan node");
+        assert_eq!(plan.label.as_deref(), Some("Plan"));
+        assert_eq!(plan.prompt.as_deref(), Some("Write a plan"));
+        assert_eq!(plan.shape.as_deref(), Some("box"));
+
+        assert_eq!(graph.edges.len(), 2);
+        let start_edge = graph.edges.iter().find(|e| e.from == "start" && e.to == "plan")
+            .expect("start -> plan edge");
+        assert_eq!(start_edge.label.as_deref(), Some("ok"));
+        assert_eq!(start_edge.weight, Some(2));
+
+        let exit_edge = graph.edges.iter().find(|e| e.from == "plan" && e.to == "exit")
+            .expect("plan -> exit edge");
+        assert_eq!(exit_edge.condition.as_deref(), Some("outcome=success"));
+    }
+}
