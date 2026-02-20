@@ -13,8 +13,11 @@ struct BootstrapConfig {
     commit_message: Option<String>,
 }
 
-fn main() -> Result<()> {
-    let cfg = parse_args(std::env::args().skip(1).collect())?;
+pub fn run_from_args(mut args: Vec<String>) -> Result<()> {
+    if args.first().map(String::as_str) == Some("bootstrap") {
+        args.remove(0);
+    }
+    let cfg = parse_args(args)?;
     run(cfg)
 }
 
@@ -61,7 +64,14 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
             }
             "--help" | "-h" => {
                 print_help();
-                std::process::exit(0);
+                return Ok(BootstrapConfig {
+                    repo_root,
+                    outputs_dir,
+                    output_name,
+                    working_bookmark,
+                    target_bookmark,
+                    commit_message,
+                });
             }
             other => bail!("unknown argument: {other}"),
         }
@@ -79,7 +89,7 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
 }
 
 fn print_help() {
-    println!("Usage: mentci-bootstrap [options]");
+    println!("Usage: mentci-ai job/jails [bootstrap] [options]");
     println!("  --repo-root <path>           Repository root (default: cwd)");
     println!("  --outputs-dir <name>         Outputs directory (default: Outputs)");
     println!("  --output-name <name>         Output workspace name (default: mentci-ai)");
@@ -131,11 +141,8 @@ fn run(cfg: BootstrapConfig) -> Result<()> {
     }
 
     if let Some(message) = &cfg.commit_message {
-        run_jj(
-            &workspace_path,
-            &["describe", "-m", message],
-        )
-        .context("failed to describe workspace commit")?;
+        run_jj(&workspace_path, &["describe", "-m", message])
+            .context("failed to describe workspace commit")?;
         run_jj(
             &workspace_path,
             &["bookmark", "set", &cfg.target_bookmark, "-r", "@"],
@@ -164,8 +171,11 @@ fn sanitize_workspace_name(value: &str) -> String {
 }
 
 fn ensure_revision_exists(repo_root: &Path, revset: &str) -> Result<()> {
-    run_jj(repo_root, &["log", "-r", revset, "-n", "1", "--no-graph", "-T", "commit_id"])
-        .with_context(|| format!("working bookmark/revset '{revset}' does not exist"))?;
+    run_jj(
+        repo_root,
+        &["log", "-r", revset, "-n", "1", "--no-graph", "-T", "commit_id"],
+    )
+    .with_context(|| format!("working bookmark/revset '{revset}' does not exist"))?;
     Ok(())
 }
 
