@@ -104,7 +104,8 @@ fn bootstrap_creates_jail_commit_bookmark_from_output_workspace() {
         workspace
     );
 
-    fs::write(workspace.join("jail.txt"), "wrapped by rust bootstrap\n").expect("write test change");
+    fs::write(workspace.join("jail.txt"), "wrapped by rust bootstrap\n")
+        .expect("write test change");
 
     let request2 = request_path(temp.path(), "bootstrap-2");
     write_bootstrap_request(
@@ -126,7 +127,17 @@ fn bootstrap_creates_jail_commit_bookmark_from_output_workspace() {
 
     let bookmarks = run_capture(
         Command::new("jj")
-            .args(["log", "-r", "jailCommit", "-n", "1", "--no-graph", "-T", "bookmarks", "-R"])
+            .args([
+                "log",
+                "-r",
+                "jailCommit",
+                "-n",
+                "1",
+                "--no-graph",
+                "-T",
+                "bookmarks",
+                "-R",
+            ])
             .arg(&repo),
     );
     assert!(
@@ -169,15 +180,7 @@ fn bootstrap_rejects_same_working_and_target_bookmarks() {
     );
 
     let request = request_path(temp.path(), "bootstrap-invalid");
-    write_bootstrap_request(
-        &request,
-        &repo,
-        "Outputs",
-        "mentci-ai",
-        "dev",
-        "dev",
-        None,
-    );
+    write_bootstrap_request(&request, &repo, "Outputs", "mentci-ai", "dev", "dev", None);
 
     let bin = env!("CARGO_BIN_EXE_mentci-ai");
     let output = Command::new(bin)
@@ -187,7 +190,10 @@ fn bootstrap_rejects_same_working_and_target_bookmarks() {
         .output()
         .expect("bootstrap command");
 
-    assert!(!output.status.success(), "expected failure for same bookmarks");
+    assert!(
+        !output.status.success(),
+        "expected failure for same bookmarks"
+    );
     let stderr = String::from_utf8_lossy(&output.stderr);
     assert!(
         stderr.contains("must differ"),
