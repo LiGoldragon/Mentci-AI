@@ -10,13 +10,6 @@
 
 (load-file (str (.getParent (io/file *file*)) "/types.clj"))
 
-(def legacy-untyped-scripts
-  #{"scripts/commit.clj"
-    "scripts/intent.clj"
-    "scripts/jj_workflow.clj"
-    "scripts/test_deps.clj"
-    "scripts/mk_shell.clj"})
-
 (def ScriptValidationConfig
   [:map
    [:sema/type [:= "ScriptValidationConfig"]]
@@ -71,7 +64,7 @@
         scripts-dir (or scripts-dir "scripts")
         config {:sema/type "ScriptValidationConfig"
                 :scriptsDir scripts-dir
-                :allowlist legacy-untyped-scripts}
+                :allowlist #{}}
         _ (validate-config config)
         files (scan-files scripts-dir)
         py-files (filter py-file? files)]

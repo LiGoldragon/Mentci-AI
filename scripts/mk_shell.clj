@@ -1,13 +1,25 @@
 #!/usr/bin/env bb
 
+(require '[babashka.deps :as deps])
+(deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
+
 (require '[clojure.java.io :as io]
          '[cheshire.core :as json]
-         '[clojure.string :as str])
+         '[clojure.string :as str]
+         '[malli.core :as m]
+         '[malli.error :as me])
+
+(load-file (str (.getParent (io/file *file*)) "/types.clj"))
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
 ;; Rationale: Pure Clojure implementation of Nix mkShell environment logic.
 ;; Handles both structured attrs and traditional env vars.
+
+(defn validate-config [config]
+  (when-not (m/validate types/ShellSpec config)
+    (throw (ex-info "Invalid Shell Spec"
+                    {:errors (me/humanize (m/explain types/ShellSpec config))}))))
 
 (defn main []
   (let [attrs-file (io/file ".attrs.json")
@@ -15,7 +27,7 @@
         spec-json (if (.exists attrs-file)
                     (get (json/parse-string (slurp attrs-file)) "spec")
                     (System/getenv "spec"))
-        spec (json/parse-string spec-json true)
+        spec (assoc (json/parse-string spec-json true) :sema/type "ShellSpec")
         out (System/getenv "out")
         out-bin (io/file out "bin")
         setup-file (io/file out "setup")]
@@ -25,6 +37,7 @@
           (System/exit 1))
       
       (do
+        (validate-config spec)
         (.mkdirs out-bin)
         (.mkdirs (io/file out))
         
