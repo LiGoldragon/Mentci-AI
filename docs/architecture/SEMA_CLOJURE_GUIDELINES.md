@@ -68,6 +68,23 @@ Use `from_*`, `to_*`, `into_*` when construction or emission is implied.
 *   Every function must define an input schema and validate it.
 *   Output schemas should be defined and validated when outputs cross module boundaries.
 
+### Preferred Validation Style (m/=> + instrumentation)
+
+Use Malli function schemas with instrumentation instead of manual `m/validate`.
+
+```clojure
+(m/=> greet [:=> [:cat GreetInput] GreetOutput])
+(defn greet [input]
+  {:message (str "Hello " (:name input))})
+```
+
+Enable instrumentation once in the entrypoint:
+
+```clojure
+(require '[malli.instrument :as mi])
+(mi/instrument!)
+```
+
 ## Namespace Discipline
 
 *   A namespace is a semantic layer.
