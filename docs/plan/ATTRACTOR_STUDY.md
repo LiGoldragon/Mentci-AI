@@ -24,7 +24,7 @@ We will define the formal structure of a Workflow in `schema/mentci.capnp`. This
 *   `Context`: The state passed between nodes.
 
 ### B. The Standard (Guidelines)
-We will adapt `inputs/untyped/attractor-docs/attractor-spec.md` into `docs/specs/WORKFLOW_STANDARD.md`. This document will serve as the "RFC" for how to write valid Mentci Workflows.
+We will adapt `inputs/untyped/attractor/attractor-spec.md` into `docs/specs/WORKFLOW_STANDARD.md`. This document will serve as the "RFC" for how to write valid Mentci Workflows.
 
 **Key Concepts:**
 *   **Declarative vs. Imperative:** Define *what* to do, not just *how*.
