@@ -17,6 +17,7 @@ pub mod mentci_capnp {
 // --- Local Modules ---
 pub mod dot_loader;
 pub mod edn_loader;
+pub mod jail_bootstrap;
 use dot_loader::DotLoader;
 use edn_loader::EdnLoader;
 
@@ -407,8 +408,18 @@ fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
     
     let args: Vec<String> = std::env::args().collect();
+    if args.len() >= 2 && args[1] == "job/jails" {
+        let bootstrap_args = args.into_iter().skip(2).collect::<Vec<_>>();
+        return jail_bootstrap::run_from_args(bootstrap_args);
+    }
+    if args.len() >= 3 && args[1] == "job" && args[2] == "jails" {
+        let bootstrap_args = args.into_iter().skip(3).collect::<Vec<_>>();
+        return jail_bootstrap::run_from_args(bootstrap_args);
+    }
+
     if args.len() < 2 {
         println!("Usage: mentci-ai <workflow.dot|workflow.aski-flow|workflow.edn>");
+        println!("       mentci-ai job/jails [bootstrap] [options]");
         return Ok(());
     }
 
