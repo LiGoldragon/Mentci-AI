@@ -32,12 +32,12 @@ OpenCode requires a provider configuration to communicate with DeepSeek.
 
 ### 2.4. Agent Launcher Secrets (gopass)
 Use gopass to inject API keys directly into the agent process.
-- **Launcher:** `scripts/agent_launcher.py`
+- **Launcher:** `scripts/agent_launcher.clj`
 - **Deterministic key scheme:** `mentci/ai/<provider>/api-key`
 - **Example:**
   ```sh
   gopass insert -m mentci/ai/deepseek/api-key
-  python3 scripts/agent_launcher.py --provider deepseek -- opencode
+  bb scripts/agent_launcher.clj --provider deepseek -- opencode
   ```
 
 ## 3. Workflow Transition
