@@ -9,18 +9,12 @@
          '[malli.core :as m]
          '[malli.error :as me])
 
+(load-file (str (.getParent (io/file *file*)) "/types.clj"))
+
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
 ;; Typing: Malli (metosin/malli)
 ;; Rationale: Native EDN support, fast startup, and data-driven schema validation.
-
-(def IntentLog
-  [:map
-   [:timestamp :string]
-   [:userId :string]
-   [:intentSummary :string]
-   [:model :string]
-   [:signature [:maybe :string]]])
 
 (def logs-dir (io/file "Logs"))
 (def default-github-user "LiGoldragon")
@@ -32,9 +26,9 @@
       system-user)))
 
 (defn validate-entry [entry]
-  (when-not (m/validate IntentLog entry)
+  (when-not (m/validate types/IntentLog entry)
     (throw (ex-info "Invalid Log Entry"
-                    {:errors (me/humanize (m/explain IntentLog entry))}))))
+                    {:errors (me/humanize (m/explain types/IntentLog entry))}))))
 
 (defn log-prompt [intent-summary & {:keys [model user-id] 
                                    :or {model "gemini-3-flash-preview"}}]
@@ -42,7 +36,8 @@
         log-file (io/file logs-dir (str "user_" user ".edn"))
         timestamp (.toString (java.time.LocalDateTime/now))
         ecliptic "12.1.28.44 | 5919 AM" ; TODO: Implement dynamic ecliptic calculation
-        entry {:timestamp timestamp
+        entry {:sema/type "IntentLog"
+               :timestamp timestamp
                :ecliptic ecliptic
                :userId user
                :intentSummary intent-summary

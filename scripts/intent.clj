@@ -1,7 +1,15 @@
 #!/usr/bin/env bb
 
+(require '[babashka.deps :as deps])
+(deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
+
 (require '[clojure.java.shell :refer [sh]]
-         '[clojure.string :as str])
+         '[clojure.string :as str]
+         '[malli.core :as m]
+         '[malli.error :as me]
+         '[clojure.java.io :as io])
+
+(load-file (str (.getParent (io/file *file*)) "/types.clj"))
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
@@ -17,6 +25,11 @@
       (str/replace #"\s+" "-")
       (str/replace #"[^a-z0-9-]" "")))
 
+(defn validate-config [config]
+  (when-not (m/validate types/IntentInit config)
+    (throw (ex-info "Invalid Intent Initialization"
+                    {:errors (me/humanize (m/explain types/IntentInit config))}))))
+
 (defn main []
   (let [args *command-line-args*]
     (if (empty? args)
@@ -25,7 +38,13 @@
       
       (let [intent-name (sanitize-name (first args))
             intent-hash (generate-hash)
-            bookmark-name (str intent-hash "-" intent-name)]
+            bookmark-name (str intent-hash "-" intent-name)
+            config {:sema/type "IntentInit"
+                    :rawIntent (first args)
+                    :intentName intent-name
+                    :intentHash intent-hash
+                    :bookmarkName bookmark-name}]
+        (validate-config config)
         
         (println (str "Initializing Unique Intent: " bookmark-name))
         

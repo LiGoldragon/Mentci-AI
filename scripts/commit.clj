@@ -1,12 +1,24 @@
 #!/usr/bin/env bb
 
+(require '[babashka.deps :as deps])
+(deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}}})
+
 (require '[clojure.java.shell :refer [sh]]
          '[clojure.java.io :as io]
-         '[clojure.string :as str])
+         '[clojure.string :as str]
+         '[malli.core :as m]
+         '[malli.error :as me])
+
+(load-file (str (.getParent (io/file *file*)) "/types.clj"))
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
 ;; Rationale: Direct orchestration of VCS commands with cleaner error handling.
+
+(defn validate-config [config]
+  (when-not (m/validate types/CommitContext config)
+    (throw (ex-info "Invalid Commit Context"
+                    {:errors (me/humanize (m/explain types/CommitContext config))}))))
 
 (defn main []
   (let [target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "dev")
@@ -22,7 +34,13 @@
           (do (println "Usage: mentci-commit <message>")
               (System/exit 1))
           
-          (let [message (first args)]
+          (let [message (first args)
+                context {:sema/type "CommitContext"
+                         :message message
+                         :bookmark target-bookmark
+                         :repoRoot repo-root
+                         :workspaceRoot workspace-root}]
+            (validate-config context)
             (println (str "Shipping manifestation from workspace: " message))
             
             ;; 1. Update description
