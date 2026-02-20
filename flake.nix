@@ -60,6 +60,29 @@
             };
     
             mentciAi = craneLib.buildPackage commonArgs;
+
+            attractor = pkgs.stdenv.mkDerivation {
+              pname = "attractor";
+              version = "0.1.0";
+              src = "${brynary-attractor}/attractor";
+              nativeBuildInputs = [ pkgs.bun pkgs.makeWrapper ];
+              dontBuild = true;
+              doCheck = true;
+              checkPhase = ''
+                runHook preCheck
+                export HOME="$TMPDIR"
+                bun test tests/server/server.test.ts
+                runHook postCheck
+              '';
+              installPhase = ''
+                runHook preInstall
+                mkdir -p $out/share/attractor $out/bin
+                cp -R . $out/share/attractor
+                makeWrapper ${pkgs.bun}/bin/bun $out/bin/attractor-server \
+                  --add-flags "run $out/share/attractor/bin/attractor-server.ts"
+                runHook postInstall
+              '';
+            };
     
             # -- OpenCode Agentic Interface --
             opencodePkg = pkgs.python3Packages.buildPythonApplication {
@@ -136,6 +159,11 @@
           default = mentciAi;
           mentciAi = mentciAi;
           mentciClj = mentciClj;
+          attractor = attractor;
+        };
+
+        checks = {
+          inherit attractor;
         };
 
         apps.default = flake-utils.lib.mkApp {
