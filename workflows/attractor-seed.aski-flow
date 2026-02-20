@@ -1,6 +1,10 @@
 ;; Re-implementation of Attractor: pipelines/factory/seed.dot
 
-[ (ingest
+[ (start
+    {:shape "Mdiamond"
+     :label "Start"})
+
+  (ingest
     {:label "Ingest Artifacts"
      :prompt "@prompts/seed/ingest.md"
      :reasoning_effort "high"})
@@ -12,8 +16,12 @@
   (review
     {:label "Review Product Docs"
      :shape "hexagon"})
-  {:accept :next
+  {:accept exit
    :revise draft}
+
+  (exit
+    {:shape "Msquare"
+     :label "Exit"})
 ]
 
 ;; DOT equivalent:

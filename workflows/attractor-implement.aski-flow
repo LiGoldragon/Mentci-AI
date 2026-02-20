@@ -1,6 +1,10 @@
 ;; Re-implementation of Attractor: pipelines/factory/implement.dot
 
-[ (strategy
+[ (start
+    {:shape "Mdiamond"
+     :label "Start"})
+
+  (strategy
     {:label "Choose decomposition strategy:"
      :shape "hexagon"})
   {:layer_by_layer plan
@@ -33,7 +37,7 @@
      :goal_gate true
      :thread_id "impl"
      :fidelity "full"})
-  {:success :next
+  {:success exit
    :failure fix}
 
   (fix
@@ -43,6 +47,10 @@
      :thread_id "impl"
      :fidelity "full"})
   {:next validate}
+
+  (exit
+    {:shape "Msquare"
+     :label "Exit"})
 ]
 
 ;; DOT equivalent:
