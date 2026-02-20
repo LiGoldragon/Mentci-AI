@@ -29,7 +29,11 @@
                          "jj_workflow.clj" {:kind :file :role :tooling :durability :mutable}
                          "mk_shell.clj" {:kind :file :role :tooling :durability :mutable}
                          "test_deps.clj" {:kind :file :role :tooling :durability :mutable}
-                         "types.clj" {:kind :file :role :tooling :durability :mutable}}}
+                         "types.clj" {:kind :file :role :tooling :durability :mutable}
+                         "malli.clj" {:kind :file :role :tooling :durability :mutable}
+                         "agent_launcher.clj" {:kind :file :role :tooling :durability :mutable}
+                         "validate_scripts.clj" {:kind :file :role :tooling :durability :mutable}
+                         "prefetch_orchestrator.py" {:kind :file :role :tooling :durability :mutable}}}
 
    "docs" {:kind :dir
            :children {"architecture" {:kind :dir
@@ -39,24 +43,38 @@
                                                  "TOOLS.md" {:kind :file :role :spec :durability :stable}
                                                  "VERSION_CONTROL.md" {:kind :file :role :spec :durability :stable}
                                                  "CHRONOGRAPHY.md" {:kind :file :role :spec :durability :stable}
-                                                 "JjAutomation.md" {:kind :file :role :spec :durability :stable}}
+                                                 "JjAutomation.md" {:kind :file :role :spec :durability :stable}
+                                                 "RELEASE_PROTOCOL.md" {:kind :file :role :spec :durability :stable}
+                                                 "SEMA_CLOJURE_GUIDELINES.md" {:kind :file :role :spec :durability :stable}
+                                                 "SEMA_RUST_GUIDELINES.md" {:kind :file :role :spec :durability :stable}
+                                                 "SEMA_NIX_GUIDELINES.md" {:kind :file :role :spec :durability :stable}}
                       "specs" {:kind :dir
                                :children {"ASKI_DSL_GUIDELINES.md" {:kind :file :role :spec :durability :stable}
                                           "ASKI_FLOW_DSL.md" {:kind :file :role :spec :durability :stable}
                                           "ASKI_FS_DSL.md" {:kind :file :role :spec :durability :stable}
+                                          "ASKI_ASTRAL_DSL.md" {:kind :file :role :spec :durability :stable}
+                                          "ASKI_FS_ASTRAL_DSL.md" {:kind :file :role :spec :durability :stable}
+                                          "ASKI_FS_ASTRAL.edn" {:kind :file :role :schema :durability :stable}
                                           "ATTRACTOR_DOT_REFERENCE.md" {:kind :file :role :spec :durability :stable}
-                                          "WORKFLOW_STANDARD.md" {:kind :file :role :spec :durability :stable}}}
+                                          "WORKFLOW_STANDARD.md" {:kind :file :role :spec :durability :stable}}
                       "guides" {:kind :dir
                                 :children {"Level5-Ai-Coding.md" {:kind :file :role :spec :durability :stable}
-                                           "RESTART_CONTEXT.md" {:kind :file :role :spec :durability :stable}}}
+                                           "RESTART_CONTEXT.md" {:kind :file :role :spec :durability :stable}
+                                           "MIGRATION_GEMINI_TO_OPENCODE.md" {:kind :file :role :spec :durability :stable}
+                                           "TRANSITION_PYTHON_TO_CLOJURE.md" {:kind :file :role :spec :durability :stable}
+                                           "SETUP_DEEPSEEK.md" {:kind :file :role :spec :durability :stable}
+                                           "GUIDE_TO_LEVEL5_AGENTIC_ENGINEERING.md" {:kind :file :role :spec :durability :stable}}}
                       "reports" {:kind :dir
-                                 :children {"REFERENCES.md" {:kind :file :role :spec :durability :stable}}}}}
+                                 :children {"REFERENCES.md" {:kind :file :role :spec :durability :stable}
+                                            "BRYNARY_ATTRACTOR_SUMMARY.md" {:kind :file :role :spec :durability :stable}
+                                            "attractor_gap_analysis.md" {:kind :file :role :spec :durability :stable}}}}}
 
    "workflows" {:kind :dir
                 :children {"example.dot" {:kind :file :role :workflow :durability :mutable}
                            "idea_pipeline.dot" {:kind :file :role :workflow :durability :mutable}
                            "test.aski-flow" {:kind :file :role :workflow :durability :mutable}
-                           "mentci.aski-fs" {:kind :file :role :workflow :durability :mutable}}}
+                           "mentci.aski-fs" {:kind :file :role :workflow :durability :mutable}
+                           "mentci.aski-fs.deps.edn" {:kind :file :role :spec :durability :stable}}}
 
    "inputs" {:kind :dir :role :tooling :durability :mutable}
    "Logs" {:kind :dir :role :tooling :durability :mutable}
