@@ -15,14 +15,9 @@ To acquire external inputs (tarballs, git repos), you must use the **CriomOS Pre
     *   `prefetch_url(url, unpack=False)` -> Returns SRI hash.
     *   `prefetch_git(url, rev=None, submodules=False)` -> Returns SRI hash, rev, and store path.
 
-## 2. Handshake Logging Protocol
+## 2. Audit Trail
 
-Every prompt fulfillment must be logged to maintain historical authority.
-
-1.  **Extract Metadata:** Read the `Timestamp`, `UserId`, and `Model Version` from the start of the user prompt.
-2.  **Derive Intent:** Formulate a concise (1-sentence) summary of your high-level intent.
-3.  **Log:** Execute `scripts/logger.py "<intentSummary>" --model "<model>" --user "<userId>"`.
-4.  **Format:** Logs are stored in **EDN** format in the `Logs/` directory.
+Use `jj log` as the authoritative audit trail for work performed in the repository.
 
 ## 3. Structural Rules
 
