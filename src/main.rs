@@ -195,6 +195,42 @@ impl Handler for CodergenHandler {
     }
 }
 
+struct AgentHandler {
+    prompt: String,
+    command: String,
+}
+impl Handler for AgentHandler {
+    fn execute(&self, task: &mut TaskContext) -> Result<Outcome> {
+        let command = if self.command.contains("{prompt}") {
+            let escaped = shell_quote(&self.prompt);
+            self.command.replace("{prompt}", &escaped)
+        } else {
+            self.command.clone()
+        };
+
+        info!("Executing Agent command.");
+        let result = task.env.exec_command(&command)?;
+        if result.exit_code != 0 {
+            return Ok(Outcome {
+                status: StageStatus::Fail,
+                notes: Some(format!("Agent command failed: {}", result.stderr)),
+                context_updates: HashMap::new(),
+                preferred_label: None,
+            });
+        }
+
+        let mut updates = HashMap::new();
+        updates.insert("agent_response".to_string(), result.stdout.trim().to_string());
+
+        Ok(Outcome {
+            status: StageStatus::Success,
+            notes: Some("Agent command completed.".to_string()),
+            context_updates: updates,
+            preferred_label: None,
+        })
+    }
+}
+
 struct WaitHumanHandler;
 impl Handler for WaitHumanHandler {
     fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
@@ -254,6 +290,11 @@ pub struct PipelineEngine {
     pub graph: Graph,
     pub env: Box<dyn ExecutionEnvironment>,
     pub checkpoint_manager: CheckpointManager,
+}
+
+fn shell_quote(value: &str) -> String {
+    let escaped = value.replace('\'', r#"'\''"#);
+    format!("'{}'", escaped)
 }
 
 impl PipelineEngine {
@@ -390,6 +431,11 @@ fn main() -> Result<()> {
         // Determine Handler
         let shape = d_node.shape.as_deref().unwrap_or("box");
         let n_type = d_node.node_type.as_deref().unwrap_or("");
+        let agent_command = d_node
+            .attributes
+            .get("agent_command")
+            .cloned()
+            .or_else(|| std::env::var("MENTCI_AGENT_COMMAND").ok());
         
         let handler: Box<dyn Handler> = if id == "start" || shape == "Mdiamond" || n_type == "start" {
             if start_node.is_none() { start_node = Some(id.clone()); }
@@ -398,6 +444,10 @@ fn main() -> Result<()> {
             Box::new(ExitHandler)
         } else if n_type == "wait.human" || shape == "hexagon" {
             Box::new(WaitHumanHandler)
+        } else if n_type == "agent" || agent_command.is_some() {
+            let prompt = d_node.prompt.clone().unwrap_or_else(|| d_node.label.clone().unwrap_or(id.clone()));
+            let command = agent_command.ok_or_else(|| anyhow::anyhow!("agent_command is required for agent nodes"))?;
+            Box::new(AgentHandler { prompt, command })
         } else {
             // Default to Codergen
             let prompt = d_node.prompt.clone().unwrap_or_else(|| d_node.label.clone().unwrap_or(id.clone()));
