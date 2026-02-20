@@ -45,8 +45,11 @@ Verify `opencode --version` is accessible within the nix shell.
 4. Run `opencode`.
 
 ## 4. Verification Matrix
-- [ ] `which opencode` returns a path in the Nix store.
-- [ ] `scripts/logger.py "test intent"` records the correct model.
+- [x] `opencodePkg` defined in `flake.nix`.
+- [x] `commonPackages` includes `opencodePkg`.
+- [x] `.opencode.edn` created in project root.
+- [ ] `which opencode` returns a path in the Nix store (Requires `nix develop`).
+- [x] `scripts/logger.clj` records the correct model if `MENTCI_MODEL` is set.
 - [ ] Agent can execute `gdb --version` (verifying Level 5 tool access).
 
 ## 5. Timeline

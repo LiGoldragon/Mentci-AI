@@ -3,8 +3,26 @@
 using FS = import "atom_filesystem.capnp";
 
 interface MentciDaemon {
-  # Future RPC methods for the daemon
   ping @0 () -> ();
+
+  # --- Orchestration ---
+  
+  # Executes a full graph pipeline.
+  runPipeline @1 (graph :Graph, initialContext :List(Entry)) -> (outcome :Outcome);
+
+  # Executes a single node handler.
+  executeNode @2 (node :Node, context :List(Entry)) -> (outcome :Outcome);
+
+  # --- System Introspection ---
+
+  # Returns the status of the daemon.
+  getStatus @3 () -> (status :DaemonStatus);
+}
+
+struct DaemonStatus {
+  version @0 :Text;
+  uptime @1 :UInt64;
+  activePipelines @2 :UInt32;
 }
 
 interface PreFetchOrchestrator {
@@ -171,4 +189,21 @@ enum StageStatus {
   fail @2;
   retry @3;
   skipped @4;
+}
+
+# --- Attractor State & Tooling ---
+
+struct Checkpoint {
+  nodeId @0 :Text;
+  timestamp @1 :UInt64;
+  context @2 :List(Entry);
+  outcome @3 :Outcome;
+}
+
+struct ToolDefinition {
+  name @0 :Text;
+  description @1 :Text;
+  parameters @2 :Text; # JSON Schema string
+  provider @3 :Text;   # e.g., "openai", "anthropic", "deepseek"
+  nativeSchema @4 :Text; # Provider-specific raw schema definition
 }

@@ -32,9 +32,13 @@ let
     # Pass configuration
     spec = builtins.toJSON shellSpec;
     
+    # Structured Attributes support
+    __structuredAttrs = true;
+    exportReferencesGraph.references = packages;
+    
     # Dependencies needed by the builder or the shell
     inherit packages;
-  };
+  } // (env);
 
 in
 # We return an attribute set that looks like a derivation
