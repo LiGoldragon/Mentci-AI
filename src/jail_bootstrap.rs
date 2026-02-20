@@ -1,5 +1,8 @@
 use anyhow::{bail, Context, Result};
+use capnp::message::ReaderOptions;
+use capnp::serialize_packed;
 use std::fs;
+use std::io::BufReader;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
@@ -17,66 +20,85 @@ pub fn run_from_args(mut args: Vec<String>) -> Result<()> {
     if args.first().map(String::as_str) == Some("bootstrap") {
         args.remove(0);
     }
-    let cfg = parse_args(args)?;
+    let cfg = parse_args(args).context("failed to parse bootstrap args")?;
     run(cfg)
 }
 
 fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
-    let mut repo_root = std::env::current_dir().context("failed to read current directory")?;
-    let mut outputs_dir = "Outputs".to_string();
-    let mut output_name = "mentci-ai".to_string();
-    let mut working_bookmark = "dev".to_string();
-    let mut target_bookmark = "jailCommit".to_string();
-    let mut commit_message: Option<String> = None;
+    let mut capnp_path: Option<PathBuf> = None;
+    let mut cli_repo_root: Option<PathBuf> = None;
+    let mut cli_outputs_dir: Option<String> = None;
+    let mut cli_output_name: Option<String> = None;
+    let mut cli_working_bookmark: Option<String> = None;
+    let mut cli_target_bookmark: Option<String> = None;
+    let mut cli_commit_message: Option<String> = None;
 
     let mut i = 0usize;
     while i < args.len() {
         match args[i].as_str() {
+            "--capnp" => {
+                i += 1;
+                let value = args.get(i).context("missing value for --capnp")?;
+                capnp_path = Some(PathBuf::from(value));
+            }
             "--repo-root" => {
                 i += 1;
                 let value = args.get(i).context("missing value for --repo-root")?;
-                repo_root = PathBuf::from(value);
+                cli_repo_root = Some(PathBuf::from(value));
             }
             "--outputs-dir" => {
                 i += 1;
                 let value = args.get(i).context("missing value for --outputs-dir")?;
-                outputs_dir = value.clone();
+                cli_outputs_dir = Some(value.clone());
             }
             "--output-name" => {
                 i += 1;
                 let value = args.get(i).context("missing value for --output-name")?;
-                output_name = value.clone();
+                cli_output_name = Some(value.clone());
             }
             "--working-bookmark" => {
                 i += 1;
                 let value = args.get(i).context("missing value for --working-bookmark")?;
-                working_bookmark = value.clone();
+                cli_working_bookmark = Some(value.clone());
             }
             "--target-bookmark" => {
                 i += 1;
                 let value = args.get(i).context("missing value for --target-bookmark")?;
-                target_bookmark = value.clone();
+                cli_target_bookmark = Some(value.clone());
             }
             "--commit-message" => {
                 i += 1;
                 let value = args.get(i).context("missing value for --commit-message")?;
-                commit_message = Some(value.clone());
+                cli_commit_message = Some(value.clone());
             }
             "--help" | "-h" => {
                 print_help();
-                return Ok(BootstrapConfig {
-                    repo_root,
-                    outputs_dir,
-                    output_name,
-                    working_bookmark,
-                    target_bookmark,
-                    commit_message,
-                });
+                std::process::exit(0);
             }
             other => bail!("unknown argument: {other}"),
         }
         i += 1;
     }
+
+    let capnp_file = capnp_path.context("missing required --capnp <path> argument")?;
+    let capnp_cfg = Some(load_capnp_request(&capnp_file)?);
+
+    let repo_root = cli_repo_root
+        .or_else(|| capnp_cfg.as_ref().map(|cfg| cfg.repo_root.clone()))
+        .unwrap_or(std::env::current_dir().context("failed to read current directory")?);
+    let outputs_dir = cli_outputs_dir
+        .or_else(|| capnp_cfg.as_ref().map(|cfg| cfg.outputs_dir.clone()))
+        .unwrap_or_else(|| "Outputs".to_string());
+    let output_name = cli_output_name
+        .or_else(|| capnp_cfg.as_ref().map(|cfg| cfg.output_name.clone()))
+        .unwrap_or_else(|| "mentci-ai".to_string());
+    let working_bookmark = cli_working_bookmark
+        .or_else(|| capnp_cfg.as_ref().map(|cfg| cfg.working_bookmark.clone()))
+        .unwrap_or_else(|| "dev".to_string());
+    let target_bookmark = cli_target_bookmark
+        .or_else(|| capnp_cfg.as_ref().map(|cfg| cfg.target_bookmark.clone()))
+        .unwrap_or_else(|| "jailCommit".to_string());
+    let commit_message = cli_commit_message.or_else(|| capnp_cfg.and_then(|cfg| cfg.commit_message));
 
     Ok(BootstrapConfig {
         repo_root,
@@ -90,12 +112,44 @@ fn parse_args(args: Vec<String>) -> Result<BootstrapConfig> {
 
 fn print_help() {
     println!("Usage: mentci-ai job/jails [bootstrap] [options]");
+    println!("  --capnp <path>               Cap'n Proto JailBootstrapRequest file (required)");
     println!("  --repo-root <path>           Repository root (default: cwd)");
     println!("  --outputs-dir <name>         Outputs directory (default: Outputs)");
     println!("  --output-name <name>         Output workspace name (default: mentci-ai)");
     println!("  --working-bookmark <name>    Working bookmark (default: dev)");
     println!("  --target-bookmark <name>     Commit target bookmark (default: jailCommit)");
     println!("  --commit-message <message>   Optional commit message for immediate jail commit");
+}
+
+fn load_capnp_request(path: &Path) -> Result<BootstrapConfig> {
+    let file = std::fs::File::open(path)
+        .with_context(|| format!("failed to open capnp request file {:?}", path))?;
+    let mut reader = BufReader::new(file);
+    let message = serialize_packed::read_message(&mut reader, ReaderOptions::new())
+        .with_context(|| format!("failed to read packed capnp message {:?}", path))?;
+    let request = message
+        .get_root::<crate::mentci_capnp::jail_bootstrap_request::Reader<'_>>()
+        .context("failed to decode JailBootstrapRequest root")?;
+
+    let repo_root = request.get_repo_root()?.to_str()?.to_string();
+    let outputs_dir = request.get_outputs_dir()?.to_str()?.to_string();
+    let output_name = request.get_output_name()?.to_str()?.to_string();
+    let working_bookmark = request.get_working_bookmark()?.to_str()?.to_string();
+    let target_bookmark = request.get_target_bookmark()?.to_str()?.to_string();
+    let commit_message_raw = request.get_commit_message()?.to_str()?.to_string();
+
+    Ok(BootstrapConfig {
+        repo_root: PathBuf::from(repo_root),
+        outputs_dir,
+        output_name,
+        working_bookmark,
+        target_bookmark,
+        commit_message: if commit_message_raw.is_empty() {
+            None
+        } else {
+            Some(commit_message_raw)
+        },
+    })
 }
 
 fn run(cfg: BootstrapConfig) -> Result<()> {
@@ -198,4 +252,49 @@ fn run_jj(repo_root: &Path, args: &[&str]) -> Result<()> {
         );
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::parse_args;
+    use capnp::message::Builder;
+    use capnp::serialize_packed;
+    use std::io::Write;
+    use std::io::BufWriter;
+    use tempfile::tempdir;
+
+    #[test]
+    fn parses_bootstrap_config_from_capnp_file() {
+        let temp = tempdir().expect("tempdir");
+        let request_path = temp.path().join("jail-request.capnp");
+
+        let mut message = Builder::new_default();
+        {
+            let mut root = message.init_root::<crate::mentci_capnp::jail_bootstrap_request::Builder<'_>>();
+            root.set_repo_root("/tmp/repo");
+            root.set_outputs_dir("Outputs");
+            root.set_output_name("mentci-ai");
+            root.set_working_bookmark("dev");
+            root.set_target_bookmark("jailCommit");
+            root.set_commit_message("intent: capnp bootstrap");
+        }
+
+        let file = std::fs::File::create(&request_path).expect("create request file");
+        let mut writer = BufWriter::new(file);
+        serialize_packed::write_message(&mut writer, &message).expect("write request message");
+        writer.flush().expect("flush request message");
+
+        let parsed = parse_args(vec![
+            "--capnp".to_string(),
+            request_path.to_string_lossy().to_string(),
+        ])
+        .expect("parse args");
+
+        assert_eq!(parsed.repo_root.to_string_lossy(), "/tmp/repo");
+        assert_eq!(parsed.outputs_dir, "Outputs");
+        assert_eq!(parsed.output_name, "mentci-ai");
+        assert_eq!(parsed.working_bookmark, "dev");
+        assert_eq!(parsed.target_bookmark, "jailCommit");
+        assert_eq!(parsed.commit_message.as_deref(), Some("intent: capnp bootstrap"));
+    }
 }

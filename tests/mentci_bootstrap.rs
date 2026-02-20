@@ -1,5 +1,15 @@
 use std::fs;
+use std::io::BufWriter;
+use std::path::{Path, PathBuf};
 use std::process::Command;
+
+mod atom_filesystem_capnp {
+    include!(concat!(env!("OUT_DIR"), "/atom_filesystem_capnp.rs"));
+}
+
+mod mentci_capnp {
+    include!(concat!(env!("OUT_DIR"), "/mentci_capnp.rs"));
+}
 
 fn run_ok(cmd: &mut Command) {
     let output = cmd.output().expect("command should start");
@@ -26,6 +36,35 @@ fn run_capture(cmd: &mut Command) -> String {
     String::from_utf8_lossy(&output.stdout).to_string()
 }
 
+fn write_bootstrap_request(
+    path: &Path,
+    repo_root: &Path,
+    outputs_dir: &str,
+    output_name: &str,
+    working_bookmark: &str,
+    target_bookmark: &str,
+    commit_message: Option<&str>,
+) {
+    let mut message = capnp::message::Builder::new_default();
+    {
+        let mut root = message.init_root::<mentci_capnp::jail_bootstrap_request::Builder<'_>>();
+        root.set_repo_root(&repo_root.to_string_lossy());
+        root.set_outputs_dir(outputs_dir);
+        root.set_output_name(output_name);
+        root.set_working_bookmark(working_bookmark);
+        root.set_target_bookmark(target_bookmark);
+        root.set_commit_message(commit_message.unwrap_or(""));
+    }
+
+    let file = std::fs::File::create(path).expect("create capnp request file");
+    let mut writer = BufWriter::new(file);
+    capnp::serialize_packed::write_message(&mut writer, &message).expect("write capnp request");
+}
+
+fn request_path(temp: &Path, name: &str) -> PathBuf {
+    temp.join(format!("{name}.capnp"))
+}
+
 #[test]
 fn bootstrap_creates_jail_commit_bookmark_from_output_workspace() {
     let temp = tempfile::tempdir().expect("tempdir");
@@ -39,20 +78,23 @@ fn bootstrap_creates_jail_commit_bookmark_from_output_workspace() {
             .arg(&repo),
     );
 
+    let request1 = request_path(temp.path(), "bootstrap-1");
+    write_bootstrap_request(
+        &request1,
+        &repo,
+        "Outputs",
+        "mentci-ai",
+        "dev",
+        "jailCommit",
+        None,
+    );
+
     let bin = env!("CARGO_BIN_EXE_mentci-ai");
     run_ok(
         Command::new(bin)
             .args(["job/jails", "bootstrap"])
-            .args(["--repo-root"])
-            .arg(&repo)
-            .args([
-                "--output-name",
-                "mentci-ai",
-                "--working-bookmark",
-                "dev",
-                "--target-bookmark",
-                "jailCommit",
-            ]),
+            .args(["--capnp"])
+            .arg(&request1),
     );
 
     let workspace = repo.join("Outputs").join("mentci-ai");
@@ -64,21 +106,22 @@ fn bootstrap_creates_jail_commit_bookmark_from_output_workspace() {
 
     fs::write(workspace.join("jail.txt"), "wrapped by rust bootstrap\n").expect("write test change");
 
+    let request2 = request_path(temp.path(), "bootstrap-2");
+    write_bootstrap_request(
+        &request2,
+        &repo,
+        "Outputs",
+        "mentci-ai",
+        "dev",
+        "jailCommit",
+        Some("intent: test jail commit"),
+    );
+
     run_ok(
         Command::new(bin)
             .args(["job/jails", "bootstrap"])
-            .args(["--repo-root"])
-            .arg(&repo)
-            .args([
-                "--output-name",
-                "mentci-ai",
-                "--working-bookmark",
-                "dev",
-                "--target-bookmark",
-                "jailCommit",
-                "--commit-message",
-                "intent: test jail commit",
-            ]),
+            .args(["--capnp"])
+            .arg(&request2),
     );
 
     let bookmarks = run_capture(
@@ -125,17 +168,22 @@ fn bootstrap_rejects_same_working_and_target_bookmarks() {
             .arg(&repo),
     );
 
+    let request = request_path(temp.path(), "bootstrap-invalid");
+    write_bootstrap_request(
+        &request,
+        &repo,
+        "Outputs",
+        "mentci-ai",
+        "dev",
+        "dev",
+        None,
+    );
+
     let bin = env!("CARGO_BIN_EXE_mentci-ai");
     let output = Command::new(bin)
         .args(["job/jails", "bootstrap"])
-        .args(["--repo-root"])
-        .arg(&repo)
-        .args([
-            "--working-bookmark",
-            "dev",
-            "--target-bookmark",
-            "dev",
-        ])
+        .args(["--capnp"])
+        .arg(&request)
         .output()
         .expect("bootstrap command");
 
