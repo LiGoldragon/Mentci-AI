@@ -49,6 +49,12 @@ Use `jj log` for provenance and review.
 
 This document synthesizes the architectural, naming, and durability rules inherited from the **CriomOS** and **Sema** lineage. These rules are structural and non-negotiable. Violations indicate category errors, not stylistic choices.
 
+## 0.5.1. PER-LANGUAGE SEMA GUIDELINES
+
+*   **Clojure:** `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`
+*   **Rust:** `docs/architecture/SEMA_RUST_GUIDELINES.md`
+*   **Nix:** `docs/architecture/SEMA_NIX_GUIDELINES.md`
+
 ## 0.6. NIX STORE ACCESS
 
 **Do not scan `/nix/store` directly.**
