@@ -1,0 +1,18 @@
+{:AstralTag
+ {:primary-body :AstralBody
+  :planet-tags [:list :PlanetTag]}
+
+ :AstralBody
+ [:solar :lunar]
+
+ :PlanetTag
+ [:mercury :venus :mars :jupiter :saturn]
+
+ :gloss
+ {:AstralBody {:solar "governing/source-of-truth"
+               :lunar "mutable/operational"}
+  :PlanetTag {:mercury "tools/messaging"
+              :venus "presentation/onboarding"
+              :mars "execution/engine"
+              :jupiter "law/expansion"
+              :saturn "constraints/boundaries"}}}
