@@ -34,7 +34,7 @@ fn main() {
     let format = parse_format(&args).unwrap_or(OutputFormat::Unicode);
     let precision = parse_precision(&args).unwrap_or(Precision::Second);
 
-    let now = SystemTime::now();
+    let now = parse_unix_time(&args).unwrap_or_else(SystemTime::now);
     let ecliptic = solar_ecliptic_time(now);
     let output = format_output(ecliptic, format, precision);
     println!("{output}");
@@ -68,6 +68,12 @@ fn value_after_flag(args: &[String], flag: &str) -> Option<String> {
         .position(|arg| arg == flag)
         .and_then(|idx| args.get(idx + 1))
         .cloned()
+}
+
+fn parse_unix_time(args: &[String]) -> Option<SystemTime> {
+    let value = value_after_flag(args, "--unix")?;
+    let seconds: u64 = value.parse().ok()?;
+    Some(UNIX_EPOCH + Duration::from_secs(seconds))
 }
 
 fn format_output(time: EclipticTime, format: OutputFormat, precision: Precision) -> String {
@@ -167,7 +173,11 @@ fn solar_longitude_deg(time: SystemTime) -> f64 {
         + (0.019993 - 0.000101 * t) * deg_sin(2.0 * mean_anomaly)
         + 0.000289 * deg_sin(3.0 * mean_anomaly);
 
-    normalize_degrees(mean_long + c)
+    let true_long = normalize_degrees(mean_long + c);
+    let omega = normalize_degrees(125.04 - 1934.136 * t);
+    let aberration = 0.00569;
+    let nutation = 0.00478 * deg_sin(omega);
+    normalize_degrees(true_long - aberration - nutation)
 }
 
 fn deg_sin(deg: f64) -> f64 {
