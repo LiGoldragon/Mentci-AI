@@ -5,11 +5,11 @@
 
 (require '[clojure.edn :as edn]
          '[clojure.java.io :as io]
-         '[clojure.string :as str]
-         '[malli.core :as m]
-         '[malli.error :as me])
+         '[clojure.string :as str])
 
 (load-file (str (.getParent (io/file *file*)) "/types.clj"))
+(load-file (str (.getParent (io/file *file*)) "/malli.clj"))
+(require '[mentci.malli :refer [defn* enable!]])
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
@@ -18,6 +18,8 @@
 
 (def logs-dir (io/file "Logs"))
 (def default-github-user "LiGoldragon")
+
+(enable!)
 
 (def GetCurrentUserIdInput
   [:map])
@@ -28,50 +30,46 @@
    [:model :string]
    [:userId :string]])
 
-(defn get-current-user-id []
-  (let [input {}
-        _ (when-not (m/validate GetCurrentUserIdInput input)
-            (throw (ex-info "Invalid get-current-user-id input"
-                            {:errors (me/humanize (m/explain GetCurrentUserIdInput input))})))
-        system-user (System/getProperty "user.name")]
+(def LoggerMainInput
+  [:map
+   [:args [:vector :string]]])
+
+(defn* get-current-user-id [:=> [:cat GetCurrentUserIdInput] :string] [_]
+  (let [system-user (System/getProperty "user.name")]
     (if (= system-user "li")
       default-github-user
       system-user)))
 
-(defn validate-entry [entry]
-  (when-not (m/validate types/IntentLog entry)
-    (throw (ex-info "Invalid Log Entry"
-                    {:errors (me/humanize (m/explain types/IntentLog entry))}))))
+(defn* validate-entry [:=> [:cat types/IntentLog] :any] [entry]
+  entry)
 
-(defn log-prompt [intent-summary & {:keys [model user-id] 
-                                   :or {model "gemini-3-flash-preview"}}]
-  (let [user (or user-id (get-current-user-id))
-        input {:intentSummary intent-summary
-               :model model
-               :userId user}
-        _ (when-not (m/validate LogPromptInput input)
-            (throw (ex-info "Invalid log-prompt input"
-                            {:errors (me/humanize (m/explain LogPromptInput input))})))
-        log-file (io/file logs-dir (str "user_" user ".edn"))
+(defn* log-prompt [:=> [:cat LogPromptInput] :any] [input]
+  (let [{:keys [intentSummary model userId]} input
+        log-file (io/file logs-dir (str "user_" userId ".edn"))
         timestamp (.toString (java.time.LocalDateTime/now))
         ecliptic "12.1.28.44 | 5919 AM" ; TODO: Implement dynamic ecliptic calculation
         entry {:timestamp timestamp
                :ecliptic ecliptic
-               :userId user
-               :intentSummary intent-summary
+               :userId userId
+               :intentSummary intentSummary
                :model model
                :signature nil}]
     (validate-entry entry)
     (when-not (.exists logs-dir)
       (.mkdirs logs-dir))
     (spit log-file (str (pr-str entry) "\n") :append true)
-    (println (str "Logged intent (Clojure/Malli): '" intent-summary "' to " log-file))))
+    (println (str "Logged intent (Clojure/Malli): '" intentSummary "' to " log-file))))
 
-(let [args *command-line-args*]
-  (if (empty? args)
-    (println "Usage: logger.clj <intent> [--model <model>] [--user <user>]")
-    (let [intent (first args)
-          options (apply hash-map (map #(str/replace % #"^--" "") (rest args)))]
-      (log-prompt intent 
-                  :model (get options "model" (System/getenv "MENTCI_MODEL"))
-                  :user-id (get options "user")))))
+(defn* main [:=> [:cat LoggerMainInput] :any] [input]
+  (let [args (:args input)]
+    (if (empty? args)
+      (println "Usage: logger.clj <intent> [--model <model>] [--user <user>]")
+      (let [intent (first args)
+            options (apply hash-map (map #(str/replace % #"^--" "") (rest args)))
+            user (or (get options "user") (get-current-user-id {}))
+            model (get options "model" (System/getenv "MENTCI_MODEL"))]
+        (log-prompt {:intentSummary intent
+                     :model model
+                     :userId user})))))
+
+(main {:args (vec *command-line-args*)})
