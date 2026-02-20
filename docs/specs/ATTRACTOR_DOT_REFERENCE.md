@@ -1,6 +1,7 @@
 # Attractor DOT Data Reference
 
-Extracted from `inputs/untyped/attractor/attractor-spec.md`.
+Extracted from `inputs/untyped/attractor/attractor-spec.md`. For the live implementation,
+use `inputs/untyped/brynary-attractor/attractor`.
 
 ## Overview
 Attractor uses **Graphviz DOT** syntax to define agentic workflows.
