@@ -21,6 +21,7 @@ structural. Violations indicate category error, not style.
 *   `camelCase` denotes functions, relations, flow.
 *   `kebab-case` denotes static packages or attributes that are not functions.
 *   Avoid suffixes that restate the type (`Package`, `Module`, `Attrset`).
+*   Avoid context-redundant prefixes. Inside `nix/` code, use `namespace`, not `nixns`.
 
 ## Standard Library Domain Rule
 

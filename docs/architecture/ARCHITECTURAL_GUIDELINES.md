@@ -119,6 +119,7 @@ Meaning is distributed across repository names, directory paths, module names, a
 *   **Naming:**
     *   `camelCase`: Functions, relations, flow.
     *   `kebab-case`: Static packages, attributes.
+    *   Context-local names must not restate the enclosing namespace (e.g., in `nix/`, prefer `namespace` over `nixns`).
 *   **Standard Library Rule:** Never reimplement `lib` patterns. Use standard functions for merging/mapping.
 *   **Single Attrset In/Out:** Reusable functions accept exactly one argument: an attribute set (named arguments). Positional arguments are forbidden for domain logic.
 *   **Grouping:** Related helper functions must be grouped into namespace attrsets (e.g., `lib.message.isValid`), not scattered files.
