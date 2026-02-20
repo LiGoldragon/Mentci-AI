@@ -1,5 +1,7 @@
 # Guide: Setting Up DeepSeek API for Advanced Reasoning
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 This guide outlines the process for creating a DeepSeek account, purchasing API credits, and configuring the environment to use the most advanced reasoning models (e.g., DeepSeek-R1).
 
 ## 1. Account Creation

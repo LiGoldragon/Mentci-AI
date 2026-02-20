@@ -1,5 +1,7 @@
 # Mentci-AI Work Context
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 ## Author's Intent
 The goal is to develop **Mentci-AI**, a Nix-and-Rust based AI daemon, adhering strictly to the **Sema Object Style** and **Capitalization-Based Durability Rules**.
 

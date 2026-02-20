@@ -1,5 +1,7 @@
 # Mentci-AI: System Architecture
 
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+
 The following flowchart describes the structural and operational layers of Mentci-AI, integrating the Nix Jail, Rust Daemon, and Semantic Logging protocols.
 
 ```mermaid
