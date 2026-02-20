@@ -20,10 +20,21 @@
     [:sourcePath :string]
     [:inputType :string]]])
 
+(def OutputManifest
+  [:map-of
+   :keyword
+   [:map
+    [:workspaceName :string]
+    [:workingBookmark :string]
+    [:targetBookmark :string]]])
+
 (def JailConfig
   [:map
    [:inputsPath :string]
-   [:inputManifest InputManifest]])
+   [:inputManifest InputManifest]
+   [:outputsPath {:optional true} :string]
+   [:outputManifest {:optional true} OutputManifest]
+   [:policyPath {:optional true} :string]])
 
 (def CommitContext
   [:map

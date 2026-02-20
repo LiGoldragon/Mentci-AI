@@ -1,4 +1,4 @@
-{ pkgs, inputs, inputsPath ? "inputs" }:
+{ pkgs, inputs, inputsPath ? "inputs", outputsPath ? "Outputs" }:
 
 let
   lib = pkgs.lib;
@@ -29,6 +29,20 @@ let
     opencode = mkInput "opencode" "untyped";
   };
 
+  outputManifest = {
+    mentci-ai = {
+      workspaceName = "output-mentci-ai";
+      workingBookmark = "dev";
+      targetBookmark = "jailCommit";
+    };
+  };
+
+  allowedPushBookmarks = builtins.map (item: item.targetBookmark) (lib.attrValues outputManifest);
+
+  jailPolicyFile = pkgs.writeText "mentci-jail-policy.json" (builtins.toJSON {
+    inherit outputsPath outputManifest allowedPushBookmarks;
+  });
+
 in
 pkgs.mkShell {
   name = "mentci-jail";
@@ -38,7 +52,8 @@ pkgs.mkShell {
   
   # This will be available in .attrs.json
   jailConfig = {
-    inherit inputsPath inputManifest;
+    inherit inputsPath inputManifest outputsPath outputManifest;
+    policyPath = "${jailPolicyFile}";
   };
 
   buildInputs = [
