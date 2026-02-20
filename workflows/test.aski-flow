@@ -1,19 +1,17 @@
 ;; Mentci-AI: Aski-Flow Test Workflow
-;; Implements a simple Codergen loop with human review.
+;; Implements a codergen loop with human review.
 
-[ (Start {:type "start" :label "Entry Point"})
-
-  (ImplementationPlan 
-    {:type "codergen"
-     :label "Generate Implementation"
+[ (ImplementationPlan
+    {:type :codergen
      :prompt "Write a robust hello world in Rust with error handling."})
   {:success Review}
 
   (Review
-    {:type "wait.human"
-     :label "Human Review Gate"})
-  {:pass Exit
+    {:type :wait.human})
+  {:pass :next
    :fail ImplementationPlan}
 
-  (Exit {:type "exit" :label "Great Work Complete"})
+  (DeliveredArtifact
+    {:type :result
+     :label "Great Work Complete"})
 ]
