@@ -1,19 +1,19 @@
 ;; Re-implementation of Attractor: pipelines/factory/seed.dot
 
-[ (IngestArtifacts
+[ (ingest
     {:label "Ingest Artifacts"
      :prompt "@prompts/seed/ingest.md"
      :reasoning_effort "high"})
 
-  (DraftProductDocs
+  (draft
     {:label "Draft Product Docs"
      :prompt "@prompts/seed/draft.md"})
 
-  (ReviewProductDocs
+  (review
     {:label "Review Product Docs"
      :shape "hexagon"})
   {:accept :next
-   :revise DraftProductDocs}
+   :revise draft}
 ]
 
 ;; DOT equivalent:
