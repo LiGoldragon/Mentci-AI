@@ -1,4 +1,4 @@
-{ pkgs, inputs, inputsPath ? "inputs", outputsPath ? "Outputs" }:
+{ pkgs, inputs, inputsPath ? "Inputs", outputsPath ? "Outputs" }:
 
 let
   lib = pkgs.lib;
