@@ -17,45 +17,36 @@
 
 (def DieInput
   [:map
-   [:sema/type [:= "DieInput"]]
    [:message :string]])
 
 (def WorkspaceRootInput
-  [:map
-   [:sema/type [:= "WorkspaceRootInput"]]])
+  [:map])
 
 (def RunJJInput
   [:map
-   [:sema/type [:= "RunJJInput"]]
    [:args [:vector :string]]
    [:workspaceRoot :string]])
 
 (def RunJJLogInput
-  [:map
-   [:sema/type [:= "RunJJLogInput"]]])
+  [:map])
 
 (def RunJJStatusInput
-  [:map
-   [:sema/type [:= "RunJJStatusInput"]]])
+  [:map])
 
 (def RunJJCommitInput
   [:map
-   [:sema/type [:= "RunJJCommitInput"]]
    [:message :string]])
 
 (def UsageInput
-  [:map
-   [:sema/type [:= "UsageInput"]]])
+  [:map])
 
 (def JJMainInput
   [:map
-   [:sema/type [:= "JJMainInput"]]
    [:args [:vector :string]]
    [:command :string]])
 
 (defn die [message]
-  (let [input {:sema/type "DieInput"
-               :message message}]
+  (let [input {:message message}]
     (when-not (m/validate DieInput input)
       (throw (ex-info "Invalid die input"
                       {:errors (me/humanize (m/explain DieInput input))}))))
@@ -63,7 +54,7 @@
   (System/exit 1))
 
 (defn workspace-root []
-  (let [input {:sema/type "WorkspaceRootInput"}]
+  (let [input {}]
     (when-not (m/validate WorkspaceRootInput input)
       (throw (ex-info "Invalid workspace-root input"
                       {:errors (me/humanize (m/explain WorkspaceRootInput input))}))))
@@ -77,8 +68,7 @@
 
 (defn run-jj [args]
   (let [root (workspace-root)]
-    (let [input {:sema/type "RunJJInput"
-                 :args (vec args)
+    (let [input {:args (vec args)
                  :workspaceRoot (or root "")}]
       (when-not (m/validate RunJJInput input)
         (throw (ex-info "Invalid run-jj input"
@@ -88,7 +78,7 @@
     (apply sh "jj" (concat args ["-R" root]))))
 
 (defn run-jj-log []
-  (let [input {:sema/type "RunJJLogInput"}]
+  (let [input {}]
     (when-not (m/validate RunJJLogInput input)
       (throw (ex-info "Invalid run-jj-log input"
                       {:errors (me/humanize (m/explain RunJJLogInput input))}))))
@@ -101,7 +91,7 @@
           (die (str "Error during jj log: " (:err fallback))))))))
 
 (defn run-jj-status []
-  (let [input {:sema/type "RunJJStatusInput"}]
+  (let [input {}]
     (when-not (m/validate RunJJStatusInput input)
       (throw (ex-info "Invalid run-jj-status input"
                       {:errors (me/humanize (m/explain RunJJStatusInput input))}))))
@@ -111,8 +101,7 @@
       (die (str "Error during jj status: " (:err res))))))
 
 (defn run-jj-commit [message]
-  (let [input {:sema/type "RunJJCommitInput"
-               :message message}]
+  (let [input {:message message}]
     (when-not (m/validate RunJJCommitInput input)
       (throw (ex-info "Invalid run-jj-commit input"
                       {:errors (me/humanize (m/explain RunJJCommitInput input))}))))
@@ -126,7 +115,7 @@
           (println (str "Successfully committed and advanced bookmark '" target-bookmark "'.")))))))
 
 (defn usage []
-  (let [input {:sema/type "UsageInput"}]
+  (let [input {}]
     (when-not (m/validate UsageInput input)
       (throw (ex-info "Invalid usage input"
                       {:errors (me/humanize (m/explain UsageInput input))}))))
@@ -143,13 +132,11 @@
         root (workspace-root)
         target-bookmark (or (System/getenv "MENTCI_COMMIT_TARGET") "dev")
         message (when (= cmd "commit") (str/join " " (rest args)))
-        config {:sema/type "JJWorkflowConfig"
-                :command (or cmd "")
+        config {:command (or cmd "")
                 :workspaceRoot (or root "")
                 :targetBookmark target-bookmark
                 :message message}
-        main-input {:sema/type "JJMainInput"
-                    :args (vec args)
+        main-input {:args (vec args)
                     :command (or cmd "")}]
     (when-not (m/validate JJMainInput main-input)
       (throw (ex-info "Invalid -main input"

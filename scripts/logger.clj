@@ -20,18 +20,16 @@
 (def default-github-user "LiGoldragon")
 
 (def GetCurrentUserIdInput
-  [:map
-   [:sema/type [:= "GetCurrentUserIdInput"]]])
+  [:map])
 
 (def LogPromptInput
   [:map
-   [:sema/type [:= "LogPromptInput"]]
    [:intentSummary :string]
    [:model :string]
    [:userId :string]])
 
 (defn get-current-user-id []
-  (let [input {:sema/type "GetCurrentUserIdInput"}
+  (let [input {}
         _ (when-not (m/validate GetCurrentUserIdInput input)
             (throw (ex-info "Invalid get-current-user-id input"
                             {:errors (me/humanize (m/explain GetCurrentUserIdInput input))})))
@@ -48,8 +46,7 @@
 (defn log-prompt [intent-summary & {:keys [model user-id] 
                                    :or {model "gemini-3-flash-preview"}}]
   (let [user (or user-id (get-current-user-id))
-        input {:sema/type "LogPromptInput"
-               :intentSummary intent-summary
+        input {:intentSummary intent-summary
                :model model
                :userId user}
         _ (when-not (m/validate LogPromptInput input)
@@ -58,8 +55,7 @@
         log-file (io/file logs-dir (str "user_" user ".edn"))
         timestamp (.toString (java.time.LocalDateTime/now))
         ecliptic "12.1.28.44 | 5919 AM" ; TODO: Implement dynamic ecliptic calculation
-        entry {:sema/type "IntentLog"
-               :timestamp timestamp
+        entry {:timestamp timestamp
                :ecliptic ecliptic
                :userId user
                :intentSummary intent-summary
