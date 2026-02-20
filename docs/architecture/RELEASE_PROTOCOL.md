@@ -6,12 +6,16 @@
 ## 1. Purpose
 Major releases use the Zodiac-Ordinal notation to encode time and intent. Commit messages for major releases must summarize the broad change set since the last tag.
 
+Year-version policy:
+- Use `v0.<sign>.<degree>.<minute>.<second>` until the vernal equinox.
+- After the equinox, increment the year-version to `v1.*`.
+
 ## 2. Format
 ### 2.1 Commit Message
-Use a single-line commit message:
+Use a markdown-formatted commit message with a single-line title and a bullet overview:
 
 ```
-release: v<cycle>.<sign>.<degree>.<minute>.<second> - <short summary>
+release: v<year-version>.<sign>.<degree>.<minute>.<second> - <short summary>
 ```
 
 - `<short summary>` is a high-level phrase, not a feature list.
@@ -26,10 +30,11 @@ git tag -a v<cycle>.<sign>.<degree>.<minute>.<second> -m "release: v<cycle>.<sig
 ```
 
 ## 3. Required Overview Block
-Add a short overview of major changes since the last tag in the commit **description** (body), using 3–6 bullets:
+Add a short overview of major changes since the last tag in the commit **description** (body), using 3–6 bullets. Include the unicode zodiac date line above the bullets.
 
 ```
 release: v0.12.1.28.44 - stabilize level-5 workflow standards
+♓︎ 1° 28' 44" | 5919 AM
 
 - Standardized JJ workflows and audit trail policy
 - Introduced Aski-Astral and Aski-FS specs
