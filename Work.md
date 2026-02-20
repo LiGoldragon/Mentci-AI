@@ -33,6 +33,5 @@ The environment must support "Level 5" programming (machine-level interaction, d
 5.  [x] **State Persistence**: Implement `CheckpointManager` to save execution state to `.checkpoints/`.
 
 6.  [x] **Documentation**: Reorganized project documentation into `docs/` structure.
-7.  [x] **Attractor Specs**: Extracted DOT data schema from `inputs/untyped/attractor` into `docs/specs/ATTRACTOR_DOT_REFERENCE.md`.
-
+7.  [x] **Attractor Specs**: Extracted DOT data schema from `inputs/untyped/attractor-docs` into `docs/specs/ATTRACTOR_DOT_REFERENCE.md`.
 
