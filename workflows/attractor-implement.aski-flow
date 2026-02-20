@@ -1,48 +1,48 @@
 ;; Re-implementation of Attractor: pipelines/factory/implement.dot
 
-[ (ChooseDecompositionStrategy
+[ (strategy
     {:label "Choose decomposition strategy:"
      :shape "hexagon"})
-  {:layer_by_layer PlanImplementation
-   :feature_slice PlanImplementation
-   :embarrassingly_parallel PlanImplementation
-   :sequential_linear PlanImplementation}
+  {:layer_by_layer plan
+   :feature_slice plan
+   :embarrassingly_parallel plan
+   :sequential_linear plan}
 
-  (PlanImplementation
+  (plan
     {:label "Plan Implementation"
      :prompt "@prompts/implement/plan.md"
      :reasoning_effort "high"
      :thread_id "impl"
      :fidelity "full"})
 
-  (Implement
+  (implement
     {:label "Implement"
      :prompt "@prompts/implement/implement.md"
      :thread_id "impl"
      :fidelity "full"})
 
-  (Review
+  (review
     {:label "Review"
      :prompt "@prompts/implement/review.md"
      :thread_id "impl"
      :fidelity "full"})
 
-  (Validate
+  (validate
     {:label "Validate"
      :prompt "@prompts/implement/validate.md"
      :goal_gate true
      :thread_id "impl"
      :fidelity "full"})
   {:success :next
-   :failure FixFailures}
+   :failure fix}
 
-  (FixFailures
+  (fix
     {:label "Fix Failures"
      :prompt "@prompts/implement/fix.md"
      :max_visits 3
      :thread_id "impl"
      :fidelity "full"})
-  {:next Validate}
+  {:next validate}
 ]
 
 ;; DOT equivalent:
