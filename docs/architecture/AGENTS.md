@@ -63,6 +63,7 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 *   **Inputs Directory Rule:** Do not edit anything under `inputs/`. Treat it as read-only reference material.
 *   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
 *   **Sema Object Style:** Strictly follow the ontology defined in `schema/*.capnp`.
+*   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers (example: in `nix/` code, use `namespace`, not `nixns`).
 *   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `docs/architecture/VERSION_CONTROL.md`.
 *   **Tagging:** When creating git tags, always use the `-m` flag to provide a message directly (e.g., `git tag -a vX.Y.Z -m "release: vX.Y.Z"`) to avoid interactive editor prompts.
 
