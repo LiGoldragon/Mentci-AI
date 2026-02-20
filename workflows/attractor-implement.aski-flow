@@ -44,3 +44,25 @@
      :fidelity "full"})
   {:next Validate}
 ]
+
+;; DOT equivalent:
+;; digraph implement {
+;;   rankdir=LR;
+;;   start [shape=Mdiamond, label="Start"];
+;;   exit  [shape=Msquare,  label="Exit"];
+;;   strategy [shape=hexagon, label="Choose decomposition strategy:"];
+;;   plan      [label="Plan Implementation", prompt="@prompts/implement/plan.md", reasoning_effort="high", thread_id="impl", fidelity="full"];
+;;   implement [label="Implement", prompt="@prompts/implement/implement.md", thread_id="impl", fidelity="full"];
+;;   review    [label="Review", prompt="@prompts/implement/review.md", thread_id="impl", fidelity="full"];
+;;   validate  [label="Validate", prompt="@prompts/implement/validate.md", goal_gate=true, thread_id="impl", fidelity="full"];
+;;   fix       [label="Fix Failures", prompt="@prompts/implement/fix.md", max_visits=3, thread_id="impl", fidelity="full"];
+;;   start -> strategy;
+;;   strategy -> plan [label="[L] Layer-by-layer"];
+;;   strategy -> plan [label="[F] Feature slice"];
+;;   strategy -> plan [label="[P] Embarrassingly parallel"];
+;;   strategy -> plan [label="[S] Sequential / linear"];
+;;   plan -> implement -> review -> validate;
+;;   validate -> exit [condition="outcome=success"];
+;;   validate -> fix  [condition="outcome!=success", label="Fix"];
+;;   fix -> validate;
+;; }
