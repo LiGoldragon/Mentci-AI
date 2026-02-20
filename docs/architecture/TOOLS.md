@@ -26,14 +26,14 @@
 - **Implementation:** Babashka command router for common `jj` flows.
 - **Usage:** `mentci-jj status`, `mentci-jj log`, `mentci-jj commit "message"`.
 
-## Data & Logging
+## Data & Serialization
 ### EDN (Extensible Data Notation)
-- **Role:** Structured logging and configuration format.
-- **Usage:** Used for `Logs/*.edn` to ensure human-and-machine-readable records of intent.
+- **Role:** Structured data interchange format.
+- **Usage:** Used for specifications and configuration data.
 
 ### Jet
 - **Role:** High-performance data processing and transformation.
-- **Usage:** Used for serializing/deserializing structured attributes and log entries.
+- **Usage:** Used for serializing/deserializing structured attributes.
 
 ### Cap'n Proto
 - **Role:** Schema definition and RPC.
@@ -42,4 +42,4 @@
 ## Scripting & Glue
 ### Python 3
 - **Role:** The "Mandatory Glue" for project orchestration.
-- **Usage:** Used for `jail_launcher.py`, `logger.py`, and build scripts to manage complex logic without shell scripts.
+- **Usage:** Used for launchers and build scripts to manage complex logic without shell scripts.

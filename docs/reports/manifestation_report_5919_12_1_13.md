@@ -19,7 +19,7 @@ The **Layer 1: Pipeline Engine** is implemented in Rust, adhering to the **Attra
 ## 4. Semantic Truth & Memory
 The system’s "Truth" is decoupled from its implementation through **Layer 2: Schema & Logging**.
 - **Cap'n Proto:** `schema/*.capnp` defines the universal types for both persisted Atoms and runtime DAGs.
-- **EDN Logging:** The **Handshake Logging Protocol** is active, writing symbolic records to `Logs/` via the vendored `edn_format` library. This ensures historical authority over all AI transactions.
+- **Audit Trail:** Jujutsu history (`jj log`) is the authoritative record of AI transactions.
 
 ## 5. Bug Tracking & Mitigation
 - **Issue B01 (Context Exhaustion):** Documented in `BUGS.md`. Mitigation via the **Context Restart** procedure (`RESTART_CONTEXT.md`) is standardized.

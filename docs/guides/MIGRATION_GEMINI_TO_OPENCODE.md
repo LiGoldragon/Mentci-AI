@@ -12,12 +12,12 @@ Currently, `opencode` is included as a raw source input (`inputs/untyped/opencod
 - **Exposure:** Add `pkgs.opencode` to `devShells.default` packages.
 
 ### 2.2. Standardizing Model Identification
-To prevent logging discrepancies:
+To prevent audit discrepancies:
 - **Action:** Introduce the `MENTCI_MODEL` environment variable.
 - **Implementation:** 
     - Gemini CLI should set `MENTCI_MODEL="gemini-3-flash-preview"`.
     - OpenCode should set `MENTCI_MODEL="DeepSeek-V4"`.
-- **Update:** Modify `scripts/logger.py` to prioritize `os.environ["MENTCI_MODEL"]`.
+- **Update:** Use `jj log` as the audit trail; remove logger dependencies if present.
 
 ### 2.3. OpenCode Provider Configuration
 OpenCode requires a provider configuration to communicate with DeepSeek.
@@ -49,7 +49,7 @@ Verify `opencode --version` is accessible within the nix shell.
 - [x] `commonPackages` includes `opencodePkg`.
 - [x] `.opencode.edn` created in project root.
 - [ ] `which opencode` returns a path in the Nix store (Requires `nix develop`).
-- [x] `scripts/logger.clj` records the correct model if `MENTCI_MODEL` is set.
+- [x] `jj log` is the audit trail for model identification.
 - [ ] Agent can execute `gdb --version` (verifying Level 5 tool access).
 
 ## 5. Timeline
