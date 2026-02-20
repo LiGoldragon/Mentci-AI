@@ -36,6 +36,16 @@
                          "validate_scripts.clj" {:kind :file :role :tooling :durability :mutable}
                          "prefetch_orchestrator.py" {:kind :file :role :tooling :durability :mutable}}}
 
+   "nix" {:kind :dir
+          :children {"default.nix" {:kind :file :role :tooling :durability :stable}
+                     "mk-shell.nix" {:kind :file :role :tooling :durability :stable}
+                     "attractor.nix" {:kind :file :role :tooling :durability :mutable}
+                     "common_packages.nix" {:kind :file :role :tooling :durability :mutable}
+                     "dev_shell.nix" {:kind :file :role :tooling :durability :mutable}
+                     "jail_inputs.nix" {:kind :file :role :tooling :durability :mutable}
+                     "mentci_ai.nix" {:kind :file :role :tooling :durability :mutable}
+                     "mentci_clj.nix" {:kind :file :role :tooling :durability :mutable}}}
+
    "docs" {:kind :dir
            :children {"architecture" {:kind :dir
                                       :children {"AGENTS.md" {:kind :file :role :spec :durability :stable}
@@ -92,7 +102,7 @@
                         "kibord" {:kind :dir :inputType :flake}
                         "aski" {:kind :dir :inputType :flake}
                         "attractor" {:kind :dir :inputType :untyped}
-                        "brynary-attractor" {:kind :dir :inputType :untyped}
+                        "attractor-docs" {:kind :dir :inputType :untyped}
                         "opencode" {:kind :dir :inputType :untyped}}}
    "Logs" {:kind :dir :role :tooling :durability :mutable}
    "target" {:kind :dir :role :tooling :durability :mutable}

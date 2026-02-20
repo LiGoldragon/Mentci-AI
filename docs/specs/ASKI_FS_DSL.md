@@ -101,3 +101,15 @@ Surface sugar is normalized into canonical EDN with explicit type tags and ids.
 ## 7. Related Specs
 - Aski DSL Guidelines: `docs/specs/ASKI_DSL_GUIDELINES.md`
 - Aski-Flow: `docs/specs/ASKI_FLOW_DSL.md`
+
+## 8. Nix Namespace Convention
+For the `nix/` namespace, each exported attribute maps 1:1 to a file basename.
+
+Convention:
+- `nix/<name>.nix` defines attribute `<name>`
+- `nix/default.nix` composes the namespace by importing per-file modules
+
+Examples:
+- `nix/mentci_ai.nix` -> `mentci_ai`
+- `nix/common_packages.nix` -> `common_packages`
+- `nix/jail_inputs.nix` -> `jail_inputs`
