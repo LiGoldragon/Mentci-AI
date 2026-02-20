@@ -10,7 +10,7 @@ pub struct Node {
     pub id: String,
     pub label: Option<String>,
     pub prompt: Option<String>,
-    pub shape: Option<String>, // Defines Handler Type
+    pub shape: Option<String>,     // Defines Handler Type
     pub node_type: Option<String>, // Explicit override
     pub attributes: HashMap<String, String>,
 }
@@ -72,7 +72,7 @@ impl DotLoader {
         for c_node in canonical_graph.nodes.set.into_values() {
             let id = c_node.id.to_string();
             let mut attrs = HashMap::new();
-            
+
             for (k, v) in c_node.attr.elems {
                 let key: String = k.into();
                 let value: String = v.into();
@@ -84,21 +84,24 @@ impl DotLoader {
             let shape = attrs.get("shape").cloned();
             let node_type = attrs.get("type").cloned();
 
-            nodes.insert(id.clone(), Node {
-                id,
-                label,
-                prompt,
-                shape,
-                node_type,
-                attributes: attrs,
-            });
+            nodes.insert(
+                id.clone(),
+                Node {
+                    id,
+                    label,
+                    prompt,
+                    shape,
+                    node_type,
+                    attributes: attrs,
+                },
+            );
         }
 
         // Process Edges
         for c_edge in canonical_graph.edges.set {
             let from = c_edge.from.to_string();
             let to = c_edge.to.to_string();
-            
+
             let mut attrs = HashMap::new();
             for (k, v) in c_edge.attr.elems {
                 let key: String = k.into();
@@ -119,7 +122,7 @@ impl DotLoader {
                 attributes: attrs,
             });
         }
-        
+
         let goal = graph_attrs.get("goal").cloned();
 
         Ok(Graph {
@@ -162,12 +165,18 @@ digraph "TestFlow" {
         assert_eq!(plan.shape.as_deref(), Some("box"));
 
         assert_eq!(graph.edges.len(), 2);
-        let start_edge = graph.edges.iter().find(|e| e.from == "start" && e.to == "plan")
+        let start_edge = graph
+            .edges
+            .iter()
+            .find(|e| e.from == "start" && e.to == "plan")
             .expect("start -> plan edge");
         assert_eq!(start_edge.label.as_deref(), Some("ok"));
         assert_eq!(start_edge.weight, Some(2));
 
-        let exit_edge = graph.edges.iter().find(|e| e.from == "plan" && e.to == "exit")
+        let exit_edge = graph
+            .edges
+            .iter()
+            .find(|e| e.from == "plan" && e.to == "exit")
             .expect("plan -> exit edge");
         assert_eq!(exit_edge.condition.as_deref(), Some("outcome=success"));
     }

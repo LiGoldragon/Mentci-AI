@@ -97,8 +97,8 @@ fn attractor_harness_can_run_minimal_dot_pipeline() {
     let root = temp.path();
     let log_path = root.join("attractor.log");
     let request_path = root.join("pipeline.json");
-    let attractor_dir =
-        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("inputs/untyped/brynary-attractor/attractor");
+    let attractor_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("inputs/untyped/brynary-attractor/attractor");
     if !attractor_dir.exists() {
         eprintln!(
             "skipping test: attractor directory missing at {}",
@@ -161,7 +161,9 @@ fn attractor_harness_can_run_minimal_dot_pipeline() {
         let context_url = format!("http://127.0.0.1:{port}/pipelines/{pipeline_id}/context");
         let context = curl_json(&context_url, None);
         if context.get("context").is_none() {
-            return Err(format!("context response missing `context` field: {context}"));
+            return Err(format!(
+                "context response missing `context` field: {context}"
+            ));
         }
 
         let checkpoint_url = format!("http://127.0.0.1:{port}/pipelines/{pipeline_id}/checkpoint");

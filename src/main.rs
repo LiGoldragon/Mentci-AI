@@ -1,9 +1,9 @@
+use anyhow::{Context as AnyhowContext, Result};
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::Command;
-use anyhow::{Result, Context as AnyhowContext};
-use std::collections::HashMap;
-use tracing::{info, error};
-use serde::{Serialize, Deserialize};
+use tracing::{error, info};
 
 pub mod atom_filesystem_capnp {
     include!(concat!(env!("OUT_DIR"), "/atom_filesystem_capnp.rs"));
@@ -157,11 +157,11 @@ pub trait Handler {
 struct StartHandler;
 impl Handler for StartHandler {
     fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
-        Ok(Outcome { 
-            status: StageStatus::Success, 
+        Ok(Outcome {
+            status: StageStatus::Success,
             notes: Some("Start node executed.".to_string()),
             context_updates: HashMap::new(),
-            preferred_label: None 
+            preferred_label: None,
         })
     }
 }
@@ -169,16 +169,18 @@ impl Handler for StartHandler {
 struct ExitHandler;
 impl Handler for ExitHandler {
     fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
-        Ok(Outcome { 
-            status: StageStatus::Success, 
+        Ok(Outcome {
+            status: StageStatus::Success,
             notes: Some("Workflow exited.".to_string()),
             context_updates: HashMap::new(),
-            preferred_label: None 
+            preferred_label: None,
         })
     }
 }
 
-struct CodergenHandler { prompt: String }
+struct CodergenHandler {
+    prompt: String,
+}
 impl Handler for CodergenHandler {
     fn execute(&self, _task: &mut TaskContext) -> Result<Outcome> {
         info!("Executing Codergen: {}", self.prompt);
@@ -186,7 +188,7 @@ impl Handler for CodergenHandler {
         let response = format!("// Generated code for: {}", self.prompt);
         let mut updates = HashMap::new();
         updates.insert("last_response".to_string(), response);
-        
+
         Ok(Outcome {
             status: StageStatus::Success,
             notes: Some("Codergen completed.".to_string()),
@@ -221,7 +223,10 @@ impl Handler for AgentHandler {
         }
 
         let mut updates = HashMap::new();
-        updates.insert("agent_response".to_string(), result.stdout.trim().to_string());
+        updates.insert(
+            "agent_response".to_string(),
+            result.stdout.trim().to_string(),
+        );
 
         Ok(Outcome {
             status: StageStatus::Success,
@@ -238,7 +243,7 @@ impl Handler for WaitHumanHandler {
         info!("Waiting for human intervention...");
         println!(">>> HUMAN GATE <<<");
         println!("Press Enter to continue, or type 'fail' to abort.");
-        
+
         let mut input = String::new();
         if std::io::stdin().read_line(&mut input).is_ok() {
             if input.trim().to_lowercase() == "fail" {
@@ -301,8 +306,8 @@ fn shell_quote(value: &str) -> String {
 impl PipelineEngine {
     pub fn new(graph: Graph, env: Box<dyn ExecutionEnvironment>) -> Self {
         let workdir = env.working_directory();
-        Self { 
-            graph, 
+        Self {
+            graph,
             env,
             checkpoint_manager: CheckpointManager::new(&workdir),
         }
@@ -313,9 +318,12 @@ impl PipelineEngine {
         let mut current_node_id = self.graph.start_node.clone();
 
         loop {
-            let node = self.graph.nodes.get(&current_node_id)
+            let node = self
+                .graph
+                .nodes
+                .get(&current_node_id)
                 .ok_or_else(|| anyhow::anyhow!("Node not found: {}", current_node_id))?;
-            
+
             info!(">>> NODE: {} <<<", node.id);
 
             let mut task = TaskContext {
@@ -324,11 +332,13 @@ impl PipelineEngine {
             };
 
             let outcome = node.handler.execute(&mut task)?;
-            
+
             // Checkpoint
             let checkpoint = Checkpoint {
                 node_id: current_node_id.clone(),
-                timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)?.as_secs(),
+                timestamp: std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)?
+                    .as_secs(),
                 context: context.clone(),
                 outcome: outcome.clone(),
             };
@@ -353,13 +363,14 @@ impl PipelineEngine {
 
             match self.select_next_node(routing) {
                 Ok(next_id) => {
-                    if next_id == "exit" || self.graph.nodes.get(&next_id).is_none() { // Exit implicit or explicit
-                         // If explicit exit node exists, we run it next loop.
-                         // But if select_next_node returns "exit" and it's NOT in nodes, we stop.
-                         if !self.graph.nodes.contains_key(&next_id) {
-                             info!("Exiting workflow (terminal).");
-                             break;
-                         }
+                    if next_id == "exit" || self.graph.nodes.get(&next_id).is_none() {
+                        // Exit implicit or explicit
+                        // If explicit exit node exists, we run it next loop.
+                        // But if select_next_node returns "exit" and it's NOT in nodes, we stop.
+                        if !self.graph.nodes.contains_key(&next_id) {
+                            info!("Exiting workflow (terminal).");
+                            break;
+                        }
                     }
                     current_node_id = next_id;
                 }
@@ -382,7 +393,7 @@ impl PipelineEngine {
         }
 
         if candidates.is_empty() {
-             return Err(anyhow::anyhow!("No outgoing edges"));
+            return Err(anyhow::anyhow!("No outgoing edges"));
         }
 
         // Simple routing: Look for preferred label match, else take first unconditional
@@ -393,11 +404,11 @@ impl PipelineEngine {
                 }
             }
         }
-        
+
         // Fallback to first edge (naive weight support)
         // Sort by weight desc?
         candidates.sort_by(|a, b| b.weight.cmp(&a.weight));
-        
+
         Ok(candidates[0].to.clone())
     }
 }
@@ -406,7 +417,7 @@ impl PipelineEngine {
 
 fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
-    
+
     let args: Vec<String> = std::env::args().collect();
     if args.len() >= 2 && args[1] == "job/jails" {
         let bootstrap_args = args.into_iter().skip(2).collect::<Vec<_>>();
@@ -425,15 +436,20 @@ fn main() -> Result<()> {
 
     let path = PathBuf::from(&args[1]);
     let extension = path.extension().and_then(|s| s.to_str()).unwrap_or("");
-    
+
     let content = std::fs::read_to_string(&path).context("Failed to read workflow file")?;
-    
+
     let dot_graph = match extension {
         "dot" => DotLoader::parse(&content).context("Failed to parse DOT")?,
         "edn" | "aski-flow" => EdnLoader::parse(&content).context("Failed to parse Aski-Flow")?,
-        _ => return Err(anyhow::anyhow!("Unsupported workflow format: .{}", extension)),
+        _ => {
+            return Err(anyhow::anyhow!(
+                "Unsupported workflow format: .{}",
+                extension
+            ))
+        }
     };
-    
+
     // Hydrate Graph
     let mut nodes = HashMap::new();
     let mut start_node = None;
@@ -447,29 +463,42 @@ fn main() -> Result<()> {
             .get("agent_command")
             .cloned()
             .or_else(|| std::env::var("MENTCI_AGENT_COMMAND").ok());
-        
-        let handler: Box<dyn Handler> = if id == "start" || shape == "Mdiamond" || n_type == "start" {
-            if start_node.is_none() { start_node = Some(id.clone()); }
+
+        let handler: Box<dyn Handler> = if id == "start" || shape == "Mdiamond" || n_type == "start"
+        {
+            if start_node.is_none() {
+                start_node = Some(id.clone());
+            }
             Box::new(StartHandler)
         } else if id == "exit" || shape == "Msquare" || n_type == "exit" {
             Box::new(ExitHandler)
         } else if n_type == "wait.human" || n_type == "wait_human" || shape == "hexagon" {
             Box::new(WaitHumanHandler)
         } else if n_type == "agent" || agent_command.is_some() {
-            let prompt = d_node.prompt.clone().unwrap_or_else(|| d_node.label.clone().unwrap_or(id.clone()));
-            let command = agent_command.ok_or_else(|| anyhow::anyhow!("agent_command is required for agent nodes"))?;
+            let prompt = d_node
+                .prompt
+                .clone()
+                .unwrap_or_else(|| d_node.label.clone().unwrap_or(id.clone()));
+            let command = agent_command
+                .ok_or_else(|| anyhow::anyhow!("agent_command is required for agent nodes"))?;
             Box::new(AgentHandler { prompt, command })
         } else {
             // Default to Codergen
-            let prompt = d_node.prompt.clone().unwrap_or_else(|| d_node.label.clone().unwrap_or(id.clone()));
+            let prompt = d_node
+                .prompt
+                .clone()
+                .unwrap_or_else(|| d_node.label.clone().unwrap_or(id.clone()));
             Box::new(CodergenHandler { prompt })
         };
 
-        nodes.insert(id.clone(), Node {
-            id,
-            handler,
-            prompt: d_node.prompt,
-        });
+        nodes.insert(
+            id.clone(),
+            Node {
+                id,
+                handler,
+                prompt: d_node.prompt,
+            },
+        );
     }
 
     // Edges
@@ -496,11 +525,15 @@ fn main() -> Result<()> {
         start_node: start_node_id,
     };
 
-    info!("Loaded graph with {} nodes and {} edges.", graph.nodes.len(), graph.edges.len());
+    info!(
+        "Loaded graph with {} nodes and {} edges.",
+        graph.nodes.len(),
+        graph.edges.len()
+    );
 
     let env = Box::new(LocalExecutionEnvironment::new(std::env::current_dir()?));
     let mut engine = PipelineEngine::new(graph, env);
-    
+
     engine.run()?;
 
     Ok(())
