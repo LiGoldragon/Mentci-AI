@@ -54,12 +54,11 @@ Agents updated")
     - **:failure** -> Initiates a **Debug Loop** (Ref: `strategies/debugging/`).
 
 ## 3. Symbolic Mapping (Aski-FS Sugar)
-The following EDN structure represents the authoritative symbolic map of the `inputs` directory, utilizing the **Aski Sugar** syntax (Ref: `strategies/aski-conversion/STRATEGY.md`).
+The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **List-Based Instantiation** syntax.
 
 ```edn
-{:inputs
- {:_meta {:path "inputs" :role :tooling :durability :mutable}
-  :mentci-ai :atom
+(Inputs :dir {:role :tooling :durability :mutable}
+ {:mentci-ai :atom
   :criomos :flake
   :lojix :flake
   :seahawk :flake
@@ -72,13 +71,16 @@ The following EDN structure represents the authoritative symbolic map of the `in
   :aski :flake
   :attractor :untyped
   :attractor-docs :untyped
-  :opencode :untyped}}
+  :opencode :untyped})
 ```
 
 **Expansion Logic:**
-- `:_meta` map expands to node attributes.
-- Keyword values (`:flake`, `:atom`) expand to `{:kind :dir :inputType :<value>}`.
-- Nested maps imply `{:kind :dir :children ...}`.
+- **List Form `(Name Type Attrs Children)`**:
+    - `Name`: Becomes the directory/file name and path segment.
+    - `Type`: Mandatory kind (e.g., `:dir`, `:file`).
+    - `Attrs`: Optional map of metadata (role, durability).
+    - `Children`: Optional map or vector of contained nodes.
+- **Keyword Values**: In the children map, `:key :value` expands to `(:key :dir {:inputType :value})`.
 
 ## 4. Implementation Rules
 - Agents **must** respect the `RO` (Read-Only) status of `Inputs/`.
