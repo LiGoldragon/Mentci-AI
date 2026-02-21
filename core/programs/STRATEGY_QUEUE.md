@@ -19,8 +19,8 @@
 | **3** | **Mentci-RFS** | `strategies/mentci-rfs/` | Goal 0 | Daring IDE paradigm shift. De-prioritized to ensure it is built on a stable `mentci-aid` base. |
 
 ## 3. Implementation Status
-- **Strategy-Development:** Development Trial in progress.
-- **Attractor:** Drafted. Ready for Strategy-Development (Hardening).
+- **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer.clj`.
+- **Attractor:** **Hardening.** Using `tool_discoverer` to select Rust DOT crates.
 - **Mentci-RFS:** Feasibility study complete.
 
 *The Great Work continues.*
