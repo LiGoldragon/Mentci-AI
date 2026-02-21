@@ -12,6 +12,7 @@ Required outcome:
 - `mentci-aid` reaches a "Running State".
 - It successfully orchestrates complex DAGs within Nix Jails.
 - It adheres strictly to Sema Object Style and Handshake Logging.
+- **Assimilation:** Attractor (StrongDM) and Attractor-Docs (Brynary) are fully assimilated (rewritten internally in Sema-standard Aski + Rust + Clojure + Nix) as native components.
 
 ## Goal 1: Attractor DOT Job Handoff
 

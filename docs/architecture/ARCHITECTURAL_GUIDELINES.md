@@ -5,6 +5,20 @@
 *   **Reproducibility:** The `inputs/` directory contains read-only symlinks to all project dependencies and ecosystem inputs, managed by `scripts/launcher.clj`.
 *   **Purity:** Respect the `RO Indicator`. In pure mode, inputs are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
 
+## 0.0. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
+
+**The architecture prioritizes languages by their semantic capacity.**
+
+1.  **Aski (Evolved Multi-Domain Clojure):** The highest authority. Defines specs, workflows, and LLM-friendly logic. Takes over superior capacity for symbolic manipulation.
+2.  **Rust (Core Implementation):** The engine of durability. Handles high-performance execution and type safety.
+3.  **Clojure (Prototyping & Glue):** The agile layer. Used for small tools and rapid iteration before hardening into Rust or Aski.
+4.  **Nix (Low-Level Utility):** The substrate of reproducibility. Only used for its specific usefulness. Should be **phased out** as early as possible or hidden behind low-level Aski interfaces (see **Lojix**, the Aski-Nix subsystem).
+
+**Assimilation of Inputs:**
+- **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `inputs/`.
+- They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
+- Their logic must be ported to the higher-authority languages (Aski/Rust) to fully integrate with the Mentci-AI ecosystem.
+
 ## 0.1. SHELL CODE IS FORBIDDEN (CLOJURE MANDATE)
 
 **Bash/Shell scripts are forbidden for logic.**

@@ -29,7 +29,8 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 12. **`docs/specs/ASKI_FS_DSL.md`** & **`docs/specs/ASKI_FS_ASTRAL_DSL.md`**: Filesystem DSLs and astral mapping.
 13. **`workflows/mentci.aski-fs`** & **`workflows/mentci.aski-fs.deps.edn`**: Canonical FS map and dependency-read rules.
 14. **`schema/mentci.capnp`** & **`schema/atom_filesystem.capnp`**: Semantic truth of the system (Filesystem Atoms, Orchestrator RPCs).
-15. **`docs/reports/BRYNARY_ATTRACTOR_SUMMARY.md`**: High-level summary of the Attractor approach vs chat loops.
+16. **`docs/architecture/INTENT_DISCOVERY.md`**: Guide for analyzing `jj log` to derive goal weights.
+17. **`docs/architecture/ARCHITECTURAL_GUIDELINES.md`** (Updated): Defines the **Language Authority Hierarchy** (Aski > Rust > Clojure > Nix) and the **Assimilation Directive** for Attractor.
 
 ## 3. Current State & Intent
 *   **Filesystem:** The entire project is typed as a "Repo Atom". Documentation is organized into `docs/`.
@@ -37,6 +38,7 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
     *   **Status:** Experimental prototype. **Not in a running state.**
     *   **Parsers:** DOT parser (`src/dot_loader.rs`) migrated to `dot-parser` canonical representation. EDN loader (`src/edn_loader.rs`) supports `.aski-flow`.
     *   **Engine:** Executes workflows, saves checkpoints (`src/main.rs`). Switches between DOT and Aski-Flow based on file extension.
+    *   **Assimilation:** Work has begun to assimilate `attractor` and `attractor-docs` logic into the native stack.
 *   **Workflow Definition:**
     *   **Visual:** DOT (`workflows/*.dot`) for legacy/visualization, aligned to Attractor.
     *   **Internal:** **Aski-Flow** (`docs/specs/ASKI_FLOW_DSL.md`) is the standard for new definitions.
@@ -55,6 +57,7 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 3.  **Schema Alignment**: Keep `schema/mentci.capnp` in sync with `src/main.rs` and any new DSL schema changes.
 4.  **Dev Shell Tooling**: Ensure `nix develop -c` picks up project tools (PATH export or shell hooks).
 5.  **mentci-aid Stabilization**: Bring the core engine to a functional, running state (Goal 0).
+    *   **Focus:** Assimilate Attractor components into Rust/Aski.
 
 ## 4.1 Latest Goal Run (Goal 1)
 *   **Date:** 2026-02-20
@@ -88,6 +91,11 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 *   **Date:** 2026-02-21
 *   **Milestone:** Fixed `attractor` (StrongDM) vs `attractor-docs` (Brynary) mapping. Improved launcher to mount `srcPath` (Nix store).
 *   **Version:** `v0.12.3.48.16`
+
+## 4.5 Language Hierarchy and Assimilation
+*   **Date:** 2026-02-21
+*   **Milestone:** Established Language Authority (Aski > Rust > Clojure > Nix) and mandated assimilation of Attractor inputs.
+*   **Version:** `v0.12.3.50.22`
 
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.

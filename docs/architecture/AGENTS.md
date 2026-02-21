@@ -30,6 +30,12 @@ Enforcement requirements:
 These are the highest-order rules for all languages and scripts.
 
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
+*   **Assimilation of Inputs:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `inputs/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
+*   **Language Authority Hierarchy:**
+    1.  **Aski:** Evolved multi-domain Clojure. Takes precedence for specs and LLM-friendly logic.
+    2.  **Rust:** Core implementation and heavy lifting.
+    3.  **Clojure:** Fast prototyping for small tools and orchestration glue.
+    4.  **Nix:** Low-level utility only. Should be phased out or hidden behind Aski (see Lojix).
 *   **Single Object In/Out:** All boundary-crossing values are Sema objects. Every function accepts exactly one explicit object argument and returns exactly one object. When multiple inputs/outputs are required, define an input/output object.
 *   **Everything Is an Object:** Reusable behavior belongs to named objects or traits. Free functions exist only as orchestration shells.
 *   **Naming Is a Semantic Layer:** Meaning appears once at the highest valid layer. Repetition across layers is forbidden.
