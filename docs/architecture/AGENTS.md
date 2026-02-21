@@ -29,6 +29,7 @@ Enforcement requirements:
 
 These are the highest-order rules for all languages and scripts.
 
+*   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
 *   **Single Object In/Out:** All boundary-crossing values are Sema objects. Every function accepts exactly one explicit object argument and returns exactly one object. When multiple inputs/outputs are required, define an input/output object.
 *   **Everything Is an Object:** Reusable behavior belongs to named objects or traits. Free functions exist only as orchestration shells.
 *   **Naming Is a Semantic Layer:** Meaning appears once at the highest valid layer. Repetition across layers is forbidden.

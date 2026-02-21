@@ -1,3 +1,11 @@
+//! mentci-aid (Mentci-AI Daemon / Aid)
+//! 
+//! The core execution engine for the Mentci-AI project.
+//! - Daemon: Background pipeline execution.
+//! - Aid: Symbolic help for the human mind.
+//!
+//! STATUS: Not in a running state.
+
 use anyhow::{Context as AnyhowContext, Result};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -429,8 +437,9 @@ fn main() -> Result<()> {
     }
 
     if args.len() < 2 {
-        println!("Usage: mentci-ai <workflow.dot|workflow.aski-flow|workflow.edn>");
-        println!("       mentci-ai job/jails [bootstrap] [options]");
+        println!("mentci-aid (Mentci-AI Daemon) - STATUS: NOT IN A RUNNING STATE");
+        println!("Usage: mentci-aid <workflow.dot|workflow.aski-flow|workflow.edn>");
+        println!("       mentci-aid job/jails [bootstrap] [options]");
         return Ok(());
     }
 

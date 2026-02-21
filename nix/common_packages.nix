@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, scripts_dir }:
+{ pkgs, codex_cli_nix, system, scripts_dir, gemini_cli }:
 
 let
   mentci_jj = import ./mentci_jj.nix {
@@ -21,6 +21,7 @@ in
   pkgs.valgrind
   pkgs.rsync
   codex_cli_nix.packages.${system}.default
+  gemini_cli
   (pkgs.writeShellScriptBin "mentci-commit" ''
     ${pkgs.babashka}/bin/bb ${scripts_dir}/commit.clj --runtime "$(pwd)/workspace/.mentci/runtime.json" "$@"
   '')
