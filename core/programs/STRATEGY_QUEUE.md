@@ -20,7 +20,7 @@
 
 ## 3. Implementation Status
 - **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer.clj`.
-- **Attractor:** **Hardening.** Using `tool_discoverer` to select Rust DOT crates.
-- **Mentci-RFS:** Feasibility study complete.
+- **Attractor:** **Implemented.** Validator in `src/attractor_validator.rs`.
+- **Mentci-RFS:** Feasibility study complete. Ready for Strategy-Development.
 
 *The Great Work continues.*

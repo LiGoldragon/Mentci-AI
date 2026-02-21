@@ -26,8 +26,10 @@ pub mod mentci_capnp {
 pub mod dot_loader;
 pub mod edn_loader;
 pub mod jail_bootstrap;
+pub mod attractor_validator;
 use dot_loader::DotLoader;
 use edn_loader::EdnLoader;
+use attractor_validator::AttractorValidator;
 
 // --- Execution Environment ---
 
@@ -447,6 +449,27 @@ fn main() -> Result<()> {
     let extension = path.extension().and_then(|s| s.to_str()).unwrap_or("");
 
     let content = std::fs::read_to_string(&path).context("Failed to read workflow file")?;
+
+    // --- Validation Step ---
+    if extension == "dot" {
+        info!("Validating Attractor DOT structure...");
+        match AttractorValidator::validate(&content) {
+            Ok(result) => {
+                if !result.is_valid {
+                    error!("Validation failed:");
+                    for err in result.errors {
+                        error!("- {}", err);
+                    }
+                    std::process::exit(1);
+                }
+                info!("Validation passed: {} nodes, {} edges.", result.node_count, result.edge_count);
+            }
+            Err(e) => {
+                error!("Validation error: {}", e);
+                std::process::exit(1);
+            }
+        }
+    }
 
     let dot_graph = match extension {
         "dot" => DotLoader::parse(&content).context("Failed to parse DOT")?,
