@@ -1,0 +1,20 @@
+{:root
+ {:path "inputs"
+  :kind :dir
+  :role :tooling
+  :durability :mutable
+  :children
+  {"mentci-ai" {:kind :dir :inputType :atom}
+   "criomos" {:kind :dir :inputType :flake}
+   "lojix" {:kind :dir :inputType :flake}
+   "seahawk" {:kind :dir :inputType :flake}
+   "skrips" {:kind :dir :inputType :flake}
+   "mkZolaWebsite" {:kind :dir :inputType :flake}
+   "webpublish" {:kind :dir :inputType :flake}
+   "goldragon" {:kind :dir :inputType :flake}
+   "maisiliym" {:kind :dir :inputType :flake}
+   "kibord" {:kind :dir :inputType :flake}
+   "aski" {:kind :dir :inputType :flake}
+   "attractor" {:kind :dir :inputType :untyped}
+   "attractor-docs" {:kind :dir :inputType :untyped}
+   "opencode" {:kind :dir :inputType :untyped}}}}

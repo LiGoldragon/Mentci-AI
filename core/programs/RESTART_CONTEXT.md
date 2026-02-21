@@ -5,7 +5,7 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Active Bookmark:** `dev`.
-*   **Current Programming Version:** `tnpg6mlv` (Ref: `scripts/program_version/main.clj`).
+*   **Current Programming Version:** `s0rb21wj` (Ref: `scripts/program_version/main.clj`).
 *   **Latest Release Tag:** `v0.12.3.58.3` (Ref: `Logs/RELEASE_MILESTONES.md`).
 
 ## 1. Project Overview
@@ -28,9 +28,10 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `artifact-sweep`, `attractor`, `debugging`, `mentci-rfs`, `project-hardening`, `strategy-development`.
 - **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.**
 - **Development Loop:** `core/programs/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
-- **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Executed Strike-2 purge of 4 redundant files.
+- **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
-- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/SYSTEM_SWEEP_REPORT.md` (Infrastructure health), `Logs/OBSOLESCENCE_STRIKES.edn` (Purge record).
+- **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
+- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Logs/SYSTEM_SWEEP_REPORT.md` (Infrastructure health), `Logs/OBSOLESCENCE_STRIKES.edn` (Strike record).
 
 ## 4. Operational Requirements
 - **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Logs/RELEASE_MILESTONES.md`.

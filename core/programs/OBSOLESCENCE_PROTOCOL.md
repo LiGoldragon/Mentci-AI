@@ -7,15 +7,15 @@
 A file enters the obsolescence pipeline when it is determined to be non-functional or redundant within the current architectural context.
 
 1.  **Strike 1:** The file is identified as potentially obsolete during a system sweep. It is added to `Logs/OBSOLESCENCE_STRIKES.edn` with `strikes: 1`.
-2.  **Strike 2:** A subsequent sweep (in a different session or by a different agent) confirms the obsolescence. The strike count is incremented to `2`.
-3.  **Purge:** Once a file has **two strikes**, it is eligible for immediate removal from the filesystem in the next sweep.
+2.  **Strike 2:** A subsequent sweep confirms the obsolescence. The strike count is incremented to `2`.
+3.  **Strike 3:** A final confirmation sweep. Once a file has **three strikes**, it is eligible for immediate removal from the filesystem in the next sweep.
 
 ## 2. Tracking
 Strikes are recorded in `Logs/OBSOLESCENCE_STRIKES.edn` using the following schema:
 
 ```clojure
 {
-  "/path/to/file" {:strikes 1 :reason "vibe-coding leftover" :first_sweep "♓︎..." :last_sweep "♓︎..."}
+  "/path/to/file" {:strikes 3 :reason "vibe-coding leftover" :first_sweep "♓︎..." :last_sweep "♓︎..."}
 }
 ```
 
