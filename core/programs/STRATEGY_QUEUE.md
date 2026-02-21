@@ -17,8 +17,9 @@
 | **3** | **Project-Hardening** | `strategies/project-hardening/` | Goal 0 | Structural reorg, schemas, and test coverage. |
 | **4** | **Debugging** | `strategies/debugging/` | Goal 0 | Protocol for system-wide failure resolution. |
 | **5** | **Aski-Conversion** | `strategies/aski-conversion/` | Goal 0 | Macro-based conversion between sugar and canonical EDN specs. |
-| **6** | **Attractor** | `strategies/attractor/` | Goal 0 & 1 | Stabilizes the agentic workflow standard and assimilation of core components. |
-| **7** | **Mentci-RFS** | `strategies/mentci-rfs/` | Goal 0 | Daring IDE paradigm shift. De-prioritized to ensure it is built on a stable `mentci-aid` base. |
+| **6** | **Aski-Refinement** | `strategies/aski-refinement/` | Goal 0 | Reducing object count via contextual overloading and delimiter semantics. |
+| **7** | **Attractor** | `strategies/attractor/` | Goal 0 & 1 | Stabilizes the agentic workflow standard and assimilation of core components. |
+| **8** | **Mentci-RFS** | `strategies/mentci-rfs/` | Goal 0 | Daring IDE paradigm shift. De-prioritized to ensure it is built on a stable `mentci-aid` base. |
 
 ## 3. Implementation Status
 - **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer/main.clj`.
@@ -26,6 +27,7 @@
 - **Project-Hardening:** **Implemented.** (Structural Phase). Scripts reorganized, schemas defined.
 - **Debugging:** **Operational.** Protocol in `strategies/debugging/STRATEGY.md`.
 - **Aski-Conversion:** **Drafted.** Strategy in `strategies/aski-conversion/STRATEGY.md`.
+- **Aski-Refinement:** **Drafted.** Strategy in `strategies/aski-refinement/STRATEGY.md`.
 - **Attractor:** **Implemented.** Validator in `src/attractor_validator.rs`.
 - **Mentci-RFS:** Feasibility study complete. Ready for Strategy-Development.
 
