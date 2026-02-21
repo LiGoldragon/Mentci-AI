@@ -53,30 +53,32 @@ Agents updated")
     - **:success** -> The change is committed and becomes the new input for subscribed agents.
     - **:failure** -> Initiates a **Debug Loop** (Ref: `strategies/debugging/`).
 
-## 3. Symbolic Mapping (Aski-FS)
-The following EDN structure (Ref: `inputs.aski-fs`) defines the authoritative symbolic map of the `inputs` directory:
+## 3. Symbolic Mapping (Aski-FS Sugar)
+The following EDN structure represents the authoritative symbolic map of the `inputs` directory, utilizing the **Aski Sugar** syntax (Ref: `strategies/aski-conversion/STRATEGY.md`).
 
-```clojure
-{:root
- {:path "inputs"
-  :kind :dir
-  :role :tooling
-  :children
-  {"mentci-ai" {:kind :dir :inputType :atom}
-   "criomos" {:kind :dir :inputType :flake}
-   "lojix" {:kind :dir :inputType :flake}
-   "seahawk" {:kind :dir :inputType :flake}
-   "skrips" {:kind :dir :inputType :flake}
-   "mkZolaWebsite" {:kind :dir :inputType :flake}
-   "webpublish" {:kind :dir :inputType :flake}
-   "goldragon" {:kind :dir :inputType :flake}
-   "maisiliym" {:kind :dir :inputType :flake}
-   "kibord" {:kind :dir :inputType :flake}
-   "aski" {:kind :dir :inputType :flake}
-   "attractor" {:kind :dir :inputType :untyped}
-   "attractor-docs" {:kind :dir :inputType :untyped}
-   "opencode" {:kind :dir :inputType :untyped}}}}
+```edn
+{:inputs
+ {:_meta {:path "inputs" :role :tooling :durability :mutable}
+  :mentci-ai :atom
+  :criomos :flake
+  :lojix :flake
+  :seahawk :flake
+  :skrips :flake
+  :mkZolaWebsite :flake
+  :webpublish :flake
+  :goldragon :flake
+  :maisiliym :flake
+  :kibord :flake
+  :aski :flake
+  :attractor :untyped
+  :attractor-docs :untyped
+  :opencode :untyped}}
 ```
+
+**Expansion Logic:**
+- `:_meta` map expands to node attributes.
+- Keyword values (`:flake`, `:atom`) expand to `{:kind :dir :inputType :<value>}`.
+- Nested maps imply `{:kind :dir :children ...}`.
 
 ## 4. Implementation Rules
 - Agents **must** respect the `RO` (Read-Only) status of `Inputs/`.
