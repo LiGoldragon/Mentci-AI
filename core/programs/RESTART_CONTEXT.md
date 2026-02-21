@@ -26,7 +26,7 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Orchestration:** `scripts/launcher/` (Jail), `scripts/commit/` (Shipping).
 - **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
 - **FS Ontology:** `core/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
-- **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `artifact-sweep`, `attractor`, `debugging`, `mentci-rfs`, `project-hardening`, `strategy-development`.
+- **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `artifact-sweep`, `aski-conversion`, `attractor`, `debugging`, `mentci-rfs`, `project-hardening`, `strategy-development`.
 - **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
 - **Development Loop:** `core/programs/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
