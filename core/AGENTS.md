@@ -33,6 +33,10 @@ Enforcement requirements:
 These are the highest-order rules for all languages and scripts.
 
 *   **Sub-Program Directory:** The `core/programs/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
+*   **Per-Subject Drafting System:** All drafts, planning documents, feasibility studies, and research notes must be kept in `drafts/<subject>/` dedicated directories. 
+    *   **Dynamic Context:** Subjects should be merged or split as the context volume changes.
+    *   **Cross-Referencing:** Multi-subject files should be symlinked or explicitly cross-referenced.
+    *   **Transition:** Once a draft reaches implementation status, its requirements must be migrated to `core/` or `tasks/`.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
 *   **Assimilation of Inputs:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `inputs/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 *   **Language Authority Hierarchy:**
