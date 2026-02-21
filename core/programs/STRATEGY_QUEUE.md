@@ -16,14 +16,16 @@
 | **2** | **Artifact-Sweep** | `strategies/artifact-sweep/` | Goal 0 | Surgically removes redundant framing blocks to improve token economy and purity. |
 | **3** | **Project-Hardening** | `strategies/project-hardening/` | Goal 0 | Structural reorg, schemas, and test coverage. |
 | **4** | **Debugging** | `strategies/debugging/` | Goal 0 | Protocol for system-wide failure resolution. |
-| **5** | **Attractor** | `strategies/attractor/` | Goal 0 & 1 | Stabilizes the agentic workflow standard and assimilation of core components. |
-| **6** | **Mentci-RFS** | `strategies/mentci-rfs/` | Goal 0 | Daring IDE paradigm shift. De-prioritized to ensure it is built on a stable `mentci-aid` base. |
+| **5** | **Aski-Conversion** | `strategies/aski-conversion/` | Goal 0 | Macro-based conversion between sugar and canonical EDN specs. |
+| **6** | **Attractor** | `strategies/attractor/` | Goal 0 & 1 | Stabilizes the agentic workflow standard and assimilation of core components. |
+| **7** | **Mentci-RFS** | `strategies/mentci-rfs/` | Goal 0 | Daring IDE paradigm shift. De-prioritized to ensure it is built on a stable `mentci-aid` base. |
 
 ## 3. Implementation Status
 - **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer/main.clj`.
 - **Artifact-Sweep:** **Hardening.** Added `ARTIFACT_ANALYSIS.md` and prevention strategy.
 - **Project-Hardening:** **Implemented.** (Structural Phase). Scripts reorganized, schemas defined.
 - **Debugging:** **Operational.** Protocol in `strategies/debugging/STRATEGY.md`.
+- **Aski-Conversion:** **Drafted.** Strategy in `strategies/aski-conversion/STRATEGY.md`.
 - **Attractor:** **Implemented.** Validator in `src/attractor_validator.rs`.
 - **Mentci-RFS:** Feasibility study complete. Ready for Strategy-Development.
 
