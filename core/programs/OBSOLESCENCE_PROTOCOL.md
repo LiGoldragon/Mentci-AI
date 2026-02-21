@@ -1,7 +1,5 @@
 # Obsolescence Protocol (Two-Strike Rule)
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `core/ASKI_POSITIONING.md`.
-
 **Status:** Operational
 **Objective:** Maintain repository hygiene by systematically identifying and purging obsolete artifacts (leftovers from vibe-coding, earlier prototyping, or brainstorming).
 

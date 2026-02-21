@@ -1,7 +1,5 @@
 # Transition Plan: Python to Clojure (Babashka)
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 ## 1. Rationale
 Mentci-AI previously used Python for glue code and orchestration. The current mandate is Clojure (Babashka) for scripts. The system's "Semantic Truth" is recorded in **EDN (Extensible Data Notation)**. Clojure is the native environment for EDN, offering superior data manipulation capabilities and alignment with the **Criome/Sema** ecosystem.
 

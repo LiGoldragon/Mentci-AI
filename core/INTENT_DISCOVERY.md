@@ -1,7 +1,5 @@
 # Intent Discovery and Goal Weighting
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 In the Mentci-AI ecosystem, high-level goals are not just static definitions; they are dynamic intents that evolve through the project's history. To maintain alignment with the **Great Work**, agents must frequently discover the "true weight" of goals by analyzing the repository's audit trail.
 
 ## 1. The `jj log` Audit Trail

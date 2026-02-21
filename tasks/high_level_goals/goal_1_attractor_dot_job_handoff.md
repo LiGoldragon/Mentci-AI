@@ -1,7 +1,5 @@
 # Goal 1 Task: Attractor DOT Job Handoff
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 Goal source: `docs/architecture/HIGH_LEVEL_GOALS.md` (Goal 1)
 
 ## Objective

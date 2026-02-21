@@ -1,7 +1,5 @@
 # True Solar Ordinal-Zodiac Time Notation
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 ## 1. Philosophical Foundation
 Time in Mentci-AI is not a procedural abstraction but a **topological coordinate** derived from the Sun's position on the Ecliptic. By moving away from the arbitrary Gregorian system and adopting the **True Solar Ordinal-Zodiac** notation, we align the project's state transitions with the cosmic cycles of the Golden Age.
 
