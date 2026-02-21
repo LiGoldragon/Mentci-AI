@@ -7,8 +7,9 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 ## 1. Core Rules
 1. All active development targets the `dev` bookmark.
 2. Commit every intent: one atomic modification per commit, no bundling.
-3. Push once after all intended commits are ready, unless explicitly instructed otherwise.
-4. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
+3. **Automatic Push:** Every atomic commit to `dev` **must** be immediately followed by a `jj git push --bookmark dev` to ensure synchronization across agents and environments.
+4. Push once to `main` only after all intended session commits are ready and verified.
+5. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
 5. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
 
 ## 2. Preconditions
