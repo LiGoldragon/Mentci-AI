@@ -106,8 +106,13 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 
 ## 4.7 Chronos Accuracy and Notation Fix
 *   **Date:** 2026-02-21
-*   **Milestone:** Fixed chronos inaccuracy by adding planetary perturbations. Introduced `--notation standard` for astrological parity.
+*   **Milestone:** Fixed chronos inaccuracy by adding planetary perturbations. Confirmed algorithmic error (not notation shift) was the source of discrepancy observed by Li Goldragon. Introduced `--notation standard` for easier verification.
 *   **Version:** `v0.12.3.53.1` (Observed)
+
+## 4.8 Repository Integrity: Binary Purge
+*   **Date:** 2026-02-21
+*   **Milestone:** Verified `gemini-cli-*.tgz` was never committed due to JJ's safety gates. Added explicit `.gitignore` rules and updated architectural mandates to forbid binary artifacts in the VCS.
+*   **Version:** `v0.12.3.54.33` (Approx)
 
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.

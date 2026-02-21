@@ -55,7 +55,14 @@ This uses `MENTCI_WORKSPACE`, `MENTCI_REPO_ROOT`, and `MENTCI_COMMIT_TARGET` to 
 ## 6. History Inspection
 Use `mentci-jj log` to prefer `--no-signing` and avoid GPG failures.
 
-## 7. Related References
+## 7. Large Files and Binary Artifacts
+**Committing large binary files (> 1MiB) or build artifacts is strictly forbidden.**
+
+- **Safety Gate:** The Mentci Engine (`jj`) is configured to refuse snapshots of files exceeding size limits. Agents must **not** attempt to bypass this by increasing `snapshot.max-new-file-size` unless directed by the Top Admin.
+- **VCS Integrity:** If a binary file accidentally enters the history, it must be immediately purged using `jj abandon` or history rewriting before pushing to `main`.
+- **Proactive Ignoring:** New binary formats, compressed archives (`.tgz`, `.zip`), and directory-local artifacts should be added to `.gitignore` as soon as they are identified.
+
+## 8. Related References
 - Conceptual model: `docs/architecture/JAIL_COMMIT_PROTOCOL.md`
 - Tooling overview: `docs/architecture/TOOLS.md`
 - Release protocol: `docs/architecture/RELEASE_PROTOCOL.md`

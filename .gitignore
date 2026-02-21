@@ -6,3 +6,7 @@ result
 *.swp
 /inputs/
 /workspace/
+gemini-cli-*.tgz
+*.tgz
+Inputs/
+inputs_backup/
