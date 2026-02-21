@@ -24,6 +24,7 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Engine (`mentci-aid`):** `src/main.rs`. Status: **Experimental / Not in a running state.**
 - **Orchestration:** `scripts/launcher/` (Jail), `scripts/commit/` (Shipping).
 - **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
+- **FS Ontology:** `core/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
 - **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `artifact-sweep`, `attractor`, `debugging`, `mentci-rfs`, `project-hardening`, `strategy-development`.
 - **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
 - **Development Loop:** `core/programs/STRATEGY_DEVELOPMENT.md`. Status: **Active.**

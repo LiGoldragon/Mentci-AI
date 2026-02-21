@@ -10,8 +10,9 @@ The following files are mandatory authority sources and **must be loaded automat
 
 1. `core/ASKI_POSITIONING.md`
 2. `core/ARCHITECTURAL_GUIDELINES.md`
-3. `core/VERSION_CONTROL.md`
-4. `core/HIGH_LEVEL_GOALS.md`
+3. `core/ASKI_FS_SPEC.md` (Filesystem Ontology)
+4. `core/VERSION_CONTROL.md`
+5. `core/HIGH_LEVEL_GOALS.md`
 5. `core/SEMA_RUST_GUIDELINES.md`, `core/SEMA_CLOJURE_GUIDELINES.md`, `core/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
 6. `core/programs/RESTART_CONTEXT.md` (The overview map)
 7. `core/AGENTS.md` (This file)
