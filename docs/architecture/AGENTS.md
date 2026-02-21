@@ -23,6 +23,7 @@ Enforcement requirements:
 *   **Data Transport Gate:** Pass orchestration state through versioned data files (Cap'n Proto / JSON), not ad-hoc environment variables.
 *   **Pre-Work Dirty Tree Rule:** If the tree is dirty at prompt start, commit an intent-separating snapshot before new edits.
 *   **Auto-Commit Rule:** Every atomic filesystem change must be committed immediately.
+*   **No Binaries Rule:** Committing large binary files or compressed archives to the VCS is strictly forbidden. Use `.gitignore` to protect the repository from accidental artifact inclusion.
 *   **Post-Work Rule:** At least one commit must represent the prompt's delivered work.
 *   **Commit Path Rule:** Prefer `mentci-jj` and `mentci-commit` when available; use raw `jj` only when Mentci wrappers are unavailable.
 
