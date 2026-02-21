@@ -28,7 +28,9 @@
 
 (defn get-program-version []
   (let [core-dir (io/file "core")
-        files (sort (.listFiles core-dir))
+        files (->> (file-seq core-dir)
+                   (filter #(.isFile %))
+                   (sort-by #(.getPath %)))
         combined-content (str/join "" (map slurp files))
         hash-bytes (sha256 combined-content)]
     (encode-jj hash-bytes 8)))
