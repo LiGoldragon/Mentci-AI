@@ -2,6 +2,10 @@
 
 > **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
 
+**Linked Goals:** 
+- `Goal 0: mentci-aid Stabilization` (Assimilation)
+- `Goal 1: Attractor DOT Job Handoff` (Standardization)
+
 **Status:** Draft
 **Date:** 2026-02-20
 **Goal:** Establish a standard for defining, validating, and sharing "Agentic Thought Processes" using Graphviz DOT syntax.

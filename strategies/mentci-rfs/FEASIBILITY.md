@@ -2,6 +2,8 @@
 
 > **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `core/ASKI_POSITIONING.md`.
 
+**Linked Goal:** `Goal 0: mentci-aid Stabilization` (Symbolic Interface)
+
 ## 1. Concept: The "Observer-Commander" Interface
 The **Mentci Read-First Studio (Mentci-RFS)** is a proposed specialization of the VS Code foundation. It flips the traditional IDE paradigm: instead of an *editing* environment, it is a **Reading/Navigation** environment where **Edits are delegated to Agentic Flows.**
 
