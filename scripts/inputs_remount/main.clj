@@ -224,4 +224,5 @@
                                (:skipped report))))))))
     (println "Inputs refresh complete.")))
 
-(-main {:args (vec *command-line-args*)})
+(when (= *file* (System/getProperty "babashka.file"))
+  (-main {:args (vec *command-line-args*)}))
