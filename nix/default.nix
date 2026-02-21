@@ -29,12 +29,15 @@ let
     inherit pkgs system;
     inherit codex_cli_nix;
     inherit scripts_dir;
+    inherit gemini_cli;
   };
 
   jail_inputs = import ./jail_inputs.nix {
     inherit inputs;
     inherit attractor_docs;
   };
+
+  gemini_cli = pkgs.callPackage ./gemini-cli.nix { };
 
   dev_shell = { jail }:
     import ./dev_shell.nix {
@@ -44,6 +47,6 @@ let
     };
 in
 {
-  inherit mentci_ai attractor mentci_clj common_packages jail_inputs dev_shell;
+  inherit mentci_ai attractor mentci_clj common_packages jail_inputs gemini_cli dev_shell;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }
