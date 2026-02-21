@@ -20,9 +20,10 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 ## 3. Atomic Change Loop
 1. Make exactly one atomic change.
 2. Verify status: `mentci-jj status`
-3. Commit: `mentci-jj commit "intent: <short message>"`
+3. Commit using the **Contextualized Session Protocol** if an active session is in progress (see `docs/architecture/CONTEXTUAL_SESSION_PROTOCOL.md`).
 4. Repeat until all intended changes are committed.
-5. Advance and push once:
+5. Synthesis: At the end of a session, synthesize all atomic commits into a single Contextualized Prompt commit as per the protocol.
+6. Advance and push once:
    - `jj bookmark set dev -r @`
    - `jj git push --bookmark dev`
 
