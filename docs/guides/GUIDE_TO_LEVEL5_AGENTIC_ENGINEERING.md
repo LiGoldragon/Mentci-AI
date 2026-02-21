@@ -1,7 +1,5 @@
 # Guide to Level 5 Agentic Engineering: The Dark Factory
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 ## 1. Introduction: From "Code Writer" to "Modular Architect"
 Level 5 Agentic Engineering (based on the framework by Nate Jones) represents the pinnacle of AI-human collaboration in software development. At this level, the human developer ceases to be a manual "code writer" and becomes a **Modular Architect** who manages a **Dark Factory**—a system where AI agents autonomously implement, test, and integrate modules based on high-level architectural intent.
 

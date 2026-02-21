@@ -1,7 +1,5 @@
 # Attractor DOT Data Reference
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 Extracted from `inputs/attractor/attractor-spec.md` for incorporation. For the live implementation,
 use `inputs/brynary-attractor/attractor`.
 

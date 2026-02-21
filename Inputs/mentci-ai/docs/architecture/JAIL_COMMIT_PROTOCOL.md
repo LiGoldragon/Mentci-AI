@@ -1,7 +1,5 @@
 # Level 5 Shipping Protocol: Jailed Commits via Jujutsu
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 ## 1. Overview
 In a Level 5 "Dark Factory" environment, the agent operates within a restricted Nix Jail. To ensure the integrity of the "Stable Contract" while allowing autonomous manifestation, Mentci-AI employs a **Jujutsu (jj) Workspace** model.
 Operational steps live in `docs/architecture/VERSION_CONTROL.md`.

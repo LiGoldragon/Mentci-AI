@@ -1,7 +1,5 @@
 # Mentci-AI Filesystem Specification (Aski-FS)
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `core/ASKI_POSITIONING.md`.
-
 **Status:** Operational / Canonical
 **Objective:** Define the semantic lifecycle of artifacts across the Mentci-AI hierarchy.
 

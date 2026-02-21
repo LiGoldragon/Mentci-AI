@@ -1,7 +1,5 @@
 # Strategy Order of Importance (The Queue)
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `core/ASKI_POSITIONING.md`.
-
 **Status:** Operational
 **Objective:** Prioritize pre-implementation strategies based on their impact on architectural resiliency and efficiency.
 
@@ -22,8 +20,8 @@
 | **6** | **Mentci-RFS** | `strategies/mentci-rfs/` | Goal 0 | Daring IDE paradigm shift. De-prioritized to ensure it is built on a stable `mentci-aid` base. |
 
 ## 3. Implementation Status
-- **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer.clj`.
-- **Artifact-Sweep:** **Drafted.** Report in `Logs/ARTIFACT_SWEEP_REPORT.md`.
+- **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer/main.clj`.
+- **Artifact-Sweep:** **Implemented.** Tooling: `strategies/artifact-sweep/src/sweep.clj`.
 - **Project-Hardening:** **Implemented.** (Structural Phase). Scripts reorganized, schemas defined.
 - **Debugging:** **Operational.** Protocol in `strategies/debugging/STRATEGY.md`.
 - **Attractor:** **Implemented.** Validator in `src/attractor_validator.rs`.

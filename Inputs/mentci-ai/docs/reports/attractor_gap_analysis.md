@@ -1,7 +1,5 @@
 # Gap Analysis: Attractor vs. Mentci-AI
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 **Date:** ♓︎ 1° 28' 44" | 5919 AM (Feb 19, 2026)
 **Subject:** Comparative analysis of Attractor specifications against Mentci-AI's current state.
 

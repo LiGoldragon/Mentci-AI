@@ -1,7 +1,5 @@
 # Strategy-Development Program
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `core/ASKI_POSITIONING.md`.
-
 **Status:** Operational
 **Objective:** Evolve a `strategies/<subject>/` from a conceptual draft into a hardened, implementation-ready plan by auditing the tool substrate.
 

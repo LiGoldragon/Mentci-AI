@@ -1,7 +1,5 @@
 # Mentci-AI: Level 5 "Dark Factory" AI Daemon
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
-
 ## mentci-aid (Mentci-AI Daemon)
 The core Rust logic of this repository is identified as **mentci-aid**. 
 - **Daemon:** It serves as the background execution engine for autonomous workflows.

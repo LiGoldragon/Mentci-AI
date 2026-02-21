@@ -1,14 +1,11 @@
 # Instruction-Artifact Sweep Report: "Canonical Aski framing"
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `core/ASKI_POSITIONING.md`.
-
 **Date:** ♓︎3°56'20" | 5919 AM
 **Subject:** Excessive propagation of the Aski Framing Block.
 
 ## 1. Description of Artifact
 The following block was found in 80+ files across the repository:
 ```markdown
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
 ```
 
 ## 2. Origin Analysis
