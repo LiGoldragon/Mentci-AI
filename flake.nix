@@ -39,6 +39,20 @@
           flake = false;
         };
         codex-cli-nix.url = "github:sadjow/codex-cli-nix";
+
+        # Research Inputs
+        comply = {
+          url = "github:strongdm/comply";
+          flake = false;
+        };
+        cxdb = {
+          url = "github:strongdm/cxdb";
+          flake = false;
+        };
+        activeadmin = {
+          url = "github:activeadmin/activeadmin";
+          flake = false;
+        };
       };
     
       outputs = inputs@{ 
