@@ -1,6 +1,6 @@
 # Mentci-AI: Agent Session Resumption Context
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `core/ASKI_POSITIONING.md`.
 
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
@@ -15,12 +15,12 @@ Mentci-AI is a Nix-and-Rust based AI daemon designed to implement **Level 5 "Dar
 The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 
 ## 2. Technical Infrastructure (Read These First)
-1.  **`docs/architecture/ARCHITECTURAL_GUIDELINES.md`**: Critical Operational Rules (Clojure mandate, admin mode, Nix dev environments). Defines the Ecliptic Chronographic Versioning.
-2.  **`docs/architecture/AGENTS.md`**: Non-negotiable instructions for your operation. **Mandates Automatic Loading of Authority Sources.**
-3.  **`docs/architecture/MENTCI_AID.md`**: Identity, etymology, and status of the core daemon.
-4.  **`docs/architecture/VERSION_CONTROL.md`**: Centralized JJ + version-control rules, including aggressive auto-commit behavior.
+1.  **`core/ARCHITECTURAL_GUIDELINES.md`**: Critical Operational Rules (Clojure mandate, admin mode, Nix dev environments). Defines the Ecliptic Chronographic Versioning.
+2.  **`core/AGENTS.md`**: Non-negotiable instructions for your operation. **Mandates Automatic Loading of Authority Sources and Programming Version Signature.**
+3.  **`core/MENTCI_AID.md`**: Identity, etymology, and status of the core daemon.
+4.  **`core/VERSION_CONTROL.md`**: Centralized JJ + version-control rules, including aggressive auto-commit behavior.
 5.  **`docs/architecture/RELEASE_PROTOCOL.md`**: Zodiac-ordinal release messages with unicode dating and year-version policy.
-6.  **`docs/architecture/CONTEXTUAL_SESSION_PROTOCOL.md`**: Protocol for logging raw prompts and synthesizing session commits.
+6.  **`core/CONTEXTUAL_SESSION_PROTOCOL.md`**: Protocol for logging raw prompts and synthesizing session commits.
 7.  **`docs/architecture/CHRONOGRAPHY.md`**: Solar-time conventions and the `chronos` tool usage.
 8.  **`docs/specs/WORKFLOW_STANDARD.md`**: Official standard for Attractor-based workflows.
 9.  **`docs/specs/ASKI_DSL_GUIDELINES.md`**: Unified DSL rules for delimiter-based type sugar.
@@ -30,12 +30,13 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 13. **`workflows/mentci.aski-fs`** & **`workflows/mentci.aski-fs.deps.edn`**: Canonical FS map and dependency-read rules.
 14. **`schema/mentci.capnp`** & **`schema/atom_filesystem.capnp`**: Semantic truth of the system (Filesystem Atoms, Orchestrator RPCs).
 15. **`docs/reports/BRYNARY_ATTRACTOR_SUMMARY.md`**: High-level summary of the Attractor approach vs chat loops.
-16. **`docs/architecture/INTENT_DISCOVERY.md`**: Guide for analyzing `jj log` to derive goal weights.
-17. **`docs/architecture/ARCHITECTURAL_GUIDELINES.md`** (Updated): Defines the **Language Authority Hierarchy** (Aski > Rust > Clojure > Nix) and the **Assimilation Directive** for Attractor.
-18. **`docs/architecture/SEMA_CLOJURE_GUIDELINES.md`**: Mandatory Sema Object Style for Clojure/Malli.
+16. **`core/INTENT_DISCOVERY.md`**: Guide for analyzing `jj log` to derive goal weights.
+17. **`core/SEMA_RUST_GUIDELINES.md`**: Mandatory Sema Object Style for Rust.
+18. **`core/SEMA_CLOJURE_GUIDELINES.md`**: Mandatory Sema Object Style for Clojure/Malli.
+19. **`core/SEMA_NIX_GUIDELINES.md`**: Mandatory Sema Object Style for Nix.
 
 ## 3. Current State & Intent
-*   **Filesystem:** The entire project is typed as a "Repo Atom". Documentation is organized into `docs/`.
+*   **Filesystem:** The entire project is typed as a "Repo Atom". Documentation is organized into `docs/` and `core/`.
 *   **Orchestration:** Rust daemon (**mentci-aid**) implements a basic traversal engine.
     *   **Status:** Experimental prototype. **Not in a running state.**
     *   **Parsers:** DOT parser (`src/dot_loader.rs`) migrated to `dot-parser` canonical representation. EDN loader (`src/edn_loader.rs`) supports `.aski-flow`.
@@ -107,12 +108,12 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 ## 4.7 Chronos Accuracy and Notation Fix
 *   **Date:** 2026-02-21
 *   **Milestone:** Fixed chronos inaccuracy by adding planetary perturbations. Confirmed algorithmic error (not notation shift) was the source of discrepancy observed by Li Goldragon. Introduced `--notation standard` for easier verification.
-*   **Version:** `v0.12.3.53.1` (Observed)
+*   **Version:** `v0.12.3.53.1`
 
-## 4.8 Repository Integrity: Binary Purge
+## 4.8 Programming Version System (Prototype)
 *   **Date:** 2026-02-21
-*   **Milestone:** Verified `gemini-cli-*.tgz` was never committed due to JJ's safety gates. Added explicit `.gitignore` rules and updated architectural mandates to forbid binary artifacts in the VCS.
-*   **Version:** `v0.12.3.54.33` (Approx)
+*   **Milestone:** Moved core architectural files to `core/`. Developed `scripts/program_version.clj` to generate content-addressed "Programming Version" hashes (jj-style). Mandated version signature in agent responses.
+*   **Version:** `v0.12.3.55.3` (Approx)
 
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.
