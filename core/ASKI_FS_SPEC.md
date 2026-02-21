@@ -54,36 +54,36 @@ Agents updated")
     - **:failure** -> Initiates a **Debug Loop** (Ref: `strategies/debugging/`).
 
 ## 3. Symbolic Mapping (Aski-FS Structure-Driven)
-The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **Structure-Driven** syntax.
+The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **Structure-Driven** syntax with **Symbol Keys**.
 
 ```edn
 ([:v1]
- {:Inputs
+ {Inputs
   {:_meta {:role :tooling :durability :mutable}
-   :mentci-ai [:atom]
-   :criomos    [:flake]
-   :lojix      [:flake]
-   :seahawk    [:flake]
-   :skrips     [:flake]
-   :mkZolaWebsite [:flake]
-   :webpublish [:flake]
-   :goldragon  [:flake]
-   :maisiliym  [:flake]
-   :kibord     [:flake]
-   :aski       [:flake]
-   :attractor  [:untyped]
-   :attractor-docs [:untyped]
-   :opencode   [:untyped]}})
+   mentci-ai [:atom]
+   criomos    [:flake]
+   lojix      [:flake]
+   seahawk    [:flake]
+   skrips     [:flake]
+   mkZolaWebsite [:flake]
+   webpublish [:flake]
+   goldragon  [:flake]
+   maisiliym  [:flake]
+   kibord     [:flake]
+   aski       [:flake]
+   attractor  [:untyped]
+   attractor-docs [:untyped]
+   opencode   [:untyped]}})
 ```
 
 **Expansion Logic:**
 - **Top-Level Tuple `(Metadata RootMap)`**:
     - `Metadata`: A Vector `[Version ...]`.
-    - `RootMap`: A Map of root-level nodes.
+    - `RootMap`: A Map of root-level nodes using **Symbols** as keys (e.g., `Inputs` not `:Inputs`).
 - **Directory (Map `{}`)**:
     - A value that is a Map is inferred as a Directory.
     - Reserved key `:_meta` contains directory attributes.
-    - All other keys are children.
+    - All other keys are children (Symbols or Strings).
 - **File (Vector `[]`)**:
     - A value that is a Vector is inferred as a File (or Leaf Node).
     - Positional arguments define the type and attributes (e.g., `[:type :role]`).
