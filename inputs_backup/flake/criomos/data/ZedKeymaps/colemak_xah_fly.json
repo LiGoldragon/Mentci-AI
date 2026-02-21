@@ -1,0 +1,101 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "t": "editor::Tab",
+      "shift-t": "editor::Backtab",
+      "o": "editor::Newline",
+      "j": "editor::Undo",
+      "ctrl-j": "editor::Redo",
+      "n": "editor::MoveLeft",
+      "i": "editor::MoveRight",
+      "u": "editor::MoveUp",
+      "e": "editor::MoveDown",
+      "l": "editor::MoveToPreviousWordStart",
+      "y": "editor::MoveToNextWordStart",
+      "ctrl-l": "editor::SelectToPreviousWordStart",
+      "ctrl-y": "editor::SelectToNextWordEnd",
+      "s": "editor::MoveToBeginningOfLine",
+      "r": "editor::MoveToEndOfLine",
+      "shift-s": "editor::SelectToBeginningOfLine",
+      "shift-r": "editor::SelectToEndOfLine",
+      "h": "editor::Backspace",
+      "f": "editor::DeletePreviousWord",
+      ";": "editor::DeleteToNextWordEnd",
+      "delete": "editor::Delete",
+      "a": "editor::SelectAll",
+      "c": "editor::Cut",
+      "v": "editor::Paste",
+      "p": "editor::Copy",
+      "space": ["workspace::ToggleSubMode", "Leader"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == 'normal'",
+    "bindings": {
+      "j": "vim::Undo",
+      "t": "vim::InsertBefore",
+      "u": "editor::MoveUp",
+      "e": "editor::MoveDown",
+      "n": "editor::MoveLeft",
+      "i": "editor::MoveRight",
+      "l": "editor::MoveToPreviousWordStart",
+      "y": "editor::MoveToNextWordStart",
+      "s": "editor::MoveToBeginningOfLine",
+      "r": "editor::MoveToEndOfLine",
+      "h": "editor::Backspace",
+      "space": ["workspace::ToggleSubMode", "Leader"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == 'normal' && sub_mode == 'Leader'",
+    "bindings": {
+      "space": "vim::InsertBefore",
+      "a": "workspace::NewCommandPalette",
+      "r": "workspace::Save",
+      "s": "workspace::NewFileFinder",
+      "h": "workspace::NewBufferFinder",
+      "x": "project_search::Deploy"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == 'insert'",
+    "bindings": {
+      "escape": "vim::NormalBefore"
+    }
+  },
+  {
+    "context": "menu",
+    "bindings": {
+      "u": "menu::SelectPrevious",
+      "e": "menu::SelectNext",
+      "enter": "menu::Confirm",
+      "escape": "menu::Cancel"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "u": "menu::SelectPrevious",
+      "e": "menu::SelectNext",
+      "n": "project_panel::CollapseSelectedEntry",
+      "i": "project_panel::ExpandSelectedEntry",
+      "enter": "project_panel::Rename",
+      "space": "project_panel::Open",
+      "backspace": ["project_panel::Trash", { "skip_prompt": false }]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-shift-c": "terminal::Copy",
+      "ctrl-shift-v": "terminal::Paste",
+      "u": ["terminal::SendKeystroke", "up"],
+      "e": ["terminal::SendKeystroke", "down"],
+      "n": ["terminal::SendKeystroke", "left"],
+      "i": ["terminal::SendKeystroke", "right"],
+      "pageup": ["terminal::SendKeystroke", "pageup"],
+      "pagedown": ["terminal::SendKeystroke", "pagedown"]
+    }
+  }
+]

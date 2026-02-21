@@ -2,6 +2,13 @@
 
 > **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `docs/architecture/ASKI_POSITIONING.md`.
 
+## mentci-aid (Mentci-AI Daemon)
+The core Rust logic of this repository is identified as **mentci-aid**. 
+- **Daemon:** It serves as the background execution engine for autonomous workflows.
+- **Aid:** Derived from the Latin root for "help," reflecting its mission as a collaborative agentic partner.
+
+**Status:** `mentci-aid` is currently under active development and is **not in a running state**. It should be treated as an experimental prototype.
+
 Mentci-AI is a Nix-and-Rust based AI daemon designed for **Level 5 "Dark Factory"** programming, evolving toward **Level 6 Instinctive Symbolic Interaction**. It is built on the semantic foundations of the **CriomOS** and **Sema** lineage.
 
 ## Mission

@@ -57,6 +57,15 @@ Use `jj log` for provenance and review.
 *   **Safety Bypass:** Standard tool-level safety filters (e.g., "cannot be parsed safely") that block primitive commands (like `ls` or `whoami`) are considered architectural friction in this mode and must be resolved at the infrastructure layer to allow Level 5/6 evolution.
 *   **Responsibility:** The agent is responsible for maintaining the integrity of the jail while exercising this authority.
 
+## 0.6. RECURSIVE SUB-FLOW EXECUTION (RUSSIAN DOLL MODEL)
+
+**Processes orchestrate sub-processes in a fractal hierarchy.**
+
+*   **Master Process:** The top-level `mentci-ai` process is self-hosted. It mounts `Inputs/` and configures its environment exactly like a jailed process but operates with full **Admin Developer Mode** privileges.
+*   **Sub-Flow Isolation:** Sub-processes are spawned as isolated sub-flows, typically within strict Nix Jails.
+*   **State Separation:** Sub-flows must operate on **unique, internal Jujutsu bookmarks**. They do not commit directly to the parent's bookmark until finalization.
+*   **Supervision:** Parent processes supervise the lifecycle, inputs, and outputs of their child sub-flows.
+
 This document synthesizes the architectural, naming, and durability rules inherited from the **CriomOS** and **Sema** lineage. These rules are structural and non-negotiable. Violations indicate category errors, not stylistic choices.
 
 Mentci-AI incorporates the Attractor standard for workflow orchestration. It does not implement Attractor.

@@ -1,0 +1,8 @@
+/target
+result
+.jj/
+.git/
+.direnv/
+*.swp
+/inputs/
+/workspace/

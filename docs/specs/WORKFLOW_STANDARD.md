@@ -77,6 +77,12 @@ While Mentci does not yet mandate a specific runtime, any compliant executor mus
 4.  **Weight:** Highest `weight`.
 5.  **Lexical:** Node ID.
 
+### 3.2 Recursive Execution (Russian Doll)
+Workflows can invoke other workflows as sub-processes.
+*   **Sub-Flow Nodes:** A `box` (Cognition) or `parallelogram` (Action) node can trigger a child workflow.
+*   **Isolation:** The child workflow executes in its own process context (potentially a Nix Jail) and manages its own internal state.
+*   **Bookmarking:** The child workflow may push to a unique, internal Jujutsu bookmark, merging back only upon success.
+
 ---
 
 ## 4. Standard Workflow Patterns
