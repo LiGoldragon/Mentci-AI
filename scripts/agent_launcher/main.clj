@@ -8,8 +8,8 @@
             [clojure.java.shell :as sh]
             [clojure.java.io :as io]))
 
-(load-file (str (.getParent (.getParent (io/file *file*))) "/lib/types.clj"))
-(load-file (str (.getParent (.getParent (io/file *file*))) "/lib/malli.clj"))
+(load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
+(load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
 (require '[mentci.malli :refer [defn* enable!]])
 
 (def default-gopass-prefix "mentci/ai")
