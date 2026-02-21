@@ -19,8 +19,9 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 2.  **`docs/architecture/AGENTS.md`**: Non-negotiable instructions for your operation.
 3.  **`docs/architecture/MENTCI_AID.md`**: Identity, etymology, and status of the core daemon.
 4.  **`docs/architecture/VERSION_CONTROL.md`**: Centralized JJ + version-control rules, including aggressive auto-commit behavior.
-5.  **`docs/architecture/RELEASE_PROTOCOL.md`**: Zodiac-ordinal release messages with unicode dating and year-version policy.
-6.  **`docs/architecture/CHRONOGRAPHY.md`**: Solar-time conventions and the `chronos` tool usage.
+5. **`docs/architecture/RELEASE_PROTOCOL.md`**: Zodiac-ordinal release messages with unicode dating and year-version policy.
+6. **`docs/architecture/CONTEXTUAL_SESSION_PROTOCOL.md`**: Protocol for logging raw prompts and synthesizing session commits.
+7. **`docs/architecture/CHRONOGRAPHY.md`**: Solar-time conventions and the `chronos` tool usage.
 7.  **`docs/specs/WORKFLOW_STANDARD.md`**: Official standard for Attractor-based workflows.
 8.  **`docs/specs/ASKI_DSL_GUIDELINES.md`**: Unified DSL rules for delimiter-based type sugar.
 9.  **`docs/specs/ASKI_FLOW_DSL.md`**: Noun-Sequence DSL for workflows in EDN (prefer over DOT for new definitions).
