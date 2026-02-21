@@ -6,7 +6,7 @@
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Active Bookmark:** `dev`.
 *   **Current Programming Version:** `7q80wnjd` (Ref: `scripts/program_version/main.clj`).
-*   **Latest Release Tag:** `v0.12.3.45.53` (Ref: `Logs/RELEASE_MILESTONES.md`).
+*   **Latest Release Tag:** `v0.12.3.58.3` (Ref: `Logs/RELEASE_MILESTONES.md`).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (**mentci-aid**) designed for autonomous symbolic manipulation. It operates within a Pure Nix Jail environment and uses Jujutsu (`jj`) for version control.
