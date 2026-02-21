@@ -39,6 +39,11 @@ let
     attractor = mkInput "attractor" "untyped";
     attractor-docs = mkInput "attractor-docs" "untyped";
     opencode = mkInput "opencode" "untyped";
+    
+    # Research
+    comply = mkInput "comply" "untyped";
+    cxdb = mkInput "cxdb" "untyped";
+    activeadmin = mkInput "activeadmin" "untyped";
   };
 
   outputManifest = {
