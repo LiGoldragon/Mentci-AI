@@ -18,6 +18,7 @@
    :keyword
    [:map
     [:sourcePath :string]
+    [:srcPath {:optional true} :string]
     [:inputType :string]]])
 
 (def OutputManifest

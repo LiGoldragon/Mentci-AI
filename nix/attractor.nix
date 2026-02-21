@@ -1,9 +1,9 @@
-{ pkgs, attractor_docs }:
+{ pkgs, src }:
 
 pkgs.stdenv.mkDerivation {
   pname = "attractor";
   version = "0.1.0";
-  src = attractor_docs;
+  inherit src;
   nativeBuildInputs = [ pkgs.bun pkgs.makeWrapper ];
   dontBuild = true;
   doCheck = true;

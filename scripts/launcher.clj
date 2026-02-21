@@ -23,6 +23,7 @@
    [:name :string]
    [:inputType :string]
    [:sourcePath :string]
+   [:srcPath [:maybe :string]]
    [:inputsRoot :string]
    [:isImpure :boolean]])
 
@@ -38,9 +39,11 @@
   config)
 
 (defn* provision-input [:=> [:cat ProvisionInput] :any] [input]
-  (let [{:keys [name inputType sourcePath inputsRoot isImpure]} input
+  (let [{:keys [name inputType sourcePath srcPath inputsRoot isImpure]} input
         target-root (io/file inputsRoot)
-        target-path (io/file target-root name)]
+        target-path (io/file target-root name)
+        ;; Prefer srcPath for mounting (often a read-only store path)
+        final-source (or srcPath sourcePath)]
     (.mkdirs target-root)
     (if isImpure
       ;; Impure Mode: Mutable Copy
@@ -54,7 +57,7 @@
           (when (.exists target-path)
             (io/delete-file target-path)) ;; Deletes symlink
           (println (str "Materializing " name " [" inputType "] (Mutable)..."))
-          (let [{:keys [exit err]} (sh "rsync" "-aL" "--chmod=u+w" (str sourcePath "/") (.getPath target-path))]
+          (let [{:keys [exit err]} (sh "rsync" "-aL" "--chmod=u+w" (str final-source "/") (.getPath target-path))]
             (when-not (zero? exit)
               (println (str "Error materializing " name ": " err))))))
       ;; Pure Mode: Symlink (Immutable)
@@ -71,7 +74,7 @@
           (try
             (java.nio.file.Files/createSymbolicLink
               (.toPath target-path)
-              (.toPath (io/file sourcePath))
+              (.toPath (io/file final-source))
               (into-array java.nio.file.attribute.FileAttribute []))
             (catch Exception e
               (binding [*out* *err*]
@@ -129,6 +132,7 @@
           (doseq [[item-name item-spec] input-manifest]
             (let [name-str (clojure.core/name item-name)
                   source-path (:sourcePath item-spec)
+                  src-path (:srcPath item-spec)
                   input-type (:inputType item-spec "unknown")]
               (if (contains? whitelist name-str)
                 (do
@@ -136,6 +140,7 @@
                   (provision-input {:name name-str
                                     :inputType input-type
                                     :sourcePath source-path
+                                    :srcPath src-path
                                     :inputsRoot (.getPath inputs-root)
                                     :isImpure is-impure}))
                 (println (str "Skipping " name-str " (Not in whitelist)"))))))

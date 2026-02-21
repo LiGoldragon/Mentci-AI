@@ -48,7 +48,8 @@
       }:
         flake-utils.lib.eachDefaultSystem (system:
           let
-            attractorDocs = inputs."attractor-docs";
+            attractorSrc = inputs.attractor;
+            attractorDocsSrc = inputs."attractor-docs";
             pkgs = import nixpkgs { inherit system; };
             craneLib = crane.mkLib pkgs;
             src = craneLib.cleanCargoSource ./.;
@@ -56,7 +57,8 @@
             namespace = import ./nix {
               inherit pkgs craneLib system inputs src;
               codex_cli_nix = codex-cli-nix;
-              attractor_docs = attractorDocs;
+              attractor_src = attractorSrc;
+              attractor_docs_src = attractorDocsSrc;
               scripts_dir = ./scripts;
               repo_root = ./.;
               jj_project_config = ./jj-project-config.toml;
