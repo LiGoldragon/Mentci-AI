@@ -31,6 +31,7 @@ let
     inherit codex_cli_nix;
     inherit scripts_dir;
     inherit gemini_cli;
+    inherit mentci_clj;
   };
 
   jail_inputs = import ./jail_inputs.nix {

@@ -1,6 +1,7 @@
-use anyhow::{Context, Result};
-use dot_parser::ast::{Graph, NodeStmt, Stmt};
-use std::collections::{HashMap, HashSet};
+use anyhow::Result;
+use dot_parser::ast::{Graph as AstGraph, Stmt};
+use std::collections::HashSet;
+use std::convert::TryFrom;
 
 pub struct AttractorValidator;
 
@@ -14,34 +15,33 @@ pub struct ValidationResult {
 
 impl AttractorValidator {
     pub fn validate(graph_str: &str) -> Result<ValidationResult> {
-        let graph = dot_parser::parser::parse(graph_str)
+        let graph = AstGraph::try_from(graph_str)
             .map_err(|e| anyhow::anyhow!("DOT Parse Error: {}", e))?;
 
         let mut errors = Vec::new();
         let mut nodes = HashSet::new();
-        let mut edges = Vec::new();
+        let mut edges_count = 0;
         let mut has_start = false;
         let mut has_exit = false;
 
-        // Iterate over the FIRST graph found (Attractor usually defines one digraph)
-        if let Some(g) = graph.first() {
-            for stmt in &g.stmts {
-                match stmt {
-                    Stmt::NodeStmt(n) => {
-                        let id = n.node.id.as_str().to_string();
-                        nodes.insert(id.clone());
-                        if id == "start" { has_start = true; }
-                        if id == "exit" { has_exit = true; }
-                        
-                        // Check for required attributes based on potential type
-                        // This is a basic check; real implementation would read attributes
+        // AstGraph is just a struct, not a vector of graphs.
+        // It represents one graph.
+        for stmt in &graph.stmts {
+            match stmt {
+                Stmt::NodeStmt(n) => {
+                    let id = n.node.id.as_str().to_string();
+                    nodes.insert(id.clone());
+                    if id == "start" {
+                        has_start = true;
                     }
-                    Stmt::EdgeStmt(e) => {
-                        // Simplified edge counting
-                        edges.push(e);
+                    if id == "exit" {
+                        has_exit = true;
                     }
-                    _ => {}
                 }
+                Stmt::EdgeStmt(_) => {
+                    edges_count += 1;
+                }
+                _ => {}
             }
         }
 
@@ -60,7 +60,7 @@ impl AttractorValidator {
             is_valid: errors.is_empty(),
             errors,
             node_count: nodes.len(),
-            edge_count: edges.len(),
+            edge_count: edges_count,
         })
     }
 }
