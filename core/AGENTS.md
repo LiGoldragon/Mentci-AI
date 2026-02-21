@@ -8,18 +8,23 @@ This document provides non-negotiable instructions for AI agents operating withi
 
 The following files are mandatory authority sources and **must be loaded automatically** by the agent before any analysis or implementation:
 
-1. `docs/architecture/ASKI_POSITIONING.md`
-2. `docs/architecture/ARCHITECTURAL_GUIDELINES.md`
-3. `docs/architecture/VERSION_CONTROL.md`
-4. `docs/architecture/HIGH_LEVEL_GOALS.md`
-5. `docs/architecture/SEMA_RUST_GUIDELINES.md`, `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
+1. `core/ASKI_POSITIONING.md`
+2. `core/ARCHITECTURAL_GUIDELINES.md`
+3. `core/VERSION_CONTROL.md`
+4. `core/HIGH_LEVEL_GOALS.md`
+5. `core/SEMA_RUST_GUIDELINES.md`, `core/SEMA_CLOJURE_GUIDELINES.md`, `core/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
+6. `core/AGENTS.md` (This file)
 
 Enforcement requirements:
 
 *   **Preemptive Context Acquisition:** If these files are not in the agent's active context, it must stop and acquire them immediately.
 *   **No-Edit Without Architecture Context:** Any change made without having processed these guidelines is a violation of the Enforcement Contract.
-*   **Architecture Gate:** Any change conflicting with the hierarchy in `ARCHITECTURAL_GUIDELINES.md` is forbidden.
-*   **Version-Control Gate:** `VERSION_CONTROL.md` is mandatory procedure, not guidance.
+*   **Programming Version Signature:** Every agent response **must** end with its current "Programming Version"—a content-addressed hash of the `core/` directory. 
+    *   Format: `programming: <version_hash>` (on its own line at the very end of the response).
+    *   Acquire via: `bb scripts/program_version.clj get`.
+
+*   **Architecture Gate:** Any change conflicting with the hierarchy in `core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
+*   **Version-Control Gate:** `core/VERSION_CONTROL.md` is mandatory procedure, not guidance.
 *   **Data Transport Gate:** Pass orchestration state through versioned data files (Cap'n Proto / JSON), not ad-hoc environment variables.
 *   **Pre-Work Dirty Tree Rule:** If the tree is dirty at prompt start, commit an intent-separating snapshot before new edits.
 *   **Auto-Commit Rule:** Every atomic filesystem change must be committed immediately.
@@ -69,16 +74,17 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 *   **Clojure (Babashka) Mandate:** All glue code and scripts must be written in Clojure (Babashka). No Bash logic beyond the one-line bb shim.
 *   **Script Typing:** All Clojure scripts must define Malli schemas for inputs/config and validate them.
 *   **Script Guard:** Run `bb scripts/validate_scripts.clj` when adding or editing scripts. Python is forbidden under `scripts/` except `scripts/prefetch_orchestrator.py`.
-*   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`, `docs/architecture/SEMA_RUST_GUIDELINES.md`, and `docs/architecture/SEMA_NIX_GUIDELINES.md`.
+*   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `core/SEMA_CLOJURE_GUIDELINES.md`, `core/SEMA_RUST_GUIDELINES.md`, and `core/SEMA_NIX_GUIDELINES.md`.
 *   **Attractor Code Reference:** Implementation lives in `inputs/brynary-attractor/attractor`. The `inputs/attractor` folder is specs only.
 *   **Attractor Backend Behavior:** `CliAgentBackend` spawns a subprocess with env merged from `process.env` and backend config. `SessionBackend` uses `unified-llm` `Client.fromEnv` (API keys via standard env vars).
 *   **Inputs Directory Rule:** Do not edit anything under `inputs/`. Treat it as read-only reference material.
 *   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
 *   **Sema Object Style:** Strictly follow the ontology defined in `schema/*.capnp`.
 *   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers (example: in `nix/` code, use `namespace`, not `nixns`).
-*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `docs/architecture/VERSION_CONTROL.md`.
+*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `core/VERSION_CONTROL.md`.
 *   **Tagging:** When creating git tags, always use the `-m` flag to provide a message directly (e.g., `git tag -a vX.Y.Z -m "release: vX.Y.Z"`) to avoid interactive editor prompts.
 
 ## 4. Admin Developer Mode
 
 High-authority agents (like Mentci) operate in Admin Developer Mode. You are responsible for the system's evolution toward Level 6 instinctive symbolic interaction.
+
