@@ -36,6 +36,7 @@ These are the highest-order rules for all languages and scripts.
 *   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `strategies/<subject>/` dedicated directories.
     *   **Composition:** Strategies should consist of multiple files (e.g., `MISSION.md`, `ARCHITECTURE.md`, `ROADMAP.md`) and sub-folder source code drafts (`src/`).
     *   **Workflow:** Strategies are "lined up" for implementation-trials. Use cheaper models to explore dead-ends and effective paths (vibe-coding permitted here) before high-authority models formalize the final logic.
+    *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `core/programs/STRATEGY_DEVELOPMENT.md`) to discover, package, and test the necessary tools and libraries.
     *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `core/`, `src/`, or `tasks/`.
 *   **Per-Subject Indexing:** Subjects should be merged or split as context volume changes. Multi-subject files should be cross-referenced.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
