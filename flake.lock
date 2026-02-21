@@ -64,6 +64,22 @@
         "type": "github"
       }
     },
+    "activeadmin": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771669315,
+        "narHash": "sha256-dZf+2D/PbahEX60C9M4zjcQNzFbxFtRIBdLXkIso0qM=",
+        "owner": "activeadmin",
+        "repo": "activeadmin",
+        "rev": "04412549b9bbb5e47bf15245dab87b9e82bb5a9e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "activeadmin",
+        "repo": "activeadmin",
+        "type": "github"
+      }
+    },
     "aski": {
       "flake": false,
       "locked": {
@@ -269,6 +285,22 @@
         "type": "github"
       }
     },
+    "comply": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1658390573,
+        "narHash": "sha256-sDtB567wVQVoPOtellFWgD2s5BA9ptskMyu9X03gqME=",
+        "owner": "strongdm",
+        "repo": "comply",
+        "rev": "aab484948d71417e35a079c0395bcf42e16a8dd9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "strongdm",
+        "repo": "comply",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1771438068,
@@ -380,6 +412,22 @@
       "original": {
         "owner": "Criome",
         "repo": "CriomOS",
+        "type": "github"
+      }
+    },
+    "cxdb": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771545885,
+        "narHash": "sha256-zH/GshZvRAEhnEOigj1HDvuQa5+nNIZ569oE2q4/oMI=",
+        "owner": "strongdm",
+        "repo": "cxdb",
+        "rev": "569ac5a2661a448075150cbfe610b63b200bb809",
+        "type": "github"
+      },
+      "original": {
+        "owner": "strongdm",
+        "repo": "cxdb",
         "type": "github"
       }
     },
@@ -1428,12 +1476,15 @@
     },
     "root": {
       "inputs": {
+        "activeadmin": "activeadmin",
         "aski": "aski",
         "attractor": "attractor",
         "attractor-docs": "attractor-docs",
         "codex-cli-nix": "codex-cli-nix",
+        "comply": "comply",
         "crane": "crane",
         "criomos": "criomos",
+        "cxdb": "cxdb",
         "flake-utils": "flake-utils_3",
         "goldragon": "goldragon_2",
         "kibord": "kibord_2",
