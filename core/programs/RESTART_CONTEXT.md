@@ -5,7 +5,7 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Active Bookmark:** `dev`.
-*   **Current Programming Version:** `s0rb21wj` (Ref: `scripts/program_version/main.clj`).
+*   **Current Programming Version:** `6z7my288` (Ref: `scripts/program_version/main.clj`).
 *   **Latest Release Tag:** `v0.12.3.58.3` (Ref: `Logs/RELEASE_MILESTONES.md`).
 
 ## 1. Project Overview
@@ -25,13 +25,14 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Engine (`mentci-aid`):** `src/main.rs`. Status: **Experimental / Not in a running state.**
 - **Orchestration:** `scripts/launcher/` (Jail), `scripts/commit/` (Shipping).
 - **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
+- **FS Ontology:** `core/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
 - **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `artifact-sweep`, `attractor`, `debugging`, `mentci-rfs`, `project-hardening`, `strategy-development`.
-- **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.**
+- **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
 - **Development Loop:** `core/programs/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
 - **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
-- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Logs/SYSTEM_SWEEP_REPORT.md` (Infrastructure health), `Logs/OBSOLESCENCE_STRIKES.edn` (Strike record).
+- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `strategies/artifact-sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
 
 ## 4. Operational Requirements
 - **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Logs/RELEASE_MILESTONES.md`.
