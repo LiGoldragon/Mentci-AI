@@ -53,11 +53,11 @@ Agents updated")
     - **:success** -> The change is committed and becomes the new input for subscribed agents.
     - **:failure** -> Initiates a **Debug Loop** (Ref: `strategies/debugging/`).
 
-## 3. Symbolic Mapping (Aski-FS Sugar)
-The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **List-Based Instantiation** syntax.
+## 3. Symbolic Mapping (Aski-FS Super-Sugar)
+The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **Implicit Type** syntax.
 
 ```edn
-(Inputs :dir {:role :tooling :durability :mutable}
+(Inputs {:role :tooling :durability :mutable}
  {:mentci-ai :atom
   :criomos :flake
   :lojix :flake
@@ -75,12 +75,9 @@ The following EDN structure represents the authoritative symbolic map of the `In
 ```
 
 **Expansion Logic:**
-- **List Form `(Name Type Attrs Children)`**:
-    - `Name`: Becomes the directory/file name and path segment.
-    - `Type`: Mandatory kind (e.g., `:dir`, `:file`).
-    - `Attrs`: Optional map of metadata (role, durability).
-    - `Children`: Optional map or vector of contained nodes.
-- **Keyword Values**: In the children map, `:key :value` expands to `(:key :dir {:inputType :value})`.
+- **Implicit Directory `(Name Attrs Children)`**: If the last argument is a map of children, the node is inferred as `:kind :dir`.
+- **Implicit Leaf `(Name Type)`**: If the second argument is a keyword, it expands to `{:kind :dir :inputType Type}` (for inputs) or `{:kind :file}` depending on context.
+- **Children Map**: Key-Value pairs `:key :value` expand to `(:key :value)` or `(:key :dir {:inputType :value})`.
 
 ## 4. Implementation Rules
 - Agents **must** respect the `RO` (Read-Only) status of `Inputs/`.
