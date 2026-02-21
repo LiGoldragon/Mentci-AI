@@ -4,9 +4,9 @@
 
 This document provides non-negotiable instructions for AI agents operating within the Mentci-AI ecosystem. These rules ensure architectural integrity and cryptographic provenance.
 
-## -1. Enforcement Contract (Load First)
+## -1. Enforcement Contract (Automatic Loading)
 
-The following files are mandatory authority sources and must be loaded before edits:
+The following files are mandatory authority sources and **must be loaded automatically** by the agent before any analysis or implementation:
 
 1. `docs/architecture/ASKI_POSITIONING.md`
 2. `docs/architecture/ARCHITECTURAL_GUIDELINES.md`
@@ -16,7 +16,8 @@ The following files are mandatory authority sources and must be loaded before ed
 
 Enforcement requirements:
 
-*   **No-Edit Without Architecture Context:** If these files are unavailable, stop and report the blocker before changing code.
+*   **Preemptive Context Acquisition:** If these files are not in the agent's active context, it must stop and acquire them immediately.
+*   **No-Edit Without Architecture Context:** Any change made without having processed these guidelines is a violation of the Enforcement Contract.
 *   **Architecture Gate:** Any change conflicting with the hierarchy in `ARCHITECTURAL_GUIDELINES.md` is forbidden.
 *   **Version-Control Gate:** `VERSION_CONTROL.md` is mandatory procedure, not guidance.
 *   **Data Transport Gate:** Pass orchestration state through versioned data files (Cap'n Proto / JSON), not ad-hoc environment variables.

@@ -6,7 +6,7 @@
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Current Stack:** Codex CLI (Agentic Interface) / GPT-5 (Reasoning Engine).
 *   **Active Bookmark:** `dev`.
-*   **Current Date:** ♓︎ 3° 48' 16" | 5919 AM (v0.12.3.48.16)
+*   **Current Date:** ♓︎ 3° 52' 14" | 5919 AM (v0.12.3.52.14)
 *   **Latest Tagged Release:** `v0.12.3.45.53`
 
 ## 1. Mission Statement
@@ -16,7 +16,7 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 
 ## 2. Technical Infrastructure (Read These First)
 1.  **`docs/architecture/ARCHITECTURAL_GUIDELINES.md`**: Critical Operational Rules (Clojure mandate, admin mode, Nix dev environments). Defines the Ecliptic Chronographic Versioning.
-2.  **`docs/architecture/AGENTS.md`**: Non-negotiable instructions for your operation.
+2.  **`docs/architecture/AGENTS.md`**: Non-negotiable instructions for your operation. **Mandates Automatic Loading of Authority Sources.**
 3.  **`docs/architecture/MENTCI_AID.md`**: Identity, etymology, and status of the core daemon.
 4.  **`docs/architecture/VERSION_CONTROL.md`**: Centralized JJ + version-control rules, including aggressive auto-commit behavior.
 5.  **`docs/architecture/RELEASE_PROTOCOL.md`**: Zodiac-ordinal release messages with unicode dating and year-version policy.
@@ -29,8 +29,10 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 12. **`docs/specs/ASKI_FS_DSL.md`** & **`docs/specs/ASKI_FS_ASTRAL_DSL.md`**: Filesystem DSLs and astral mapping.
 13. **`workflows/mentci.aski-fs`** & **`workflows/mentci.aski-fs.deps.edn`**: Canonical FS map and dependency-read rules.
 14. **`schema/mentci.capnp`** & **`schema/atom_filesystem.capnp`**: Semantic truth of the system (Filesystem Atoms, Orchestrator RPCs).
+15. **`docs/reports/BRYNARY_ATTRACTOR_SUMMARY.md`**: High-level summary of the Attractor approach vs chat loops.
 16. **`docs/architecture/INTENT_DISCOVERY.md`**: Guide for analyzing `jj log` to derive goal weights.
 17. **`docs/architecture/ARCHITECTURAL_GUIDELINES.md`** (Updated): Defines the **Language Authority Hierarchy** (Aski > Rust > Clojure > Nix) and the **Assimilation Directive** for Attractor.
+18. **`docs/architecture/SEMA_CLOJURE_GUIDELINES.md`**: Mandatory Sema Object Style for Clojure/Malli.
 
 ## 3. Current State & Intent
 *   **Filesystem:** The entire project is typed as a "Repo Atom". Documentation is organized into `docs/`.
@@ -96,6 +98,11 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 *   **Date:** 2026-02-21
 *   **Milestone:** Established Language Authority (Aski > Rust > Clojure > Nix) and mandated assimilation of Attractor inputs.
 *   **Version:** `v0.12.3.50.22`
+
+## 4.6 Automatic Loading of Authority Sources
+*   **Date:** 2026-02-21
+*   **Milestone:** Strengthened Enforcement Contract to mandate automatic loading of architectural guidelines (including Clojure).
+*   **Version:** `v0.12.3.52.14`
 
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.
