@@ -47,7 +47,8 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 
 **The authoritative audit trail is the Jujutsu history.**
 
-Use `jj log` for provenance and review.
+*   **Auditability:** Use `jj log` for provenance and review.
+*   **Intent Discovery:** Use `jj log` frequency analysis to determine the "True Weight" of goals and maintain alignment with the project's evolution (see `docs/architecture/INTENT_DISCOVERY.md`).
 
 ## 0.5. ADMIN DEVELOPER MODE (SYSTEM ORCHESTRATION)
 
