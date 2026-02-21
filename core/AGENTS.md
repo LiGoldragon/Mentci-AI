@@ -34,6 +34,7 @@ These are the highest-order rules for all languages and scripts.
 
 *   **Sub-Program Directory:** The `core/programs/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
 *   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `strategies/<subject>/` dedicated directories.
+    *   **Prioritization:** Strategies must be prioritized according to the **Strategy Queue** (Ref: `core/programs/STRATEGY_QUEUE.md`). Resiliency and efficiency are ranked highest.
     *   **Composition:** Strategies should consist of multiple files (e.g., `MISSION.md`, `ARCHITECTURE.md`, `ROADMAP.md`) and sub-folder source code drafts (`src/`).
     *   **Workflow:** Strategies are "lined up" for implementation-trials. Use cheaper models to explore dead-ends and effective paths (vibe-coding permitted here) before high-authority models formalize the final logic.
     *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `core/programs/STRATEGY_DEVELOPMENT.md`) to discover, package, and test the necessary tools and libraries.
