@@ -53,31 +53,40 @@ Agents updated")
     - **:success** -> The change is committed and becomes the new input for subscribed agents.
     - **:failure** -> Initiates a **Debug Loop** (Ref: `strategies/debugging/`).
 
-## 3. Symbolic Mapping (Aski-FS Super-Sugar)
-The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **Implicit Type** syntax.
+## 3. Symbolic Mapping (Aski-FS Structure-Driven)
+The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **Structure-Driven** syntax.
 
 ```edn
-(Inputs {:role :tooling :durability :mutable}
- {:mentci-ai :atom
-  :criomos :flake
-  :lojix :flake
-  :seahawk :flake
-  :skrips :flake
-  :mkZolaWebsite :flake
-  :webpublish :flake
-  :goldragon :flake
-  :maisiliym :flake
-  :kibord :flake
-  :aski :flake
-  :attractor :untyped
-  :attractor-docs :untyped
-  :opencode :untyped})
+([:v1]
+ {:Inputs
+  {:_meta {:role :tooling :durability :mutable}
+   :mentci-ai [:atom]
+   :criomos    [:flake]
+   :lojix      [:flake]
+   :seahawk    [:flake]
+   :skrips     [:flake]
+   :mkZolaWebsite [:flake]
+   :webpublish [:flake]
+   :goldragon  [:flake]
+   :maisiliym  [:flake]
+   :kibord     [:flake]
+   :aski       [:flake]
+   :attractor  [:untyped]
+   :attractor-docs [:untyped]
+   :opencode   [:untyped]}})
 ```
 
 **Expansion Logic:**
-- **Implicit Directory `(Name Attrs Children)`**: If the last argument is a map of children, the node is inferred as `:kind :dir`.
-- **Implicit Leaf `(Name Type)`**: If the second argument is a keyword, it expands to `{:kind :dir :inputType Type}` (for inputs) or `{:kind :file}` depending on context.
-- **Children Map**: Key-Value pairs `:key :value` expand to `(:key :value)` or `(:key :dir {:inputType :value})`.
+- **Top-Level Tuple `(Metadata RootMap)`**:
+    - `Metadata`: A Vector `[Version ...]`.
+    - `RootMap`: A Map of root-level nodes.
+- **Directory (Map `{}`)**:
+    - A value that is a Map is inferred as a Directory.
+    - Reserved key `:_meta` contains directory attributes.
+    - All other keys are children.
+- **File (Vector `[]`)**:
+    - A value that is a Vector is inferred as a File (or Leaf Node).
+    - Positional arguments define the type and attributes (e.g., `[:type :role]`).
 
 ## 4. Implementation Rules
 - Agents **must** respect the `RO` (Read-Only) status of `Inputs/`.
