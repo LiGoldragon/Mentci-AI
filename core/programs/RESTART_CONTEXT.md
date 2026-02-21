@@ -24,10 +24,11 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Engine (`mentci-aid`):** `src/main.rs`. Status: **Experimental / Not in a running state.**
 - **Orchestration:** `scripts/launcher.clj` (Jail), `scripts/commit.clj` (Shipping).
 - **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
-- **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `artifact-sweep`, `attractor`, `mentci-rfs`, `strategy-development`.
+- **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `artifact-sweep`, `attractor`, `mentci-rfs`, `project-hardening`, `strategy-development`.
 - **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
 - **Development Loop:** `core/programs/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking in `Logs/OBSOLESCENCE_STRIKES.edn`.
+- **Orchestration Scripts:** `scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`.
 - **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
 - **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking).
 
