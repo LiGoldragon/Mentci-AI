@@ -9,8 +9,8 @@
          '[clojure.java.shell :refer [sh]]
          '[clojure.string :as str])
 
-(load-file (str (.getParent (io/file *file*)) "/types.clj"))
-(load-file (str (.getParent (io/file *file*)) "/malli.clj"))
+(load-file (str (.getParent (.getParent (io/file *file*))) "/lib/types.clj"))
+(load-file (str (.getParent (.getParent (io/file *file*))) "/lib/malli.clj"))
 (require '[mentci.malli :refer [defn* enable!]])
 
 (enable!)
