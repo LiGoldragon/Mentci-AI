@@ -21,7 +21,7 @@
 
 ## 3. Implementation Status
 - **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer/main.clj`.
-- **Artifact-Sweep:** **Implemented.** Tooling: `strategies/artifact-sweep/src/sweep.clj`.
+- **Artifact-Sweep:** **Hardening.** Added `ARTIFACT_ANALYSIS.md` and prevention strategy.
 - **Project-Hardening:** **Implemented.** (Structural Phase). Scripts reorganized, schemas defined.
 - **Debugging:** **Operational.** Protocol in `strategies/debugging/STRATEGY.md`.
 - **Attractor:** **Implemented.** Validator in `src/attractor_validator.rs`.
