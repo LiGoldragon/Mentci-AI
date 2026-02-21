@@ -15,11 +15,13 @@
 | Rank | Subject | Strategy Path | Linked Goal | Rationale |
 | :--- | :--- | :--- | :--- | :--- |
 | **1** | **Strategy-Development** | `strategies/strategy-development/` | Goal 0 | Hardens the process of finding and testing tools. High efficiency gain. |
-| **2** | **Attractor** | `strategies/attractor/` | Goal 0 & 1 | Stabilizes the agentic workflow standard and assimilation of core components. |
-| **3** | **Mentci-RFS** | `strategies/mentci-rfs/` | Goal 0 | Daring IDE paradigm shift. De-prioritized to ensure it is built on a stable `mentci-aid` base. |
+| **2** | **Artifact-Sweep** | `strategies/artifact-sweep/` | Goal 0 | Surgically removes redundant framing blocks to improve token economy and purity. |
+| **3** | **Attractor** | `strategies/attractor/` | Goal 0 & 1 | Stabilizes the agentic workflow standard and assimilation of core components. |
+| **4** | **Mentci-RFS** | `strategies/mentci-rfs/` | Goal 0 | Daring IDE paradigm shift. De-prioritized to ensure it is built on a stable `mentci-aid` base. |
 
 ## 3. Implementation Status
 - **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer.clj`.
+- **Artifact-Sweep:** **Drafted.** Report in `Logs/ARTIFACT_SWEEP_REPORT.md`.
 - **Attractor:** **Implemented.** Validator in `src/attractor_validator.rs`.
 - **Mentci-RFS:** Feasibility study complete. Ready for Strategy-Development.
 
