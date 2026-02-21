@@ -104,6 +104,11 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 *   **Milestone:** Strengthened Enforcement Contract to mandate automatic loading of architectural guidelines (including Clojure).
 *   **Version:** `v0.12.3.52.14`
 
+## 4.7 Chronos Accuracy and Notation Fix
+*   **Date:** 2026-02-21
+*   **Milestone:** Fixed chronos inaccuracy by adding planetary perturbations. Introduced `--notation standard` for astrological parity.
+*   **Version:** `v0.12.3.53.1` (Observed)
+
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.
 *   **Sema Object Style:** Everything is an Object. Direction encodes Action.

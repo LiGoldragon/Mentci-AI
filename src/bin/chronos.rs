@@ -29,13 +29,20 @@ enum OutputFormat {
     Json,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Notation {
+    Ordinal,  // 1-based (standard for Mentci)
+    Standard, // 0-based (standard for astrology)
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
     let format = parse_format(&args).unwrap_or(OutputFormat::Unicode);
     let precision = parse_precision(&args).unwrap_or(Precision::Second);
+    let notation = parse_notation(&args).unwrap_or(Notation::Ordinal);
 
     let now = parse_unix_time(&args).unwrap_or_else(SystemTime::now);
-    let ecliptic = solar_ecliptic_time(now);
+    let ecliptic = solar_ecliptic_time(now, notation);
     let output = format_output(ecliptic, format, precision);
     println!("{output}");
 }
@@ -59,6 +66,15 @@ fn parse_precision(args: &[String]) -> Option<Precision> {
         "degree" => Some(Precision::Degree),
         "minute" => Some(Precision::Minute),
         "second" => Some(Precision::Second),
+        _ => None,
+    }
+}
+
+fn parse_notation(args: &[String]) -> Option<Notation> {
+    let value = value_after_flag(args, "--notation")?;
+    match value.as_str() {
+        "ordinal" => Some(Notation::Ordinal),
+        "standard" => Some(Notation::Standard),
         _ => None,
     }
 }
@@ -136,9 +152,9 @@ fn format_unicode_suffix(time: EclipticTime, precision: Precision) -> String {
     }
 }
 
-fn solar_ecliptic_time(now: SystemTime) -> EclipticTime {
+fn solar_ecliptic_time(now: SystemTime, notation: Notation) -> EclipticTime {
     let true_long = solar_longitude_deg(now);
-    let (sign_index, degree, minute, second) = zodiac_ordinals(true_long);
+    let (sign_index, degree, minute, second) = zodiac_ordinals(true_long, notation);
     let (symbol, name) = zodiac_symbol(sign_index);
 
     let year_am = gregorian_to_am_year(now);
@@ -174,14 +190,27 @@ fn solar_longitude_deg(time: SystemTime) -> f64 {
         + 0.000289 * deg_sin(3.0 * mean_anomaly);
 
     let true_long = normalize_degrees(mean_long + c);
+
+    // Planetary perturbations (Meeus, Astronomical Algorithms, Ch 25)
+    let mut p = 0.0;
+    p += 0.00134 * deg_cos(153.23 + 22518.7541 * t);
+    p += 0.00154 * deg_cos(216.57 + 45037.5082 * t);
+    p += 0.00200 * deg_cos(312.69 + 32964.4670 * t);
+    p += 0.00179 * deg_sin(350.74 + 445267.1142 * t);
+    p += 0.00178 * deg_sin(231.19 + 20.20 * t);
+
     let omega = normalize_degrees(125.04 - 1934.136 * t);
     let aberration = 0.00569;
     let nutation = 0.00478 * deg_sin(omega);
-    normalize_degrees(true_long - aberration - nutation)
+    normalize_degrees(true_long + p - aberration - nutation)
 }
 
 fn deg_sin(deg: f64) -> f64 {
     (deg * PI / 180.0).sin()
+}
+
+fn deg_cos(deg: f64) -> f64 {
+    (deg * PI / 180.0).cos()
 }
 
 fn normalize_degrees(mut value: f64) -> f64 {
@@ -192,7 +221,7 @@ fn normalize_degrees(mut value: f64) -> f64 {
     value
 }
 
-fn zodiac_ordinals(longitude: f64) -> (i32, i32, i32, i32) {
+fn zodiac_ordinals(longitude: f64, notation: Notation) -> (i32, i32, i32, i32) {
     let sign_index = (longitude / 30.0).floor() as i32;
     let within_sign = longitude - (sign_index as f64 * 30.0);
 
@@ -202,9 +231,19 @@ fn zodiac_ordinals(longitude: f64) -> (i32, i32, i32, i32) {
     let second_float = (minute_float - minute_zero) * 60.0;
     let second_zero = second_float.floor();
 
-    let degree = clamp_ordinal(degree_zero as i32 + 1, 30);
-    let minute = clamp_ordinal(minute_zero as i32 + 1, 60);
-    let second = clamp_ordinal(second_zero as i32 + 1, 60);
+    let (degree, minute, second) = if notation == Notation::Ordinal {
+        (
+            clamp_ordinal(degree_zero as i32 + 1, 30),
+            clamp_ordinal(minute_zero as i32 + 1, 60),
+            clamp_ordinal(second_zero as i32 + 1, 60),
+        )
+    } else {
+        (
+            degree_zero as i32,
+            minute_zero as i32,
+            second_zero as i32,
+        )
+    };
 
     (sign_index, degree, minute, second)
 }
