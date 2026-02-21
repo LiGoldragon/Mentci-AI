@@ -115,6 +115,11 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 *   **Milestone:** Moved core architectural files to `core/`. Developed `scripts/program_version.clj` to generate content-addressed "Programming Version" hashes (jj-style). Mandated version signature in agent responses.
 *   **Version:** `v0.12.3.55.3` (Approx)
 
+## 4.9 Chronos Formatting Fix
+*   **Date:** 2026-02-21
+*   **Milestone:** Removed spaces from Chronos Unicode output for higher density (e.g., `♓︎3°50'24"`).
+*   **Version:** `v0.12.3.56.12` (Observed)
+
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.
 *   **Sema Object Style:** Everything is an Object. Direction encodes Action.

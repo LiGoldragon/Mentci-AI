@@ -108,7 +108,7 @@ fn format_output(time: EclipticTime, format: OutputFormat, precision: Precision)
             time.year_am
         ),
         OutputFormat::Unicode => format!(
-            "{} {}{} | {} AM",
+            "{}{}{} | {} AM",
             time.sign_symbol,
             time.degree,
             format_unicode_suffix(time, precision),
@@ -147,8 +147,8 @@ fn format_unicode_suffix(time: EclipticTime, precision: Precision) -> String {
     match precision {
         Precision::Sign => "".to_string(),
         Precision::Degree => "°".to_string(),
-        Precision::Minute => format!("° {}'", time.minute),
-        Precision::Second => format!("° {}' {}\"", time.minute, time.second),
+        Precision::Minute => format!("°{}'", time.minute),
+        Precision::Second => format!("°{}'{}\"", time.minute, time.second),
     }
 }
 
