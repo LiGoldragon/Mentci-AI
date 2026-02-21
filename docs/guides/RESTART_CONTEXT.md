@@ -6,7 +6,7 @@
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Current Stack:** Codex CLI (Agentic Interface) / GPT-5 (Reasoning Engine).
 *   **Active Bookmark:** `dev`.
-*   **Current Date:** ♓︎ 3° 45' 53" | 5919 AM (v0.12.3.45.53)
+*   **Current Date:** ♓︎ 3° 48' 16" | 5919 AM (v0.12.3.48.16)
 *   **Latest Tagged Release:** `v0.12.3.45.53`
 
 ## 1. Mission Statement
@@ -19,17 +19,17 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 2.  **`docs/architecture/AGENTS.md`**: Non-negotiable instructions for your operation.
 3.  **`docs/architecture/MENTCI_AID.md`**: Identity, etymology, and status of the core daemon.
 4.  **`docs/architecture/VERSION_CONTROL.md`**: Centralized JJ + version-control rules, including aggressive auto-commit behavior.
-5. **`docs/architecture/RELEASE_PROTOCOL.md`**: Zodiac-ordinal release messages with unicode dating and year-version policy.
-6. **`docs/architecture/CONTEXTUAL_SESSION_PROTOCOL.md`**: Protocol for logging raw prompts and synthesizing session commits.
-7. **`docs/architecture/CHRONOGRAPHY.md`**: Solar-time conventions and the `chronos` tool usage.
-7.  **`docs/specs/WORKFLOW_STANDARD.md`**: Official standard for Attractor-based workflows.
-8.  **`docs/specs/ASKI_DSL_GUIDELINES.md`**: Unified DSL rules for delimiter-based type sugar.
-9.  **`docs/specs/ASKI_FLOW_DSL.md`**: Noun-Sequence DSL for workflows in EDN (prefer over DOT for new definitions).
-10. **`docs/specs/ASKI_ASTRAL_DSL.md`** & **`schema/aski_astral.edn`**: Astral DSL schema and example.
-11. **`docs/specs/ASKI_FS_DSL.md`** & **`docs/specs/ASKI_FS_ASTRAL_DSL.md`**: Filesystem DSLs and astral mapping.
-12. **`workflows/mentci.aski-fs`** & **`workflows/mentci.aski-fs.deps.edn`**: Canonical FS map and dependency-read rules.
-13. **`schema/mentci.capnp`** & **`schema/atom_filesystem.capnp`**: Semantic truth of the system (Filesystem Atoms, Orchestrator RPCs).
-14. **`docs/reports/BRYNARY_ATTRACTOR_SUMMARY.md`**: High-level summary of the Attractor approach vs chat loops.
+5.  **`docs/architecture/RELEASE_PROTOCOL.md`**: Zodiac-ordinal release messages with unicode dating and year-version policy.
+6.  **`docs/architecture/CONTEXTUAL_SESSION_PROTOCOL.md`**: Protocol for logging raw prompts and synthesizing session commits.
+7.  **`docs/architecture/CHRONOGRAPHY.md`**: Solar-time conventions and the `chronos` tool usage.
+8.  **`docs/specs/WORKFLOW_STANDARD.md`**: Official standard for Attractor-based workflows.
+9.  **`docs/specs/ASKI_DSL_GUIDELINES.md`**: Unified DSL rules for delimiter-based type sugar.
+10. **`docs/specs/ASKI_FLOW_DSL.md`**: Noun-Sequence DSL for workflows in EDN (prefer over DOT for new definitions).
+11. **`docs/specs/ASKI_ASTRAL_DSL.md`** & **`schema/aski_astral.edn`**: Astral DSL schema and example.
+12. **`docs/specs/ASKI_FS_DSL.md`** & **`docs/specs/ASKI_FS_ASTRAL_DSL.md`**: Filesystem DSLs and astral mapping.
+13. **`workflows/mentci.aski-fs`** & **`workflows/mentci.aski-fs.deps.edn`**: Canonical FS map and dependency-read rules.
+14. **`schema/mentci.capnp`** & **`schema/atom_filesystem.capnp`**: Semantic truth of the system (Filesystem Atoms, Orchestrator RPCs).
+15. **`docs/reports/BRYNARY_ATTRACTOR_SUMMARY.md`**: High-level summary of the Attractor approach vs chat loops.
 
 ## 3. Current State & Intent
 *   **Filesystem:** The entire project is typed as a "Repo Atom". Documentation is organized into `docs/`.
@@ -44,6 +44,8 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 *   **Chronography:** `src/bin/chronos.rs` outputs solar time (version/unicode/etc). Use Nix dev environments for non-standard tools.
 *   **Version Control:** JJ is authoritative; audit trail is `jj log`. Aggressive auto-commit and intent-splitting rules apply.
 *   **Jail:** Managed by `scripts/launcher.clj`. Supports **Materialized (Mutable) Inputs** in Admin mode via `rsync`.
+    *   **Update:** Input mapping fixed (StrongDM `attractor` vs Brynary `attractor-docs`).
+    *   **Update:** Launcher improved to mount `srcPath` (read-only Nix store) when available.
 *   **Scripts:** Babashka + Malli via `defn*` and instrumentation (`scripts/malli.clj`). `scripts/prefetch_orchestrator.py` is the only allowed Python script.
 *   **Inputs:** `inputs/` is read-only reference material; do not edit.
 
@@ -81,6 +83,11 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 *   **Date:** 2026-02-21
 *   **Milestone:** Formally identified core Rust logic as **mentci-aid** and established "Not in a Running State" as canonical baseline.
 *   **Version:** `v0.12.3.45.53`
+
+## 4.4 Inputs Mapping and Launcher Improvement
+*   **Date:** 2026-02-21
+*   **Milestone:** Fixed `attractor` (StrongDM) vs `attractor-docs` (Brynary) mapping. Improved launcher to mount `srcPath` (Nix store).
+*   **Version:** `v0.12.3.48.16`
 
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.

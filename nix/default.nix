@@ -3,7 +3,8 @@
 , codex_cli_nix
 , system
 , inputs
-, attractor_docs
+, attractor_src
+, attractor_docs_src
 , src
 , scripts_dir
 , repo_root
@@ -17,7 +18,7 @@ let
 
   attractor = import ./attractor.nix {
     inherit pkgs;
-    inherit attractor_docs;
+    src = attractor_src;
   };
 
   mentci_clj = import ./mentci_clj.nix {
@@ -34,7 +35,8 @@ let
 
   jail_inputs = import ./jail_inputs.nix {
     inherit inputs;
-    inherit attractor_docs;
+    attractor_src = attractor_src;
+    attractor_docs_src = attractor_docs_src;
   };
 
   gemini_cli = pkgs.callPackage ./gemini-cli.nix { };

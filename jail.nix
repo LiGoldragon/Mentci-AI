@@ -3,15 +3,27 @@
 let
   lib = pkgs.lib;
 
-  mkInput = name: inputType: {
-    sourcePath = "${inputs.${name}.outPath}";
-    inherit inputType;
-  };
+  mkInput = name: inputType: 
+    let
+      input = inputs.${name};
+      # If it has a .src (is a derivation), use it. Otherwise use the whole thing (flake input/path).
+      src = if (lib.isDerivation input && input ? src) then input.src else input;
+    in {
+      sourcePath = "${input.outPath}";
+      srcPath = "${src}";
+      inherit inputType;
+    };
 
   # -- Ontology Resides in Data --
   inputManifest = {
     mentci-ai = {
       sourcePath = "${./.}";
+      srcPath = "${./.}";
+      inputType = "atom";
+    };
+    mentci-aid = {
+      sourcePath = "${./.}";
+      srcPath = "${./.}";
       inputType = "atom";
     };
     criomos = mkInput "criomos" "flake";
