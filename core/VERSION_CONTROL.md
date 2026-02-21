@@ -4,13 +4,14 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 
 ## 1. Core Rules
 1. All active development targets the `dev` bookmark.
-2. Commit every intent: one atomic modification per commit, no bundling.
-3. Atomic commit messages are minimal and must use only: `intent: <short description>`.
-4. Full prompt/context attribution is reserved for the final session merge/aggregating commit.
-5. Push once to `main` only after all intended session commits are ready and verified.
-6. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
-7. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
-8. **Hard pre-edit gate:** if the tree is dirty at prompt start, stop implementation, isolate pre-existing intent(s), and commit them before touching any additional files.
+2. End-of-flow default is mandatory: push to `dev` at the end of every completed flow unless the user explicitly overrides the target.
+3. Commit every intent: one atomic modification per commit, no bundling.
+4. Atomic commit messages are minimal and must use only: `intent: <short description>`.
+5. Full prompt/context attribution is reserved for the final session merge/aggregating commit.
+6. Push once to `main` only after all intended session commits are ready and verified.
+7. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
+8. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
+9. **Hard pre-edit gate:** if the tree is dirty at prompt start, stop implementation, isolate pre-existing intent(s), and commit them before touching any additional files.
 
 ## 2. Preconditions
 1. Prefer working in the dev shell so `MENTCI_*` variables and the jail workspace are active.
@@ -29,6 +30,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 7. Advance and push once:
    - `jj bookmark set dev -r @`
    - `jj git push --bookmark dev`
+8. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
 
 ## 4. Dirty Tree Intent Separation
 When the working copy is dirty and multiple change-intents may be present:
