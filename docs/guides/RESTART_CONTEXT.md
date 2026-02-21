@@ -113,12 +113,17 @@ The core execution engine is identified as **mentci-aid** (Daemon + Aid).
 ## 4.8 Programming Version System (Prototype)
 *   **Date:** 2026-02-21
 *   **Milestone:** Moved core architectural files to `core/`. Developed `scripts/program_version.clj` to generate content-addressed "Programming Version" hashes (jj-style). Mandated version signature in agent responses.
-*   **Version:** `v0.12.3.55.3` (Approx)
+*   **Version:** `v0.12.3.55.3`
 
 ## 4.9 Chronos Formatting Fix
 *   **Date:** 2026-02-21
 *   **Milestone:** Removed spaces from Chronos Unicode output for higher density (e.g., `♓︎3°50'24"`).
-*   **Version:** `v0.12.3.56.12` (Observed)
+*   **Version:** `v0.12.3.56.12`
+
+## 4.10 Developer Environment: Direnv and Emacs
+*   **Date:** 2026-02-21
+*   **Milestone:** Setup `nix-direnv` (`.envrc`). Created `tools/emacs/mentci.el` for automated Read-Only management of `Inputs/`, auto-revert, and git-gutter integration.
+*   **Version:** `v0.12.3.57.45` (Approx)
 
 ## 5. Philosophical Anchors
 *   **Ontology Resides in Data:** Type is intrinsic, not procedural.
