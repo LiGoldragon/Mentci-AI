@@ -33,10 +33,11 @@ Enforcement requirements:
 These are the highest-order rules for all languages and scripts.
 
 *   **Sub-Program Directory:** The `core/programs/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
-*   **Per-Subject Drafting System:** All drafts, planning documents, feasibility studies, and research notes must be kept in `drafts/<subject>/` dedicated directories. 
-    *   **Dynamic Context:** Subjects should be merged or split as the context volume changes.
-    *   **Cross-Referencing:** Multi-subject files should be symlinked or explicitly cross-referenced.
-    *   **Transition:** Once a draft reaches implementation status, its requirements must be migrated to `core/` or `tasks/`.
+*   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `strategies/<subject>/` dedicated directories.
+    *   **Composition:** Strategies should consist of multiple files (e.g., `MISSION.md`, `ARCHITECTURE.md`, `ROADMAP.md`) and sub-folder source code drafts (`src/`).
+    *   **Workflow:** Strategies are "lined up" for implementation-trials. Use cheaper models to explore dead-ends and effective paths (vibe-coding permitted here) before high-authority models formalize the final logic.
+    *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `core/`, `src/`, or `tasks/`.
+*   **Per-Subject Indexing:** Subjects should be merged or split as context volume changes. Multi-subject files should be cross-referenced.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
 *   **Assimilation of Inputs:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `inputs/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 *   **Language Authority Hierarchy:**
