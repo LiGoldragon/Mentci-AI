@@ -5,24 +5,28 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 ## 1. Core Rules
 1. All active development targets the `dev` bookmark.
 2. Commit every intent: one atomic modification per commit, no bundling.
-3. **Automatic Push:** Every atomic commit to `dev` **must** be immediately followed by a `jj git push --bookmark dev` to ensure synchronization across agents and environments.
-4. Push once to `main` only after all intended session commits are ready and verified.
-5. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
-5. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
+3. Atomic commit messages are minimal and must use only: `intent: <short description>`.
+4. Full prompt/context attribution is reserved for the final session merge/aggregating commit.
+5. Push once to `main` only after all intended session commits are ready and verified.
+6. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
+7. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
+8. **Hard pre-edit gate:** if the tree is dirty at prompt start, stop implementation, isolate pre-existing intent(s), and commit them before touching any additional files.
 
 ## 2. Preconditions
 1. Prefer working in the dev shell so `MENTCI_*` variables and the jail workspace are active.
 2. Use `mentci-jj` for status/log/commit to ensure consistent workspace targeting.
+3. Run a pre-edit status check (`mentci-jj status` or `jj status`) before any file read/write intended to change code or docs.
 
 If `MENTCI_*` variables are missing, use `jj` directly from the repository root and do not attempt jail shipping.
 
 ## 3. Atomic Change Loop
 1. Make exactly one atomic change.
 2. Verify status: `mentci-jj status`
-3. Commit using the **Contextualized Session Protocol** if an active session is in progress (see `docs/architecture/CONTEXTUAL_SESSION_PROTOCOL.md`).
+3. Commit with minimal intent message only: `mentci-jj commit "intent: <short description>"`
 4. Repeat until all intended changes are committed.
-5. Synthesis: At the end of a session, synthesize all atomic commits into a single Contextualized Prompt commit as per the protocol.
-6. Advance and push once:
+5. Parallelization is allowed: related atomic intents may be developed on parallel revisions.
+6. Session synthesis: merge the session's parallel revisions back into trunk (`dev` unless explicitly overridden), then author one final contextualized session commit per `core/CONTEXTUAL_SESSION_PROTOCOL.md`.
+7. Advance and push once:
    - `jj bookmark set dev -r @`
    - `jj git push --bookmark dev`
 
@@ -32,7 +36,7 @@ When the working copy is dirty and multiple change-intents may be present:
 2. Get approval for the grouping before proceeding.
 3. For each intent group:
    - Isolate the group so only that change remains.
-   - Commit the isolated group: `mentci-jj commit "intent: <message>"`
+   - Commit the isolated group: `mentci-jj commit "intent: <short description>"`
 4. After the final intent commit is ready, advance and push once:
    - `jj bookmark set dev -r @`
    - `jj git push --bookmark dev`
