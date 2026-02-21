@@ -5,7 +5,7 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Active Bookmark:** `dev`.
-*   **Current Programming Version:** `7q80wnjd` (Ref: `scripts/program_version/main.clj`).
+*   **Current Programming Version:** `tnpg6mlv` (Ref: `scripts/program_version/main.clj`).
 *   **Latest Release Tag:** `v0.12.3.58.3` (Ref: `Logs/RELEASE_MILESTONES.md`).
 
 ## 1. Project Overview
@@ -19,19 +19,18 @@ These files define the agent's operating logic and must be loaded automatically:
 - `core/HIGH_LEVEL_GOALS.md`: Durable roadmap (Current: Goal 0 - Stabilization).
 - `core/ASKI_POSITIONING.md`: Teleological framing of the symbolic interface.
 - `core/SEMA_*_GUIDELINES.md`: Language-specific structural rules (Rust, Clojure, Nix).
+- `core/ASKI_FS_SPEC.md`: Filesystem Ontology.
 
 ## 3. Component Status Map
 - **Engine (`mentci-aid`):** `src/main.rs`. Status: **Experimental / Not in a running state.**
 - **Orchestration:** `scripts/launcher/` (Jail), `scripts/commit/` (Shipping).
 - **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
-- **FS Ontology:** `core/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
 - **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `artifact-sweep`, `attractor`, `debugging`, `mentci-rfs`, `project-hardening`, `strategy-development`.
-- **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
+- **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.**
 - **Development Loop:** `core/programs/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
-- **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking in `Logs/OBSOLESCENCE_STRIKES.edn`.
+- **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Executed Strike-2 purge of 4 redundant files.
 - **Orchestration Scripts:** `scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
-- **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
-- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Logs/SYSTEM_SWEEP_REPORT.md` (Infrastructure health), `Logs/RESEARCH_ANALYSIS.md` (External repo analysis).
+- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/SYSTEM_SWEEP_REPORT.md` (Infrastructure health), `Logs/OBSOLESCENCE_STRIKES.edn` (Purge record).
 
 ## 4. Operational Requirements
 - **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Logs/RELEASE_MILESTONES.md`.
