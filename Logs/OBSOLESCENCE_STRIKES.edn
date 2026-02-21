@@ -1,27 +1,27 @@
 ;; Mentci-AI: Obsolescence Tracking
-;; Any file reaching 2 strikes is purged.
+;; Any file reaching 3 strikes is purged.
 {
   "inputs.aski-fs" 
   {:strikes 2 
    :reason "Leftover from early symbolic FS brainstorming; superseded by jail.nix/launcher.clj ontology."
    :first_sweep "♓︎3°54'54\""
-   :last_sweep "♓︎4°1'22\""}
+   :last_sweep "♓︎4°1'39\""}
 
   "ARCHITECTURE.md"
   {:strikes 2
    :reason "Root-level architectural fragment; superseded by core/ARCHITECTURAL_GUIDELINES.md and core/programs/RESTART_CONTEXT.md."
    :first_sweep "♓︎3°54'54\""
-   :last_sweep "♓︎4°1'22\""}
+   :last_sweep "♓︎4°1'39\""}
 
   "Work.md"
   {:strikes 2
    :reason "Early project log/intent tracker; superseded by Logs/RELEASE_MILESTONES.md and jj log."
    :first_sweep "♓︎3°54'54\""
-   :last_sweep "♓︎4°1'22\""}
+   :last_sweep "♓︎4°1'39\""}
 
   "docs/architecture/JjAutomation.md"
   {:strikes 2
    :reason "Self-admittedly superseded by core/VERSION_CONTROL.md."
    :first_sweep "♓︎3°54'54\""
-   :last_sweep "♓︎4°1'22\""}
+   :last_sweep "♓︎4°1'39\""}
 }
