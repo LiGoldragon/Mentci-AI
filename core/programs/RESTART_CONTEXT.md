@@ -25,6 +25,7 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Orchestration:** `scripts/launcher.clj` (Jail), `scripts/commit.clj` (Shipping).
 - **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
 - **Drafting System:** `drafts/<subject>/`. Status: **Operational.** Active subjects: `attractor`, `mentci-rfs`.
+- **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking in `Logs/OBSOLESCENCE_STRIKES.edn`.
 - **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
 - **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history).
 
