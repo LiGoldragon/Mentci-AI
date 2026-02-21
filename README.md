@@ -21,13 +21,15 @@ To automate implementation details and liberate the human mind through autonomou
 4.  **Handshake Logging Protocol**: Cryptographic provenance and EDN-based record of truth.
 
 ## Structure
-- `docs/architecture/ARCHITECTURAL_GUIDELINES.md`: The non-negotiable laws of the project.
+- `core/`: Authoritative architectural mandates and protocols.
+  - `core/programs/RESTART_CONTEXT.md`: The primary overview and state-resumption map.
 - `schema/`: The semantic truth (Cap'n Proto).
 - `jail.nix`: The isolated dev environment definition.
-- `src/main.rs`: The Rust daemon implementation (Pipeline Engine).
+- `src/main.rs`: The Rust daemon implementation (**mentci-aid**).
 - `scripts/`: Babashka/Clojure orchestration and logging.
 - `workflows/`: DOT files defining agent execution graphs.
-- `docs/`: Organized documentation (guides, reports, architecture).
+- `Logs/`: Durable audit trails and milestone logs.
+- `docs/`: Secondary documentation (guides, reports).
 
 ## Usage
 - `nix develop`: Enter the Level 5 Jail environment.

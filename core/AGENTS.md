@@ -13,7 +13,8 @@ The following files are mandatory authority sources and **must be loaded automat
 3. `core/VERSION_CONTROL.md`
 4. `core/HIGH_LEVEL_GOALS.md`
 5. `core/SEMA_RUST_GUIDELINES.md`, `core/SEMA_CLOJURE_GUIDELINES.md`, `core/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
-6. `core/AGENTS.md` (This file)
+6. `core/programs/RESTART_CONTEXT.md` (The overview map)
+7. `core/AGENTS.md` (This file)
 
 Enforcement requirements:
 
@@ -25,17 +26,13 @@ Enforcement requirements:
 
 *   **Architecture Gate:** Any change conflicting with the hierarchy in `core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
 *   **Version-Control Gate:** `core/VERSION_CONTROL.md` is mandatory procedure, not guidance.
-*   **Data Transport Gate:** Pass orchestration state through versioned data files (Cap'n Proto / JSON), not ad-hoc environment variables.
-*   **Pre-Work Dirty Tree Rule:** If the tree is dirty at prompt start, commit an intent-separating snapshot before new edits.
-*   **Auto-Commit Rule:** Every atomic filesystem change must be committed immediately.
-*   **No Binaries Rule:** Committing large binary files or compressed archives to the VCS is strictly forbidden. Use `.gitignore` to protect the repository from accidental artifact inclusion.
-*   **Post-Work Rule:** At least one commit must represent the prompt's delivered work.
-*   **Commit Path Rule:** Prefer `mentci-jj` and `mentci-commit` when available; use raw `jj` only when Mentci wrappers are unavailable.
+*   **Restart Context Mandate:** Any modification to major repository components (Engine logic, core protocols, input structures) **must** be reflected in an update to `core/programs/RESTART_CONTEXT.md` and a new entry in `Logs/RELEASE_MILESTONES.md`. Agents must consult the Restart Context at the beginning of every session to understand the project's current spatial map.
 
 ## 0. Core Sema Object Principles (Primary)
 
 These are the highest-order rules for all languages and scripts.
 
+*   **Sub-Program Directory:** The `core/programs/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
 *   **Assimilation of Inputs:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `inputs/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 *   **Language Authority Hierarchy:**
