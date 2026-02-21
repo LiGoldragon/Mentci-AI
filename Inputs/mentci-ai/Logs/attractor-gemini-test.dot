@@ -1,0 +1,7 @@
+digraph GeminiNoKeySession {
+  rankdir=LR
+  start [shape=Mdiamond, label="Start"]
+  gen   [shape=box, label="Gemini Codergen", prompt="Reply with exactly: GEMINI_OK"]
+  exit  [shape=Msquare, label="Exit"]
+  start -> gen -> exit
+}

@@ -2,6 +2,7 @@
 name = "mentci-ai"
 version = "0.1.0"
 edition = "2021"
+description = "mentci-aid (Mentci-AI Daemon/Aid): A Level 5 autonomous pipeline engine for symbolic manipulation. Status: Not in a running state."
 
 [dependencies]
 anyhow = "1.0"

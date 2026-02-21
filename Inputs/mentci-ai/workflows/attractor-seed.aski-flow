@@ -1,0 +1,38 @@
+;; Re-implementation of Attractor: pipelines/factory/seed.dot
+
+[ (start
+    {:shape "Mdiamond"
+     :label "Start"})
+
+  (ingest
+    {:label "Ingest Artifacts"
+     :prompt "@prompts/seed/ingest.md"
+     :reasoning_effort "high"})
+
+  (draft
+    {:label "Draft Product Docs"
+     :prompt "@prompts/seed/draft.md"})
+
+  (review
+    {:label "Review Product Docs"
+     :shape "hexagon"})
+  {:accept exit
+   :revise draft}
+
+  (exit
+    {:shape "Msquare"
+     :label "Exit"})
+]
+
+;; DOT equivalent:
+;; digraph seed {
+;;   rankdir=LR;
+;;   start [shape=Mdiamond, label="Start"];
+;;   exit  [shape=Msquare,  label="Exit"];
+;;   ingest [label="Ingest Artifacts", prompt="@prompts/seed/ingest.md", reasoning_effort="high"];
+;;   draft  [label="Draft Product Docs", prompt="@prompts/seed/draft.md"];
+;;   review [shape=hexagon, label="Review Product Docs"];
+;;   start -> ingest -> draft -> review;
+;;   review -> exit  [label="[A] Accept"];
+;;   review -> draft [label="[R] Revise"];
+;; }

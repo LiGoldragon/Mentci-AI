@@ -1,0 +1,36 @@
+{:namespace :mentci.graphviz-json
+ :version "0.1.0"
+ :description "Canonical Graphviz JSON (-Tjson) interchange model for DOT conversion."
+ :canonicalMedium "graphviz-json"
+ :source "dot -Tjson"
+ :types
+ [{:name :GraphvizJsonGraph
+   :kind :struct
+   :fields [{:id 0 :name :name :type :Text}
+            {:id 1 :name :directed :type :Bool}
+            {:id 2 :name :strict :type :Bool}
+            {:id 3 :name :objects :type [:vector :GraphvizJsonObject]}
+            {:id 4 :name :edges :type [:vector :GraphvizJsonEdge]}
+            {:id 5 :name :graphAttrs :type [:map :Text :Text]}]}
+  {:name :GraphvizJsonObject
+   :kind :struct
+   :fields [{:id 0 :name :_gvid :type :Int}
+            {:id 1 :name :name :type :Text}
+            {:id 2 :name :attrs :type [:map :Text :Text]}]}
+  {:name :GraphvizJsonEdge
+   :kind :struct
+   :fields [{:id 0 :name :_gvid :type :Int}
+            {:id 1 :name :tail :type :Int}
+            {:id 2 :name :head :type :Int}
+            {:id 3 :name :attrs :type [:map :Text :Text]}]}
+  {:name :ConversionRule
+   :kind :enum
+   :values [:dot_to_graphviz_json
+            :graphviz_json_to_dot
+            :aski_flow_to_graphviz_json
+            :aski_flow_to_dot_via_graphviz_json]}]
+ :rules
+ ["DOT -> Graphviz JSON uses Graphviz `dot -Tjson` output shape."
+  "Graphviz JSON -> DOT is a 1-to-1 expansion over objects/edges and attributes."
+  "Aski-Flow -> DOT must route through Graphviz JSON medium."
+  "All cross-format conversion contracts are expressed against Graphviz JSON, not direct pairwise transforms."]}

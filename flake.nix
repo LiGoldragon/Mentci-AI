@@ -76,6 +76,7 @@
           mentciAi = namespace.mentci_ai;
           mentciClj = namespace.mentci_clj;
           attractor = namespace.attractor;
+          gemini-cli = namespace.gemini_cli;
         };
 
         checks = {

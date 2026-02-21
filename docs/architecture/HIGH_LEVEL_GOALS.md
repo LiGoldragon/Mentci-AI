@@ -4,6 +4,15 @@
 
 This file defines durable, repository-level goals that guide orchestration and implementation priorities.
 
+## Goal 0: mentci-aid Stabilization
+
+Establish **mentci-aid** as a functional, Level 5 autonomous pipeline daemon.
+
+Required outcome:
+- `mentci-aid` reaches a "Running State".
+- It successfully orchestrates complex DAGs within Nix Jails.
+- It adheres strictly to Sema Object Style and Handshake Logging.
+
 ## Goal 1: Attractor DOT Job Handoff
 
 Pass a job to Attractor as a DOT graph artifact.

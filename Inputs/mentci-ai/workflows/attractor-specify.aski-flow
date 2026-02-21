@@ -1,0 +1,39 @@
+;; Re-implementation of Attractor: pipelines/factory/specify.dot
+
+[ (start
+    {:shape "Mdiamond"
+     :label "Start"})
+
+  (clarify
+    {:label "Clarify Scope"
+     :prompt "@prompts/specify/clarify.md"
+     :reasoning_effort "high"})
+
+  (require
+    {:label "Write Requirements"
+     :prompt "@prompts/specify/require.md"
+     :reasoning_effort "high"})
+
+  (approve
+    {:label "Approve Requirements"
+     :shape "hexagon"})
+  {:accept exit
+   :revise require}
+
+  (exit
+    {:shape "Msquare"
+     :label "Exit"})
+]
+
+;; DOT equivalent:
+;; digraph specify {
+;;   rankdir=LR;
+;;   start [shape=Mdiamond, label="Start"];
+;;   exit  [shape=Msquare,  label="Exit"];
+;;   clarify [label="Clarify Scope", prompt="@prompts/specify/clarify.md", reasoning_effort="high"];
+;;   require [label="Write Requirements", prompt="@prompts/specify/require.md", reasoning_effort="high"];
+;;   approve [shape=hexagon, label="Approve Requirements"];
+;;   start -> clarify -> require -> approve;
+;;   approve -> exit    [label="[A] Accept"];
+;;   approve -> require [label="[R] Revise"];
+;; }
