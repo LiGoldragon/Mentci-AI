@@ -1,25 +1,17 @@
-# Strategy: Instruction-Artifact Sweep
+# Strategy: Instruction-Artifact Sweep (Universal)
 
-**Linked Goal:** `Goal 0: mentci-aid Stabilization` (Hygiene and Semantic Purity)
+**Linked Goal:** `Goal 0: mentci-aid Stabilization` (Purity and Token Economy)
 
 ## 1. Goal
-Surgically remove redundant framing blocks and instruction-artifacts from the repository while preserving them in their canonical authority files.
+Surgically remove redundant context-leakage and instruction-artifacts from the repository. Maintain a "High-Signal" filesystem.
 
-## 2. Methodology
-- **Registry of Artifacts:** Maintain a list of regex patterns representing "instruction-artifacts".
-- **Surgical Removal:** Use `sed` or a Babashka script to remove matching blocks.
-- **Authority Preservation:** Whitelist `core/ASKI_POSITIONING.md` and `core/AGENTS.md` to prevent removal of the original definitions.
-- **Reporting:** Update `Logs/ARTIFACT_SWEEP_REPORT.md` with every sweep.
+## 2. Methodology: Pattern Discovery
+- **Frequency Analysis:** Use `grep` and `uniq -c` to find repetitive blocks across documentation and implementation files.
+- **Context Mapping:** Compare discovered blocks against `core/` mandates. If the information is already in `core/`, it is an artifact.
+- **Strike System:** Flag these patterns in `Logs/OBSOLESCENCE_STRIKES.edn`.
 
-## 3. Tooling
-Develop `strategies/artifact-sweep/src/sweep.clj` to:
-1.  Iterate through all `.md` files.
-2.  Detect the "Canonical Aski framing" block.
-3.  Remove it if the file is NOT a whitelisted authority file.
-
-## 4. Roadmap
-- [ ] Implement `sweep.clj`.
-- [ ] Conduct trial run on `strategies/` directory.
-- [ ] Final project-wide sweep.
+## 3. Implementation trials
+- [x] Trial 1: Purge the "Aski framing" block (Completed session ♓︎3°60'7").
+- [ ] Trial 2: Develop a script `scripts/artifact_finder/main.clj` to find any non-code string > 100 chars that appears in > 5 files.
 
 *The Great Work continues.*

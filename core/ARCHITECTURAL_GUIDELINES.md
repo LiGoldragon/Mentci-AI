@@ -108,6 +108,9 @@ Mentci-AI incorporates the Attractor standard for workflow orchestration. It doe
 **Names are not descriptions; they are commitments.**
 Meaning is distributed across repository names, directory paths, module names, and type definitions. Meaning must appear exactly once at the highest valid layer. Repetition across layers (e.g., `UserObject`, `Manager`) is forbidden.
 
+**Contextual Sovereignty:**
+High-level architectural context (framing, mission statements, global mandates) must reside exclusively in `core/` and `RESTART_CONTEXT.md`. Replicating this context into individual child files as "headers" is forbidden. Child files must contain only implementation-specific logic, inheriting the global context from the hierarchy.
+
 ## 2. Capitalization-Based Durability Rules (Filesystem)
 
 **Capitalization in paths and filenames encodes durability**—the resistance of instructions to modification. This is orthogonal to code style.
