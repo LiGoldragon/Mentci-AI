@@ -24,7 +24,7 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Engine (`mentci-aid`):** `src/main.rs`. Status: **Experimental / Not in a running state.**
 - **Orchestration:** `scripts/launcher.clj` (Jail), `scripts/commit.clj` (Shipping).
 - **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
-- **Drafting System:** `drafts/<subject>/`. Status: **Operational.** Active subjects: `attractor`, `mentci-rfs`.
+- **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `attractor`, `mentci-rfs`.
 - **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking in `Logs/OBSOLESCENCE_STRIKES.edn`.
 - **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
 - **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history).
