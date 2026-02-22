@@ -58,3 +58,38 @@ explicit, finishable units without losing auditability.
 ## Current Review Result
 The prior strategy file was a placeholder and did not provide a usable interrupted-job
 recovery flow. This revision makes the strategy executable and testable.
+
+## Chronos Invocation Fix Strategy (Answer Report)
+
+### Problem
+`Components/scripts/answer_report/main.clj` invokes Chronos with:
+- `cargo run --quiet --bin chronos -- ...`
+
+The repo root no longer contains `Cargo.toml`; the workspace manifest is at
+`Components/Cargo.toml`. Running from repo root causes Cargo manifest lookup failure.
+
+### Goal
+Make `answer_report` Chronos resolution robust across repo layout changes and shell contexts.
+
+### Plan
+1. Replace single hardcoded Chronos call with a resolver function in
+   `Components/scripts/answer_report/main.clj`.
+2. Resolution order:
+   - Try direct binary: `chronos --format numeric --precision second`.
+   - Try cargo with explicit manifest path:
+     `cargo run --quiet --manifest-path Components/Cargo.toml --bin chronos -- --format numeric --precision second`.
+   - Optional fallback if needed:
+     `cargo run --quiet --manifest-path Library/chronos/Cargo.toml ...` (only if such path exists in future layout).
+3. Keep output contract unchanged:
+   - must still parse `sign.degree.minute.second | year AM`.
+4. Improve failure diagnostics:
+   - include attempted commands and stderr summary.
+5. Add non-destructive test path:
+   - `--chronos-raw` optional override for tests to bypass runtime Chronos execution.
+
+### Acceptance Criteria
+1. `bb Components/scripts/answer_report/main.clj --prompt x --answer y --subject Prompt-Report-System --title smoke`
+   succeeds in default dev shell when either `chronos` binary or `Components/Cargo.toml` path is available.
+2. No behavior regression in filename/date extraction.
+3. Existing report format remains unchanged except improved error messaging.
+4. Add/update `TESTING_CONTEXT.md` with both binary-present and cargo-manifest fallback scenarios.
