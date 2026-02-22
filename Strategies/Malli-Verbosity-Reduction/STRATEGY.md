@@ -45,6 +45,19 @@ Expansion:
 - `defobj` supports scalar and map forms.
 - For unary payloads, prefer scalar schemas over single-member maps.
 - Internal canonical schema remains unchanged for validation/runtime.
+- Map literal shorthand is first-class:
+```clojure
+(defobj Remount
+  {:name :string
+   :sourcePath :string
+   :targetPath :string})
+```
+- Single-item map wrappers are disallowed by default:
+  - reject `[:map [:path :string]]` in favor of scalar `:string`
+  - only allow with explicit compatibility annotation
+- Naming contract for unary scalars:
+  - reject flow/noise names like `DeletePathInput`
+  - require noun schema names (for example `Path`, `Source`, `Message`)
 
 ### 3.2 Entrypoint Sugar (Implemented)
 Current:
@@ -131,6 +144,7 @@ Pilot executed:
 - reject type-redundant names like `*Text` when schema is scalar `:string`.
 9. Add lint guard for unary map redundancy:
 - reject or warn on single-member map schemas unless annotated as required for compatibility.
+ - enforce map-literal short authoring path for multi-field objects via `defobj`.
 10. Add context-local entrypoint naming guard:
 - in `main.clj`, prefer schema name `Input`; flag `MainInput` and similar redundant restatements.
 
@@ -191,7 +205,7 @@ Partially feasible. Core direction is implementable, but current placeholder nam
 - `fn` (exact spelling): not feasible (special form collision).
 - `main`: implemented and feasible now for entrypoints.
 - `main` + Malli lite input form: implemented and feasible now.
-- unary-map noise reduction: feasible with boundary-aware migration.
+- unary-map noise reduction: feasible and should become default-enforced in new code.
 
 ## 9. Impl-Only Migration Start (Current)
 
@@ -216,3 +230,11 @@ Verification added:
   - `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/interrupted_job_queue`
 
 *The Great Work continues.*
+
+## 10. Requested Update: Map-Literal + Scalar-First Contract
+
+This strategy now adopts the following defaults:
+1. Multi-field object schemas must be authored in short map-literal form (`defobj + {}`).
+2. Single-field map wrappers are treated as anti-pattern by default.
+3. Unary payloads use scalar schemas directly.
+4. Names like `DeletePathInput` are protocol violations when schema shape is scalar; use domain noun names (`Path`) instead.

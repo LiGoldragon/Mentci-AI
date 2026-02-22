@@ -49,6 +49,31 @@ Unary payload example (preferred over `[:map [:raw :string]]` when semantics are
   :string)
 ```
 
+### Project Macro: defobj (Schema Short Style)
+
+Use `defobj` (strategy-target macro) for concise schema declarations, analogous to `main`.
+Map literals are interpreted as map schemas and scalar forms stay scalar.
+
+Map object example:
+
+```clojure
+(defobj Remount
+  {:name :string
+   :sourcePath :string
+   :targetPath :string})
+```
+
+Unary payload example:
+
+```clojure
+(defobj Path
+  :string)
+```
+
+Equivalent legacy forms:
+- `{:name :string ...}` -> `[:map [:name :string] ...]`
+- `:string` stays `:string`
+
 ### Function Signature Rule
 Every function takes a single input object and returns a single output object.
 
@@ -219,6 +244,8 @@ Explicit schema form:
 *   Related objects are grouped in a single namespace (e.g., `mentci.intent`).
 *   Do not duplicate meaning in function names. The namespace conveys the noun.
 *   Protocol names and object names carry durable semantics; helper wrappers remain thin.
+*   Scalar schema naming rule: if schema is scalar (for example `:string`), avoid flow wrappers/suffixes like `DeletePathInput`; use domain nouns like `Path`.
+*   Single-item map ban: `[:map [:path :string]]` is invalid unless explicitly justified for backward compatibility; default is scalar `:string`.
 
 ## Documentation Protocol
 
