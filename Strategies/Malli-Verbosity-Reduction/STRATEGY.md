@@ -24,7 +24,7 @@ The strategy is feasible, but it must not optimize only syntax surface. It also
 needs a structural mirror of `Core/SEMA_RUST_GUIDELINES.md`:
 - behavior in an existing semantic method domain belongs in protocol methods;
 - free functions remain orchestration wrappers;
-- syntax sugar (`defobj`, `main`, `impl`) should support protocol-based object methods
+- syntax sugar (`struct`, `main`, `impl`) should support protocol-based object methods
   rather than reinforce ad-hoc free-function style.
 
 ## 3. Proposed Syntax Targets
@@ -37,17 +37,17 @@ Current:
 
 Target:
 ```clojure
-(defobj Source
+(struct Source
   :string)
 ```
 
 Expansion:
-- `defobj` supports scalar and map forms.
+- `struct` supports scalar and map forms.
 - For unary payloads, prefer scalar schemas over single-member maps.
 - Internal canonical schema remains unchanged for validation/runtime.
 - Map literal shorthand is first-class:
 ```clojure
-(defobj Remount
+(struct Remount
   {:name :string
    :sourcePath :string
    :targetPath :string})
@@ -95,7 +95,7 @@ Example explicit schema:
 
 ## 4. Implementation Plan
 1. Add new macros in `scripts/lib/malli.clj`:
-- `defobj` for map schema sugar
+- `struct` for map schema sugar
 - `main` for concise `-main` declaration (implemented)
 - optional `defscalar` alias for unary object declarations
 
@@ -144,7 +144,7 @@ Pilot executed:
 - reject type-redundant names like `*Text` when schema is scalar `:string`.
 9. Add lint guard for unary map redundancy:
 - reject or warn on single-member map schemas unless annotated as required for compatibility.
- - enforce map-literal short authoring path for multi-field objects via `defobj`.
+ - enforce map-literal short authoring path for multi-field objects via `struct`.
 10. Add context-local entrypoint naming guard:
 - in `main.clj`, prefer schema name `Input`; flag `MainInput` and similar redundant restatements.
 
@@ -190,17 +190,17 @@ Partially feasible. Core direction is implementable, but current placeholder nam
 
 3. **Missing implementation scaffolding**
 - `Components/scripts/lib/malli.clj` currently provides only `defn*` and `enable!`.
-- `defobj` / `impl` / scalar lint guards are not implemented yet.
+- `struct` / `impl` / scalar lint guards are not implemented yet.
 
 ### Feasible Path
 1. Keep `defn*` as baseline.
 2. Replace `fn` placeholder with a non-colliding macro name (for example `fn*`).
-3. Implement `defobj` and optional `impl` in `Components/scripts/lib/malli.clj`.
+3. Implement `struct` and optional `impl` in `Components/scripts/lib/malli.clj`.
 4. Update validator to accept `defn*` and/or new sanctioned macro forms.
 5. Pilot on one script, then expand incrementally.
 
 ### Scope Classification
-- `defobj`: feasible now.
+- `struct`: feasible now.
 - `impl`: feasible now.
 - `fn` (exact spelling): not feasible (special form collision).
 - `main`: implemented and feasible now for entrypoints.
@@ -234,7 +234,7 @@ Verification added:
 ## 10. Requested Update: Map-Literal + Scalar-First Contract
 
 This strategy now adopts the following defaults:
-1. Multi-field object schemas must be authored in short map-literal form (`defobj + {}`).
+1. Multi-field object schemas must be authored in short map-literal form (`struct + {}`).
 2. Single-field map wrappers are treated as anti-pattern by default.
 3. Unary payloads use scalar schemas directly.
 4. Names like `DeletePathInput` are protocol violations when schema shape is scalar; use domain noun names (`Path`) instead.

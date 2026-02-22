@@ -11,6 +11,20 @@
      (m/=> ~name ~schema)
      (defn ~name ~args ~@body)))
 
+(defmacro struct
+  "Define a schema object in short style.
+   - Symbol schema stays symbolic.
+   - Keyword/vector schema is kept as-is.
+   - Map literals are compiled through Malli lite schema expansion.
+   Examples:
+     (struct Path :string)
+     (struct Input {:args [:vector :string]})"
+  [name schema]
+  (let [compiled (cond
+                   (map? schema) `(ml/schema ~schema)
+                   :else schema)]
+    `(def ~name ~compiled)))
+
 (defn args-vector? [v]
   (and (vector? v)
        (or (empty? v)

@@ -49,15 +49,15 @@ Unary payload example (preferred over `[:map [:raw :string]]` when semantics are
   :string)
 ```
 
-### Project Macro: defobj (Schema Short Style)
+### Project Macro: struct (Schema Short Style)
 
-Use `defobj` (strategy-target macro) for concise schema declarations, analogous to `main`.
+Use `struct` for concise schema declarations, analogous to `main`.
 Map literals are interpreted as map schemas and scalar forms stay scalar.
 
 Map object example:
 
 ```clojure
-(defobj Remount
+(struct Remount
   {:name :string
    :sourcePath :string
    :targetPath :string})
@@ -66,7 +66,7 @@ Map object example:
 Unary payload example:
 
 ```clojure
-(defobj Path
+(struct Path
   :string)
 ```
 
