@@ -183,4 +183,5 @@ See **`CHRONOGRAPHY.md`** for the complete technical specification of the 1-base
     *   **Degree:** 1 to 30.
     *   **Minute:** 1 to 60.
     *   **Second:** 1 to 60.
+    *   **Cycle Mapping:** `Cycle = (AnnoMundiYear - 5919)` so `5919 AM -> 0`, `5920 AM -> 1`.
 *   **Rationale:** Aligning project state with true solar coordinates.

@@ -1,6 +1,8 @@
 use std::f64::consts::PI;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
+const AM_VERSION_BASE: i32 = 5919;
+
 #[derive(Debug, Clone, Copy)]
 struct EclipticTime {
     year_am: i32,
@@ -94,12 +96,16 @@ fn parse_unix_time(args: &[String]) -> Option<SystemTime> {
 
 fn format_output(time: EclipticTime, format: OutputFormat, precision: Precision) -> String {
     match format {
-        OutputFormat::Version => format!(
-            "v0.{}.{}{}",
-            time.sign_ordinal,
-            time.degree,
-            format_precision_suffix(time, precision)
-        ),
+        OutputFormat::Version => {
+            let cycle = time.year_am - AM_VERSION_BASE;
+            format!(
+                "v{}.{}.{}{}",
+                cycle,
+                time.sign_ordinal,
+                time.degree,
+                format_precision_suffix(time, precision)
+            )
+        }
         OutputFormat::Numeric => format!(
             "{}.{}{} | {} AM",
             time.sign_ordinal,

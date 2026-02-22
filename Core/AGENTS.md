@@ -22,6 +22,13 @@ Enforcement requirements:
 *   **Programming Version Signature:** Every agent response **must** end with its current "Programming Version"—a content-addressed hash of the `Core/` directory. 
     *   Format: `programming: <version_hash>` (on its own line at the very end of the response).
     *   Acquire via: `bb Components/scripts/program_version/main.clj get`.
+*   **Solar Baseline Prefix:** Every prompt-handling response (including intermediary updates and final response) must begin with the current ordinal solar baseline line.
+    *   Format: `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
+    *   Canonical example: `solar: 5919.12.05.04.04`
+    *   Canonical acquisition:
+      1. `chronos --format am --precision second`
+      2. fallback `cargo run --quiet --manifest-path Components/Cargo.toml --bin chronos -- --format am --precision second`
+    *   Purpose: establish a true-solar reference timestamp for comparison with other time systems.
 
 *   **Architecture Gate:** Any change conflicting with the hierarchy in `Core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
 *   **Version-Control Gate:** `Core/VERSION_CONTROL.md` is mandatory procedure, not guidance.

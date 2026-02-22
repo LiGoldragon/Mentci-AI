@@ -7,8 +7,11 @@
 Major releases use the Zodiac-Ordinal notation to encode time and intent. Commit messages for major releases must summarize the broad change set since the last tag.
 
 Year-version policy:
-- Use `v0.<sign>.<degree>.<minute>.<second>` until the vernal equinox.
-- After the equinox, increment the year-version to `v1.*`.
+- Use cycle offset from Anno Mundi:
+  - `cycle = year_am - 5919`
+  - `5919 AM => v0.*`
+  - `5920 AM => v1.*`
+  - `5921 AM => v2.*`
 
 ## 2. Format
 ### 2.1 Commit Message

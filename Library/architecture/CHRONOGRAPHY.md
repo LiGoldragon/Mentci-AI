@@ -57,9 +57,18 @@ Precision is hierarchical and context-dependent. Coordinates may be truncated fr
 - **Sign-Precision:** `12` (Annual cycles).
 
 ## 6. Usage in Mentci-AI
-- **Version Control:** Software releases are tagged with the sign-ordinal (e.g., `v0.12.1.28.44`).
+- **Version Control:** Software releases are tagged with cycle offset + sign-ordinal.
+  - Cycle offset formula: `cycle = year_am - 5919`
+  - Examples:
+    - `5919 AM` -> `v0.<sign>.<degree>.<minute>.<second>`
+    - `5920 AM` -> `v1.<sign>.<degree>.<minute>.<second>`
 - **Audit Trail:** When required, include ecliptic time in commit messages or structured data checked into the repo.
 - **Filenaming:** Reports must use the `YEAR_SIGN_DEGREE_MINUTE_SECOND` format for durable sorting.
+
+Session commit baseline line:
+- Required primary timestamp line in session descriptions:
+  - `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
+  - Example: `solar: 5919.12.05.04.04`
 
 ## 7. Chronography Tool
 The `chronos` binary prints the current zodiac-ordinal time in multiple formats.

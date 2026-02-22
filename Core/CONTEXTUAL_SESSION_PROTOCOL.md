@@ -12,6 +12,11 @@ Final synthesis is mode-dependent:
 
 ## 2. Phase 1: Session Initiation (Capture)
 Upon receiving a new user prompt (Directive), the agent must:
+0.  **Capture Solar Baseline First:** Resolve and record a true-solar timestamp before any other analysis/action.
+    *   Required format: `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
+    *   Example: `solar: 5919.12.05.04.04`
+    *   Preferred command: `chronos --format am --precision second`
+    *   Fallback command: `cargo run --quiet --manifest-path Components/Cargo.toml --bin chronos -- --format am --precision second`
 1.  **Store the Raw Prompt:** Copy the user's input exactly as provided.
 2.  **Formulate Initial Context:** Summarize the interpretation of the prompt, the intended strategy, and any identified constraints.
 3.  **Enforce Pre-Edit Cleanliness:** If the working tree is dirty at prompt start, commit pre-existing intent groups before making new edits for the prompt.
@@ -53,7 +58,7 @@ Use this canonical description for the rewritten single commit (single mode) or 
 
 ```
 session: <Result Summary>
-♓︎ <Chronos Date>
+solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>
 
 ## Original Prompt
 <Full Raw User Prompt>
