@@ -6,6 +6,7 @@ result
 *.swp
 /inputs/
 /workspace/
+/$(pwd)/
 gemini-cli-*.tgz
 *.tgz
 # Inputs are mounted/ephemeral read-only substrate (often symlinks/store paths).
