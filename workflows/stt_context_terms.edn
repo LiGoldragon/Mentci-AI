@@ -1,0 +1,24 @@
+{:version 1
+ :notes ["Maintained lexicon for context-biased STT decoding of voice prompts."
+         "Add uncommon project-specific terms after transcription corrections."]
+ :priority-terms ["Mentci"
+                  "mentci-aid"
+                  "Aski"
+                  "CriomOS"
+                  "attractor"
+                  "attractor-docs"
+                  "Lojix"
+                  "Babashka"
+                  "Malli"
+                  "Jujutsu"
+                  "jj"
+                  "Inputs"
+                  "Reports"
+                  "VoicePrompts"]
+ :path-terms ["core/AGENTS.md"
+              "core/VERSION_CONTROL.md"
+              "core/CONTEXTUAL_SESSION_PROTOCOL.md"
+              "core/HIGH_LEVEL_GOALS.md"
+              "core/ARCHITECTURAL_GUIDELINES.md"]
+ :user-terms []
+ :auto-mined-terms []}

@@ -7,11 +7,12 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 2. End-of-flow default is mandatory: push to `dev` at the end of every completed flow unless the user explicitly overrides the target.
 3. Commit every intent: one atomic modification per commit, no bundling.
 4. Atomic commit messages are minimal and must use only: `intent: <short description>`.
-5. Full prompt/context attribution is reserved for the final session merge/aggregating commit.
-6. Push once to `main` only after all intended session commits are ready and verified.
-7. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
-8. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
-9. **Hard pre-edit gate:** if the tree is dirty at prompt start, stop implementation, isolate pre-existing intent(s), and commit them before touching any additional files.
+5. Full prompt/context attribution is reserved for final session synthesis per `core/CONTEXTUAL_SESSION_PROTOCOL.md`.
+6. **Session completion gate:** a prompt is incomplete unless finalization follows the single-vs-multi sub-commit synthesis rules in `core/CONTEXTUAL_SESSION_PROTOCOL.md`.
+7. Push once to `main` only after all intended session commits are ready and verified.
+8. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
+9. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
+10. **Hard pre-edit gate:** if the tree is dirty at prompt start, stop implementation, isolate pre-existing intent(s), and commit them before touching any additional files.
 
 ## 2. Preconditions
 1. Prefer working in the dev shell so `MENTCI_*` variables and the jail workspace are active.
@@ -26,11 +27,16 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 3. Commit with minimal intent message only: `mentci-jj commit "intent: <short description>"`
 4. Repeat until all intended changes are committed.
 5. Parallelization is allowed: related atomic intents may be developed on parallel revisions.
-6. Session synthesis: merge the session's parallel revisions back into trunk (`dev` unless explicitly overridden), then author one final contextualized session commit per `core/CONTEXTUAL_SESSION_PROTOCOL.md`.
-7. Advance and push once:
+6. Session synthesis:
+   - If there is exactly one sub-commit for the prompt: prepend that commit description with the final `session:` message block (do not add a separate final commit).
+   - If there are multiple sub-commits: duplicate the sub-commit branch, squash the duplicated branch into one final `session:` commit, and append the duplicated sub-branch change IDs in the final message.
+7. Before declaring the prompt complete, run `bb scripts/session_guard/main.clj`; non-zero exit means session synthesis is missing or malformed.
+8. Advance and push once:
    - `jj bookmark set dev -r @`
    - `jj git push --bookmark dev`
-8. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
+9. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
+10. After final session synthesis (single or multi mode), create a fresh child working commit to leave a clean tree and keep the finalized session commit immutable:
+   - `jj new dev`
 
 ## 4. Dirty Tree Intent Separation
 When the working copy is dirty and multiple change-intents may be present:
