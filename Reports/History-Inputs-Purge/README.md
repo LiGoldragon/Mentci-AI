@@ -5,4 +5,4 @@
 
 ## Report Entries
 
-- _No report entries yet._
+- `Reports/History-Inputs-Purge/5919_12_04_48_12_answer_inputs-history-purge-strategy.md`

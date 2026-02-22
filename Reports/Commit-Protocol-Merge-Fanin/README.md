@@ -5,4 +5,4 @@
 
 ## Report Entries
 
-- _No report entries yet._
+- `Reports/Commit-Protocol-Merge-Fanin/5919_12_04_47_36_answer_commit-protocol-merge-fanin-strategy.md`

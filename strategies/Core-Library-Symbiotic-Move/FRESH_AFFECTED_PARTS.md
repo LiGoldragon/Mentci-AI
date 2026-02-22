@@ -30,7 +30,7 @@ affected_paths:
 - `Reports/Docs-Top-Level-Obsolescence-Audit/5919_12_04_53_21_answer_docs-top-level-obsolescence-audit.md`
 - `Reports/Docs-Top-Level-Obsolescence-Audit/README.md`
 - `Reports/Guidelines-Wisdom-Reincorporation/5919_12_04_47_01_answer_guidelines-wisdom-reincorporation.md`
-- `Reports/Inputs-History-Purge-Strategy/5919_12_04_48_12_answer_inputs-history-purge-strategy.md`
+- `Reports/History-Inputs-Purge/5919_12_04_48_12_answer_inputs-history-purge-strategy.md`
 - `Reports/Recover-Lost-Work-After-Rewrite/5919_12_04_48_49_answer_recover-lost-work-after-rewrite.md`
 - `Reports/Workspace-Ancient-Copy-Root-Cause/5919_12_04_53_20_answer_workspace-ancient-copy-root-cause.md`
 - `Reports/Workspace-Ancient-Copy-Root-Cause/README.md`
