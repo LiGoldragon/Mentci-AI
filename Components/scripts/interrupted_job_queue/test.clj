@@ -15,6 +15,7 @@
   true)
 
 (def classifier (->DefaultClassifier))
+(def queue-runner (->DefaultInterruptedJobQueue))
 
 (deftest classifier-methods-test
   (is (test-marker))
@@ -28,10 +29,10 @@
          (class-for classifier {:prompt "what should we do next?"}))))
 
 (deftest queue-build-and-dedup-test
-  (let [jobs (build-jobs {:prompts ["fix commit protocol"
-                                    "fix commit protocol"
-                                    "report on strategy queue"]})
-        deduped (dedup-jobs {:jobs jobs})]
+  (let [jobs (build-jobs-for queue-runner {:prompts ["fix commit protocol"
+                                                     "fix commit protocol"
+                                                     "report on strategy queue"]})
+        deduped (dedup-jobs-for queue-runner {:jobs jobs})]
     (is (= 2 (count deduped)))
     (is (= "IJ-001" (:jobId (first deduped))))
     (is (= "IJ-002" (:jobId (second deduped))))

@@ -13,7 +13,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* impl main enable!]])
+(require '[mentci.malli :refer [impl main enable!]])
 
 (enable!)
 
@@ -35,50 +35,76 @@
    [:args [:vector :string]]])
 
 (defprotocol AskiFlowOps
+  (to-id-for [this input])
+  (to-attr-map-for [this input])
+  (node-form-for [this input])
+  (node-from-item-for [this input])
+  (escape-dot-for [this input])
+  (attrs->dot-fragment-for [this input])
+  (aski-flow->graphviz-json-for [this input])
+  (graphviz-json->dot-for [this input])
+  (has-dot-for [this])
+  (dot->graphviz-json-for [this input])
+  (aski-flow->dot-for [this input])
   (run-flow-cli-for [this input]))
 
 (defrecord DefaultAskiFlow [])
 
-(defn* to-id [:=> [:cat [:or :symbol :keyword :string]] :string] [value]
-  (cond
-    (symbol? value) (name value)
-    (keyword? value) (name value)
-    :else (str value)))
+(impl DefaultAskiFlow AskiFlowOps to-id-for {:value [:or :symbol :keyword :string]} :string
+  [this input]
+  (let [_ this
+        value (:value input)]
+    (cond
+      (symbol? value) (name value)
+      (keyword? value) (name value)
+      :else (str value))))
 
-(defn* to-attr-map [:=> [:cat [:maybe :map]] [:map-of :string :string]] [attrs]
-  (if (map? attrs)
-    (into {} (map (fn [[k v]] [(to-id k) (str v)])) attrs)
-    {}))
+(impl DefaultAskiFlow AskiFlowOps to-attr-map-for {:attrs [:maybe :map]} [:map-of :string :string]
+  [this input]
+  (let [attrs (:attrs input)]
+    (if (map? attrs)
+      (into {} (map (fn [[k v]] [(to-id-for this {:value k}) (str v)])) attrs)
+      {})))
 
-(defn* node-form? [:=> [:cat :any] :boolean] [item]
-  (or (symbol? item)
-      (and (seq? item) (symbol? (first item)))))
+(impl DefaultAskiFlow AskiFlowOps node-form-for {:item :any} :boolean
+  [this input]
+  (let [_ this
+        item (:item input)]
+    (or (symbol? item)
+        (and (seq? item) (symbol? (first item))))))
 
-(defn* node-from-item [:=> [:cat :any] [:maybe [:map [:id :string] [:attrs [:map-of :string :string]]]]] [item]
-  (cond
-    (symbol? item) {:id (to-id item) :attrs {}}
-    (and (seq? item) (symbol? (first item)))
-    {:id (to-id (first item))
-     :attrs (to-attr-map (second item))}
-    :else nil))
+(impl DefaultAskiFlow AskiFlowOps node-from-item-for {:item :any} [:maybe [:map [:id :string] [:attrs [:map-of :string :string]]]]
+  [this input]
+  (let [item (:item input)]
+    (cond
+      (symbol? item) {:id (to-id-for this {:value item}) :attrs {}}
+      (and (seq? item) (symbol? (first item)))
+      {:id (to-id-for this {:value (first item)})
+       :attrs (to-attr-map-for this {:attrs (second item)})}
+      :else nil)))
 
-(defn* escape-dot [:=> [:cat :string] :string] [value]
-  (str/escape value {\" "\\\"" \\ "\\\\"}))
+(impl DefaultAskiFlow AskiFlowOps escape-dot-for {:value :string} :string
+  [this input]
+  (str/escape (:value input) {\" "\\\"" \\ "\\\\"}))
 
-(defn* attrs->dot-fragment [:=> [:cat [:map [:attrs [:map-of :string :string]]]] :string] [input]
+(impl DefaultAskiFlow AskiFlowOps attrs->dot-fragment-for {:attrs [:map-of :string :string]} :string
+  [this input]
   (let [attrs (:attrs input)]
     (if (empty? attrs)
       ""
       (str " ["
            (str/join ", "
-                     (map (fn [[k v]] (str k "=\"" (escape-dot v) "\"")) attrs))
+                     (map (fn [[k v]]
+                            (str k "=\"" (escape-dot-for this {:value v}) "\""))
+                          attrs))
            "]"))))
 
-(defn* aski-flow->graphviz-json [:=> [:cat FlowInput] [:map-of :string :any]] [input]
+(impl DefaultAskiFlow AskiFlowOps aski-flow->graphviz-json-for FlowInput [:map-of :string :any]
+  [this input]
   (let [flow (:flow input)
         graph-id (or (:graphId input) "AskiFlow")
         elements (vec flow)
-        node-order (->> elements (map node-from-item) (remove nil?) vec)
+        node-order (->> elements (map #(node-from-item-for this {:item %})) (remove nil?) vec)
         node-ids (mapv :id node-order)
         id->idx (into {} (map-indexed (fn [idx id] [id idx]) node-ids))
         objects (mapv (fn [idx {:keys [id attrs]}]
@@ -92,7 +118,7 @@
           (if (>= i (count elements))
             (mapv (fn [gvid e] (assoc e "_gvid" gvid)) (range (count acc)) acc)
             (let [item (nth elements i)]
-              (if-not (node-form? item)
+              (if-not (node-form-for this {:item item})
                 (recur (inc i) node-idx acc)
                 (let [current-id (nth node-ids node-idx)
                       current-gvid (id->idx current-id)
@@ -103,8 +129,8 @@
                     (let [{:keys [edges has-next]}
                           (reduce
                            (fn [state [condition target]]
-                             (let [condition-name (to-id condition)
-                                   target-id (if (= target :next) next-id (to-id target))
+                             (let [condition-name (to-id-for this {:value condition})
+                                   target-id (if (= target :next) next-id (to-id-for this {:value target}))
                                    target-gvid (some-> target-id id->idx)]
                                (when (nil? target-gvid)
                                  (throw (ex-info "Aski-Flow route target is undefined in node set."
@@ -133,7 +159,8 @@
      "objects" objects
      "edges" edges}))
 
-(defn* graphviz-json->dot [:=> [:cat GraphvizJsonInput] :string] [input]
+(impl DefaultAskiFlow AskiFlowOps graphviz-json->dot-for GraphvizJsonInput :string
+  [this input]
   (let [graph (:graph input)
         graph-id (get graph "name" "AskiFlow")
         objects (vec (get graph "objects" []))
@@ -145,7 +172,7 @@
                      attrs (-> o (dissoc "_gvid" "name")
                                (update-keys str)
                                (update-vals str))]
-                 (str "  " node-id (attrs->dot-fragment {:attrs attrs}) ";")))
+                 (str "  " node-id (attrs->dot-fragment-for this {:attrs attrs}) ";")))
              objects)
         edge-lines
         (map (fn [e]
@@ -157,17 +184,19 @@
                  (when (or (nil? tail-id) (nil? head-id))
                    (throw (ex-info "Graphviz JSON edge references unknown node index."
                                    {:edge e})))
-                 (str "  " tail-id " -> " head-id (attrs->dot-fragment {:attrs attrs}) ";")))
+                 (str "  " tail-id " -> " head-id (attrs->dot-fragment-for this {:attrs attrs}) ";")))
              edges)]
     (str "digraph \"" graph-id "\" {\n"
          (str/join "\n" (concat node-lines edge-lines))
          "\n}\n")))
 
-(defn* has-dot? [:=> [:cat] :boolean] []
+(impl DefaultAskiFlow AskiFlowOps has-dot-for [:=> [:cat :any] :boolean]
+  [this]
   (zero? (:exit (sh "sh" "-lc" "command -v dot >/dev/null 2>&1"))))
 
-(defn* dot->graphviz-json [:=> [:cat DotInput] [:map-of :string :any]] [input]
-  (when-not (has-dot?)
+(impl DefaultAskiFlow AskiFlowOps dot->graphviz-json-for DotInput [:map-of :string :any]
+  [this input]
+  (when-not (has-dot-for this)
     (throw (ex-info "Graphviz dot executable not found; cannot run dot -Tjson."
                     {:command "dot -Tjson"})))
   (let [tmp-dot (java.io.File/createTempFile "mentci-graph" ".dot")
@@ -182,11 +211,14 @@
         (.delete tmp-dot)
         (.delete tmp-json)))))
 
-(defn* aski-flow->dot [:=> [:cat FlowInput] :string] [input]
-  (graphviz-json->dot {:graph (aski-flow->graphviz-json input)}))
+(impl DefaultAskiFlow AskiFlowOps aski-flow->dot-for FlowInput :string
+  [this input]
+  (graphviz-json->dot-for this {:graph (aski-flow->graphviz-json-for this input)}))
+
+(def default-aski-flow (->DefaultAskiFlow))
 
 (defmacro aski-flow->dot-macro [flow]
-  (graphviz-json->dot {:graph (aski-flow->graphviz-json {:flow flow :graphId "AskiFlow"})}))
+  `(aski-flow->dot-for default-aski-flow {:flow ~flow :graphId "AskiFlow"}))
 
 (impl DefaultAskiFlow AskiFlowOps run-flow-cli-for Input :any
   [this input]
@@ -198,10 +230,8 @@
         (println "Usage: bb Components/scripts/aski_flow_dot/main.clj <flow-file> [graph-id]")
         (System/exit 1))
       (let [flow (read-string (slurp flow-file))
-            dot (aski-flow->dot {:flow flow :graphId graph-id})]
+            dot (aski-flow->dot-for this {:flow flow :graphId graph-id})]
         (println dot)))))
-
-(def default-aski-flow (->DefaultAskiFlow))
 
 (main Input
   [input]

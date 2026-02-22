@@ -7,7 +7,7 @@
          '[clojure.string :as str])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* impl main enable!]])
+(require '[mentci.malli :refer [impl main enable!]])
 
 (enable!)
 
@@ -59,57 +59,16 @@
 
 (defrecord DefaultClassifier [])
 
-(defn* fail! [:=> [:cat [:map [:message :string]]] :any] [input]
-  (binding [*out* *err*]
-    (println (:message input)))
-  (System/exit 1))
-
-(defn* parse-args [:=> [:cat ParseArgsInput] :map] [input]
-  (loop [remaining (:args input)
-         opts {:source "Reports/Prompt-Report-System/591912042315_answer_interrupted-jobs-audit.md"
-               :output "Reports/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md"
-               :write? false}]
-    (if (empty? remaining)
-      opts
-      (let [[arg & _] remaining]
-        (cond
-          (= arg "--source-report")
-          (recur (nnext remaining) (assoc opts :source (second remaining)))
-
-          (= arg "--output")
-          (recur (nnext remaining) (assoc opts :output (second remaining)))
-
-          (= arg "--write")
-          (recur (next remaining) (assoc opts :write? true))
-
-          (= arg "--help")
-          (do
-            (println "Usage: bb Components/scripts/interrupted_job_queue/main.clj [--source-report <path>] [--output <path>] [--write]")
-            (System/exit 0))
-
-          :else
-          (fail! {:message (str "Unknown argument: " arg)}))))))
-
-(defn* extract-prompts [:=> [:cat ExtractInput] [:vector :string]] [input]
-  (let [lines (str/split-lines (:content input))]
-    (->> lines
-         (map str/trim)
-         (filter #(re-find #"^\d+\.\s+`.+`$" %))
-         (map #(second (re-find #"^\d+\.\s+`(.+)`$" %)))
-         (remove str/blank?)
-         vec)))
-
-(defn* normalize-key [:=> [:cat NormalizeInput] :string] [input]
-  (-> (:prompt input)
-      str/lower-case
-      (str/replace #"[^a-z0-9]+" " ")
-      str/trim))
-
-(impl DefaultClassifier QueueClassifier normalize-for [:=> [:cat :any NormalizeInput] :string] [this input]
+(impl DefaultClassifier QueueClassifier normalize-for [:=> [:cat :any NormalizeInput] :string]
+  [this input]
   (let [_ this]
-    (normalize-key input)))
+    (-> (:prompt input)
+        str/lower-case
+        (str/replace #"[^a-z0-9]+" " ")
+        str/trim)))
 
-(impl DefaultClassifier QueueClassifier subject-for [:=> [:cat :any ClassifyInput] :string] [this input]
+(impl DefaultClassifier QueueClassifier subject-for [:=> [:cat :any ClassifyInput] :string]
+  [this input]
   (let [_ this
         p (str/lower-case (:prompt input))]
     (cond
@@ -146,7 +105,8 @@
       :else
       "Prompt-Report-System")))
 
-(impl DefaultClassifier QueueClassifier class-for [:=> [:cat :any ClassifyInput] :string] [this input]
+(impl DefaultClassifier QueueClassifier class-for [:=> [:cat :any ClassifyInput] :string]
+  [this input]
   (let [_ this
         p (str/lower-case (:prompt input))]
     (cond
@@ -167,7 +127,8 @@
       :else
       "requires-confirmation")))
 
-(impl DefaultClassifier QueueClassifier priority-for [:=> [:cat :any ClassifyInput] :int] [this input]
+(impl DefaultClassifier QueueClassifier priority-for [:=> [:cat :any ClassifyInput] :int]
+  [this input]
   (let [_ this
         p (str/lower-case (:prompt input))]
     (cond
@@ -187,7 +148,8 @@
       :else
       3)))
 
-(impl DefaultClassifier QueueClassifier acceptance-for [:=> [:cat :any ClassifyInput] :string] [this input]
+(impl DefaultClassifier QueueClassifier acceptance-for [:=> [:cat :any ClassifyInput] :string]
+  [this input]
   (let [class (class-for this {:prompt (:prompt input)})]
     (case class
       "direct-implementation" "Code/docs changes applied, validated, committed, and pushed."
@@ -195,34 +157,101 @@
       "report-only" "Report artifact created/updated and indexed in subject README."
       "requires-confirmation" "Prompt intent confirmed with user, then classified and executed.")))
 
-(defn* canonical-subject [:=> [:cat ClassifierContext] :string] [input]
-  (subject-for (:classifier input) {:prompt (:prompt input)}))
+(defprotocol InterruptedJobQueueOps
+  (fail-for [this input])
+  (parse-args-for [this input])
+  (extract-prompts-for [this input])
+  (canonical-subject-for [this input])
+  (execution-class-for [this input])
+  (priority-tier-for [this input])
+  (acceptance-criteria-for [this input])
+  (build-jobs-for [this input])
+  (dedup-jobs-for [this input])
+  (render-queue-for [this input])
+  (write-output-for [this input])
+  (run-queue-for [this input]))
 
-(defn* execution-class [:=> [:cat ClassifierContext] :string] [input]
-  (class-for (:classifier input) {:prompt (:prompt input)}))
-
-(defn* priority-tier [:=> [:cat ClassifierContext] :int] [input]
-  (priority-for (:classifier input) {:prompt (:prompt input)}))
-
-(defn* acceptance-criteria [:=> [:cat ClassifierContext] :string] [input]
-  (acceptance-for (:classifier input) {:prompt (:prompt input)}))
+(defrecord DefaultInterruptedJobQueue [])
 
 (def default-classifier (->DefaultClassifier))
 
-(defn* build-jobs [:=> [:cat [:map [:prompts [:vector :string]]]] [:vector :map]] [input]
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps fail-for {:message :string} :any
+  [this input]
+  (let [_ this]
+    (binding [*out* *err*]
+      (println (:message input)))
+    (System/exit 1)))
+
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps parse-args-for ParseArgsInput :map
+  [this input]
+  (loop [remaining (:args input)
+         opts {:source "Reports/Prompt-Report-System/591912042315_answer_interrupted-jobs-audit.md"
+               :output "Reports/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md"
+               :write? false}]
+    (if (empty? remaining)
+      opts
+      (let [[arg & _] remaining]
+        (cond
+          (= arg "--source-report")
+          (recur (nnext remaining) (assoc opts :source (second remaining)))
+
+          (= arg "--output")
+          (recur (nnext remaining) (assoc opts :output (second remaining)))
+
+          (= arg "--write")
+          (recur (next remaining) (assoc opts :write? true))
+
+          (= arg "--help")
+          (do
+            (println "Usage: bb Components/scripts/interrupted_job_queue/main.clj [--source-report <path>] [--output <path>] [--write]")
+            (System/exit 0))
+
+          :else
+          (fail-for this {:message (str "Unknown argument: " arg)}))))))
+
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps extract-prompts-for ExtractInput [:vector :string]
+  [this input]
+  (let [_ this
+        lines (str/split-lines (:content input))]
+    (->> lines
+         (map str/trim)
+         (filter #(re-find #"^\d+\.\s+`.+`$" %))
+         (map #(second (re-find #"^\d+\.\s+`(.+)`$" %)))
+         (remove str/blank?)
+         vec)))
+
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps canonical-subject-for ClassifierContext :string
+  [this input]
+  (subject-for (:classifier input) {:prompt (:prompt input)}))
+
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps execution-class-for ClassifierContext :string
+  [this input]
+  (class-for (:classifier input) {:prompt (:prompt input)}))
+
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps priority-tier-for ClassifierContext :int
+  [this input]
+  (priority-for (:classifier input) {:prompt (:prompt input)}))
+
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps acceptance-criteria-for ClassifierContext :string
+  [this input]
+  (acceptance-for (:classifier input) {:prompt (:prompt input)}))
+
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps build-jobs-for {:prompts [:vector :string]} [:vector :map]
+  [this input]
   (->> (:prompts input)
        (map-indexed (fn [idx prompt]
                       {:jobId (str "IJ-" (format "%03d" (inc idx)))
                        :prompt prompt
-                       :subject (canonical-subject {:classifier default-classifier :prompt prompt})
-                       :executionClass (execution-class {:classifier default-classifier :prompt prompt})
-                       :priorityTier (priority-tier {:classifier default-classifier :prompt prompt})
+                       :subject (canonical-subject-for this {:classifier default-classifier :prompt prompt})
+                       :executionClass (execution-class-for this {:classifier default-classifier :prompt prompt})
+                       :priorityTier (priority-tier-for this {:classifier default-classifier :prompt prompt})
                        :status "queued"
-                       :acceptance (acceptance-criteria {:classifier default-classifier :prompt prompt})
+                       :acceptance (acceptance-criteria-for this {:classifier default-classifier :prompt prompt})
                        :normalizeKey (normalize-for default-classifier {:prompt prompt})}))
        vec))
 
-(defn* dedup-jobs [:=> [:cat DedupInput] [:vector :map]] [input]
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps dedup-jobs-for DedupInput [:vector :map]
+  [this input]
   (->> (:jobs input)
        (reduce (fn [acc job]
                  (if (some #(= (:normalizeKey %) (:normalizeKey job)) acc)
@@ -233,7 +262,8 @@
                       (assoc job :jobId (str "IJ-" (format "%03d" (inc idx))))))
        vec))
 
-(defn* render-queue [:=> [:cat RenderInput] :string] [input]
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps render-queue-for RenderInput :string
+  [this input]
   (let [jobs (->> (:jobs input)
                   (sort-by (juxt :priorityTier :jobId))
                   vec)
@@ -258,26 +288,34 @@
          rows
          "\n")))
 
-(defn* write-output! [:=> [:cat WriteInput] :any] [input]
-  (io/make-parents (:path input))
-  (spit (:path input) (:content input)))
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps write-output-for WriteInput :any
+  [this input]
+  (let [_ this]
+    (io/make-parents (:path input))
+    (spit (:path input) (:content input))))
 
-(main Input
-  [input]
-  (let [{:keys [source output write?]} (parse-args {:args (:args input)})
+(impl DefaultInterruptedJobQueue InterruptedJobQueueOps run-queue-for Input :any
+  [this input]
+  (let [{:keys [source output write?]} (parse-args-for this {:args (:args input)})
         source-file (io/file source)]
     (when-not (.exists source-file)
-      (fail! {:message (str "Source report does not exist: " source)}))
-    (let [prompts (extract-prompts {:content (slurp source-file)})
-          jobs (dedup-jobs {:jobs (build-jobs {:prompts prompts})})
-          rendered (render-queue {:jobs jobs :sourcePath source})]
+      (fail-for this {:message (str "Source report does not exist: " source)}))
+    (let [prompts (extract-prompts-for this {:content (slurp source-file)})
+          jobs (dedup-jobs-for this {:jobs (build-jobs-for this {:prompts prompts})})
+          rendered (render-queue-for this {:jobs jobs :sourcePath source})]
       (if write?
         (do
-          (write-output! {:path output :content rendered})
+          (write-output-for this {:path output :content rendered})
           (println (str "Wrote interrupted job queue: " output))
           (println (str "Recovered prompts: " (count prompts) ", queued jobs: " (count jobs))))
         (do
           (println (str "Dry run: would write " output))
           (println (str "Recovered prompts: " (count prompts) ", queued jobs: " (count jobs))))))))
+
+(def default-interrupted-job-queue (->DefaultInterruptedJobQueue))
+
+(main Input
+  [input]
+  (run-queue-for default-interrupted-job-queue input))
 
 (-main {:args (vec *command-line-args*)})

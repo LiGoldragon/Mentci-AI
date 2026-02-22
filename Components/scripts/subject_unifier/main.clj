@@ -8,7 +8,7 @@
          '[clojure.set :as set])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* impl main enable!]])
+(require '[mentci.malli :refer [impl main enable!]])
 
 (enable!)
 
@@ -42,24 +42,46 @@
    [:exists? :boolean]])
 
 (defprotocol SubjectUnifierOps
+  (parse-args-for [this input])
+  (safe-slug-for [this input])
+  (canonical-segment-for [this input])
+  (canonical-subject-for [this input])
+  (report-file-for [this input])
+  (report-subject-from-filename-for [this input])
+  (strategy-path-for [this input])
+  (report-topic-path-for [this input])
+  (strategy-dir-for [this input])
+  (migrate-legacy-reports-for [this])
+  (list-report-subjects-for [this])
+  (rename-strategy-dirs-for [this])
+  (list-strategy-subjects-for [this])
+  (write-topic-readme-for [this input])
+  (write-strategy-scaffold-for [this input])
+  (ensure-reports-readme-section-for [this])
   (run-unifier-for [this input]))
 
 (defrecord DefaultSubjectUnifier [])
 
-(defn* parse-args [:=> [:cat ParseArgsInput] :map] [input]
-  (let [args (:args input)]
+(impl DefaultSubjectUnifier SubjectUnifierOps parse-args-for ParseArgsInput :map
+  [this input]
+  (let [_ this
+        args (:args input)]
     {:write? (boolean (some #{"--write"} args))}))
 
-(defn* safe-slug [:=> [:cat CanonicalInput] :string] [input]
-  (let [v (-> (:value input)
+(impl DefaultSubjectUnifier SubjectUnifierOps safe-slug-for CanonicalInput :string
+  [this input]
+  (let [_ this
+        v (-> (:value input)
               str/lower-case
               (str/replace #"[^a-z0-9]+" "-")
               (str/replace #"^-+" "")
               (str/replace #"-+$" ""))]
     (if (str/blank? v) "untitled" v)))
 
-(defn* canonical-segment [:=> [:cat CanonicalInput] :string] [input]
-  (let [v (str/lower-case (:value input))]
+(impl DefaultSubjectUnifier SubjectUnifierOps canonical-segment-for CanonicalInput :string
+  [this input]
+  (let [_ this
+        v (str/lower-case (:value input))]
     (cond
       (= v "stt") "STT"
       (= v "rfs") "RFS"
@@ -67,51 +89,59 @@
       (= v "nixos") "NixOS"
       :else (str/capitalize v))))
 
-(defn* canonical-subject [:=> [:cat CanonicalInput] :string] [input]
-  (let [slug (safe-slug {:value (:value input)})]
+(impl DefaultSubjectUnifier SubjectUnifierOps canonical-subject-for CanonicalInput :string
+  [this input]
+  (let [slug (safe-slug-for this {:value (:value input)})]
     (->> (str/split slug #"-+")
          (remove str/blank?)
-         (map #(canonical-segment {:value %}))
+         (map #(canonical-segment-for this {:value %}))
          (str/join "-"))))
 
-(defn* report-file? [:=> [:cat [:map [:name :string]]] :boolean] [input]
-  (boolean (re-find #"^(?:\d{8}|\d{12})_(answer|draft|question|strategy)_.+\.md$" (:name input))))
+(impl DefaultSubjectUnifier SubjectUnifierOps report-file-for {:name :string} :boolean
+  [this input]
+  (let [_ this]
+    (boolean (re-find #"^(?:\d{8}|\d{12})_(answer|draft|question|strategy)_.+\.md$" (:name input)))))
 
-(defn* report-subject-from-filename [:=> [:cat CanonicalInput] :string] [input]
+(impl DefaultSubjectUnifier SubjectUnifierOps report-subject-from-filename-for CanonicalInput :string
+  [this input]
   (let [name (:value input)
         matched (re-find #"^(?:\d{8}|\d{12})_(answer|draft|question|strategy)_(.+)\.md$" name)
         raw (or (nth matched 2 nil) "untitled")]
-    (canonical-subject {:value raw})))
+    (canonical-subject-for this {:value raw})))
 
-(defn* strategy-path [:=> [:cat PathInput] :string] [input]
-  (str "Strategies/" (:subject input)))
+(impl DefaultSubjectUnifier SubjectUnifierOps strategy-path-for PathInput :string
+  [this input]
+  (let [_ this]
+    (str "Strategies/" (:subject input))))
 
-(defn* report-topic-path [:=> [:cat PathInput] :string] [input]
-  (str "Reports/" (:subject input) "/README.md"))
+(impl DefaultSubjectUnifier SubjectUnifierOps report-topic-path-for PathInput :string
+  [this input]
+  (let [_ this]
+    (str "Reports/" (:subject input) "/README.md")))
 
-(defn* strategy-dir? [:=> [:cat [:map [:file :any]]] :boolean] [input]
+(impl DefaultSubjectUnifier SubjectUnifierOps strategy-dir-for {:file :any} :boolean
+  [this input]
   (.isDirectory ^java.io.File (:file input)))
 
-(defn* migrate-legacy-reports! [:=> [:cat] :any] []
+(impl DefaultSubjectUnifier SubjectUnifierOps migrate-legacy-reports-for [:=> [:cat :any] :any]
+  [this]
   (let [reports-root (io/file "Reports")]
     (when (.exists reports-root)
-      ;; Move flat chronographic report files into Reports/<Subject>/
       (doseq [file (.listFiles reports-root)]
         (when (.isFile ^java.io.File file)
           (let [name (.getName ^java.io.File file)]
-            (when (report-file? {:name name})
-              (let [subject (report-subject-from-filename {:value name})
+            (when (report-file-for this {:name name})
+              (let [subject (report-subject-from-filename-for this {:value name})
                     target-dir (io/file (str "Reports/" subject))
                     target-file (io/file target-dir name)]
                 (.mkdirs target-dir)
                 (.renameTo file target-file))))))
-      ;; Migrate old Reports/*.md into per-topic README.md
       (let [legacy-topics (io/file "Reports/topics")]
         (when (.exists legacy-topics)
           (doseq [file (.listFiles legacy-topics)]
             (when (.isFile ^java.io.File file)
               (let [base (.getName ^java.io.File file)
-                    subject (canonical-subject {:value (str/replace base #"\.md$" "")})
+                    subject (canonical-subject-for this {:value (str/replace base #"\.md$" "")})
                     target (io/file (str "Reports/" subject "/README.md"))]
                 (.mkdirs (.getParentFile target))
                 (when-not (.exists target)
@@ -121,21 +151,22 @@
               (.delete leftover)))
           (.delete legacy-topics))))))
 
-(defn* list-report-subjects [:=> [:cat] :map] []
+(impl DefaultSubjectUnifier SubjectUnifierOps list-report-subjects-for [:=> [:cat :any] :map]
+  [this]
   (let [root (io/file "Reports")]
     (if-not (.exists root)
       {:subjects #{}
        :subject->reports {}}
       (let [subject->reports
             (->> (.listFiles root)
-                 (filter #(strategy-dir? {:file %}))
+                 (filter #(strategy-dir-for this {:file %}))
                  (reduce (fn [acc dir]
                            (let [raw-subject (.getName ^java.io.File dir)
-                                 subject (canonical-subject {:value raw-subject})
+                                 subject (canonical-subject-for this {:value raw-subject})
                                  reports (->> (.listFiles ^java.io.File dir)
                                               (filter #(.isFile ^java.io.File %))
                                               (map #(.getName ^java.io.File %))
-                                              (filter #(report-file? {:name %}))
+                                              (filter #(report-file-for this {:name %}))
                                               sort
                                               (map #(str "Reports/" raw-subject "/" %))
                                               vec)]
@@ -144,31 +175,34 @@
         {:subjects (set (keys subject->reports))
          :subject->reports subject->reports}))))
 
-(defn* rename-strategy-dirs! [:=> [:cat] :any] []
-  (let [root (io/file "strategies")]
+(impl DefaultSubjectUnifier SubjectUnifierOps rename-strategy-dirs-for [:=> [:cat :any] :any]
+  [this]
+  (let [root (io/file "Strategies")]
     (when (.exists root)
       (doseq [dir (.listFiles root)]
-        (when (strategy-dir? {:file dir})
+        (when (strategy-dir-for this {:file dir})
           (let [old-name (.getName ^java.io.File dir)
-                new-name (canonical-subject {:value old-name})]
+                new-name (canonical-subject-for this {:value old-name})]
             (when-not (= old-name new-name)
               (let [target (io/file root new-name)]
                 (when-not (.exists target)
                   (.renameTo dir target))))))))))
 
-(defn* list-strategy-subjects [:=> [:cat] [:set :string]] []
-  (let [dir (io/file "strategies")]
+(impl DefaultSubjectUnifier SubjectUnifierOps list-strategy-subjects-for [:=> [:cat :any] [:set :string]]
+  [this]
+  (let [dir (io/file "Strategies")]
     (if-not (.exists dir)
       #{}
       (->> (.listFiles dir)
-           (filter #(strategy-dir? {:file %}))
+           (filter #(strategy-dir-for this {:file %}))
            (map #(.getName ^java.io.File %))
-           (map #(canonical-subject {:value %}))
+           (map #(canonical-subject-for this {:value %}))
            set))))
 
-(defn* write-topic-readme! [:=> [:cat TopicInput] :any] [input]
+(impl DefaultSubjectUnifier SubjectUnifierOps write-topic-readme-for TopicInput :any
+  [this input]
   (let [{:keys [subject reportPaths strategyPath]} input
-        path (report-topic-path {:subject subject})
+        path (report-topic-path-for this {:subject subject})
         content (str "# Subject Topic\n\n"
                      "- Subject: `" subject "`\n"
                      "- Strategy Path: `" strategyPath "`\n\n"
@@ -180,8 +214,10 @@
     (io/make-parents path)
     (spit path content)))
 
-(defn* write-strategy-scaffold! [:=> [:cat StrategyScaffoldInput] :any] [input]
-  (let [{:keys [subject strategyPath topicPath exists?]} input
+(impl DefaultSubjectUnifier SubjectUnifierOps write-strategy-scaffold-for StrategyScaffoldInput :any
+  [this input]
+  (let [_ this
+        {:keys [subject strategyPath topicPath exists?]} input
         strategy-file (str strategyPath "/STRATEGY.md")
         report-link-file (str strategyPath "/REPORT.md")]
     (when-not exists?
@@ -203,8 +239,10 @@
                "- Subject: `" subject "`\n"
                "- Topic File: `" topicPath "`\n"))))
 
-(defn* ensure-reports-readme-section! [:=> [:cat] :any] []
-  (let [path "Reports/README.md"
+(impl DefaultSubjectUnifier SubjectUnifierOps ensure-reports-readme-section-for [:=> [:cat :any] :any]
+  [this]
+  (let [_ this
+        path "Reports/README.md"
         marker "## Subject Topics"
         snippet (str marker "\n"
                      "Topics are subdirectory names under `Reports/` (for example `Reports/Prompt-Report-System/`).\n"
@@ -218,16 +256,16 @@
 
 (impl DefaultSubjectUnifier SubjectUnifierOps run-unifier-for Input :any
   [this input]
-  (let [{:keys [write?]} (parse-args {:args (:args input)})]
+  (let [{:keys [write?]} (parse-args-for this {:args (:args input)})]
     (when write?
-      (migrate-legacy-reports!)
-      (rename-strategy-dirs!))
-    (let [report-data (list-report-subjects)
+      (migrate-legacy-reports-for this)
+      (rename-strategy-dirs-for this))
+    (let [report-data (list-report-subjects-for this)
           report-subjects (:subjects report-data)
-          strategy-subjects (list-strategy-subjects)
+          strategy-subjects (list-strategy-subjects-for this)
           all-subjects (vec (sort (set/union report-subjects strategy-subjects)))
           missing-strategies (vec (sort (set/difference report-subjects strategy-subjects)))
-          missing-topics (vec (sort (remove #(.exists (io/file (report-topic-path {:subject %}))) all-subjects)))]
+          missing-topics (vec (sort (remove #(.exists (io/file (report-topic-path-for this {:subject %}))) all-subjects)))]
       (println "Subject unification scan:")
       (println (str "- Report subjects: " (count report-subjects)))
       (println (str "- Strategy subjects: " (count strategy-subjects)))
@@ -242,17 +280,17 @@
         (println "Dry run only. Re-run with --write to apply.")
         (do
           (doseq [subject all-subjects]
-            (let [sp (strategy-path {:subject subject})
-                  tp (report-topic-path {:subject subject})
+            (let [sp (strategy-path-for this {:subject subject})
+                  tp (report-topic-path-for this {:subject subject})
                   exists? (.exists (io/file sp))]
-              (write-topic-readme! {:subject subject
-                                    :reportPaths (get (:subject->reports report-data) subject [])
-                                    :strategyPath sp})
-              (write-strategy-scaffold! {:subject subject
-                                         :strategyPath sp
-                                         :topicPath tp
-                                         :exists? exists?})))
-          (ensure-reports-readme-section!)
+              (write-topic-readme-for this {:subject subject
+                                            :reportPaths (get (:subject->reports report-data) subject [])
+                                            :strategyPath sp})
+              (write-strategy-scaffold-for this {:subject subject
+                                                 :strategyPath sp
+                                                 :topicPath tp
+                                                 :exists? exists?})))
+          (ensure-reports-readme-section-for this)
           (println "Applied subject unification changes."))))))
 
 (def default-subject-unifier (->DefaultSubjectUnifier))
