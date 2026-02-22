@@ -103,6 +103,15 @@ Mentci-AI incorporates the Attractor standard for workflow orchestration. It doe
 *   **Reliability:** Disable signing for read-only history inspection to avoid GPG/agent failures.
 *   **Scope:** This applies to log/describe/show commands that do not modify history.
 
+## 0.8. CODE-FIRST GOVERNANCE (CONTEXT MINIMIZATION)
+
+**Prefer implementing repeatable behavior in code over adding instruction text.**
+
+*   **Rule:** If a behavior can be enforced by a script, guard, or generated artifact, implement it there instead of expanding agent instruction payloads.
+*   **Trigger:** Repeated manual directives (same class of correction appearing multiple times) must be converted into executable checks or helpers.
+*   **Goal:** Reduce prompt/context surface area, improve execution reliability, and keep policy concise.
+*   **Documentation Role:** Docs state intent and contracts; code enforces operational mechanics.
+
 ## 1. Core Philosophy: The Semantic Layer
 
 **Names are not descriptions; they are commitments.**
