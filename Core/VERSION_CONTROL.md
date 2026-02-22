@@ -10,7 +10,8 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 5. Full prompt/context attribution is reserved for final session synthesis per `Core/CONTEXTUAL_SESSION_PROTOCOL.md`.
 6. **Session completion gate:** a prompt is incomplete unless finalization follows the single-vs-multi sub-commit synthesis rules in `Core/CONTEXTUAL_SESSION_PROTOCOL.md`.
 6.1. Every `session:` commit description must include an explicit solar baseline line immediately after the title:
-   - `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
+   - `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
+   - canonical shape: `spaceSeparated [dotSeparated [ZodiaUnicode deg min sec], concatenated [Year \"AM\"]]`
    - Gregorian-only date lines are not acceptable as the primary session timestamp.
 7. Release default push target is `main`: when performing a release flow, push the release commit/tag to `main` unless explicitly overridden.
 8. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
@@ -44,7 +45,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 12. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
 13. Every completed prompt must end with a `session:` commit on the active line; leaving trailing `intent:` commits at prompt completion is a protocol violation.
 13.1. Session message timestamp format is mandatory:
-   - commit/session text uses `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
+   - commit/session text uses `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
    - release/version tags use cycle offset where `5919 AM -> 0`, `5920 AM -> 1`, etc.
 14. Every completed prompt must emit/update a report artifact in `Reports/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
 15. Session push invariant: prompt completion is invalid until the finalized `session:` head is pushed (default `dev`).

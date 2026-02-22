@@ -68,8 +68,8 @@ Precision is hierarchical and context-dependent. Coordinates may be truncated fr
 
 Session commit baseline line:
 - Required primary timestamp line in session descriptions:
-  - `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
-  - Example: `solar: 5919.12.05.04.04`
+  - `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
+  - Example: `♓︎.5.4.47 5919AM`
 
 ## 7. Chronography Tool
 The `chronos` binary prints the current zodiac-ordinal time in multiple formats.

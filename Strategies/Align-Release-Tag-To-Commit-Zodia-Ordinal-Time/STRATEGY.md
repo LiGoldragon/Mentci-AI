@@ -5,7 +5,7 @@ Standardize true-solar time usage across session commits, releases, and prompt-h
 
 ## Scope
 - Backport prior `session:` commit messages to include canonical solar line:
-  - `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
+  - `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
 - Enforce forward protocol so all future prompt sessions begin with solar baseline.
 - Ensure release/version cycle mapping uses AM-offset:
   - `cycle = AnnoMundi - 5919` (`5919 -> 0`, `5920 -> 1`, ...).
@@ -28,6 +28,10 @@ Standardize true-solar time usage across session commits, releases, and prompt-h
 4. Verify:
    - no targeted `session:` commits missing `solar:` line.
    - rewritten history pushed to `dev`.
+6. Commit message format migration:
+   - session timestamp line must use:
+     `spaceSeparated [dotSeparated [ZodiaUnicode deg min sec], concatenated [Year \"AM\"]]`
+   - example: `♓︎.5.4.47 5919AM`.
 5. Gregorian filename normalization:
    - For Gregorian date-prefixed artifacts (`YYYYMMDD_*`), derive solar timestamp using
      `chronos --unix <epoch> --format am --precision second` at `00:00:00 UTC` for that date.
