@@ -180,6 +180,32 @@ Explicit schema form:
   (println input))
 ```
 
+### Project Macro: impl
+
+Use `impl` for protocol method implementations with Malli instrumentation.
+Like `main`, it supports concise input-schema forms with default `:any` output.
+
+Concise form:
+
+```clojure
+(impl DefaultTool ToolOps run-for Input [this input]
+  ...)
+```
+
+Concise auto-arg form:
+
+```clojure
+(impl DefaultTool ToolOps run-for Input
+  (println input))
+```
+
+Explicit schema form:
+
+```clojure
+(impl DefaultTool ToolOps run-for [:=> [:cat :any Input] :string] [this input]
+  ...)
+```
+
 ## Namespace Discipline
 
 *   A namespace is a semantic layer.

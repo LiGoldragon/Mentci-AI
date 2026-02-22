@@ -13,14 +13,38 @@
 
 (defmacro impl
   "Define a protocol method implementation with Malli schema instrumentation.
-   Example:
-     (impl String ParseDescriptions to-lines [:=> [:cat :any Source] Lines] [this input] ...)"
-  [type protocol method schema args & body]
-  `(do
-     (m/=> ~method ~schema)
-     (extend-type ~type
-       ~protocol
-       (~method ~args ~@body))))
+   Explicit schema form:
+     (impl Type Protocol method [:=> [:cat :any Input] :string] [this input] ...)
+   Concise form (defaults to :any output):
+     (impl Type Protocol method Input [this input] ...)
+     (impl Type Protocol method {:query :string} [this input] ...)
+   Concise auto-arg form:
+     (impl Type Protocol method Input ...body...)"
+  [type protocol method schema-or-input args-or-body & maybe-body]
+  (let [explicit-args? (vector? args-or-body)
+        args (if explicit-args?
+               args-or-body
+               (if (symbol? schema-or-input)
+                 (let [n (name schema-or-input)
+                       lowered (str (str/lower-case (subs n 0 1)) (subs n 1))]
+                   ['this (symbol lowered)])
+                 ['this 'input]))
+        body (if explicit-args?
+               maybe-body
+               (cons args-or-body maybe-body))
+        is-function-schema? (and (vector? schema-or-input)
+                                 (= :=> (first schema-or-input)))
+        input-schema (if (symbol? schema-or-input)
+                       schema-or-input
+                       `(ml/schema ~schema-or-input))
+        schema (if is-function-schema?
+                 schema-or-input
+                 `[:=> [:cat :any ~input-schema] :any])]
+    `(do
+       (m/=> ~method ~schema)
+       (extend-type ~type
+         ~protocol
+         (~method ~args ~@body)))))
 
 (defmacro main
   "Concise entrypoint macro.
