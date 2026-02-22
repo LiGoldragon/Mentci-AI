@@ -49,7 +49,7 @@ Evaluate whether Mentci Clojure/Malli typing can be made less verbose for:
 3. Reducing function signature noise is feasible with a local macro convention, but output typing must remain explicit or deterministic.
 - Example target authoring form:
 ```clojure
-(defn1 to-lines Source [input]
+(fn to-lines Source [input]
   ...)
 ```
 - Expansion strategy:

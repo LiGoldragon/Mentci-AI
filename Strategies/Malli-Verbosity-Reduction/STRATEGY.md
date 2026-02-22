@@ -23,7 +23,7 @@ The strategy is feasible, but it must not optimize only syntax surface. It also
 needs a structural mirror of `Core/SEMA_RUST_GUIDELINES.md`:
 - behavior in an existing semantic method domain belongs in protocol methods;
 - free functions remain orchestration wrappers;
-- syntax sugar (`defobj`, `defn1`) should support protocol-based object methods
+- syntax sugar (`defobj`, `fn`) should support protocol-based object methods
   rather than reinforce ad-hoc free-function style.
 
 ## 3. Proposed Syntax Targets
@@ -53,7 +53,7 @@ Current:
 
 Target (input-first form):
 ```clojure
-(defn1 to-lines Source [input] ...)
+(fn to-lines Source [input] ...)
 ```
 
 Expansion:
@@ -61,18 +61,18 @@ Expansion:
 - macro uses one of two safe modes:
 1. explicit output:
 ```clojure
-(defn1 to-lines Source [:vector :string] [input] ...)
+(fn to-lines Source [:vector :string] [input] ...)
 ```
 2. deterministic inferred output (by naming contract):
 ```clojure
 ;; Source => Lines (must exist, else compile-time error)
-(defn1 to-lines Source [input] ...)
+(fn to-lines Source [input] ...)
 ```
 
 ## 4. Implementation Plan
 1. Add new macros in `scripts/lib/malli.clj`:
 - `defobj` for map schema sugar
-- `defn1` for single-input signature sugar with explicit or deterministic output typing
+- `fn` for single-input signature sugar with explicit or deterministic output typing
 - optional `defscalar` alias for unary object declarations
 
 2. Keep `defn*` fully supported.
@@ -80,9 +80,9 @@ Expansion:
 - `defn*` remains canonical fallback for complex arities/schemas.
 
 3. Add methods-first helper path:
-- Introduce optional `defmethod1` macro shape for protocol method schemas where useful:
+- Introduce optional `impl` macro shape for protocol method schemas where useful:
 ```clojure
-(defmethod1 to-lines ParseInput ParseOutput [this] ...)
+(impl to-lines Source Lines [source] ...)
 ```
 - Expansion target remains explicit Malli-compatible function schema.
 

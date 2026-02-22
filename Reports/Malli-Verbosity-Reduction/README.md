@@ -11,3 +11,4 @@
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_detailed-key-removal-feasibility.md`
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_update-guidelines-naming-parseinput-inputtext.md`
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_update-guideline-single-member-map-noise.md`
+- `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_rename-defn1-defmethod1-to-fn-impl.md`
