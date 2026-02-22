@@ -153,3 +153,21 @@ Phase 4: Convergence and Lock
 - Remove legacy alias paths after reference sweep is clean.
 - Enforce a single-path policy (`Sources/` only) in guards and session checks.
 - Record migration completion in Reports and Restart Context.
+
+## High-Priority Remediation: Authority Drift (Implemented)
+Issue addressed: strategy-level `Sources` canonical model diverged from core authority docs still naming `Inputs` as canonical.
+
+Implemented synchronization pass:
+1. `Core/ASKI_FS_SPEC.md`
+- Canonical enum switched to `Sources`.
+- Directory semantics section renamed to `Sources`.
+- Explicit compatibility note kept for transitional `Inputs/` alias.
+2. `Core/ARCHITECTURAL_GUIDELINES.md`
+- Reproducibility/assimilation text aligned to `Sources` naming.
+3. `Core/AGENTS.md`
+- Source-substrate bullets aligned to `Sources` naming with transition note.
+4. `Library/RESTART_CONTEXT.md`
+- Substrate and VCS guardrail text aligned to `Sources` naming.
+
+Remaining migration window:
+- Physical directory remains `Inputs/` today; compatibility alias policy remains active until full FS cutover.

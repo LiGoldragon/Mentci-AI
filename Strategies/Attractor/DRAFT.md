@@ -16,7 +16,7 @@ These graphs are not just for execution; they are **shared artifacts** that desc
 ## 2. Core Components
 
 ### A. The Schema (Truth)
-We will define the formal structure of a Workflow in `schema/mentci.capnp`. This allows agents to:
+We will define the formal structure of a Workflow in `Components/schema/mentci.capnp`. This allows agents to:
 *   Reason about their own process.
 *   Exchange workflow definitions with other agents.
 *   Validate the structural integrity of a plan before execution.
@@ -28,7 +28,7 @@ We will define the formal structure of a Workflow in `schema/mentci.capnp`. This
 *   `Context`: The state passed between nodes.
 
 ### B. The Standard (Guidelines)
-We adapt `inputs/attractor/attractor-spec.md` into `docs/specs/WORKFLOW_STANDARD.md`. This document serves as the "RFC" for how to write valid Mentci workflows that incorporate Attractor.
+We adapt `Sources/attractor/attractor-spec.md` (transitional alias: `Inputs/attractor/attractor-spec.md`) into `Library/specs/WORKFLOW_STANDARD.md`. This document serves as the "RFC" for how to write valid Mentci workflows that incorporate Attractor.
 
 **Key Concepts:**
 *   **Declarative vs. Imperative:** Define *what* to do, not just *how*.
@@ -36,7 +36,7 @@ We adapt `inputs/attractor/attractor-spec.md` into `docs/specs/WORKFLOW_STANDARD
 *   **Human-in-the-Loop:** Explicit gates for human approval are first-class citizens.
 
 ### C. The Tooling (Implementation)
-Instead of a full "Execution Engine" (which is a larger undertaking), we will build a **Reference Validator & Linter** in Rust (`src/`).
+Instead of a full "Execution Engine" (which is a larger undertaking), we will build a **Reference Validator & Linter** in Rust (`Components/src/`).
 
 **Features:**
 *   **DOT Parser:** Robust parsing of the DOT subset defined in the standard.
@@ -48,11 +48,21 @@ Instead of a full "Execution Engine" (which is a larger undertaking), we will bu
 
 ## 3. Roadmap
 
-1.  **Re-Document:** Port and refine the Attractor Spec into `docs/specs/` for incorporation, not reimplementation.
-2.  **Define Schema:** Update `schema/mentci.capnp` with `Workflow` types.
-3.  **Implement Parser:** Upgrade `src/dot_loader.rs` to a proper parser (using `graphviz-rust` or similar, or a robust custom parser).
-4.  **Implement Linter:** Add validation logic to `src/main.rs`.
-5.  **Create Reference Workflows:** Author standard `.dot` files in `workflows/` for common tasks.
+1.  **Re-Document:** Port and refine the Attractor Spec into `Library/specs/` for incorporation, not reimplementation.
+2.  **Define Schema:** Update `Components/schema/mentci.capnp` with `Workflow` types.
+3.  **Implement Parser:** Upgrade `Components/src/dot_loader.rs` to a proper parser (using `graphviz-rust` or similar, or a robust custom parser).
+4.  **Implement Linter:** Add validation logic to `Components/src/main.rs`.
+5.  **Create Reference Workflows:** Author standard `.dot` files in `Components/workflows/` for common tasks.
+
+## 5. High-Priority Remediation: Goal Path Consistency (Implemented)
+Issue addressed: Goal 1 task path drift between `Core/HIGH_LEVEL_GOALS.md` and actual repository location.
+
+Implementation:
+- Canonical Goal 1 task reference set to:
+  - `Components/tasks/high_level_goals/goal_1_attractor_dot_job_handoff.md`
+
+Follow-up:
+- Sweep for stale `tasks/high_level_goals/...` references outside `Components/tasks/`.
 
 ## 4. Back-Burner (Future)
 *   **Full Execution Engine:** A daemon that actually *runs* these graphs. For now, we focus on *defining* and *validating* them. The "running" can be done manually or by simple scripts initially.

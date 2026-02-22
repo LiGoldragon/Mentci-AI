@@ -80,4 +80,24 @@ Forbidden topology:
 - `project-hardening`: script test coverage for merge guard
 - `debugging`: failure diagnostics for merge topology mismatches
 
+## 9. High-Priority Remediation Plan (Implemented)
+Issue addressed: trailing `intent:` commits without final `session:` synthesis and bookmark drift onto empty working revisions.
+
+Actions:
+1. Add executable finalization tool:
+- `Components/scripts/session_finalize/main.clj`
+- Generates compliant `session:` message blocks with required sections.
+- Targets non-empty revision safely (`@` fallback to `@-`).
+2. Update protocol docs to safe bookmark targeting:
+- `Core/VERSION_CONTROL.md`
+- `Core/CONTEXTUAL_SESSION_PROTOCOL.md`
+3. Keep `session_guard` as hard gate for prompt completion.
+
+Operational default:
+- Use `bb Components/scripts/session_finalize/main.clj ...` for session closure before completion.
+
+Completion criteria for this remediation:
+- `session_guard` passes at prompt completion.
+- `dev` bookmark never points to empty working-copy commit due finalization flow.
+
 *The Great Work continues.*

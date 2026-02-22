@@ -14,8 +14,8 @@ flowchart TD
 Components")
     end
 
-    subgraph Inputs
-        I1["Inputs
+    subgraph Sources
+        I1["Sources
 (ReadOnly)"] --> I2("Commit-Based Edit
 notification")
         I1 --> I3("Possible Flows
@@ -37,9 +37,9 @@ Agents updated")
 
 ### 2.0 Canonical Typed Root Set
 - Canonical top-level type root is modeled as:
-  - `(enum [Inputs Components Outputs Reports Strategies Core Library])`
+  - `(enum [Sources Components Outputs Reports Strategies Core Library])`
 - In Aski-FS sugared syntax, this is written directly as:
-  - `[Inputs Components Outputs Reports Strategies Core Library]`
+  - `[Sources Components Outputs Reports Strategies Core Library]`
 - Interpretation rule:
   - In schema/type position, `[]` denotes enum set membership.
   - Each first-letter-capitalized root name denotes a typed filesystem domain.
@@ -52,16 +52,17 @@ Agents updated")
 - Enforcement tool:
   - `bb Components/scripts/root_guard/main.clj`.
 
-### 2.1 Inputs (`Inputs/`)
+### 2.1 Sources (`Sources/`)
 - **Mode:** Read-Only (Mount points to Nix Store or immutable snapshots).
 - **Behavior:** Acts as the "Sensory Input" for the agent.
-- **Ontology:** The Inputs represent a hierarchical mapping of the project's semantic dependencies (Atom, Flake, and Untyped sources).
-- **Propagation:** Changes in Inputs (via `jj git fetch` or snapshot updates) trigger **Commit-Based Edit Notifications**, which can initiate new agentic flows.
+- **Ontology:** The Sources represent a hierarchical mapping of the project's semantic dependencies (Atom, Flake, and Untyped sources).
+- **Propagation:** Changes in Sources (via `jj git fetch` or snapshot updates) trigger **Commit-Based Edit Notifications**, which can initiate new agentic flows.
+- **Compatibility:** `Inputs/` remains a transitional alias while migration is in progress.
 
 ### 2.2 Outputs (`Outputs/`)
 - **Mode:** Writable (Scoped to the current session).
 - **Behavior:** Intended for consumption by the Parent Agent or external supervisors.
-- **Lifecycle:** Once validated, outputs are often promoted to the `Inputs/` of another agent or merged into the primary repository.
+- **Lifecycle:** Once validated, outputs are often promoted to the `Sources/` of another agent or merged into the primary repository.
 
 ### 2.3 Components (`Components/src/`, `Components/scripts/`, `Components/tasks/`)
 - **Mode:** Writable (via Subflows).
@@ -71,11 +72,11 @@ Agents updated")
     - **:failure** -> Initiates a **Debug Loop** (Ref: `Strategies/Debugging/`).
 
 ## 3. Symbolic Mapping (Aski-FS Structure-Driven)
-The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **Structure-Driven** syntax with **Symbol Keys**.
+The following EDN structure represents the authoritative symbolic map of the `Sources` directory, utilizing the **Structure-Driven** syntax with **Symbol Keys**.
 
 ```edn
 ([:v1]
- {Inputs
+ {Sources
   {:_meta {:role :tooling :durability :mutable}
    mentci-ai [:atom]
    criomos    [:flake]
@@ -96,7 +97,7 @@ The following EDN structure represents the authoritative symbolic map of the `In
 **Expansion Logic:**
 - **Top-Level Tuple `(Metadata RootMap)`**:
     - `Metadata`: A Vector `[Version ...]`.
-    - `RootMap`: A Map of root-level nodes using **Symbols** as keys (e.g., `Inputs` not `:Inputs`).
+    - `RootMap`: A Map of root-level nodes using **Symbols** as keys (e.g., `Sources` not `:Sources`).
 - **Directory (Map `{}`)**:
     - A value that is a Map is inferred as a Directory.
     - Reserved key `:_meta` contains directory attributes.
@@ -106,7 +107,7 @@ The following EDN structure represents the authoritative symbolic map of the `In
     - Positional arguments define the type and attributes (e.g., `[:type :role]`).
 
 ## 4. Implementation Rules
-- Agents **must** respect the `RO` (Read-Only) status of `Inputs/`.
+- Agents **must** respect the `RO` (Read-Only) status of `Sources/` (or transitional `Inputs/` alias during migration).
 - Every writable operation **must** result in an atomic `jj` commit.
 - Filesystem boundaries (directories) represent **Ontological Shifts** in data durability.
 

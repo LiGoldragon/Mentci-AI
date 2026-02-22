@@ -17,7 +17,7 @@ Required outcome:
 Pass a job to Attractor as a DOT graph artifact.
 
 Task file:
-- `tasks/high_level_goals/goal_1_attractor_dot_job_handoff.md`
+- `Components/tasks/high_level_goals/goal_1_attractor_dot_job_handoff.md`
 
 Required outcome:
 - A job intent can be represented as a DOT graph document.

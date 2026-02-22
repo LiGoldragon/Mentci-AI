@@ -31,8 +31,8 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Development Loop:** `Library/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `Library/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `Components/scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
-- **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `Components/nix/jail.nix`.
-- **VCS Guardrail:** `Inputs/` is gitignored as mounted runtime substrate; input updates are managed through flake/input refresh workflows, not direct Git tracking.
+- **Source Substrate:** `Sources/` (transitional alias: `Inputs/`) read-only store paths, managed via `flake.nix` and `Components/nix/jail.nix`.
+- **VCS Guardrail:** `Sources/` (and transitional `Inputs/`) is gitignored as mounted runtime substrate; source updates are managed through flake/input refresh workflows, not direct Git tracking.
 - **Audit Trail:** `jj log` (VCS), `Outputs/Logs/RELEASE_MILESTONES.md` (Human-readable history), `Outputs/Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Strategies/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
 
 ## 4. Operational Requirements
