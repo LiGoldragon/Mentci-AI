@@ -1,0 +1,67 @@
+// Mentci-AI Idea Pipeline
+// A workflow for analyzing a vague requirement and refining it into a concrete spec.
+
+digraph "IdeaRefinement" {
+    graph [goal="Refine a vague idea into a concrete specification"]
+
+    start [shape=Mdiamond, label="Start Idea"]
+    
+    analyze [
+        shape=box, 
+        label="Analyze Request", 
+        prompt="Analyze the user's request: '$goal'. Identify ambiguities, missing constraints, and core objectives."
+    ]
+
+    propose [
+        shape=box, 
+        label="Propose Solution", 
+        prompt="Based on the analysis, propose a high-level solution architecture."
+    ]
+
+    check_feasibility [
+        shape=box, 
+        label="Check Feasibility", 
+        prompt="Critique the proposed solution. Is it feasible within current constraints?"
+    ]
+
+    decision [
+        shape=diamond, 
+        label="Feasible?"
+    ]
+
+    refine [
+        shape=box, 
+        label="Refine Proposal", 
+        prompt="Address the feasibility concerns and refine the proposal."
+    ]
+
+    wait_approval [
+        shape=hexagon, 
+        label="Human Approval", 
+        type="wait.human"
+    ]
+
+    finalize [
+        shape=box, 
+        label="Finalize Spec", 
+        prompt="Write the final specification document."
+    ]
+
+    exit [shape=Msquare, label="Done"]
+
+    // Flow
+    start -> analyze
+    analyze -> propose
+    propose -> check_feasibility
+    check_feasibility -> decision
+
+    decision -> wait_approval [label="Yes", condition="outcome=success"]
+    decision -> refine [label="No", condition="outcome=fail"]
+
+    refine -> check_feasibility [label="Retest"]
+
+    wait_approval -> finalize [label="Approved"]
+    wait_approval -> refine [label="Rejected"]
+
+    finalize -> exit
+}

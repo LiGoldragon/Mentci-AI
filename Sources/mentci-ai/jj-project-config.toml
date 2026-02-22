@@ -1,0 +1,9 @@
+[ui]
+# Use 'cat' as the pager to avoid interactive TUI viewers in agent sessions.
+# This ensures non-interactive output suitable for autonomous agents.
+pager = "cat"
+
+[revset-aliases]
+# Project-standard aliases for consistent Level 5 interactions.
+"stable" = "dev"
+"current" = "@"
