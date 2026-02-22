@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <div id="index-grid">
+
+    <h2 id="index-cell-header">{{ section.title }}</h2>
+
+    <div id="index-cell-main">
+
+      <div id="content-grid">
+        {{ section.content | safe }}
+      </div>
+    </div>
+
+  </div>
+{% endblock body %}
