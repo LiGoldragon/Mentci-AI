@@ -10,7 +10,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (def default-gopass-prefix "mentci/ai")
 (def default-command ["opencode"])
@@ -44,7 +44,7 @@
   [:map
    [:entry :string]])
 
-(def LauncherMainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -96,7 +96,8 @@
       (fail {:message (str "gopass failed for " entry ": " (str/trim (or err out)))}))
     (str/trim out)))
 
-(defn* -main [:=> [:cat LauncherMainInput] :any] [input]
+(main Input
+  [input]
   (let [{:keys [provider gopass-prefix entry env-var command]}
         (parse-args {:args (:args input)})
         provider (or provider (fail {:message "Missing --provider"}))

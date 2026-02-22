@@ -8,11 +8,11 @@
          '[clojure.set :as set])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
-(def MainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -211,7 +211,8 @@
                       (str content "\n\n" snippet))]
         (spit path updated)))))
 
-(defn* -main [:=> [:cat MainInput] :any] [input]
+(main Input
+  [input]
   (let [{:keys [write?]} (parse-args {:args (:args input)})]
     (when write?
       (migrate-legacy-reports!)

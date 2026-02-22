@@ -13,7 +13,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
@@ -30,7 +30,7 @@
   [:map
    [:dot :string]])
 
-(def CliInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -183,7 +183,8 @@
 (defmacro aski-flow->dot-macro [flow]
   (graphviz-json->dot {:graph (aski-flow->graphviz-json {:flow flow :graphId "AskiFlow"})}))
 
-(defn* -main [:=> [:cat CliInput] :any] [input]
+(main Input
+  [input]
   (let [args (:args input)
         flow-file (first args)
         graph-id (second args)]

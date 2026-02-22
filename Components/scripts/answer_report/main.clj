@@ -8,11 +8,11 @@
          '[clojure.java.shell :refer [sh]])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
-(def ReportMainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -202,7 +202,8 @@
                "- This report is required for `answer`, `draft`, and `question` responses.\n"
                "- Reporting still applies when response scope is `no-files`.\n"))))
 
-(defn* -main [:=> [:cat ReportMainInput] :any] [input]
+(main Input
+  [input]
   (let [opts (parse-args {:args (:args input)})
         prompt (read-text {:value (:prompt opts)
                            :path (:prompt-file opts)

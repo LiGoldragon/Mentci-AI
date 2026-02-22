@@ -12,7 +12,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
@@ -60,7 +60,7 @@
   [:map
    [:path :string]])
 
-(def MainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -197,7 +197,8 @@
           (finally
             (.close stream)))))))
 
-(defn* -main [:=> [:cat MainInput] :any] [input]
+(main Input
+  [input]
   (let [args (parse-args {:args (:args input)})
         config (read-jail-config {:attrsPath (:attrsPath args)})
         whitelist (read-whitelist {:whitelistPath (:whitelistPath args)})

@@ -8,7 +8,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
@@ -48,7 +48,7 @@
    [:content :string]
    [:allowlist [:set :string]]])
 
-(def ScriptMainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -97,7 +97,8 @@
       (when-not (contains-substring? {:content content :substring "mentci.malli"})
         (fail {:message (str "Missing mentci.malli require in " path)})))))
 
-(defn* -main [:=> [:cat ScriptMainInput] :any] [input]
+(main Input
+  [input]
   (let [{:keys [scripts-dir]} (parse-args {:args (:args input)})
         scripts-dir (or scripts-dir "Components/scripts")
         config {:scriptsDir scripts-dir

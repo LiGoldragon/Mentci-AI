@@ -11,7 +11,7 @@
          '[cheshire.core :as json])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
@@ -38,7 +38,7 @@
    [:write? :boolean]
    [:replace? :boolean]])
 
-(def MainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -164,7 +164,8 @@
                   (into-array java.nio.file.attribute.FileAttribute []))
                 {:action "linked-ro" :target targetPath :source sourcePath}))))))))
 
-(defn* -main [:=> [:cat MainInput] :any] [input]
+(main Input
+  [input]
   (let [{:keys [attrs inputsRoot mode replace? write? whitelistPath]} (parse-args {:args (:args input)})
         _ (when-not (#{"ro" "rw"} mode)
             (fail! {:message (str "Invalid --mode: " mode " (expected ro|rw)")}))

@@ -7,7 +7,7 @@
          '[clojure.string :as str])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
@@ -16,7 +16,7 @@
    [:roots [:vector :string]]
    [:allowlist [:set :string]]])
 
-(def GuardMainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -66,7 +66,8 @@
                           (re-find #"\"inputs/(?!outputs\b)[^\"\n]+\"" content))
                   (str path-lc ": lowercase inputs/ path detected"))])))))
 
-(defn* -main [:=> [:cat GuardMainInput] :any] [_]
+(main Input
+  [_]
   (let [config {:roots ["AGENTS.md"
                         "Core"
                         "Library"

@@ -7,7 +7,7 @@
          '[clojure.string :as str])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
@@ -15,7 +15,7 @@
   [:map
    [:args [:vector :string]]])
 
-(def MainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -227,7 +227,8 @@
   (io/make-parents (:path input))
   (spit (:path input) (:content input)))
 
-(defn* -main [:=> [:cat MainInput] :any] [input]
+(main Input
+  [input]
   (let [{:keys [source output write?]} (parse-args {:args (:args input)})
         source-file (io/file source)]
     (when-not (.exists source-file)

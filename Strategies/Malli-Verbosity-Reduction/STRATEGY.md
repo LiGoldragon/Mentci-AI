@@ -104,6 +104,21 @@ Example explicit schema:
 Pilot executed:
 - Converted `Components/scripts/root_guard/main.clj` to `main` macro with `Input` naming.
 - Verified runtime and script validation for this candidate.
+- Continued batch conversion and validation:
+  - `Components/scripts/session_guard/main.clj`
+  - `Components/scripts/component_registry/main.clj`
+  - `Components/scripts/reference_guard/main.clj`
+  - `Components/scripts/inputs_mounter/main.clj`
+  - `Components/scripts/interrupted_job_queue/main.clj`
+  - `Components/scripts/agent_launcher/main.clj`
+  - `Components/scripts/answer_report/main.clj`
+  - `Components/scripts/aski_flow_dot/main.clj`
+  - `Components/scripts/inputs_remount/main.clj`
+  - `Components/scripts/subject_unifier/main.clj`
+  - `Components/scripts/validate_scripts/main.clj`
+ - Remaining `defn* -main` entrypoints are varargs wrappers and intentionally unchanged in this phase:
+   - `Components/scripts/commit/main.clj`
+   - `Components/scripts/jj_workflow/main.clj`
 
 5. Validate with:
 - `bb scripts/validate_scripts/main.clj`
