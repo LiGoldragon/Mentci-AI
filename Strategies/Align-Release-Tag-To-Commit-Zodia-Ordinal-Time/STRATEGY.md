@@ -28,6 +28,10 @@ Standardize true-solar time usage across session commits, releases, and prompt-h
 4. Verify:
    - no targeted `session:` commits missing `solar:` line.
    - rewritten history pushed to `dev`.
+5. Gregorian filename normalization:
+   - For Gregorian date-prefixed artifacts (`YYYYMMDD_*`), derive solar timestamp using
+     `chronos --unix <epoch> --format am --precision second` at `00:00:00 UTC` for that date.
+   - Emit fixed-width compact solar prefix as `YYYYSSDDMMSS` with zero-padded components.
 
 ## Risks
 1. History rewrite can alter commit IDs and requires force push.
