@@ -17,3 +17,8 @@ Use chronographic naming:
 Generated via:
 
 `bb scripts/answer_report/main.clj`
+
+
+## Subject Topics
+Subject mapping files live in `Reports/topics/`.
+Each topic must have a corresponding `strategies/<subject>/` directory.

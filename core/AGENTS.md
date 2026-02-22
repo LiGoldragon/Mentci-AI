@@ -39,6 +39,10 @@ These are the highest-order rules for all languages and scripts.
     *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `core/programs/STRATEGY_DEVELOPMENT.md`) to discover, package, and test the necessary tools and libraries.
     *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `core/`, `src/`, or `tasks/`.
 *   **Per-Subject Indexing:** Subjects should be merged or split as context volume changes. Multi-subject files should be cross-referenced.
+*   **Strategy/Report Subject Unification:** Every subject in `Reports/` must have a corresponding `strategies/<subject>/` directory, and every strategy subject must have a corresponding report topic file in `Reports/topics/<subject>.md`.
+    *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
+    *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (strategy scaffold or report topic).
+    *   **Canonical Tool:** Use `bb scripts/subject_unifier/main.clj --write` to enforce and repair bidirectional subject coverage.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
 *   **Assimilation of Inputs:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `inputs/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 *   **Language Authority Hierarchy:**
@@ -90,4 +94,3 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 ## 4. Admin Developer Mode
 
 High-authority agents (like Mentci) operate in Admin Developer Mode. You are responsible for the system's evolution toward Level 6 instinctive symbolic interaction.
-
