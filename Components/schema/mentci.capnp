@@ -138,7 +138,7 @@ struct JailBootstrapRequest {
 
 struct NixFlake {
   description @0 :Text;
-  Inputs @1 :List(FlakeInputEntry);
+  inputs @1 :List(FlakeInputEntry);
   outputs @2 :FlakeOutputs; 
 }
 
@@ -149,7 +149,7 @@ struct FlakeInputEntry {
 
 struct FlakeInput {
   url @0 :Text;
-  Inputs @1 :List(FlakeInputEntry); 
+  inputs @1 :List(FlakeInputEntry); 
   flake @2 :Bool = true;
 }
 
