@@ -9,10 +9,10 @@ Expansion subaspect:
 - `strategies/Guidelines-Wisdom-Reincorporation/EXPANSION.md`
 
 ## 2. Scope
-- `core/SEMA_RUST_GUIDELINES.md`
-- `core/SEMA_CLOJURE_GUIDELINES.md`
-- `core/SEMA_NIX_GUIDELINES.md`
-- Universal anchor and translation map in `core/ARCHITECTURAL_GUIDELINES.md` (or `core/SEMA_UNIVERSAL_GUIDELINES.md`)
+- `Core/SEMA_RUST_GUIDELINES.md`
+- `Core/SEMA_CLOJURE_GUIDELINES.md`
+- `Core/SEMA_NIX_GUIDELINES.md`
+- Universal anchor and translation map in `Core/ARCHITECTURAL_GUIDELINES.md` (or `Core/SEMA_UNIVERSAL_GUIDELINES.md`)
 - Cross-check against CriomOS source set:
   - `Inputs/criomos/docs/GUIDELINES.md`
   - `Inputs/criomos/docs/NIX_GUIDELINES.md`
@@ -33,7 +33,7 @@ Define a canonical principle set and per-language realizations:
 9. Documentation protocol and clarity obligations
 
 ### Phase 2: Canonical Gap Integration (Rust First)
-Rebuild `core/SEMA_RUST_GUIDELINES.md` with the missing sections:
+Rebuild `Core/SEMA_RUST_GUIDELINES.md` with the missing sections:
 1. Naming Is a Semantic Layer
 2. Objects Exist; Flows Occur
 3. Construction Resolves to Receiving Type
@@ -66,9 +66,9 @@ Translate equivalent principles into language-native forms:
 - Add source-trace tags in guideline headers indicating mapped CriomOS sources.
 
 ## 4. Deliverables
-1. Revised `core/SEMA_RUST_GUIDELINES.md` with restored conceptual depth.
-2. Revised `core/SEMA_CLOJURE_GUIDELINES.md` with protocol-domain and lite-schema method.
-3. Revised `core/SEMA_NIX_GUIDELINES.md` with restored CriomOS Nix-specific depth.
+1. Revised `Core/SEMA_RUST_GUIDELINES.md` with restored conceptual depth.
+2. Revised `Core/SEMA_CLOJURE_GUIDELINES.md` with protocol-domain and lite-schema method.
+3. Revised `Core/SEMA_NIX_GUIDELINES.md` with restored CriomOS Nix-specific depth.
 4. Universal principle translation table (Rust/Clojure/Nix mappings).
 5. Short compatibility note documenting why prior condensed form existed and what changed.
 
@@ -77,7 +77,7 @@ Translate equivalent principles into language-native forms:
 2. Clojure guideline includes protocol-domain + lite-schema + typed signature compression constraints.
 3. Nix guideline includes grouped-namespace and defining-attrset construction principles from `NIX_GUIDELINES.md`.
 4. No guideline recommends weakening output typing (`:any`) as default.
-5. No contradiction with `core/ARCHITECTURAL_GUIDELINES.md` authority hierarchy.
+5. No contradiction with `Core/ARCHITECTURAL_GUIDELINES.md` authority hierarchy.
 
 ## 6. Rollout Order
 1. Universal principle map.

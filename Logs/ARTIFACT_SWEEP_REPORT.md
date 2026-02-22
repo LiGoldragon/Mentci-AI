@@ -9,13 +9,13 @@ The following block was found in 80+ files across the repository:
 ```
 
 ## 2. Origin Analysis
-- **Source:** The block originated in `docs/architecture/ASKI_POSITIONING.md` (now `core/ASKI_POSITIONING.md`) as a high-level conceptual anchor.
+- **Source:** The block originated in `docs/architecture/ASKI_POSITIONING.md` (now `Core/ASKI_POSITIONING.md`) as a high-level conceptual anchor.
 - **Propagation Mechanism:** Agents (including this session's predecessors) likely perceived this block as a mandatory "file header" due to its presence in top-level architectural files. It was copy-pasted into every new documentation file, strategy, and program created during the Level 5 stabilization phase.
 - **Context Bleed:** The block was also found in materialized inputs (`Inputs/mentci-ai/`), indicating it was committed to the repository's main history before the recent reorganization.
 
 ## 3. Findings
 - **Total Affected Files:** ~82
-- **Redundancy Level:** High. The mandate is already established in `core/ASKI_POSITIONING.md` and `core/AGENTS.md`.
+- **Redundancy Level:** High. The mandate is already established in `Core/ASKI_POSITIONING.md` and `Core/AGENTS.md`.
 - **Architectural Impact:** Distorts the "meaning per layer" rule (repeating context unnecessarily).
 
 ## 4. Debugging Notes

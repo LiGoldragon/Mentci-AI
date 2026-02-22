@@ -2,6 +2,6 @@
 
 Canonical agent policy lives in:
 
-* `docs/architecture/AGENTS.md`
+* `Core/AGENTS.md`
 
 All repository agent behavior must follow that file.

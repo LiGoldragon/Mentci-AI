@@ -21,15 +21,15 @@ Strikes are recorded in `Logs/OBSOLESCENCE_STRIKES.edn` using the following sche
 
 ## 3. Candidate Identification
 Criteria for a strike:
-- No references in `core/` or active `tasks/`.
+- No references in `Core/` or active `tasks/`.
 - Superseded by a newer implementation (e.g., Python scripts replaced by Clojure).
-- **Instructional Artifacts:** Redundant framing blocks, leaked prompt context, or boilerplate that repeats information already established in `core/`.
+- **Instructional Artifacts:** Redundant framing blocks, leaked prompt context, or boilerplate that repeats information already established in `Core/`.
 - Empty or boilerplate files with no implementation logic.
-- Documentation that contradicts current `core/` mandates and has not been updated.
+- Documentation that contradicts current `Core/` mandates and has not been updated.
 
 ## 4. Prevention: The "Purity Gate"
 Agents must not replicate high-level context into individual files. 
-- **Rule:** If a piece of information is true for the whole directory, it belongs in a `RESTART_CONTEXT.md` or a `core/` mandate, not in the file headers of every child.
+- **Rule:** If a piece of information is true for the whole directory, it belongs in a `RESTART_CONTEXT.md` or a `Core/` mandate, not in the file headers of every child.
 - **Detection:** A sweep should flag any string pattern that appears in >10% of non-code files.
 
 *The Great Work continues.*

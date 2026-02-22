@@ -9,7 +9,7 @@
 
   "ARCHITECTURE.md"
   {:strikes 2
-   :reason "Root-level architectural fragment; superseded by core/ARCHITECTURAL_GUIDELINES.md and core/programs/RESTART_CONTEXT.md."
+   :reason "Root-level architectural fragment; superseded by Core/ARCHITECTURAL_GUIDELINES.md and Library/RESTART_CONTEXT.md."
    :first_sweep "♓︎3°54'54\""
    :last_sweep "♓︎4°1'39\""}
 
@@ -21,7 +21,7 @@
 
   "docs/architecture/JjAutomation.md"
   {:strikes 2
-   :reason "Self-admittedly superseded by core/VERSION_CONTROL.md."
+   :reason "Self-admittedly superseded by Core/VERSION_CONTROL.md."
    :first_sweep "♓︎3°54'54\""
    :last_sweep "♓︎4°1'39\""}
 }

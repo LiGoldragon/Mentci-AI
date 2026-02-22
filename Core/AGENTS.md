@@ -6,38 +6,38 @@ This document provides non-negotiable instructions for AI agents operating withi
 
 The following files are mandatory authority sources and **must be loaded automatically** by the agent before any analysis or implementation:
 
-1. `core/ASKI_POSITIONING.md`
-2. `core/ARCHITECTURAL_GUIDELINES.md`
-3. `core/ASKI_FS_SPEC.md` (Filesystem Ontology)
-4. `core/VERSION_CONTROL.md`
-5. `core/HIGH_LEVEL_GOALS.md`
-5. `core/SEMA_RUST_GUIDELINES.md`, `core/SEMA_CLOJURE_GUIDELINES.md`, `core/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
-6. `core/programs/RESTART_CONTEXT.md` (The overview map)
-7. `core/AGENTS.md` (This file)
+1. `Core/ASKI_POSITIONING.md`
+2. `Core/ARCHITECTURAL_GUIDELINES.md`
+3. `Core/ASKI_FS_SPEC.md` (Filesystem Ontology)
+4. `Core/VERSION_CONTROL.md`
+5. `Core/HIGH_LEVEL_GOALS.md`
+5. `Core/SEMA_RUST_GUIDELINES.md`, `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
+6. `Library/RESTART_CONTEXT.md` (The overview map)
+7. `Core/AGENTS.md` (This file)
 
 Enforcement requirements:
 
 *   **Preemptive Context Acquisition:** If these files are not in the agent's active context, it must stop and acquire them immediately.
 *   **No-Edit Without Architecture Context:** Any change made without having processed these guidelines is a violation of the Enforcement Contract.
-*   **Programming Version Signature:** Every agent response **must** end with its current "Programming Version"—a content-addressed hash of the `core/` directory. 
+*   **Programming Version Signature:** Every agent response **must** end with its current "Programming Version"—a content-addressed hash of the `Core/` directory. 
     *   Format: `programming: <version_hash>` (on its own line at the very end of the response).
     *   Acquire via: `bb scripts/program_version.clj get`.
 
-*   **Architecture Gate:** Any change conflicting with the hierarchy in `core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
-*   **Version-Control Gate:** `core/VERSION_CONTROL.md` is mandatory procedure, not guidance.
-*   **Restart Context Mandate:** Any modification to major repository components (Engine logic, core protocols, input structures) **must** be reflected in an update to `core/programs/RESTART_CONTEXT.md` and a new entry in `Logs/RELEASE_MILESTONES.md`. Agents must consult the Restart Context at the beginning of every session to understand the project's current spatial map.
+*   **Architecture Gate:** Any change conflicting with the hierarchy in `Core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
+*   **Version-Control Gate:** `Core/VERSION_CONTROL.md` is mandatory procedure, not guidance.
+*   **Restart Context Mandate:** Any modification to major repository components (Engine logic, core protocols, input structures) **must** be reflected in an update to `Library/RESTART_CONTEXT.md` and a new entry in `Logs/RELEASE_MILESTONES.md`. Agents must consult the Restart Context at the beginning of every session to understand the project's current spatial map.
 
 ## 0. Core Sema Object Principles (Primary)
 
 These are the highest-order rules for all languages and scripts.
 
-*   **Sub-Program Directory:** The `core/programs/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
+*   **Sub-Program Directory:** The `Library/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
 *   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `strategies/<Subject>/` dedicated directories.
-    *   **Prioritization:** Strategies must be prioritized according to the **Strategy Queue** (Ref: `core/programs/STRATEGY_QUEUE.md`). Resiliency and efficiency are ranked highest.
+    *   **Prioritization:** Strategies must be prioritized according to the **Strategy Queue** (Ref: `Library/STRATEGY_QUEUE.md`). Resiliency and efficiency are ranked highest.
     *   **Composition:** Strategies should consist of multiple files (e.g., `MISSION.md`, `ARCHITECTURE.md`, `ROADMAP.md`) and sub-folder source code drafts (`src/`).
     *   **Workflow:** Strategies are "lined up" for implementation-trials. Use cheaper models to explore dead-ends and effective paths (vibe-coding permitted here) before high-authority models formalize the final logic.
-    *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `core/programs/STRATEGY_DEVELOPMENT.md`) to discover, package, and test the necessary tools and libraries.
-    *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `core/`, `src/`, or `tasks/`.
+    *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `Library/STRATEGY_DEVELOPMENT.md`) to discover, package, and test the necessary tools and libraries.
+    *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `Core/`, `src/`, or `tasks/`.
 *   **Per-Subject Indexing:** Subjects should be merged or split as context volume changes. Multi-subject files should be cross-referenced.
 *   **Strategy/Report Subject Unification:** Every subject in `Reports/` must have a corresponding `strategies/<Subject>/` directory, and every strategy subject must have a corresponding topic directory `Reports/<Subject>/` with a topic index file `README.md`.
     *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
@@ -81,14 +81,14 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 *   **Clojure (Babashka) Mandate:** All glue code and scripts must be written in Clojure (Babashka). No Bash logic beyond the one-line bb shim.
 *   **Script Typing:** All Clojure scripts must define Malli schemas for inputs/config and validate them.
 *   **Script Guard:** Run `bb scripts/validate_scripts.clj` when adding or editing scripts. Python is forbidden under `scripts/` except `scripts/prefetch_orchestrator.py`.
-*   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `core/SEMA_CLOJURE_GUIDELINES.md`, `core/SEMA_RUST_GUIDELINES.md`, and `core/SEMA_NIX_GUIDELINES.md`.
+*   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_RUST_GUIDELINES.md`, and `Core/SEMA_NIX_GUIDELINES.md`.
 *   **Attractor Code Reference:** Implementation lives in `Inputs/brynary-attractor/attractor`. The `Inputs/attractor` folder is specs only.
 *   **Attractor Backend Behavior:** `CliAgentBackend` spawns a subprocess with env merged from `process.env` and backend config. `SessionBackend` uses `unified-llm` `Client.fromEnv` (API keys via standard env vars).
 *   **Inputs Directory Rule:** Do not edit anything under `Inputs/`. Treat it as read-only reference material.
 *   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
 *   **Sema Object Style:** Strictly follow the ontology defined in `schema/*.capnp`.
 *   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers (example: in `nix/` code, use `namespace`, not `nixns`).
-*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `core/VERSION_CONTROL.md`.
+*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `Core/VERSION_CONTROL.md`.
 *   **Tagging:** When creating git tags, always use the `-m` flag to provide a message directly (e.g., `git tag -a vX.Y.Z -m "release: vX.Y.Z"`) to avoid interactive editor prompts.
 
 ## 4. Admin Developer Mode

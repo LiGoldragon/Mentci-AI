@@ -27,12 +27,12 @@ Rationale: in Aski-FS, `[]` denotes an enum declaration when used as a type-set 
 
 ## Implementation Phases
 1. Specification
-- Extend `core/ASKI_FS_SPEC.md` with enum-root model and sugared syntax mapping.
+- Extend `Core/ASKI_FS_SPEC.md` with enum-root model and sugared syntax mapping.
 - Add root contract table and allowed child patterns.
 
 2. Compatibility Layer
 - Keep current lowercase roots operational via explicit legacy aliases.
-- Map `strategies/` -> `Strategies/`, `core/` -> `Core/` until migration cutover.
+- Map `strategies/` -> `Strategies/`, `Core/` -> `Core/` until migration cutover.
 
 3. Enforcement
 - Add FS guard script to validate root set and casing.

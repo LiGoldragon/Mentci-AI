@@ -1,6 +1,6 @@
 # Strategy: Commit Protocol Merge Fan-In Repair
 
-> **Superseded Protocol Note:** Session synthesis now follows the single-vs-multi sub-commit squash protocol defined in `core/CONTEXTUAL_SESSION_PROTOCOL.md` and `core/VERSION_CONTROL.md`. This document is retained for historical context.
+> **Superseded Protocol Note:** Session synthesis now follows the single-vs-multi sub-commit squash protocol defined in `Core/CONTEXTUAL_SESSION_PROTOCOL.md` and `Core/VERSION_CONTROL.md`. This document is retained for historical context.
 
 **Linked Goal:** `Goal 0: mentci-aid Stabilization` (Audit Integrity + Workflow Determinism)
 
@@ -41,7 +41,7 @@ Forbidden topology:
 
 ### 4.3 Final Session Synthesis
 - Build one merge commit from all logical intent heads.
-- Commit message uses `session:` format from `core/CONTEXTUAL_SESSION_PROTOCOL.md`.
+- Commit message uses `session:` format from `Core/CONTEXTUAL_SESSION_PROTOCOL.md`.
 
 ### 4.4 Post-Merge Hygiene
 - Verify no session-tagged side branches remain unmerged.
@@ -60,7 +60,7 @@ Forbidden topology:
 - track logical intent head revisions
 - output merge-ready revset
 
-3. Update `core/VERSION_CONTROL.md` and `core/CONTEXTUAL_SESSION_PROTOCOL.md`:
+3. Update `Core/VERSION_CONTROL.md` and `Core/CONTEXTUAL_SESSION_PROTOCOL.md`:
 - explicit non-linear fan-in requirement
 - canonical JJ command patterns for merge synthesis
 

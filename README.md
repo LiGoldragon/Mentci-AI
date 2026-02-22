@@ -19,8 +19,8 @@ To automate implementation details and liberate the human mind through autonomou
 4.  **Handshake Logging Protocol**: Cryptographic provenance and EDN-based record of truth.
 
 ## Structure
-- `core/`: Authoritative architectural mandates and protocols.
-  - `core/programs/RESTART_CONTEXT.md`: The primary overview and state-resumption map.
+- `Core/`: Authoritative architectural mandates and protocols.
+  - `Library/RESTART_CONTEXT.md`: The primary overview and state-resumption map.
 - `schema/`: The semantic truth (Cap'n Proto).
 - `jail.nix`: The isolated dev environment definition.
 - `src/main.rs`: The Rust daemon implementation (**mentci-aid**).

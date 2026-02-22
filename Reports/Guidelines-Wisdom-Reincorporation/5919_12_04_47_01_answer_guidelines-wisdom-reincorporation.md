@@ -7,7 +7,7 @@
 
 ## Prompt
 
-Compare the current core/SEMA_RUST_GUIDELINES.md with the original, which has been human-reviewed in totallity, and is therefore important to preserve, as it contains a lot of important concepts. The original is in criomos (in the inputs, called GUIDELINES.md). Find out why it was truncated, and strategize how to re-incorporate its wisdom in all the other programming guidelines, notably how clojure can be extended with method and lite-syntax type declaration to match it.
+Compare the current Core/SEMA_RUST_GUIDELINES.md with the original, which has been human-reviewed in totallity, and is therefore important to preserve, as it contains a lot of important concepts. The original is in criomos (in the inputs, called GUIDELINES.md). Find out why it was truncated, and strategize how to re-incorporate its wisdom in all the other programming guidelines, notably how clojure can be extended with method and lite-syntax type declaration to match it.
 
 
 ## Agent Answer

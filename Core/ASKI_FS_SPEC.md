@@ -55,7 +55,7 @@ Agents updated")
 - **Behavior:** Intended for consumption by the Parent Agent or external supervisors.
 - **Lifecycle:** Once validated, outputs are often promoted to the `Inputs/` of another agent or merged into the primary repository.
 
-### 2.3 Components (`core/`, `src/`, `scripts/`)
+### 2.3 Components (`Core/`, `src/`, `scripts/`)
 - **Mode:** Writable (via Subflows).
 - **Behavior:** Subflows edit a **Temporary Branch** (anonymous `jj` revision).
 - **Promotion:**

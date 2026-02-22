@@ -27,7 +27,9 @@
           (recur (.divide n base) (str res char)))))))
 
 (defn get-program-version []
-  (let [core-dir (io/file "core")
+  (let [core-dir (if (.exists (io/file "Core"))
+                   (io/file "Core")
+                   (io/file "core"))
         files (->> (file-seq core-dir)
                    (filter #(.isFile %))
                    (sort-by #(.getPath %)))

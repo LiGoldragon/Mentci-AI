@@ -5,7 +5,7 @@ A host repository mounts or vendors one root directory:
 - `ProgramPack/`
 
 ## Internal Shape
-- `ProgramPack/core/`
+- `ProgramPack/Core/`
 - `ProgramPack/programs/`
 - `ProgramPack/strategies/`
 - `ProgramPack/templates/`

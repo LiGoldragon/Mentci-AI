@@ -59,7 +59,7 @@ Notes:
 1. Keep `.gitignore` entries for `Inputs/` and `inputs_backup/`.
 2. Add pre-commit/pre-push guard script to fail if either path appears tracked.
 3. Add CI check to block PRs that add files under these paths.
-4. Add explicit rule to `core/VERSION_CONTROL.md` as a hard gate.
+4. Add explicit rule to `Core/VERSION_CONTROL.md` as a hard gate.
 
 ## 6. Verification Checklist
 1. `git log --all -- Inputs/ inputs_backup/` returns no commits.

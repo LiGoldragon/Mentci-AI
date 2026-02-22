@@ -18,8 +18,8 @@ Recovered artifacts include:
 - strategy directories: agent-authority-alignment, commit-protocol-merge-fanin, guidelines-wisdom-reincorporation, history-inputs-purge, malli-verbosity-reduction, session-aggregation-guard, stt-context-decoding
 - scripts: scripts/answer_report/, scripts/reference_guard/, scripts/session_guard/
 - report artifacts and Reports/README.md
-- protocol/state docs: core/CONTEXTUAL_SESSION_PROTOCOL.md, core/VERSION_CONTROL.md, core/programs/RESTART_CONTEXT.md
-- strategy queue reconciliation in core/programs/STRATEGY_QUEUE.md (including recovered strategies and Artifact-Sweep phase-2 status)
+- protocol/state docs: Core/CONTEXTUAL_SESSION_PROTOCOL.md, Core/VERSION_CONTROL.md, Library/RESTART_CONTEXT.md
+- strategy queue reconciliation in Library/STRATEGY_QUEUE.md (including recovered strategies and Artifact-Sweep phase-2 status)
 - STT maintained lexicon seed: workflows/stt_context_terms.edn
 
 Validation note:

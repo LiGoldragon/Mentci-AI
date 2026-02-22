@@ -70,7 +70,7 @@ Nix realization pack:
 - Add “principle mapping failure” as a first-class debug category.
 
 5. `agent-authority-alignment`
-- Ensure all guideline references resolve to canonical `core/` paths.
+- Ensure all guideline references resolve to canonical `Core/` paths.
 
 6. `malli-verbosity-reduction`
 - Apply expanded Clojure method and lite-schema principles without weakening typing.

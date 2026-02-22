@@ -7,8 +7,8 @@ Prompt-aggregating session commits were missed even though atomic intent commits
 
 ## 2. Root-Cause Analysis
 1. **Partial Protocol Loading**
-- `core/VERSION_CONTROL.md` was loaded and followed for atomic commits.
-- The stronger end-of-session synthesis mechanics in `core/CONTEXTUAL_SESSION_PROTOCOL.md` were not operationalized as a hard completion gate.
+- `Core/VERSION_CONTROL.md` was loaded and followed for atomic commits.
+- The stronger end-of-session synthesis mechanics in `Core/CONTEXTUAL_SESSION_PROTOCOL.md` were not operationalized as a hard completion gate.
 
 2. **No Completion Gate**
 - There is no automated check that blocks prompt completion unless a `session:` aggregating commit exists for the current prompt range.
@@ -22,7 +22,7 @@ Make session-aggregating commit creation mandatory, visible, and mechanically ve
 
 ## 4. Implementation Plan
 1. **Protocol Clarification**
-- Update `core/AGENTS.md` to explicitly include `core/CONTEXTUAL_SESSION_PROTOCOL.md` in mandatory loaded context.
+- Update `Core/AGENTS.md` to explicitly include `Core/CONTEXTUAL_SESSION_PROTOCOL.md` in mandatory loaded context.
 - Add a one-line rule: prompt completion is invalid without session synthesis.
 
 2. **Operational Checklist**

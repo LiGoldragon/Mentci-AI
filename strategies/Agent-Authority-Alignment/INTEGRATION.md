@@ -41,7 +41,7 @@ Define how `agent-authority-alignment` composes with existing strategy sub-goals
 - Upstream overlap:
 - Goal 1 handoff reproducibility and audited runbooks.
 - Shared sub-goal:
-- Normalize runbook paths to `Inputs/` and canonical goal references to `core/HIGH_LEVEL_GOALS.md`.
+- Normalize runbook paths to `Inputs/` and canonical goal references to `Core/HIGH_LEVEL_GOALS.md`.
 - Combined deliverable:
 - Reproducible Goal 1 documentation consistent with current filesystem and authority model.
 
@@ -57,7 +57,7 @@ Define how `agent-authority-alignment` composes with existing strategy sub-goals
 - Upstream overlap:
 - Portable canonical path contracts across repositories.
 - Shared sub-goal:
-- Encode `core/AGENTS.md` as canonical authority path in pack manifests and migration notes.
+- Encode `Core/AGENTS.md` as canonical authority path in pack manifests and migration notes.
 - Combined deliverable:
 - Portability model that carries authority contracts without reintroducing dual truth.
 
@@ -65,12 +65,12 @@ Define how `agent-authority-alignment` composes with existing strategy sub-goals
 - Upstream overlap:
 - Read-first interface requires deterministic navigation and provenance.
 - Shared sub-goal:
-- Ensure UI/review surfaces anchor to canonical files (`core/AGENTS.md`, `core/HIGH_LEVEL_GOALS.md`) and `Inputs/`.
+- Ensure UI/review surfaces anchor to canonical files (`Core/AGENTS.md`, `Core/HIGH_LEVEL_GOALS.md`) and `Inputs/`.
 - Combined deliverable:
 - Stable navigation targets for DAG-centric workspace tooling.
 
 ## Unified Sub-Goals (Execution Order)
-1. Canonicalize authority references to `core/AGENTS.md`.
+1. Canonicalize authority references to `Core/AGENTS.md`.
 2. Normalize repository path references to `Inputs/` where path reality requires it.
 3. Repair strategy/queue/task cross-links to current canonical files.
 4. Add checker and validation hooks to prevent stale reference regression.

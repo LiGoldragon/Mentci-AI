@@ -15,10 +15,10 @@
                   "Inputs"
                   "Reports"
                   "VoicePrompts"]
- :path-terms ["core/AGENTS.md"
-              "core/VERSION_CONTROL.md"
-              "core/CONTEXTUAL_SESSION_PROTOCOL.md"
-              "core/HIGH_LEVEL_GOALS.md"
-              "core/ARCHITECTURAL_GUIDELINES.md"]
+ :path-terms ["Core/AGENTS.md"
+              "Core/VERSION_CONTROL.md"
+              "Core/CONTEXTUAL_SESSION_PROTOCOL.md"
+              "Core/HIGH_LEVEL_GOALS.md"
+              "Core/ARCHITECTURAL_GUIDELINES.md"]
  :user-terms []
  :auto-mined-terms []}

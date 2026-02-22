@@ -17,7 +17,7 @@ Audit of commit-topology and recommit integrity after the full-history purge of 
 - Risk: accidental recommit/merge may re-introduce inconsistent lineage or stale strategy/report state.
 
 3. **Queue/state drift after rewrite**
-- `core/programs/STRATEGY_QUEUE.md` reverted to an earlier subset of strategies.
+- `Library/STRATEGY_QUEUE.md` reverted to an earlier subset of strategies.
 - Recently drafted strategies exist in conflict lineage but not in current trunk.
 - This is a process-level recommit break (intent history exists but is not integrated in active trunk).
 

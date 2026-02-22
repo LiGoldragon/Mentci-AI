@@ -5,7 +5,7 @@ This file maintains the durable record of session milestones and goal outcomes s
 ## release: v0.12.3.58.3 - harden architecture and establish strategy system
 ♓︎3°58'3" | 5919 AM
 
-- **Core Consolidation:** Migrated authoritative architectural files to `core/` directory.
+- **Core Consolidation:** Migrated authoritative architectural files to `Core/` directory.
 - **Programming Versioning:** Implemented content-addressed versioning for agent logic (scripts/program_version.clj).
 - **Strategy System:** Established `strategies/` system with prioritized queue and development hardening loop.
 - **Aski-FS Spec:** Formalized filesystem ontology (Inputs/Outputs/Components) with Mermaid visual logic.

@@ -20,7 +20,7 @@ Adopt `ProgramPack/` as the single universal directory name.
 - Preserves local autonomy without forking universal sources.
 
 ## 5. Initial Trials
-- [ ] Trial 1: Build `ProgramPack/manifest.edn` for existing `core/programs/*`.
+- [ ] Trial 1: Build `ProgramPack/manifest.edn` for existing `Library/*`.
 - [ ] Trial 2: Implement a resolver script that composes `LocalPack` over `ProgramPack`.
 - [ ] Trial 3: Validate on one non-Mentci repository using only canonical paths.
 

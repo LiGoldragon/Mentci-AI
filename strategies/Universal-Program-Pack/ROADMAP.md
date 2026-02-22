@@ -1,7 +1,7 @@
 # Roadmap: Universal Program Pack
 
 ## Phase 1: Inventory and Boundaries
-- Enumerate `core/programs/` artifacts that are universally reusable.
+- Enumerate `Library/` artifacts that are universally reusable.
 - Mark Mentci-specific artifacts that must remain local.
 - Define migration candidates and no-move exclusions.
 

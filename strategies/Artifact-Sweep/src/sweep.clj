@@ -11,7 +11,7 @@
 
 ?")
 
-(def WHITELIST #{"core/ASKI_POSITIONING.md" "core/AGENTS.md" "core/programs/RESTART_CONTEXT.md"})
+(def WHITELIST #{"Core/ASKI_POSITIONING.md" "Core/AGENTS.md" "Library/RESTART_CONTEXT.md"})
 
 (defn sweep-file [file]
   (let [path (.getPath file)

@@ -17,7 +17,7 @@ Created strategy package to remove Inputs/ and inputs_backup/ from full VCS hist
 Artifacts:
 - strategies/History-Inputs-Purge/STRATEGY.md
 - strategies/History-Inputs-Purge/PLAYBOOK.md
-- core/programs/STRATEGY_QUEUE.md (queue + status registration)
+- Library/STRATEGY_QUEUE.md (queue + status registration)
 
 Strategy highlights:
 - full-history rewrite with git filter-repo removing Inputs and inputs_backup recursively

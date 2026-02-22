@@ -12,7 +12,7 @@
     *   **Ticketing Integration:** Syncs compliance controls with Jira/GitHub issues.
     *   **State Management:** Local file-based state (`comply.yml`, `todo` lists) synchronized with remote systems.
 *   **Relevance:**
-    *   Demonstrates a "Markdown-as-Database" approach similar to Mentci's `core/` mandates.
+    *   Demonstrates a "Markdown-as-Database" approach similar to Mentci's `Core/` mandates.
     *   The "Ticketing Integration" logic is a strong reference for `mentci-aid`'s future task synchronization capabilities.
 
 ## 2. StrongDM / CXDB

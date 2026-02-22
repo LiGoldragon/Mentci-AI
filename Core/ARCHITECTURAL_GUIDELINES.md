@@ -1,6 +1,6 @@
 # Mentci-AI High-Level Architectural Guidelines
 
-*   **Reproducibility:** The `inputs/` directory contains read-only symlinks to all project dependencies and ecosystem inputs, managed by `scripts/launcher.clj`.
+*   **Reproducibility:** The `Inputs/` directory contains read-only symlinks to all project dependencies and ecosystem inputs, managed by `scripts/launcher.clj`.
 *   **Purity:** Respect the `RO Indicator`. In pure mode, inputs are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
 
 ## 0.0. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
@@ -13,7 +13,7 @@
 4.  **Nix (Low-Level Utility):** The substrate of reproducibility. Only used for its specific usefulness. Should be **phased out** as early as possible or hidden behind low-level Aski interfaces (see **Lojix**, the Aski-Nix subsystem).
 
 **Assimilation of Inputs:**
-- **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `inputs/`.
+- **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `Inputs/`.
 - They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 - Their logic must be ported to the higher-authority languages (Aski/Rust) to fully integrate with the Mentci-AI ecosystem.
 
@@ -35,7 +35,7 @@
 *   **Authority:** Li Goldragon is the highest authority (Top Admin).
 *   **Shipping Protocol (Jail):** Isolated agents in a Jail environment must use the `mentci-commit` tool to ship changes. This tool synchronizes a writable implementation workspace back to the project root and performs a `jj` commit to the target bookmark specified in `MENTCI_COMMIT_TARGET`.
 *   **Usage:** `mentci-commit "intent: <message>"`
-*   **Operational Steps:** See `docs/architecture/VERSION_CONTROL.md`.
+*   **Operational Steps:** See `Core/VERSION_CONTROL.md`.
 
 ## 0.3. TOOL STACK TRANSPARENCY
 
@@ -60,7 +60,7 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 **The authoritative audit trail is the Jujutsu history.**
 
 *   **Auditability:** Use `jj log` for provenance and review.
-*   **Intent Discovery:** Use `jj log` frequency analysis to determine the "True Weight" of goals and maintain alignment with the project's evolution (see `docs/architecture/INTENT_DISCOVERY.md`).
+*   **Intent Discovery:** Use `jj log` frequency analysis to determine the "True Weight" of goals and maintain alignment with the project's evolution (see `Library/INTENT_DISCOVERY.md`).
 
 ## 0.5. ADMIN DEVELOPER MODE (SYSTEM ORCHESTRATION)
 
@@ -85,9 +85,9 @@ Mentci-AI incorporates the Attractor standard for workflow orchestration. It doe
 
 ## 0.5.1. PER-LANGUAGE SEMA GUIDELINES
 
-*   **Clojure:** `docs/architecture/SEMA_CLOJURE_GUIDELINES.md`
-*   **Rust:** `docs/architecture/SEMA_RUST_GUIDELINES.md`
-*   **Nix:** `docs/architecture/SEMA_NIX_GUIDELINES.md`
+*   **Clojure:** `Core/SEMA_CLOJURE_GUIDELINES.md`
+*   **Rust:** `Core/SEMA_RUST_GUIDELINES.md`
+*   **Nix:** `Core/SEMA_NIX_GUIDELINES.md`
 
 ## 0.6. NIX STORE ACCESS
 
@@ -109,7 +109,7 @@ Mentci-AI incorporates the Attractor standard for workflow orchestration. It doe
 Meaning is distributed across repository names, directory paths, module names, and type definitions. Meaning must appear exactly once at the highest valid layer. Repetition across layers (e.g., `UserObject`, `Manager`) is forbidden.
 
 **Contextual Sovereignty:**
-High-level architectural context (framing, mission statements, global mandates) must reside exclusively in `core/` and `RESTART_CONTEXT.md`. Replicating this context into individual child files as "headers" is forbidden. Child files must contain only implementation-specific logic, inheriting the global context from the hierarchy.
+High-level architectural context (framing, mission statements, global mandates) must reside exclusively in `Core/` and `RESTART_CONTEXT.md`. Replicating this context into individual child files as "headers" is forbidden. Child files must contain only implementation-specific logic, inheriting the global context from the hierarchy.
 
 ## 2. Capitalization-Based Durability Rules (Filesystem)
 

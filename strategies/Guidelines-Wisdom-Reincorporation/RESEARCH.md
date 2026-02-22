@@ -18,16 +18,16 @@ Compare current guideline set with CriomOS source guidelines, identify why seman
 - Operational framing linking universal + Nix-specific guidance.
 
 ### Current Mentci Targets
-- `core/SEMA_RUST_GUIDELINES.md`
-- `core/SEMA_CLOJURE_GUIDELINES.md`
-- `core/SEMA_NIX_GUIDELINES.md`
-- `core/ARCHITECTURAL_GUIDELINES.md` (universal anchor)
+- `Core/SEMA_RUST_GUIDELINES.md`
+- `Core/SEMA_CLOJURE_GUIDELINES.md`
+- `Core/SEMA_NIX_GUIDELINES.md`
+- `Core/ARCHITECTURAL_GUIDELINES.md` (universal anchor)
 
 ## History Finding (Why It Was Truncated)
 The reduced Rust guideline was introduced at file creation time in:
 - `vnkltomunyst` / `unowpkwnpvrx` (`docs: add rust and nix sema guidelines`)
 
-This indicates an intentional language-specific condensation, not an accidental later truncation. Later commits mostly relocated files (`docs/architecture/` -> `core/`) and stripped framing artifacts.
+This indicates an intentional language-specific condensation, not an accidental later truncation. Later commits mostly relocated files (`docs/architecture/` -> `Core/`) and stripped framing artifacts.
 
 ## Concept Coverage Gap (CriomOS Universal vs Current Rust)
 Missing or weakened in current Rust guideline:
@@ -58,7 +58,7 @@ Missing or weakened in current Nix guideline:
 - Current Nix doc has naming bullets but lacks full “long-name indicates missing abstraction” framing.
 
 2. **Group Related Functions in Attrset Namespaces**
-- Present in CriomOS Nix guideline; not explicit in current `core/SEMA_NIX_GUIDELINES.md`.
+- Present in CriomOS Nix guideline; not explicit in current `Core/SEMA_NIX_GUIDELINES.md`.
 
 3. **Construction Resolves to Defining Attrset**
 - Missing explicit section and examples.
@@ -83,10 +83,10 @@ These should exist once as universal mandates and then be mapped per-language:
 10. Documentation Protocol (impersonal, timeless, precise; clarity requirements)
 
 ## Cross-Language Reintegration Targets
-### Rust (`core/SEMA_RUST_GUIDELINES.md`)
+### Rust (`Core/SEMA_RUST_GUIDELINES.md`)
 - Reintroduce all seven missing concepts as first-class sections.
 
-### Clojure (`core/SEMA_CLOJURE_GUIDELINES.md`)
+### Clojure (`Core/SEMA_CLOJURE_GUIDELINES.md`)
 Add Rust-analog structural rules:
 1. **Protocol-Domain Rule** (Trait-domain analog):
 - If behavior fits an existing protocol/interface domain, implement/extend protocol rather than creating ad-hoc verb function families.
@@ -103,11 +103,11 @@ Add Rust-analog structural rules:
 5. **Documentation Protocol parity**:
 - Import stronger anti-personal/anti-evaluative rules from original.
 
-### Nix (`core/SEMA_NIX_GUIDELINES.md`)
+### Nix (`Core/SEMA_NIX_GUIDELINES.md`)
 - Reintroduce “Naming Is a Semantic Layer” depth and filesystem-layer framing from original.
 - Keep Nix-specific adaptations from `Inputs/criomos/docs/NIX_GUIDELINES.md`.
 
-### Universal (`core/ARCHITECTURAL_GUIDELINES.md` + optional dedicated core/program)
+### Universal (`Core/ARCHITECTURAL_GUIDELINES.md` + optional dedicated Core/program)
 - Add an explicit universal translation table:
 - each universal principle
 - Rust realization
@@ -129,7 +129,7 @@ Add Rust-analog structural rules:
 - Input-first macro forms are allowed only if output type remains explicit or deterministically inferred with compile-time failure on unresolved output.
 
 ## Risks
-1. Over-copying original text can create duplication with `core/ARCHITECTURAL_GUIDELINES.md`.
+1. Over-copying original text can create duplication with `Core/ARCHITECTURAL_GUIDELINES.md`.
 2. Clojure protocol push can be over-applied to simple scripts; need clear threshold.
 3. Lite syntax macros can hide schema shape if expansions are not documented.
 4. Universal + language docs can diverge without a shared principle-to-language mapping table.

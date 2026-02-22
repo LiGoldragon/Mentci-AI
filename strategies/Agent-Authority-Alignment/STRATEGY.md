@@ -3,22 +3,22 @@
 **Linked Goal:** `Goal 0: mentci-aid Stabilization` (Process Hardening)
 
 ## 1. Objective
-Establish `core/AGENTS.md` as the single canonical agent authority file and remove repository-level reference drift that conflicts with this contract.
+Establish `Core/AGENTS.md` as the single canonical agent authority file and remove repository-level reference drift that conflicts with this contract.
 
 ## 2. Scope
-- Canonical authority references (`core/AGENTS.md`).
-- Source-of-truth references (`core/HIGH_LEVEL_GOALS.md`, `core/programs/RESTART_CONTEXT.md`).
+- Canonical authority references (`Core/AGENTS.md`).
+- Source-of-truth references (`Core/HIGH_LEVEL_GOALS.md`, `Library/RESTART_CONTEXT.md`).
 - Filesystem path normalization to `Inputs/` (migrated casing).
 - Strategy/queue/task cross-reference consistency.
 - Non-destructive regression guardrails for reference drift.
 
 ## 3. Implementation Plan
 1. **Authority Lock**
-- Replace all references to `docs/architecture/AGENTS.md` with `core/AGENTS.md`.
-- Ensure root `AGENTS.md` points to `core/AGENTS.md`.
+- Replace all references to `docs/architecture/AGENTS.md` with `Core/AGENTS.md`.
+- Ensure root `AGENTS.md` points to `Core/AGENTS.md`.
 
 2. **Reference Audit**
-- Scan `core/`, `tasks/`, `strategies/`, `docs/`, and root docs for:
+- Scan `Core/`, `tasks/`, `strategies/`, `docs/`, and root docs for:
 - stale AGENTS path
 - stale goals path (`docs/architecture/HIGH_LEVEL_GOALS.md`)
 - stale restart-context path variants
@@ -26,8 +26,8 @@ Establish `core/AGENTS.md` as the single canonical agent authority file and remo
 - Create an edit matrix with file, line, old path, new path.
 
 3. **Path and SSOT Repairs**
-- Update references to `core/HIGH_LEVEL_GOALS.md`.
-- Update references to `core/programs/RESTART_CONTEXT.md`.
+- Update references to `Core/HIGH_LEVEL_GOALS.md`.
+- Update references to `Library/RESTART_CONTEXT.md`.
 - Normalize internal repository path references to `Inputs/`.
 
 4. **Strategy-System Alignment**
@@ -72,7 +72,7 @@ Establish `core/AGENTS.md` as the single canonical agent authority file and remo
 - Mitigation: split work into atomic intent commits: authority refs, paths, queue/status, guardrail.
 
 ## 5. Acceptance Criteria
-- No repository document claims canonical agent authority outside `core/AGENTS.md`.
+- No repository document claims canonical agent authority outside `Core/AGENTS.md`.
 - Internal references to goals and restart context resolve to current canonical paths.
 - Repository path references use `Inputs/` where referring to the migrated input substrate.
 - Strategy queue and strategy docs do not contradict each other on status/path facts.

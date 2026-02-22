@@ -7,8 +7,8 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 2. End-of-flow default is mandatory: push to `dev` at the end of every completed flow unless the user explicitly overrides the target.
 3. Commit every intent: one atomic modification per commit, no bundling.
 4. Atomic commit messages are minimal and must use only: `intent: <short description>`.
-5. Full prompt/context attribution is reserved for final session synthesis per `core/CONTEXTUAL_SESSION_PROTOCOL.md`.
-6. **Session completion gate:** a prompt is incomplete unless finalization follows the single-vs-multi sub-commit synthesis rules in `core/CONTEXTUAL_SESSION_PROTOCOL.md`.
+5. Full prompt/context attribution is reserved for final session synthesis per `Core/CONTEXTUAL_SESSION_PROTOCOL.md`.
+6. **Session completion gate:** a prompt is incomplete unless finalization follows the single-vs-multi sub-commit synthesis rules in `Core/CONTEXTUAL_SESSION_PROTOCOL.md`.
 7. Push once to `main` only after all intended session commits are ready and verified.
 8. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
 9. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.

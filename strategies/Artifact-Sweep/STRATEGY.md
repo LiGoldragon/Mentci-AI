@@ -7,7 +7,7 @@ Surgically remove redundant context-leakage and instruction-artifacts from the r
 
 ## 2. Methodology: Pattern Discovery
 - **Frequency Analysis:** Use `grep` and `uniq -c` to find repetitive blocks across documentation and implementation files.
-- **Context Mapping:** Compare discovered blocks against `core/` mandates. If the information is already in `core/`, it is an artifact.
+- **Context Mapping:** Compare discovered blocks against `Core/` mandates. If the information is already in `Core/`, it is an artifact.
 - **Strike System:** Flag these patterns in `Logs/OBSOLESCENCE_STRIKES.edn`.
 
 ## 3. Implementation trials

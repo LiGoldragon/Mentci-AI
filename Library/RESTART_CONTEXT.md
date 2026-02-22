@@ -1,6 +1,6 @@
 # Agent Session Resumption Context (Restart Context)
 
-> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `core/ASKI_POSITIONING.md`.
+> **Canonical Aski framing:** Aski is a text-native optimization for LLM cognition; Mentci uses Aski lightly while moving toward visual/symbolic interfaces; everything is structured data (homoiconicity). Authority: `Core/ASKI_POSITIONING.md`.
 
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
@@ -13,23 +13,23 @@ Mentci-AI is a Level 5 "Dark Factory" AI daemon (**mentci-aid**) designed for au
 
 ## 2. Mandatory Core Context (The Program)
 These files define the agent's operating logic and must be loaded automatically:
-- `core/AGENTS.md`: Instruction set and response signatures.
-- `core/ARCHITECTURAL_GUIDELINES.md`: The laws of naming, casing, and authority.
-- `core/VERSION_CONTROL.md`: JJ protocols and "Commit Every Intent" mandate.
-- `core/HIGH_LEVEL_GOALS.md`: Durable roadmap (Current: Goal 0 - Stabilization).
-- `core/ASKI_POSITIONING.md`: Teleological framing of the symbolic interface.
-- `core/SEMA_*_GUIDELINES.md`: Language-specific structural rules (Rust, Clojure, Nix).
-- `core/ASKI_FS_SPEC.md`: Filesystem Ontology.
+- `Core/AGENTS.md`: Instruction set and response signatures.
+- `Core/ARCHITECTURAL_GUIDELINES.md`: The laws of naming, casing, and authority.
+- `Core/VERSION_CONTROL.md`: JJ protocols and "Commit Every Intent" mandate.
+- `Core/HIGH_LEVEL_GOALS.md`: Durable roadmap (Current: Goal 0 - Stabilization).
+- `Core/ASKI_POSITIONING.md`: Teleological framing of the symbolic interface.
+- `Core/SEMA_*_GUIDELINES.md`: Language-specific structural rules (Rust, Clojure, Nix).
+- `Core/ASKI_FS_SPEC.md`: Filesystem Ontology.
 
 ## 3. Component Status Map
 - **Engine (`mentci-aid`):** `src/main.rs`. Status: **Experimental / Not in a running state.**
 - **Orchestration:** `scripts/launcher/` (Jail), `scripts/commit/` (Shipping).
-- **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
-- **FS Ontology:** `core/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
+- **Truth Layer:** `schema/*.capnp` (Semantic types), `Core/` (Architectural mandates).
+- **FS Ontology:** `Core/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
 - **Strategy System:** `strategies/<Subject>/`. Status: **Operational.** Active: `Agent-Authority-Alignment`, `Artifact-Sweep`, `Aski-Conversion`, `Aski-Refinement`, `Attractor`, `Debugging`, `Mentci-RFS`, `Project-Hardening`, `Strategy-Development`, `Universal-Program-Pack`.
-- **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
-- **Development Loop:** `core/programs/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
-- **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
+- **Strategy Queue:** `Library/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
+- **Development Loop:** `Library/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
+- **Obsolescence Pipeline:** `Library/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
 - **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
 - **VCS Guardrail:** `Inputs/` is gitignored as mounted runtime substrate; input updates are managed through flake/input refresh workflows, not direct Git tracking.
