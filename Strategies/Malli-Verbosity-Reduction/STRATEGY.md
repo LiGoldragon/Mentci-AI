@@ -57,6 +57,14 @@ Implemented:
 (main MainInput [input] ...)
 ```
 
+Implemented auto-arg shorthand:
+```clojure
+(main MainInput
+  ...)
+```
+Where arg is derived from type symbol by lowercasing first letter
+(`MainInput -> mainInput`, `Input -> input`).
+
 Expansion:
 - expands to `defn* -main` with inferred `:any` output in concise mode.
 - accepts Malli lite input forms in concise mode and compiles them to schema types.

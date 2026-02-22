@@ -157,6 +157,13 @@ In concise mode, non-symbol input forms are compiled via Malli lite syntax.
   (println input))
 ```
 
+Auto-arg form (derived from type name):
+
+```clojure
+(main MainInput
+  (println mainInput))
+```
+
 Malli lite input form:
 
 ```clojure
