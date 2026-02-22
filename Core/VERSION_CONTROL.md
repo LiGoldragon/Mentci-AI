@@ -38,6 +38,8 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 10. After final session synthesis (single or multi mode), create a fresh child working commit to leave a clean tree and keep the finalized session commit immutable:
    - `jj new dev`
 11. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
+12. Every completed prompt must end with a `session:` commit on the active line; leaving trailing `intent:` commits at prompt completion is a protocol violation.
+13. Every completed prompt must emit/update a report artifact in `Reports/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
 
 ## 4. Dirty Tree Intent Separation
 When the working copy is dirty and multiple change-intents may be present:

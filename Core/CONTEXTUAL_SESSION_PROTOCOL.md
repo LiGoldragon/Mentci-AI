@@ -104,3 +104,9 @@ Canonical command:
 ```
 jj new dev
 ```
+
+## 8. Completion Invariants
+Prompt completion is valid only when all of the following hold:
+1. The prompt's active head is a `session:` commit (no trailing `intent:` head for that prompt).
+2. A report artifact exists for the prompt in `Reports/<Subject>/` (new report file or update under existing subject).
+3. Freshness-linked workflows that use prior intel must record and verify the referenced parent change ID before execution.
