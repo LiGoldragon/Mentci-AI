@@ -20,12 +20,12 @@ Generated via:
 
 
 ## Subject Topics
-Topics are subdirectory names under `Reports/` (for example `Reports/Prompt-Report-System/`).
-Each topic must have a corresponding `Strategies/<Subject>/` directory.
+Topics are tiered subdirectory names under `Reports/` (for example `Reports/high/Prompt-Report-System/`).
+Each topic must have a corresponding `Strategies/<priority>/<Subject>/` directory.
 
 ## Priority Governance
 Subject importance is maintained centrally in:
-- `Strategies/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
+- `Strategies/high/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
 
 Use that matrix to decide whether new report entries should:
 - stay in the current subject,

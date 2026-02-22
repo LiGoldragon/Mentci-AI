@@ -26,11 +26,13 @@
 
 (def PathInput
   [:map
-   [:subject :string]])
+   [:subject :string]
+   [:tier {:optional true} :string]])
 
 (def TopicInput
   [:map
    [:subject :string]
+   [:tier {:optional true} :string]
    [:reportPaths [:vector :string]]
    [:strategyPath :string]])
 
@@ -61,6 +63,16 @@
   (run-unifier-for [this input]))
 
 (defrecord DefaultSubjectUnifier [])
+
+(def TierNames ["high" "medium" "low"])
+
+(defn subject-tier-for [subject]
+  (or (some (fn [tier]
+              (when (or (.exists (io/file (str "Strategies/" tier "/" subject)))
+                        (.exists (io/file (str "Reports/" tier "/" subject))))
+                tier))
+            TierNames)
+      "high"))
 
 (impl DefaultSubjectUnifier SubjectUnifierOps parse-args-for ParseArgsInput :map
   [this input]
@@ -112,12 +124,12 @@
 (impl DefaultSubjectUnifier SubjectUnifierOps strategy-path-for PathInput :string
   [this input]
   (let [_ this]
-    (str "Strategies/" (:subject input))))
+    (str "Strategies/" (or (:tier input) "high") "/" (:subject input))))
 
 (impl DefaultSubjectUnifier SubjectUnifierOps report-topic-path-for PathInput :string
   [this input]
   (let [_ this]
-    (str "Reports/" (:subject input) "/README.md")))
+    (str "Reports/" (or (:tier input) "high") "/" (:subject input) "/README.md")))
 
 (impl DefaultSubjectUnifier SubjectUnifierOps strategy-dir-for {:file :any} :boolean
   [this input]
@@ -132,7 +144,7 @@
           (let [name (.getName ^java.io.File file)]
             (when (report-file-for this {:name name})
               (let [subject (report-subject-from-filename-for this {:value name})
-                    target-dir (io/file (str "Reports/" subject))
+                    target-dir (io/file (str "Reports/high/" subject))
                     target-file (io/file target-dir name)]
                 (.mkdirs target-dir)
                 (.renameTo file target-file))))))
@@ -142,7 +154,7 @@
             (when (.isFile ^java.io.File file)
               (let [base (.getName ^java.io.File file)
                     subject (canonical-subject-for this {:value (str/replace base #"\.md$" "")})
-                    target (io/file (str "Reports/" subject "/README.md"))]
+                    target (io/file (str "Reports/high/" subject "/README.md"))]
                 (.mkdirs (.getParentFile target))
                 (when-not (.exists target)
                   (.renameTo file target)))))
@@ -157,21 +169,40 @@
     (if-not (.exists root)
       {:subjects #{}
        :subject->reports {}}
-      (let [subject->reports
-            (->> (.listFiles root)
-                 (filter #(strategy-dir-for this {:file %}))
-                 (reduce (fn [acc dir]
-                           (let [raw-subject (.getName ^java.io.File dir)
-                                 subject (canonical-subject-for this {:value raw-subject})
-                                 reports (->> (.listFiles ^java.io.File dir)
-                                              (filter #(.isFile ^java.io.File %))
-                                              (map #(.getName ^java.io.File %))
-                                              (filter #(report-file-for this {:name %}))
-                                              sort
-                                              (map #(str "Reports/" raw-subject "/" %))
-                                              vec)]
-                             (assoc acc subject reports)))
-                         {}))]
+      (let [tier-dirs (->> TierNames
+                           (map #(io/file (str "Reports/" %)))
+                           (filter #(.exists ^java.io.File %)))
+            tier-subject-dirs (->> tier-dirs
+                                   (mapcat (fn [tier-dir]
+                                             (let [tier (.getName ^java.io.File tier-dir)]
+                                               (->> (or (.listFiles ^java.io.File tier-dir) [])
+                                                    (filter #(strategy-dir-for this {:file %}))
+                                                    (map (fn [subject-dir]
+                                                           {:tier tier
+                                                            :dir subject-dir})))))))
+            legacy-subject-dirs (->> (or (.listFiles root) [])
+                                     (filter #(strategy-dir-for this {:file %}))
+                                     (remove #(contains? (set TierNames) (.getName ^java.io.File %)))
+                                     (map (fn [subject-dir]
+                                            {:tier nil
+                                             :dir subject-dir})))
+            all-subject-dirs (concat tier-subject-dirs legacy-subject-dirs)
+            subject->reports
+            (reduce (fn [acc {:keys [tier dir]}]
+                      (let [raw-subject (.getName ^java.io.File dir)
+                            subject (canonical-subject-for this {:value raw-subject})
+                            reports (->> (or (.listFiles ^java.io.File dir) [])
+                                         (filter #(.isFile ^java.io.File %))
+                                         (map #(.getName ^java.io.File %))
+                                         (filter #(report-file-for this {:name %}))
+                                         sort
+                                         (map #(if tier
+                                                 (str "Reports/" tier "/" raw-subject "/" %)
+                                                 (str "Reports/" raw-subject "/" %)))
+                                         vec)]
+                        (update acc subject (fnil into []) reports)))
+                    {}
+                    all-subject-dirs)]
         {:subjects (set (keys subject->reports))
          :subject->reports subject->reports}))))
 
@@ -179,30 +210,51 @@
   [this]
   (let [root (io/file "Strategies")]
     (when (.exists root)
-      (doseq [dir (.listFiles root)]
-        (when (strategy-dir-for this {:file dir})
-          (let [old-name (.getName ^java.io.File dir)
-                new-name (canonical-subject-for this {:value old-name})]
-            (when-not (= old-name new-name)
-              (let [target (io/file root new-name)]
-                (when-not (.exists target)
-                  (.renameTo dir target))))))))))
+      (let [tier-dirs (->> TierNames
+                           (map #(io/file (str "Strategies/" %)))
+                           (filter #(.exists ^java.io.File %)))
+            rename-under! (fn [parent]
+                            (doseq [dir (or (.listFiles ^java.io.File parent) [])]
+                              (when (strategy-dir-for this {:file dir})
+                                (let [old-name (.getName ^java.io.File dir)
+                                      new-name (canonical-subject-for this {:value old-name})]
+                                  (when-not (= old-name new-name)
+                                    (let [target (io/file parent new-name)]
+                                      (when-not (.exists target)
+                                        (.renameTo dir target))))))))]
+        (doseq [tier-dir tier-dirs]
+          (rename-under! tier-dir))
+        (when (seq (->> (or (.listFiles root) [])
+                        (filter #(strategy-dir-for this {:file %}))
+                        (remove #(contains? (set TierNames) (.getName ^java.io.File %)))))
+          (rename-under! root))))))
 
 (impl DefaultSubjectUnifier SubjectUnifierOps list-strategy-subjects-for [:=> [:cat :any] [:set :string]]
   [this]
   (let [dir (io/file "Strategies")]
     (if-not (.exists dir)
       #{}
-      (->> (.listFiles dir)
-           (filter #(strategy-dir-for this {:file %}))
-           (map #(.getName ^java.io.File %))
-           (map #(canonical-subject-for this {:value %}))
-           set))))
+      (let [tier-dirs (->> TierNames
+                           (map #(io/file (str "Strategies/" %)))
+                           (filter #(.exists ^java.io.File %)))
+            tier-subjects (->> tier-dirs
+                               (mapcat (fn [tier-dir]
+                                         (->> (or (.listFiles ^java.io.File tier-dir) [])
+                                              (filter #(strategy-dir-for this {:file %}))
+                                              (map #(.getName ^java.io.File %))))))
+            legacy-subjects (->> (or (.listFiles dir) [])
+                                 (filter #(strategy-dir-for this {:file %}))
+                                 (remove #(contains? (set TierNames) (.getName ^java.io.File %)))
+                                 (map #(.getName ^java.io.File %)))]
+        (->> (concat tier-subjects legacy-subjects)
+             (map #(canonical-subject-for this {:value %}))
+             set)))))
 
 (impl DefaultSubjectUnifier SubjectUnifierOps write-topic-readme-for TopicInput :any
   [this input]
-  (let [{:keys [subject reportPaths strategyPath]} input
-        path (report-topic-path-for this {:subject subject})
+  (let [{:keys [subject tier reportPaths strategyPath]} input
+        path (report-topic-path-for this {:subject subject
+                                          :tier tier})
         content (str "# Subject Topic\n\n"
                      "- Subject: `" subject "`\n"
                      "- Strategy Path: `" strategyPath "`\n\n"
@@ -228,7 +280,7 @@
                  "Create and maintain a coherent strategy/report pairing for subject `" subject "`.\n\n"
                  "## Scope\n"
                  "- Ensure implementation guidance for this subject is captured.\n"
-                 "- Keep `Reports/<Subject>/` and `Strategies/<Subject>/` synchronized.\n\n"
+                 "- Keep `Reports/<priority>/<Subject>/` and `Strategies/<priority>/<Subject>/` synchronized.\n\n"
                  "## Initial Plan\n"
                  "1. Inventory existing artifacts for the subject.\n"
                  "2. Define gaps and risks.\n"
@@ -245,8 +297,8 @@
         path "Reports/README.md"
         marker "## Subject Topics"
         snippet (str marker "\n"
-                     "Topics are subdirectory names under `Reports/` (for example `Reports/Prompt-Report-System/`).\n"
-                     "Each topic must have a corresponding `Strategies/<Subject>/` directory.\n")]
+                     "Topics are tiered subdirectory names under `Reports/` (for example `Reports/high/Prompt-Report-System/`).\n"
+                     "Each topic must have a corresponding `Strategies/<priority>/<Subject>/` directory.\n")]
     (when (.exists (io/file path))
       (let [content (slurp path)
             updated (if (str/includes? content marker)
@@ -265,7 +317,11 @@
           strategy-subjects (list-strategy-subjects-for this)
           all-subjects (vec (sort (set/union report-subjects strategy-subjects)))
           missing-strategies (vec (sort (set/difference report-subjects strategy-subjects)))
-          missing-topics (vec (sort (remove #(.exists (io/file (report-topic-path-for this {:subject %}))) all-subjects)))]
+          missing-topics (vec (sort (remove (fn [subject]
+                                              (let [tier (subject-tier-for subject)]
+                                                (.exists (io/file (report-topic-path-for this {:subject subject
+                                                                                                :tier tier})))))
+                                            all-subjects)))]
       (println "Subject unification scan:")
       (println (str "- Report subjects: " (count report-subjects)))
       (println (str "- Strategy subjects: " (count strategy-subjects)))
@@ -280,10 +336,14 @@
         (println "Dry run only. Re-run with --write to apply.")
         (do
           (doseq [subject all-subjects]
-            (let [sp (strategy-path-for this {:subject subject})
-                  tp (report-topic-path-for this {:subject subject})
+            (let [tier (subject-tier-for subject)
+                  sp (strategy-path-for this {:subject subject
+                                              :tier tier})
+                  tp (report-topic-path-for this {:subject subject
+                                                  :tier tier})
                   exists? (.exists (io/file sp))]
               (write-topic-readme-for this {:subject subject
+                                            :tier tier
                                             :reportPaths (get (:subject->reports report-data) subject [])
                                             :strategyPath sp})
               (write-strategy-scaffold-for this {:subject subject

@@ -12,7 +12,7 @@
 
 Priority triage for every current category across both trees (`Strategies/` and `Reports/`) is maintained in:
 
-- `Strategies/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
+- `Strategies/high/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
 
 Tier definitions:
 - `high`: required for current authority, resiliency, and execution correctness.
