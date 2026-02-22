@@ -4,12 +4,12 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 
 ## 1. Core Rules
 1. All active development targets the `dev` bookmark.
-2. End-of-flow default is mandatory: push to `dev` at the end of every completed flow unless the user explicitly overrides the target.
+2. End-of-flow default is mandatory: every completed prompt session must end with a push to `dev` unless the user explicitly overrides the target.
 3. Commit every intent: one atomic modification per commit, no bundling.
 4. Atomic commit messages are minimal and must use only: `intent: <short description>`.
 5. Full prompt/context attribution is reserved for final session synthesis per `Core/CONTEXTUAL_SESSION_PROTOCOL.md`.
 6. **Session completion gate:** a prompt is incomplete unless finalization follows the single-vs-multi sub-commit synthesis rules in `Core/CONTEXTUAL_SESSION_PROTOCOL.md`.
-7. Push once to `main` only after all intended session commits are ready and verified.
+7. Release default push target is `main`: when performing a release flow, push the release commit/tag to `main` unless explicitly overridden.
 8. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
 9. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
 10. **Hard pre-edit gate:** if the tree is dirty at prompt start, stop implementation, isolate pre-existing intent(s), and commit them before touching any additional files.
@@ -40,6 +40,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 11. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
 12. Every completed prompt must end with a `session:` commit on the active line; leaving trailing `intent:` commits at prompt completion is a protocol violation.
 13. Every completed prompt must emit/update a report artifact in `Reports/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
+14. Session push invariant: prompt completion is invalid until the finalized `session:` head is pushed (default `dev`).
 
 ## 4. Dirty Tree Intent Separation
 When the working copy is dirty and multiple change-intents may be present:
