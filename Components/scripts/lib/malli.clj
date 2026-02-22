@@ -11,6 +11,17 @@
      (m/=> ~name ~schema)
      (defn ~name ~args ~@body)))
 
+(defmacro impl
+  "Define a protocol method implementation with Malli schema instrumentation.
+   Example:
+     (impl String ParseDescriptions to-lines [:=> [:cat :any Source] Lines] [this input] ...)"
+  [type protocol method schema args & body]
+  `(do
+     (m/=> ~method ~schema)
+     (extend-type ~type
+       ~protocol
+       (~method ~args ~@body))))
+
 (defmacro main
   "Concise entrypoint macro.
    Explicit args form:

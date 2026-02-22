@@ -7,7 +7,7 @@
          '[clojure.string :as str])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -44,6 +44,20 @@
   [:map
    [:path :string]
    [:content :string]])
+
+(def ClassifierContext
+  [:map
+   [:classifier :any]
+   [:prompt :string]])
+
+(defprotocol QueueClassifier
+  (subject-for [this input])
+  (class-for [this input])
+  (priority-for [this input])
+  (acceptance-for [this input])
+  (normalize-for [this input]))
+
+(defrecord DefaultClassifier [])
 
 (defn* fail! [:=> [:cat [:map [:message :string]]] :any] [input]
   (binding [*out* *err*]
@@ -91,8 +105,13 @@
       (str/replace #"[^a-z0-9]+" " ")
       str/trim))
 
-(defn* canonical-subject [:=> [:cat ClassifyInput] :string] [input]
-  (let [p (str/lower-case (:prompt input))]
+(impl DefaultClassifier QueueClassifier normalize-for [:=> [:cat :any NormalizeInput] :string] [this input]
+  (let [_ this]
+    (normalize-key input)))
+
+(impl DefaultClassifier QueueClassifier subject-for [:=> [:cat :any ClassifyInput] :string] [this input]
+  (let [_ this
+        p (str/lower-case (:prompt input))]
     (cond
       (or (str/includes? p "stt")
           (str/includes? p "voiceprompt")
@@ -127,8 +146,9 @@
       :else
       "Prompt-Report-System")))
 
-(defn* execution-class [:=> [:cat ClassifyInput] :string] [input]
-  (let [p (str/lower-case (:prompt input))]
+(impl DefaultClassifier QueueClassifier class-for [:=> [:cat :any ClassifyInput] :string] [this input]
+  (let [_ this
+        p (str/lower-case (:prompt input))]
     (cond
       (or (str/includes? p "implement")
           (str/includes? p "fix")
@@ -147,8 +167,9 @@
       :else
       "requires-confirmation")))
 
-(defn* priority-tier [:=> [:cat ClassifyInput] :int] [input]
-  (let [p (str/lower-case (:prompt input))]
+(impl DefaultClassifier QueueClassifier priority-for [:=> [:cat :any ClassifyInput] :int] [this input]
+  (let [_ this
+        p (str/lower-case (:prompt input))]
     (cond
       (or (str/includes? p "session")
           (str/includes? p "commit")
@@ -166,25 +187,39 @@
       :else
       3)))
 
-(defn* acceptance-criteria [:=> [:cat ClassifyInput] :string] [input]
-  (let [class (execution-class {:prompt (:prompt input)})]
+(impl DefaultClassifier QueueClassifier acceptance-for [:=> [:cat :any ClassifyInput] :string] [this input]
+  (let [class (class-for this {:prompt (:prompt input)})]
     (case class
       "direct-implementation" "Code/docs changes applied, validated, committed, and pushed."
       "strategy-only" "Strategy file updated with executable plan and tracked in Reports."
       "report-only" "Report artifact created/updated and indexed in subject README."
       "requires-confirmation" "Prompt intent confirmed with user, then classified and executed.")))
 
+(defn* canonical-subject [:=> [:cat ClassifierContext] :string] [input]
+  (subject-for (:classifier input) {:prompt (:prompt input)}))
+
+(defn* execution-class [:=> [:cat ClassifierContext] :string] [input]
+  (class-for (:classifier input) {:prompt (:prompt input)}))
+
+(defn* priority-tier [:=> [:cat ClassifierContext] :int] [input]
+  (priority-for (:classifier input) {:prompt (:prompt input)}))
+
+(defn* acceptance-criteria [:=> [:cat ClassifierContext] :string] [input]
+  (acceptance-for (:classifier input) {:prompt (:prompt input)}))
+
+(def default-classifier (->DefaultClassifier))
+
 (defn* build-jobs [:=> [:cat [:map [:prompts [:vector :string]]]] [:vector :map]] [input]
   (->> (:prompts input)
        (map-indexed (fn [idx prompt]
                       {:jobId (str "IJ-" (format "%03d" (inc idx)))
                        :prompt prompt
-                       :subject (canonical-subject {:prompt prompt})
-                       :executionClass (execution-class {:prompt prompt})
-                       :priorityTier (priority-tier {:prompt prompt})
+                       :subject (canonical-subject {:classifier default-classifier :prompt prompt})
+                       :executionClass (execution-class {:classifier default-classifier :prompt prompt})
+                       :priorityTier (priority-tier {:classifier default-classifier :prompt prompt})
                        :status "queued"
-                       :acceptance (acceptance-criteria {:prompt prompt})
-                       :normalizeKey (normalize-key {:prompt prompt})}))
+                       :acceptance (acceptance-criteria {:classifier default-classifier :prompt prompt})
+                       :normalizeKey (normalize-for default-classifier {:prompt prompt})}))
        vec))
 
 (defn* dedup-jobs [:=> [:cat DedupInput] [:vector :map]] [input]

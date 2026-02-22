@@ -20,3 +20,4 @@
 - `Reports/Malli-Verbosity-Reduction/20260222_answer_feasibility-convert-clj-to-new-lite-syntax.md`
 - `Reports/Malli-Verbosity-Reduction/20260222_answer_pilot-convert-root-guard-to-main-macro.md`
 - `Reports/Malli-Verbosity-Reduction/20260222_answer_continue-conversion-and-testing-batch-2.md`
+- `Reports/Malli-Verbosity-Reduction/591912050417_answer_begin-impl-only-migration-with-tests.md`

@@ -8,6 +8,7 @@ prioritized queue artifact for execution.
 - `bb Components/scripts/interrupted_job_queue/main.clj`
 - `bb Components/scripts/interrupted_job_queue/main.clj --write`
 - `bb Components/scripts/interrupted_job_queue/main.clj --source-report Reports/Prompt-Report-System/20260222_answer_interrupted-jobs-audit.md --output Reports/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md --write`
+- `bb Components/scripts/interrupted_job_queue/test.clj`
 
 ## Expected Result
 - Dry run prints recovered prompt/job counts.

@@ -193,4 +193,26 @@ Partially feasible. Core direction is implementable, but current placeholder nam
 - `main` + Malli lite input form: implemented and feasible now.
 - unary-map noise reduction: feasible with boundary-aware migration.
 
+## 9. Impl-Only Migration Start (Current)
+
+Initial implementation landed for methods-first migration:
+- Added `impl` macro to `Components/scripts/lib/malli.clj`:
+  - `(impl <Type> <Protocol> <method> <schema> [this input] ...)`
+  - expands to Malli-instrumented protocol method implementation via `extend-type`.
+- Migrated classification domain behavior in
+  `Components/scripts/interrupted_job_queue/main.clj` to protocol methods:
+  - `QueueClassifier` protocol
+  - `DefaultClassifier` record
+  - method implementations: `subject-for`, `class-for`, `priority-for`,
+    `acceptance-for`, `normalize-for`
+- Kept orchestration wrappers (`build-jobs`, render/write flow) as thin wrappers
+  around method calls for compatibility while migration proceeds.
+
+Verification added:
+- New test file: `Components/scripts/interrupted_job_queue/test.clj`
+- Covers classifier method dispatch and queue build+dedup behavior.
+- Validated with:
+  - `bb Components/scripts/interrupted_job_queue/test.clj`
+  - `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/interrupted_job_queue`
+
 *The Great Work continues.*
