@@ -56,28 +56,25 @@
       []
       (vec
        (remove nil?
-               [(when (re-find #"docs/architecture/AGENTS\.md" content)
-                  (str path-lc ": forbidden reference to docs/architecture/AGENTS.md"))
-                (when (re-find #"docs/architecture/HIGH_LEVEL_GOALS\.md" content)
-                  (str path-lc ": forbidden reference to docs/architecture/HIGH_LEVEL_GOALS.md"))
-                (when (re-find #"docs/guides/RESTART_CONTEXT\.md" content)
-                  (str path-lc ": forbidden reference to docs/guides/RESTART_CONTEXT.md"))
+               [(when (re-find #"Library/architecture/AGENTS\.md" content)
+                  (str path-lc ": forbidden reference to Library/architecture/AGENTS.md (use Core/AGENTS.md)"))
+                (when (re-find #"Library/architecture/HIGH_LEVEL_GOALS\.md" content)
+                  (str path-lc ": forbidden reference to Library/architecture/HIGH_LEVEL_GOALS.md (use Core/HIGH_LEVEL_GOALS.md)"))
+                (when (re-find #"Library/guides/RESTART_CONTEXT\.md" content)
+                  (str path-lc ": forbidden reference to Library/guides/RESTART_CONTEXT.md (use Library/RESTART_CONTEXT.md)"))
                 (when (or (re-find #"`inputs/(?!outputs\b)[^`\n]+`" content)
                           (re-find #"\"inputs/(?!outputs\b)[^\"\n]+\"" content))
                   (str path-lc ": lowercase inputs/ path detected"))])))))
 
 (defn* -main [:=> [:cat GuardMainInput] :any] [_]
   (let [config {:roots ["AGENTS.md"
-                        "ARCHITECTURE.md"
-                        "Work.md"
                         "Core"
                         "Library"
-                        "docs"
-                        "tasks"
-                        "strategies"
-                        "workflows"]
-                :allowlist #{"strategies/Agent-Authority-Alignment/STRATEGY.md"
-                             "strategies/Agent-Authority-Alignment/INTEGRATION.md"}}
+                        "Components"
+                        "Reports"
+                        "Strategies"]
+                :allowlist #{"Strategies/Agent-Authority-Alignment/STRATEGY.md"
+                             "Strategies/Agent-Authority-Alignment/INTEGRATION.md"}}
         files (mapcat #(collect-files {:root %}) (:roots config))
         errors (->> files
                     (mapcat (fn [file]

@@ -99,17 +99,16 @@
 
 (defn* -main [:=> [:cat ScriptMainInput] :any] [input]
   (let [{:keys [scripts-dir]} (parse-args {:args (:args input)})
-        scripts-dir (or scripts-dir "scripts")
+        scripts-dir (or scripts-dir "Components/scripts")
         config {:scriptsDir scripts-dir
-                :allowlist #{"scripts/types.clj"
-                             "scripts/malli.clj"}}
+                :allowlist #{"Components/scripts/lib/types.clj"
+                             "Components/scripts/lib/malli.clj"}}
         _ (validate-config {:config config})
         files (scan-files {:root scripts-dir})
         py-files (filter #(py-file? {:file %}) files)]
     (when (seq py-files)
       (doseq [file py-files]
-        (when-not (= (.getPath file) "scripts/prefetch_orchestrator.py")
-          (fail {:message (str "Python script found in scripts/: " (.getPath file))}))))
+        (fail {:message (str "Python script found in scripts/: " (.getPath file))})))
     (doseq [file (filter #(clj-file? {:file %}) files)]
       (let [path (.getPath file)
             content (slurp file)]

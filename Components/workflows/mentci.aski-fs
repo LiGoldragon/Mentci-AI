@@ -7,11 +7,11 @@
 
    "flake.nix" {:kind :file :role :tooling :durability :stable}
    "flake.lock" {:kind :file :role :tooling :durability :mutable}
-   "jail.nix" {:kind :file :role :tooling :durability :stable}
+   "Components/nix/jail.nix" {:kind :file :role :tooling :durability :stable}
 
-   "Cargo.toml" {:kind :file :role :entrypoint :durability :stable}
-   "Cargo.lock" {:kind :file :role :tooling :durability :mutable}
-   "inputs.aski-fs" {:kind :file :role :schema :durability :stable}
+   "Components/Cargo.toml" {:kind :file :role :entrypoint :durability :stable}
+   "Components/Cargo.lock" {:kind :file :role :tooling :durability :mutable}
+   "Inputs.aski-fs" {:kind :file :role :schema :durability :stable}
 
    "schema" {:kind :dir
              :children {"mentci.capnp" {:kind :file :role :schema :durability :stable}
@@ -33,8 +33,7 @@
                          "types.clj" {:kind :file :role :tooling :durability :mutable}
                          "malli.clj" {:kind :file :role :tooling :durability :mutable}
                          "agent_launcher.clj" {:kind :file :role :tooling :durability :mutable}
-                         "validate_scripts.clj" {:kind :file :role :tooling :durability :mutable}
-                         "prefetch_orchestrator.py" {:kind :file :role :tooling :durability :mutable}}}
+                         "validate_scripts.clj" {:kind :file :role :tooling :durability :mutable}}}
 
    "nix" {:kind :dir
           :children {"default.nix" {:kind :file :role :tooling :durability :stable}
@@ -87,7 +86,7 @@
                            "mentci.aski-fs" {:kind :file :role :workflow :durability :mutable}
                            "mentci.aski-fs.deps.edn" {:kind :file :role :spec :durability :stable}}}
 
-   "inputs" {:kind :dir
+   "Inputs" {:kind :dir
              :role :tooling
              :durability :mutable
              :children {"mentci-ai" {:kind :dir :inputType :atom}

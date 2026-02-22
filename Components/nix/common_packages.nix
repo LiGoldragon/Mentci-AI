@@ -28,6 +28,6 @@ in
   '')
   mentci_jj
   (pkgs.writeShellScriptBin "mentci-bootstrap" ''
-    ${pkgs.cargo}/bin/cargo run --quiet --bin mentci-ai -- job/jails bootstrap "$@"
+    ${pkgs.cargo}/bin/cargo run --quiet --manifest-path Components/Cargo.toml --bin mentci-ai -- job/jails bootstrap "$@"
   '')
 ]

@@ -1,7 +1,7 @@
 (require '[clojure.test :refer [deftest is run-tests]]
          '[clojure.java.io :as io])
 
-(load-file "scripts/tool_discoverer/main.clj")
+(load-file "Components/scripts/tool_discoverer/main.clj")
 
 (deftest test-search-cargo-parsing
   (with-redefs [clojure.java.shell/sh (fn [& _] {:exit 0 :out "dot-parser = \"0.6.1\"\ngraphviz-rs = \"0.1.0\""})]

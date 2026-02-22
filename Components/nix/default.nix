@@ -8,7 +8,6 @@
 , src
 , scripts_dir
 , repo_root
-, jj_project_config
 }:
 
 let
@@ -46,7 +45,7 @@ let
     import ./dev_shell.nix {
       inherit pkgs jail;
       inherit common_packages;
-      inherit repo_root jj_project_config;
+      inherit repo_root;
     };
 in
 {

@@ -7,7 +7,7 @@
 ## 2. Verification Commands
 ```bash
 # Manual check of .attrs.json ingestion
-bb scripts/launcher/main.clj
+bb Components/scripts/launcher/main.clj
 ```
 
 ## 3. Mocking Strategy

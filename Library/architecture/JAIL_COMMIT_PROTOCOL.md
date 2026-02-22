@@ -2,7 +2,7 @@
 
 ## 1. Overview
 In a Level 5 "Dark Factory" environment, the agent operates within a restricted Nix Jail. To ensure the integrity of the "Stable Contract" while allowing autonomous manifestation, Mentci-AI employs a **Jujutsu (jj) Workspace** model.
-Operational steps live in `docs/architecture/VERSION_CONTROL.md`.
+Operational steps live in `Core/VERSION_CONTROL.md`.
 
 ## 2. The Multi-Workspace Architecture
 The `nix develop` environment (defined in `flake.nix`) partitions the project into two distinct areas:
@@ -16,7 +16,7 @@ Since the agent is isolated, it cannot directly manipulate the main repository's
 ### 3.1. Unique Intent IDs
 Every agent session generates a **Unique Intent ID** consisting of a short hash and a descriptive name (e.g., `a7b2c9d4-implement-codergen`). This ID is used as a temporary Jujutsu bookmark for the session's work.
 
-- **Generation:** Handled by `scripts/intent.clj`.
+- **Generation:** Handled by `Components/scripts/intent/main.clj`.
 - **Targeting:** The `MENTCI_COMMIT_TARGET` environment variable is automatically set to this unique bookmark upon `nix develop` entry.
 - **Traceability:** This ensures that every implementation attempt is isolated in its own namespace before being merged into `dev`.
 

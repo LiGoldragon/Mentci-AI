@@ -13,3 +13,6 @@ gemini-cli-*.tgz
 # They are environment material, not repository source of truth.
 Inputs/
 inputs_backup/
+# Outputs are runtime/session artifacts and must not be versioned.
+Outputs/
+/.mentci/

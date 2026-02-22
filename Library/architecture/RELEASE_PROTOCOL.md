@@ -44,7 +44,7 @@ release: v0.12.1.28.44 - stabilize level-5 workflow standards
 ## 3.1 Required Companion Change
 Every tagged release commit must include an update to:
 
-- `docs/guides/RESTART_CONTEXT.md`
+- `Library/RESTART_CONTEXT.md`
 
 The `RESTART_CONTEXT.md` update is part of the release changeset and must be committed in the same release commit that is tagged.
 
@@ -64,5 +64,5 @@ Security note:
 Use `jj log` and `jj diff` to determine the change list since the last tag.
 
 ## 5. Related References
-- Chronography: `docs/architecture/CHRONOGRAPHY.md`
-- Version Control: `docs/architecture/VERSION_CONTROL.md`
+- Chronography: `Library/architecture/CHRONOGRAPHY.md`
+- Version Control: `Core/VERSION_CONTROL.md`

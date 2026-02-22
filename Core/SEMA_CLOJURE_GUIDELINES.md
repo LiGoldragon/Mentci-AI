@@ -7,7 +7,7 @@ This document defines the mandatory Sema object rules for Clojure and its extens
 
 1. **Single Object In/Out**
    Every function accepts exactly one explicit object argument and returns exactly one
-   object. When multiple inputs or outputs are required, define a new object.
+   object. When multiple Inputs or outputs are required, define a new object.
 
 2. **Everything Is an Object**
    Reusable behavior belongs to named objects (schemas + namespaces). Free functions

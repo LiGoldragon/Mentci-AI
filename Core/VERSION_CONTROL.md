@@ -30,17 +30,18 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 6. Session synthesis:
    - If there is exactly one sub-commit for the prompt: prepend that commit description with the final `session:` message block (do not add a separate final commit).
    - If there are multiple sub-commits: duplicate the sub-commit branch, squash the duplicated branch into one final `session:` commit, and append the duplicated sub-branch change IDs in the final message.
-7. Before declaring the prompt complete, run `bb scripts/session_guard/main.clj`; non-zero exit means session synthesis is missing or malformed.
-8. Advance and push once:
+7. Before declaring the prompt complete, run `bb Components/scripts/session_guard/main.clj`; non-zero exit means session synthesis is missing or malformed.
+8. Run `bb Components/scripts/root_guard/main.clj`; non-zero exit means top-level FS contract drift.
+9. Advance and push once:
    - `jj bookmark set dev -r @`
    - `jj git push --bookmark dev`
-9. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
-10. After final session synthesis (single or multi mode), create a fresh child working commit to leave a clean tree and keep the finalized session commit immutable:
+10. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
+11. After final session synthesis (single or multi mode), create a fresh child working commit to leave a clean tree and keep the finalized session commit immutable:
    - `jj new dev`
-11. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
-12. Every completed prompt must end with a `session:` commit on the active line; leaving trailing `intent:` commits at prompt completion is a protocol violation.
-13. Every completed prompt must emit/update a report artifact in `Reports/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
-14. Session push invariant: prompt completion is invalid until the finalized `session:` head is pushed (default `dev`).
+12. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
+13. Every completed prompt must end with a `session:` commit on the active line; leaving trailing `intent:` commits at prompt completion is a protocol violation.
+14. Every completed prompt must emit/update a report artifact in `Reports/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
+15. Session push invariant: prompt completion is invalid until the finalized `session:` head is pushed (default `dev`).
 
 ## 4. Dirty Tree Intent Separation
 When the working copy is dirty and multiple change-intents may be present:
@@ -79,6 +80,6 @@ Use `mentci-jj log` to prefer `--no-signing` and avoid GPG failures.
 - **Proactive Ignoring:** New binary formats, compressed archives (`.tgz`, `.zip`), and directory-local artifacts should be added to `.gitignore` as soon as they are identified.
 
 ## 8. Related References
-- Conceptual model: `docs/architecture/JAIL_COMMIT_PROTOCOL.md`
-- Tooling overview: `docs/architecture/TOOLS.md`
-- Release protocol: `docs/architecture/RELEASE_PROTOCOL.md`
+- Conceptual model: `Library/architecture/JAIL_COMMIT_PROTOCOL.md`
+- Tooling overview: `Library/architecture/TOOLS.md`
+- Release protocol: `Library/architecture/RELEASE_PROTOCOL.md`

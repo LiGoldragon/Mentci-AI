@@ -103,7 +103,7 @@ Implications:
 
 3. Handle non-canonical but intentional roots:
 - `Logs/`: either map into `Outputs/Logs/` or add to enum as explicit durable audit root.
-- `docs/`: either map to `Library/docs/` (support tier) or split into `Core/`+`Library/` and remove root-level docs except compatibility stubs.
+- `docs/`: either map to `Library/` (support tier) or split into `Core/`+`Library/` and remove root-level docs except compatibility stubs.
 - `target/`: keep gitignored build artifact, not part of canonical typed set.
 
 4. Materialize missing canonical roots:

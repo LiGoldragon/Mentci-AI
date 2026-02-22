@@ -4,9 +4,9 @@
 - Script-level CLI execution validated manually.
 
 ## Verification Commands
-- `bb scripts/answer_report/main.clj --prompt "Q" --answer "A" --kind answer --change-scope modified-files --title smoke-test`
-- `bb scripts/answer_report/main.clj --prompt "Draft prompt" --answer "Draft answer" --kind draft --change-scope no-files --title draft-smoke-test`
-- `bb scripts/answer_report/main.clj --prompt "Question prompt" --answer "Question answer" --kind question --change-scope no-files --title question-smoke-test`
+- `bb Components/scripts/answer_report/main.clj --prompt "Q" --answer "A" --kind answer --change-scope modified-files --title smoke-test`
+- `bb Components/scripts/answer_report/main.clj --prompt "Draft prompt" --answer "Draft answer" --kind draft --change-scope no-files --title draft-smoke-test`
+- `bb Components/scripts/answer_report/main.clj --prompt "Question prompt" --answer "Question answer" --kind question --change-scope no-files --title question-smoke-test`
 
 ## Mocking Strategy
 - No network mocks required.

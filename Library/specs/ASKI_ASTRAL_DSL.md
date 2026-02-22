@@ -53,5 +53,5 @@ A macro expands the surface syntax into fully annotated, deserializable EDN.
 ```
 
 ## 6. Related Specs
-- Aski DSL Guidelines: `docs/specs/ASKI_DSL_GUIDELINES.md`
-- Aski-FS: `docs/specs/ASKI_FS_DSL.md`
+- Aski DSL Guidelines: `Library/specs/ASKI_DSL_GUIDELINES.md`
+- Aski-FS: `Library/specs/ASKI_FS_DSL.md`

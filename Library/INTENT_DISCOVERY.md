@@ -24,7 +24,7 @@ jj log -r '::@' --template 'description' |
 - **Subject Persistence:** If a subject (like "Attractor") is mentioned consistently across multiple cycles, it indicates a durable, high-priority intent that overrides transient tasks.
 
 ## 2. Dynamic Goal Alignment
-When a high-level goal (defined in `docs/architecture/HIGH_LEVEL_GOALS.md`) matches a high-weight subject discovered in the logs, its execution priority is escalated.
+When a high-level goal (defined in `Core/HIGH_LEVEL_GOALS.md`) matches a high-weight subject discovered in the logs, its execution priority is escalated.
 
 ### 2.1 Weight-Based Escalation
 1.  **Search:** Run the frequency analysis on the last 100-200 commits.

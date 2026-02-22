@@ -3,7 +3,7 @@
 This document records the Attractor API surface currently referenced by Mentci-AI and the primary use-cases it enables.
 
 Mentci-AI incorporates the Attractor standard and API patterns. The reference implementation is read-only under:
-- `inputs/untyped/brynary-attractor/attractor`
+- `Inputs/untyped/brynary-attractor/attractor`
 
 ## 1. API Surfaces
 
@@ -14,7 +14,7 @@ Attractor is exposed through two primary interfaces:
 ### 1.1 TypeScript Runtime API
 
 Primary exports are available from:
-- `inputs/untyped/brynary-attractor/attractor/src/index.ts`
+- `Inputs/untyped/brynary-attractor/attractor/src/index.ts`
 
 Core entry points:
 - `parse(dot: string)` parses DOT into a graph object.
@@ -54,8 +54,8 @@ Interviewer exports:
 ### 1.2 DOT Node-Type Mapping API
 
 Canonical shape-to-handler mapping is documented in:
-- `inputs/untyped/brynary-attractor/attractor/README.md`
-- `inputs/untyped/brynary-attractor/docs/specs/attractor-spec.md`
+- `Inputs/untyped/brynary-attractor/attractor/README.md`
+- `Inputs/untyped/brynary-attractor/docs/specs/attractor-spec.md`
 
 Key mappings:
 - `Mdiamond` -> `start`
@@ -71,7 +71,7 @@ Key mappings:
 ### 1.3 HTTP Server API
 
 Reference route implementation:
-- `inputs/untyped/brynary-attractor/attractor/src/server/routes.ts`
+- `Inputs/untyped/brynary-attractor/attractor/src/server/routes.ts`
 
 Base resource:
 - `/pipelines`
@@ -159,7 +159,7 @@ The following use-cases are explicitly supported by the documented Attractor mod
 ## 3. Mentci Integration Direction
 
 Current high-level goal alignment:
-- `docs/architecture/HIGH_LEVEL_GOALS.md` Goal 1 requires DOT job handoff to Attractor.
+- `Core/HIGH_LEVEL_GOALS.md` Goal 1 requires DOT job handoff to Attractor.
 
 Required integration stance:
 - Treat Attractor API contracts as external reference contracts.

@@ -44,23 +44,31 @@ Agents updated")
   - In schema/type position, `[]` denotes enum set membership.
   - Each first-letter-capitalized root name denotes a typed filesystem domain.
 
+### 2.0.1 Root File Allowlist
+- Top-level files are restricted to design-required build/runtime entry files:
+  - `flake.nix`, `flake.lock`, `Components/nix/jail.nix`, `.gitignore`, `.envrc`, `AGENTS.md`, `README.md`.
+- Runtime metadata files may exist temporarily by protocol:
+  - `.attrs.json`, `.opencode.edn`.
+- Enforcement tool:
+  - `bb Components/scripts/root_guard/main.clj`.
+
 ### 2.1 Inputs (`Inputs/`)
 - **Mode:** Read-Only (Mount points to Nix Store or immutable snapshots).
 - **Behavior:** Acts as the "Sensory Input" for the agent.
-- **Ontology:** The inputs represent a hierarchical mapping of the project's semantic dependencies (Atom, Flake, and Untyped sources).
-- **Propagation:** Changes in inputs (via `jj git fetch` or snapshot updates) trigger **Commit-Based Edit Notifications**, which can initiate new agentic flows.
+- **Ontology:** The Inputs represent a hierarchical mapping of the project's semantic dependencies (Atom, Flake, and Untyped sources).
+- **Propagation:** Changes in Inputs (via `jj git fetch` or snapshot updates) trigger **Commit-Based Edit Notifications**, which can initiate new agentic flows.
 
 ### 2.2 Outputs (`Outputs/`)
 - **Mode:** Writable (Scoped to the current session).
 - **Behavior:** Intended for consumption by the Parent Agent or external supervisors.
 - **Lifecycle:** Once validated, outputs are often promoted to the `Inputs/` of another agent or merged into the primary repository.
 
-### 2.3 Components (`Core/`, `src/`, `scripts/`)
+### 2.3 Components (`Components/src/`, `Components/scripts/`, `Components/tasks/`)
 - **Mode:** Writable (via Subflows).
 - **Behavior:** Subflows edit a **Temporary Branch** (anonymous `jj` revision).
 - **Promotion:**
     - **:success** -> The change is committed and becomes the new input for subscribed agents.
-    - **:failure** -> Initiates a **Debug Loop** (Ref: `strategies/Debugging/`).
+    - **:failure** -> Initiates a **Debug Loop** (Ref: `Strategies/Debugging/`).
 
 ## 3. Symbolic Mapping (Aski-FS Structure-Driven)
 The following EDN structure represents the authoritative symbolic map of the `Inputs` directory, utilizing the **Structure-Driven** syntax with **Symbol Keys**.

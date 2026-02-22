@@ -35,6 +35,32 @@
   [:map
    [:data :any]])
 
+(def ComponentEntry
+  [:map
+   [:id :string]
+   [:path :string]
+   [:interfaces [:vector :string]]
+   [:status [:enum :active :deprecated :experimental]]])
+
+(def ComponentIndex
+  [:map
+   [:version :int]
+   [:components [:vector ComponentEntry]]])
+
+(def LoadComponentIndexInput
+  [:map
+   [:indexPath :string]])
+
+(def ResolveComponentIndexInput
+  [:map
+   [:index ComponentIndex]])
+
+(def WriteComponentRegistryInput
+  [:map
+   [:registry :map]
+   [:outputsPath :string]
+   [:registryPath [:maybe :string]]])
+
 (defn* validate-config [:=> [:cat types/JailConfig] :any] [config]
   config)
 
@@ -94,6 +120,48 @@
       (coll? data) (some #(find-jail-config {:data %}) data)
       :else nil)))
 
+(defn* load-component-index [:=> [:cat LoadComponentIndexInput] ComponentIndex] [input]
+  (let [index-file (io/file (:indexPath input))]
+    (when-not (.exists index-file)
+      (binding [*out* *err*]
+        (println (str "Component index not found: " (:indexPath input)))
+        (System/exit 1)))
+    (edn/read-string (slurp index-file))))
+
+(defn* resolve-component-index [:=> [:cat ResolveComponentIndexInput] :map] [input]
+  (let [components (:components (:index input))
+        ids (map :id components)
+        dup-ids (->> ids frequencies (filter (fn [[_ c]] (> c 1))) (map first) vec)]
+    (when (seq dup-ids)
+      (binding [*out* *err*]
+        (println (str "Duplicate component ids in Components/index.edn: " (str/join ", " dup-ids)))
+        (System/exit 1)))
+    {:version (:version (:index input))
+     :components
+     (reduce (fn [acc component]
+               (let [path (:path component)
+                     path-file (io/file path)]
+                 (when-not (.exists path-file)
+                   (binding [*out* *err*]
+                     (println (str "Component path missing for id " (:id component) ": " path))
+                     (System/exit 1)))
+                 (assoc acc
+                        (:id component)
+                        {:id (:id component)
+                         :path path
+                         :interfaces (:interfaces component)
+                         :status (:status component)})))
+             {}
+             components)}))
+
+(defn* write-component-registry! [:=> [:cat WriteComponentRegistryInput] :string] [input]
+  (let [out-path (or (:registryPath input)
+                     (str (:outputsPath input) "/component_registry.json"))
+        out-file (io/file out-path)]
+    (io/make-parents out-file)
+    (spit out-file (json/generate-string (:registry input) {:pretty true}))
+    out-path))
+
 (defn* main [:=> [:cat JailMainInput] :any] [_]
   (println "Initializing Mentci-AI Level 5 Jail Environment (Clojure/Babashka)...")
   (let [attrs-path (or (System/getenv "NIX_ATTRS_JSON_FILE") ".attrs.json")
@@ -107,11 +175,13 @@
       (do (println "Error: Configuration not found.") (System/exit 1))
       (let [config (keywordize-keys {:data config-raw})
             _ (validate-config config)
-            inputs-path (get config :inputsPath "inputs")
+            inputs-path (get config :inputsPath "Inputs")
             inputs-root (io/file inputs-path)
             input-manifest (get config :inputManifest {})
             outputs-path (get config :outputsPath "Outputs")
             policy-path (get config :policyPath nil)
+            component-index-path (get config :componentIndexPath "Components/index.edn")
+            component-registry-path (get config :componentRegistryPath nil)
             mentci-mode (System/getenv "MENTCI_MODE")
             is-impure (or (= mentci-mode "ADMIN")
                           (.exists (io/file "/usr/local"))
@@ -122,12 +192,19 @@
         (println (format "Outputs root: %s" outputs-path))
         (when policy-path
           (println (format "Jail policy file (read-only): %s" policy-path)))
+        (let [component-index (load-component-index {:indexPath component-index-path})
+              component-registry (resolve-component-index {:index component-index})
+              written-path (write-component-registry! {:registry component-registry
+                                                       :outputsPath outputs-path
+                                                       :registryPath component-registry-path})]
+          (println (format "Component registry loaded from: %s" component-index-path))
+          (println (format "Component registry exported to: %s" written-path)))
         ;; Load Whitelist
-        (let [whitelist-path (io/file "agent-inputs.edn")
+        (let [whitelist-path (io/file "Core/agent-inputs.edn")
               whitelist (if (.exists whitelist-path)
                           (-> (slurp whitelist-path) edn/read-string :whitelist)
                           #{})]
-          (println (format "Mounting inputs from whitelist: %s" whitelist))
+          (println (format "Mounting Inputs from whitelist: %s" whitelist))
           (println "Launching Nix Jail...")
           (doseq [[item-name item-spec] input-manifest]
             (let [name-str (clojure.core/name item-name)
@@ -145,7 +222,7 @@
                                     :isImpure is-impure}))
                 (println (str "Skipping " name-str " (Not in whitelist)"))))))
         (println "Jail Launcher Complete.")
-        (let [context-file (io/file "docs/guides/Level5-Ai-Coding.md")]
+        (let [context-file (io/file "Library/guides/Level5-Ai-Coding.md")]
           (when (.exists context-file)
             (println "\n--- Level 5 Programming Context ---\n")
             (println (slurp context-file))

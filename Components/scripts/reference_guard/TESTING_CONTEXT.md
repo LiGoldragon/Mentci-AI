@@ -4,8 +4,8 @@
 - Script-level validation executed via direct CLI invocation.
 
 ## Verification Commands
-- `bb scripts/reference_guard/main.clj`
-- `bb scripts/validate_scripts/main.clj`
+- `bb Components/scripts/reference_guard/main.clj`
+- `bb Components/scripts/validate_scripts/main.clj`
 
 ## Mocking Strategy
 - No external service mocks required.

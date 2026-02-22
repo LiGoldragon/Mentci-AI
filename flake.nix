@@ -19,6 +19,10 @@
     goldragon.url = "github:LiGoldragon/goldragon";
     maisiliym.url = "github:LiGoldragon/maisiliym";
     kibord.url = "github:LiGoldragon/kibord";
+    bookofsol = {
+      url = "github:LiGoldragon/bookofsol";
+      flake = false;
+    };
     aski = {
       url = "github:Criome/aski";
       flake = false;
@@ -55,10 +59,10 @@
         };
       };
     
-      outputs = inputs@{ 
+      outputs = inputs@{
         self, nixpkgs, flake-utils, crane, 
         criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
-        webpublish, goldragon, maisiliym, kibord, aski, attractor, opencode, codex-cli-nix, ...
+        webpublish, goldragon, maisiliym, kibord, bookofsol, aski, attractor, opencode, codex-cli-nix, ...
       }:
         flake-utils.lib.eachDefaultSystem (system:
           let
@@ -66,19 +70,18 @@
             attractorDocsSrc = inputs."attractor-docs";
             pkgs = import nixpkgs { inherit system; };
             craneLib = crane.mkLib pkgs;
-            src = craneLib.cleanCargoSource ./.;
+            src = craneLib.cleanCargoSource ./Components;
     
-            namespace = import ./nix {
+            namespace = import ./Components/nix {
               inherit pkgs craneLib system inputs src;
               codex_cli_nix = codex-cli-nix;
               attractor_src = attractorSrc;
               attractor_docs_src = attractorDocsSrc;
-              scripts_dir = ./scripts;
+              scripts_dir = ./Components/scripts;
               repo_root = ./.;
-              jj_project_config = ./jj-project-config.toml;
             };
 
-            jail = import ./jail.nix {
+            jail = import ./Components/nix/jail.nix {
               inherit pkgs;
               inputs = namespace.jail_inputs;
             };

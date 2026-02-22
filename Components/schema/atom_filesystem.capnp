@@ -23,7 +23,7 @@ struct AtomFilesystem {
   schemaDir @9 :SchemaDirectory;
   
   # 5. Logs (Memory)
-  logsDir @10 :LogsDirectory;               # Logs/
+  logsDir @10 :LogsDirectory;               # Outputs/Logs/
 
   # 6. Implementation (The "What")
   srcDir @11 :RustDirectory;

@@ -179,7 +179,7 @@
       (spit readme
             (str "# Subject Topic\n\n"
                  "- Subject: `" subject "`\n"
-                 "- Strategy Path: `strategies/" subject "`\n\n"
+                 "- Strategy Path: `Strategies/" subject "`\n\n"
                  "## Report Entries\n\n"
                  "- _Topic index. Report entries are stored in this directory._\n")))))
 

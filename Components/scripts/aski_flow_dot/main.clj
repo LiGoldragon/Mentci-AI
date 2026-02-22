@@ -189,7 +189,7 @@
         graph-id (second args)]
     (if-not flow-file
       (binding [*out* *err*]
-        (println "Usage: bb scripts/aski_flow_dot.clj <flow-file> [graph-id]")
+        (println "Usage: bb Components/scripts/aski_flow_dot/main.clj <flow-file> [graph-id]")
         (System/exit 1))
       (let [flow (read-string (slurp flow-file))
             dot (aski-flow->dot {:flow flow :graphId graph-id})]

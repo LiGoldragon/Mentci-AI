@@ -1,0 +1,34 @@
+{:version 1
+ :components
+ [{:id "nix"
+   :path "Components/nix"
+   :interfaces ["nix.namespace"]
+   :status :active}
+  {:id "schema"
+   :path "Components/schema"
+   :interfaces ["schema.capnp" "schema.edn"]
+   :status :active}
+  {:id "scripts"
+   :path "Components/scripts"
+   :interfaces ["bb.entrypoints"]
+   :status :active}
+  {:id "src"
+   :path "Components/src"
+   :interfaces ["rust.engine"]
+   :status :active}
+  {:id "tasks"
+   :path "Components/tasks"
+   :interfaces ["task.checklists"]
+   :status :active}
+  {:id "tests"
+   :path "Components/tests"
+   :interfaces ["test.harness"]
+   :status :active}
+  {:id "tools"
+   :path "Components/tools"
+   :interfaces ["editor.integration" "formatting"]
+   :status :active}
+  {:id "workflows"
+   :path "Components/workflows"
+   :interfaces ["workflow.definitions"]
+   :status :active}]}

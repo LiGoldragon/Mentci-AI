@@ -21,7 +21,7 @@ Migration completed. Scripts are in Clojure and validated with Malli.
 | Python Script | Clojure Equivalent | Responsibility |
 | :--- | :--- | :--- |
 | `logger.py` | `logger.clj` | Deprecated: logging is no longer required; use `jj log` for audit. |
-| `jail_launcher.py` | `launcher.clj` | Ingesting `.attrs.json` and symlinking `inputs/`. |
+| `jail_launcher.py` | `launcher.clj` | Ingesting `.attrs.json` and symlinking `Inputs/`. |
 | `jail_commit.py` | `commit.clj` | Wrapping `jj` for workspace-to-host shipping. |
 | `test_deps.py` | `test_deps.clj` | Verifying Clojure/Nix environment integrity. |
 
@@ -43,8 +43,8 @@ mentci-clj = pkgs.stdenv.mkDerivation {
 ```
 
 ## 5. Phase 4: Cleanup
-- Keep Python out of Mentci scripts. The only exception is `scripts/prefetch_orchestrator.py`.
-- Do not add new `.py` scripts under `scripts/`.
+- Keep Python out of Mentci scripts.
+- Do not add new `.py` scripts under `Components/scripts/`.
 
 ## 6. Verification Matrix
 - [x] Remove logger tooling references once no longer in use.

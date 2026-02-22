@@ -6,13 +6,13 @@
 
 ;; 2. Read-Only Mode for Inputs
 ;; Matches any file under the project's Inputs/ directory
-(defun mentci-apply-read-only-for-inputs ()
+(defun mentci-apply-read-only-for-Inputs ()
   "Force read-only mode for files in the Inputs directory."
   (when (string-match-p "/Inputs/" (buffer-file-name))
     (read-only-mode 1)
     (message "Mentci: Entering RO mode for system input artifact.")))
 
-(add-hook 'find-file-hook #'mentci-apply-read-only-for-inputs)
+(add-hook 'find-file-hook #'mentci-apply-read-only-for-Inputs)
 
 ;; 3. Git-Gutter Update Logic
 (defun mentci-refresh-git-gutter ()

@@ -1,12 +1,12 @@
 # Testing Context: Tool Discoverer
 
 ## 1. Coverage State
-- **Unit Tests:** `scripts/tool_discoverer/test.clj`. Covers cargo result parsing.
+- **Unit Tests:** `Components/scripts/tool_discoverer/test.clj`. Covers cargo result parsing.
 - **Integration Tests:** None.
 
 ## 2. Verification Commands
 ```bash
-bb scripts/tool_discoverer/test.clj
+bb Components/scripts/tool_discoverer/test.clj
 ```
 
 ## 3. Mocking Strategy

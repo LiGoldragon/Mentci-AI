@@ -1,7 +1,7 @@
 (require '[clojure.test :refer [deftest is run-tests]]
          '[clojure.java.io :as io])
 
-(load-file "scripts/inputs_remount/main.clj")
+(load-file "Components/scripts/inputs_remount/main.clj")
 
 (defn random-temp-path [prefix]
   (str (System/getProperty "java.io.tmpdir") "/" prefix "-" (java.util.UUID/randomUUID)))
@@ -15,9 +15,9 @@
         (.delete file)))))
 
 (deftest remount-input-replaces-stale-target-with-symlink
-  (let [root (random-temp-path "inputs-remount-test")
+  (let [root (random-temp-path "Inputs-remount-test")
         src-path (str root "/src/foo")
-        target-path (str root "/inputs/foo")]
+        target-path (str root "/Inputs/foo")]
     (try
       (.mkdirs (io/file src-path))
       (.mkdirs (io/file target-path))
@@ -36,7 +36,7 @@
         (delete-tree! root)))))
 
 (deftest strip-write-permissions-removes-write-bits-recursively
-  (let [root (random-temp-path "inputs-remount-perms")
+  (let [root (random-temp-path "Inputs-remount-perms")
         src-path (str root "/src/foo")
         nested-path (str src-path "/sub")
         file-path (str nested-path "/file.txt")]

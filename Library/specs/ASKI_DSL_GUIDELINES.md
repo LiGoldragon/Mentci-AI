@@ -61,4 +61,4 @@ Aski DSLs that compile to Cap'n Proto must:
 3. Enforce constraints in validation (e.g., max string length) even if Capnp lacks native limits.
 
 ## 6. Related Specs
-- Aski-Flow: `docs/specs/ASKI_FLOW_DSL.md`
+- Aski-Flow: `Library/specs/ASKI_FLOW_DSL.md`

@@ -7,7 +7,7 @@
 
 **Mentci-AI** incorporates the **Attractor Workflow Standard** as its "Algorithm of Thought". The focus is on standard adoption and alignment, not reimplementing Attractor.
 
-The Attractor spec is re-documented as the **Mentci Workflow Standard** (`docs/specs/WORKFLOW_STANDARD.md`) for incorporation. A reference DOT parser and basic traversal logic exists in Rust, but Mentci-AI is not an Attractor reimplementation.
+The Attractor spec is re-documented as the **Mentci Workflow Standard** (`Library/specs/WORKFLOW_STANDARD.md`) for incorporation. A reference DOT parser and basic traversal logic exists in Rust, but Mentci-AI is not an Attractor reimplementation.
 
 ---
 
@@ -15,8 +15,8 @@ The Attractor spec is re-documented as the **Mentci Workflow Standard** (`docs/s
 
 | Feature | Attractor Specification | Mentci-AI Current State | Status |
 | :--- | :--- | :--- | :--- |
-| **Pipeline Definition** | **DOT Graph Syntax.** | **Standardized.** See `docs/specs/WORKFLOW_STANDARD.md`. Parser implemented in `src/dot_loader.rs`. | ✅ **Adopted** |
-| **State Management** | **Checkpoint & Resume.** | **Basic Implementation.** `CheckpointManager` in `src/main.rs` saves JSON snapshots. | ⚠️ **Partial** |
+| **Pipeline Definition** | **DOT Graph Syntax.** | **Standardized.** See `Library/specs/WORKFLOW_STANDARD.md`. Parser implemented in `Components/src/dot_loader.rs`. | ✅ **Adopted** |
+| **State Management** | **Checkpoint & Resume.** | **Basic Implementation.** `CheckpointManager` in `Components/src/main.rs` saves JSON snapshots. | ⚠️ **Partial** |
 | **Routing Logic** | **Edge-Based Routing.** | **Implemented.** Engine supports conditional and label-based routing. | ✅ **Done** |
 | **Configuration** | **Model Stylesheets.** | Not yet implemented. | ⏳ **Backlog** |
 
@@ -53,6 +53,6 @@ The Attractor spec is re-documented as the **Mentci Workflow Standard** (`docs/s
 
 ## Recommendations
 
-1.  **Schema Definition:** The next major step is to define `Workflow`, `Node`, and `Edge` in `schema/mentci.capnp` to make these structures portable between agents.
-2.  **Standard Library:** Create a library of reusable DOT workflows (e.g., `workflows/std/bugfix.dot`) to verify the validator.
-3.  **Linter:** Enhance `src/main.rs` to run validation checks (orphan nodes, missing goals) as defined in the spec.
+1.  **Schema Definition:** The next major step is to define `Workflow`, `Node`, and `Edge` in `Components/schema/mentci.capnp` to make these structures portable between agents.
+2.  **Standard Library:** Create a library of reusable DOT workflows (e.g., `Components/workflows/std/bugfix.dot`) to verify the validator.
+3.  **Linter:** Enhance `Components/src/main.rs` to run validation checks (orphan nodes, missing goals) as defined in the spec.

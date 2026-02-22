@@ -28,7 +28,7 @@ Constraints:
 - Do not include session context blocks in atomic commits.
 - Keep each atomic commit scoped to one logical change so parallel work remains legible.
 
-*Note: `scripts/session_metadata.clj` may still be used to track prompt/context state, but that state is reserved for final synthesis output.*
+*Note: `Components/scripts/session_metadata/main.clj` may still be used to track prompt/context state, but that state is reserved for final synthesis output.*
 
 ## 4. Phase 3: Session Synthesis (Single vs Multi)
 When the session's work is complete and verified:
@@ -75,19 +75,19 @@ session: <Result Summary>
 `## Squashed Change IDs` is required in multi-sub-commit mode and omitted in single-sub-commit mode.
 
 ## 5. Tooling Support
-Use `bb scripts/session_metadata.clj` to manage prompt/context state during execution and to render final synthesis messages.
+Use `bb Components/scripts/session_metadata/main.clj` to manage prompt/context state during execution and to render final synthesis messages.
 
 ## 6. Phase 4: Prompt Report Emission
 After session synthesis, emit a prompt answer report under `Reports/`:
-1.  **Write Report Artifact:** Use `bb scripts/answer_report/main.clj` with prompt and final answer content.
+1.  **Write Report Artifact:** Use `bb Components/scripts/answer_report/main.clj` with prompt and final answer content.
 2.  **Classify Answer Kind:** Report kind must be one of `answer`, `draft`, or `question`.
 3.  **Classify Change Scope:** Use `modified-files` when repository files changed for the prompt; use `no-files` for question-only or advisory responses.
 4.  **Persist Even Without Edits:** Report emission is mandatory even when the prompt produced no filesystem changes.
-5.  **Unify Subject Counterparts:** Ensure the report subject has a matching strategy subject and vice-versa via `bb scripts/subject_unifier/main.clj --write`.
+5.  **Unify Subject Counterparts:** Ensure the report subject has a matching strategy subject and vice-versa via `bb Components/scripts/subject_unifier/main.clj --write`.
 
 Canonical command shape:
 ```
-bb scripts/answer_report/main.clj \
+bb Components/scripts/answer_report/main.clj \
   --prompt "<raw prompt>" \
   --answer "<final response>" \
   --kind <answer|draft|question> \

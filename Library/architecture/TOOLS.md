@@ -7,13 +7,13 @@
 
 ### Nix
 - **Role:** Environment management and isolation (Jail).
-- **Usage:** Defines the reproducible development shell and project inputs via `flake.nix` and `jail.nix`.
+- **Usage:** Defines the reproducible development shell and project Inputs via `flake.nix` and `Components/nix/jail.nix`.
 
 ## Agentic Interface & Orchestration
 ### Jujutsu (jj)
 - **Role:** Version control and workspace management.
 - **Usage:** Provides the `jj` command for atomic changes and multi-workspace isolation.
-- **Automation:** See `docs/architecture/VERSION_CONTROL.md` for the operational workflow.
+- **Automation:** See `Core/VERSION_CONTROL.md` for the operational workflow.
 - **Protocol:** See `JAIL_COMMIT_PROTOCOL.md` for details on the implementation-to-host shipping model.
 
 ### mentci-commit
@@ -37,7 +37,7 @@
 
 ### Cap'n Proto
 - **Role:** Schema definition and RPC.
-- **Usage:** Defines the semantic truth of atoms and daemon interfaces in `schema/`.
+- **Usage:** Defines the semantic truth of atoms and daemon interfaces in `Components/schema/`.
 
 ## Scripting & Glue
 ### Clojure (Babashka)

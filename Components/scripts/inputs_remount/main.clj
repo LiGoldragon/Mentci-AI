@@ -77,7 +77,7 @@
   (loop [remaining (:args input)
          options {:attrsPath ".attrs.json"
                   :inputsPath nil
-                  :whitelistPath "agent-inputs.edn"}]
+                  :whitelistPath "Core/agent-inputs.edn"}]
     (if (empty? remaining)
       options
       (let [[arg & _more] remaining]
@@ -93,7 +93,7 @@
 
           (= arg "--help")
           (do
-            (println "Usage: bb scripts/inputs_remount/main.clj [--attrs-path <path>] [--inputs-path <path>] [--whitelist-path <path>]")
+            (println "Usage: bb Components/scripts/inputs_remount/main.clj [--attrs-path <path>] [--inputs-path <path>] [--whitelist-path <path>]")
             (System/exit 0))
 
           :else
@@ -201,7 +201,7 @@
   (let [args (parse-args {:args (:args input)})
         config (read-jail-config {:attrsPath (:attrsPath args)})
         whitelist (read-whitelist {:whitelistPath (:whitelistPath args)})
-        inputs-path (or (:inputsPath args) (:inputsPath config) "inputs")
+        inputs-path (or (:inputsPath args) (:inputsPath config) "Inputs")
         input-manifest (:inputManifest config)
         inputs-root (io/file inputs-path)]
     (.mkdirs inputs-root)

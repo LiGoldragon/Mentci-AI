@@ -50,5 +50,5 @@ Use `:astral` on any node:
 ```
 
 ## 6. Related Specs
-- Aski-Astral DSL: `docs/specs/ASKI_ASTRAL_DSL.md`
-- Aski-FS DSL: `docs/specs/ASKI_FS_DSL.md`
+- Aski-Astral DSL: `Library/specs/ASKI_ASTRAL_DSL.md`
+- Aski-FS DSL: `Library/specs/ASKI_FS_DSL.md`

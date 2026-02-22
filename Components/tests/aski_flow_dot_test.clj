@@ -3,10 +3,10 @@
 (require '[clojure.test :refer [deftest is run-tests]]
          '[clojure.string :as str])
 
-(load-file "scripts/aski_flow_dot/main.clj")
+(load-file "Components/scripts/aski_flow_dot/main.clj")
 
 (def example-flow
-  (read-string (slurp "workflows/test.aski-flow")))
+  (read-string (slurp "Components/workflows/test.aski-flow")))
 
 (deftest converts-example-aski-flow-to-graphviz-json-medium
   (let [medium (mentci.aski-flow-dot/aski-flow->graphviz-json

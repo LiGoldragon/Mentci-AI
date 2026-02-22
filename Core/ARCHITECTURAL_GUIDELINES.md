@@ -1,7 +1,7 @@
 # Mentci-AI High-Level Architectural Guidelines
 
-*   **Reproducibility:** The `Inputs/` directory contains read-only symlinks to all project dependencies and ecosystem inputs, managed by `scripts/launcher.clj`.
-*   **Purity:** Respect the `RO Indicator`. In pure mode, inputs are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
+*   **Reproducibility:** The `Inputs/` directory contains read-only symlinks to all project dependencies and ecosystem Inputs, managed by `Components/scripts/launcher/main.clj`.
+*   **Purity:** Respect the `RO Indicator`. In pure mode, Inputs are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
 
 ## 0.0. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
 
@@ -23,7 +23,7 @@
 
 *   **Clojure (Babashka) Only:** All glue code, launchers, and build scripts must be written in **Clojure**, executed via the **Babashka** runtime for fast startup.
 *   **Structured Attributes:** Nix variables must be passed to Clojure using `__structuredAttrs = true`. The script must ingest the resulting JSON (`.attrs.json`).
-*   **Minimal Shim:** The *only* permissible Bash code is the single-line shim required to invoke the Clojure entrypoint (e.g., `bb $src/launcher.clj`).
+*   **Minimal Shim:** The *only* permissible Bash code is the single-line shim required to invoke the Clojure entrypoint (e.g., `bb Components/scripts/launcher/main.clj`).
 
 ## 0.2. SOURCE CONTROL PROTOCOL (JJ & PUSH)
 
@@ -77,7 +77,7 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 *   **Master Process:** The top-level `mentci-ai` process is self-hosted. It mounts `Inputs/` and configures its environment exactly like a jailed process but operates with full **Admin Developer Mode** privileges.
 *   **Sub-Flow Isolation:** Sub-processes are spawned as isolated sub-flows, typically within strict Nix Jails.
 *   **State Separation:** Sub-flows must operate on **unique, internal Jujutsu bookmarks**. They do not commit directly to the parent's bookmark until finalization.
-*   **Supervision:** Parent processes supervise the lifecycle, inputs, and outputs of their child sub-flows.
+*   **Supervision:** Parent processes supervise the lifecycle, Inputs, and outputs of their child sub-flows.
 
 This document synthesizes the architectural, naming, and durability rules inherited from the **CriomOS** and **Sema** lineage. These rules are structural and non-negotiable. Violations indicate category errors, not stylistic choices.
 
@@ -137,7 +137,7 @@ High-level architectural context (framing, mission statements, global mandates) 
     *   `to_*`: Emission/Projection.
     *   `into_*`: Consuming transformation.
     *   *Forbidden:* `read`, `write`, `load`, `save` when direction suffices.
-*   **Single Object In/Out:** Methods accept at most one explicit object (struct) and return one object. Complex inputs/outputs require their own container structs.
+*   **Single Object In/Out:** Methods accept at most one explicit object (struct) and return one object. Complex Inputs/outputs require their own container structs.
 *   **Schema is Sema:** Transmissible objects are defined in Sema schemas. Wire formats (Cap'n Proto) are implementation details, not domain APIs.
 
 ## 4. Sema Object Style (Nix)

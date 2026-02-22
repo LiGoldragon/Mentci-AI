@@ -98,7 +98,7 @@ fn attractor_harness_can_run_minimal_dot_pipeline() {
     let log_path = root.join("attractor.log");
     let request_path = root.join("pipeline.json");
     let attractor_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("inputs/untyped/brynary-attractor/attractor");
+        .join("Inputs/untyped/brynary-attractor/attractor");
     if !attractor_dir.exists() {
         eprintln!(
             "skipping test: attractor directory missing at {}",

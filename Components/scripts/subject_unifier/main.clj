@@ -79,7 +79,7 @@
     (canonical-subject {:value raw})))
 
 (defn* strategy-path [:=> [:cat PathInput] :string] [input]
-  (str "strategies/" (:subject input)))
+  (str "Strategies/" (:subject input)))
 
 (defn* report-topic-path [:=> [:cat PathInput] :string] [input]
   (str "Reports/" (:subject input) "/README.md"))
@@ -187,7 +187,7 @@
                  "Create and maintain a coherent strategy/report pairing for subject `" subject "`.\n\n"
                  "## Scope\n"
                  "- Ensure implementation guidance for this subject is captured.\n"
-                 "- Keep `Reports/<Subject>/` and `strategies/<Subject>/` synchronized.\n\n"
+                 "- Keep `Reports/<Subject>/` and `Strategies/<Subject>/` synchronized.\n\n"
                  "## Initial Plan\n"
                  "1. Inventory existing artifacts for the subject.\n"
                  "2. Define gaps and risks.\n"
@@ -203,7 +203,7 @@
         marker "## Subject Topics"
         snippet (str marker "\n"
                      "Topics are subdirectory names under `Reports/` (for example `Reports/Prompt-Report-System/`).\n"
-                     "Each topic must have a corresponding `strategies/<Subject>/` directory.\n")]
+                     "Each topic must have a corresponding `Strategies/<Subject>/` directory.\n")]
     (when (.exists (io/file path))
       (let [content (slurp path)
             updated (if (str/includes? content marker)

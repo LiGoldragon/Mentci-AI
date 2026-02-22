@@ -35,7 +35,9 @@
    [:inputManifest InputManifest]
    [:outputsPath {:optional true} :string]
    [:outputManifest {:optional true} OutputManifest]
-   [:policyPath {:optional true} :string]])
+   [:policyPath {:optional true} :string]
+   [:componentIndexPath {:optional true} :string]
+   [:componentRegistryPath {:optional true} :string]])
 
 (def CommitContext
   [:map

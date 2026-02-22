@@ -10,7 +10,7 @@
 }:
 
 let
-  builder = ../scripts/mk_shell.clj;
+  builder = ../scripts/mk_shell/main.clj;
   
   # Ensure all packages are built and available as paths
   packagePaths = map (p: "${p}") packages;

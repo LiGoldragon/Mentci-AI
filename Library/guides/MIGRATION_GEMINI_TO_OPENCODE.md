@@ -6,7 +6,7 @@ This document outlines the transition from the temporary **Gemini CLI** (running
 ## 2. Infrastructure Changes
 
 ### 2.1. Nix Packaging for OpenCode
-Currently, `opencode` is included as a raw source input (`inputs/opencode`). To make it operational:
+Currently, `opencode` is included as a raw source input (`Inputs/opencode`). To make it operational:
 - **Action:** Define a `pkgs.opencode` derivation in `flake.nix`.
 - **Implementation:** Use `python3Packages.buildPythonApplication` to wrap the OpenCode source.
 - **Exposure:** Add `pkgs.opencode` to `devShells.default` packages.
@@ -32,18 +32,18 @@ OpenCode requires a provider configuration to communicate with DeepSeek.
 
 ### 2.4. Agent Launcher Secrets (gopass)
 Use gopass to inject API keys directly into the agent process.
-- **Launcher:** `scripts/agent_launcher.clj`
+- **Launcher:** `Components/scripts/agent_launcher/main.clj`
 - **Deterministic key scheme:** `mentci/ai/<provider>/api-key`
 - **Example:**
   ```sh
   gopass insert -m mentci/ai/deepseek/api-key
-  bb scripts/agent_launcher.clj --provider deepseek -- opencode
+  bb Components/scripts/agent_launcher/main.clj --provider deepseek -- opencode
   ```
 
 ## 3. Workflow Transition
 
 ### Step 1: Initialize the Jail
-Run `nix develop` to ensure all inputs are symlinked via `jail_launcher.py`.
+Run `nix develop` to ensure all Inputs are symlinked via `jail_launcher.py`.
 
 ### Step 2: Build OpenCode
 Verify `opencode --version` is accessible within the nix shell.

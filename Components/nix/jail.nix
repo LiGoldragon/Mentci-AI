@@ -1,11 +1,11 @@
-{ pkgs, inputs, inputsPath ? "Inputs", outputsPath ? "Outputs" }:
+{ pkgs, Inputs, inputsPath ? "Inputs", outputsPath ? "Outputs", componentIndexPath ? "Components/index.edn", componentRegistryPath ? null }:
 
 let
   lib = pkgs.lib;
 
   mkInput = name: inputType: 
     let
-      input = inputs.${name};
+      input = Inputs.${name};
       # If it has a .src (is a derivation), use it. Otherwise use the whole thing (flake input/path).
       src = if (lib.isDerivation input && input ? src) then input.src else input;
     in {
@@ -35,6 +35,7 @@ let
     goldragon = mkInput "goldragon" "flake";
     maisiliym = mkInput "maisiliym" "flake";
     kibord = mkInput "kibord" "flake";
+    bookofsol = mkInput "bookofsol" "untyped";
     aski = mkInput "aski" "flake";
     attractor = mkInput "attractor" "untyped";
     attractor-docs = mkInput "attractor-docs" "untyped";
@@ -78,6 +79,7 @@ pkgs.mkShell {
   # This will be available in .attrs.json
   jailConfig = {
     inherit inputsPath inputManifest outputsPath outputManifest;
+    inherit componentIndexPath componentRegistryPath;
     policyPath = "${jailPolicyFile}";
   };
 
@@ -90,6 +92,6 @@ pkgs.mkShell {
 
   shellHook = ''
     # Minimal Shim: Call Clojure launcher
-    bb ${./scripts/launcher.clj}
+    bb ${./Components/scripts/launcher/main.clj}
   '';
 }

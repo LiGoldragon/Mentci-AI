@@ -251,7 +251,7 @@ fn jail_commit_pushes_to_ssh_git_remote() {
         fs::write(&policy_path, r#"{"allowedPushBookmarks":["jailCommit"]}"#)
             .expect("write policy");
 
-        let repo_scripts = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("scripts/commit.clj");
+        let repo_scripts = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("Components/scripts/commit/main.clj");
         let runtime_path = workspace.join(".mentci/runtime.json");
         let runtime_json = serde_json::json!({
             "repoRoot": repo.to_string_lossy(),
@@ -274,7 +274,7 @@ fn jail_commit_pushes_to_ssh_git_remote() {
                 .arg("intent: ssh jail push"),
         )?;
 
-        let repo_jj = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("scripts/jj_workflow.clj");
+        let repo_jj = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("Components/scripts/jj_workflow/main.clj");
         run_check(
             Command::new("bb")
                 .arg(repo_jj)

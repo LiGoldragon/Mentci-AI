@@ -90,7 +90,7 @@ Surface sugar is normalized into canonical EDN with explicit type tags and ids.
   {"docs" {:kind :dir
            :children {"specs" {:kind :dir}}}
    "src" {:kind :dir}
-   "Cargo.toml" {:kind :file :role :entrypoint :durability :stable}}}}
+   "Components/Cargo.toml" {:kind :file :role :entrypoint :durability :stable}}}}
 ```
 
 ## 6. Capnp Emission Rules
@@ -99,8 +99,8 @@ Surface sugar is normalized into canonical EDN with explicit type tags and ids.
 3. Use explicit `:map` representations for child collections.
 
 ## 7. Related Specs
-- Aski DSL Guidelines: `docs/specs/ASKI_DSL_GUIDELINES.md`
-- Aski-Flow: `docs/specs/ASKI_FLOW_DSL.md`
+- Aski DSL Guidelines: `Library/specs/ASKI_DSL_GUIDELINES.md`
+- Aski-Flow: `Library/specs/ASKI_FLOW_DSL.md`
 
 ## 8. Nix Namespace Convention
 For the `nix/` namespace, each exported attribute maps 1:1 to a file basename.

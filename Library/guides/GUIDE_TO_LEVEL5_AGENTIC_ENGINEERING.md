@@ -28,7 +28,7 @@ The only way to ensure the Dark Factory produces quality is through a rigorous, 
 
 ### 3.3. Modular Decoupling (The "Sema" Style)
 Level 5 agents struggle with "spaghetti code." To succeed, the architecture must be strictly modular.
-*   **Semantic Objects:** Every component must have a clear, single responsibility and a defined semantic meaning (Ref: `docs/architecture/ARCHITECTURAL_GUIDELINES.md`).
+*   **Semantic Objects:** Every component must have a clear, single responsibility and a defined semantic meaning (Ref: `Core/ARCHITECTURAL_GUIDELINES.md`).
 *   **Stateless logic:** Favor pure functions and immutable data to reduce the state space the agent must reason about.
 
 ## 4. Engineering Practices for Level 5
@@ -53,7 +53,7 @@ While Level 5 automates the *how*, Level 6 (The Vision of Mentci) aims to automa
 ## 6. Resources & References
 *   **Nate Jones:** [The 5 Levels of AI Coding](https://youtu.be/bDcgHzCBgmQ)
 *   **Andrej Karpathy:** The "Autonomy Slider" and the "Iron Man Suit" philosophy.
-*   **Mentci-AI Core:** `docs/guides/Level5-Ai-Coding.md`, `docs/architecture/ARCHITECTURAL_GUIDELINES.md`.
+*   **Mentci-AI Core:** `Library/guides/Level5-Ai-Coding.md`, `Core/ARCHITECTURAL_GUIDELINES.md`.
 
 ---
 *Created on ♓︎ 1° 28' 44" | 5919 AM (Feb 19, 2026), for the Mentci-AI Ecosystem.*

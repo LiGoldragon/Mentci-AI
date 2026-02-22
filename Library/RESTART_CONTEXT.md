@@ -5,7 +5,7 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Active Bookmark:** `dev`.
-*   **Current Programming Version:** `lm7x953n` (Ref: `scripts/program_version/main.clj`).
+*   **Current Programming Version:** `lm7x953n` (Ref: `Components/scripts/program_version/main.clj`).
 *   **Latest Release Tag:** `v0.12.3.58.4` (Ref: Git tag state).
 
 ## 1. Project Overview
@@ -22,21 +22,21 @@ These files define the agent's operating logic and must be loaded automatically:
 - `Core/ASKI_FS_SPEC.md`: Filesystem Ontology.
 
 ## 3. Component Status Map
-- **Engine (`mentci-aid`):** `src/main.rs`. Status: **Experimental / Not in a running state.**
-- **Orchestration:** `scripts/launcher/` (Jail), `scripts/commit/` (Shipping).
-- **Truth Layer:** `schema/*.capnp` (Semantic types), `Core/` (Architectural mandates).
+- **Engine (`mentci-aid`):** `Components/src/main.rs`. Status: **Experimental / Not in a running state.**
+- **Orchestration:** `Components/scripts/launcher/` (Jail), `Components/scripts/commit/` (Shipping).
+- **Truth Layer:** `Components/schema/*.capnp` (Semantic types), `Core/` (Architectural mandates).
 - **FS Ontology:** `Core/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
-- **Strategy System:** `strategies/<Subject>/`. Status: **Operational.** Active: `Agent-Authority-Alignment`, `Artifact-Sweep`, `Aski-Conversion`, `Aski-Refinement`, `Attractor`, `Debugging`, `Mentci-RFS`, `Project-Hardening`, `Strategy-Development`, `Universal-Program-Pack`.
+- **Strategy System:** `Strategies/<Subject>/`. Status: **Operational.** Active: `Agent-Authority-Alignment`, `Artifact-Sweep`, `Aski-Conversion`, `Aski-Refinement`, `Attractor`, `Debugging`, `Mentci-RFS`, `Project-Hardening`, `Strategy-Development`, `Universal-Program-Pack`.
 - **Strategy Queue:** `Library/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
 - **Development Loop:** `Library/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `Library/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
-- **Orchestration Scripts:** `scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
-- **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
+- **Orchestration Scripts:** `Components/scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
+- **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `Components/nix/jail.nix`.
 - **VCS Guardrail:** `Inputs/` is gitignored as mounted runtime substrate; input updates are managed through flake/input refresh workflows, not direct Git tracking.
-- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `strategies/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
+- **Audit Trail:** `jj log` (VCS), `Outputs/Logs/RELEASE_MILESTONES.md` (Human-readable history), `Outputs/Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Strategies/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
 
 ## 4. Operational Requirements
-- **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Logs/RELEASE_MILESTONES.md`.
-- **Purity:** All work occurs in the Nix Jail. Editor synchronization is managed via `tools/emacs/mentci.el`.
+- **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Outputs/Logs/RELEASE_MILESTONES.md`.
+- **Purity:** All work occurs in the Nix Jail. Editor synchronization is managed via `Components/tools/emacs/mentci.el`.
 
 *The Great Work continues.*
