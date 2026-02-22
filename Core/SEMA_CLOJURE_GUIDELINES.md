@@ -20,6 +20,10 @@ This document defines the mandatory Sema object rules for Clojure and its extens
    Domain behavior must be expressed as protocol methods implemented by object-bearing
    types/records. Namespace free functions are orchestration shells, not domain homes.
 
+5. **Object Names Must Be Domain Nouns**
+   Object schema names must not encode flow (`ParseInput`, `BuildOutput`) or redundant
+   type words (`InputText`, `UserString`) when schema shape already declares type.
+
 ## Clojure Object Model
 
 ### Object Definition
@@ -35,17 +39,17 @@ Sema objects are EDN maps with a Malli schema. Object identity is the schema nam
 Every function takes a single input object and returns a single output object.
 
 ```clojure
-(def GreetInput
+(def GreetingRequest
   [:map
    [:name :string]])
 
-(def GreetOutput
+(def GreetingResponse
   [:map
    [:message :string]])
 
 (defn greet [input]
-  (when-not (m/validate GreetInput input)
-    (throw (ex-info "Invalid greet input" {:errors (me/humanize (m/explain GreetInput input))})))
+  (when-not (m/validate GreetingRequest input)
+    (throw (ex-info "Invalid greet input" {:errors (me/humanize (m/explain GreetingRequest input))})))
   {:message (str "Hello " (:name input))})
 ```
 
@@ -54,11 +58,11 @@ When behavior belongs to an object domain, define a protocol and implement it on
 named object type (usually `defrecord`).
 
 ```clojure
-(def ParseInput
+(def Source
   [:map
    [:raw :string]])
 
-(def ParseOutput
+(def Lines
   [:map
    [:lines [:vector :string]]])
 
@@ -82,7 +86,7 @@ Mapping to Rust trait-domain rule:
 Use `from_*`, `to_*`, `into_*` when construction or emission is implied.
 
 ```clojure
-(def ConfigInput
+(def ConfigSource
   [:map
    [:path :string]])
 
@@ -91,8 +95,8 @@ Use `from_*`, `to_*`, `into_*` when construction or emission is implied.
    [:raw :string]])
 
 (defn config-from-file [input]
-  (when-not (m/validate ConfigInput input)
-    (throw (ex-info "Invalid config-from-file input" {:errors (me/humanize (m/explain ConfigInput input))})))
+  (when-not (m/validate ConfigSource input)
+    (throw (ex-info "Invalid config-from-file input" {:errors (me/humanize (m/explain ConfigSource input))})))
   {:raw (slurp (:path input))})
 ```
 
@@ -106,7 +110,7 @@ Use `from_*`, `to_*`, `into_*` when construction or emission is implied.
 Use Malli function schemas with instrumentation instead of manual `m/validate`.
 
 ```clojure
-(m/=> greet [:=> [:cat GreetInput] GreetOutput])
+(m/=> greet [:=> [:cat GreetingRequest] GreetingResponse])
 (defn greet [input]
   {:message (str "Hello " (:name input))})
 ```
@@ -123,7 +127,7 @@ Enable instrumentation once in the entrypoint:
 Use the local `defn*` macro to reduce noise. It expands to `m/=>` plus `defn`.
 
 ```clojure
-(defn* greet [:=> [:cat GreetInput] GreetOutput]
+(defn* greet [:=> [:cat GreetingRequest] GreetingResponse]
   [input]
   {:message (str "Hello " (:name input))})
 ```

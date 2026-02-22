@@ -8,14 +8,14 @@ Evaluate whether Mentci Clojure/Malli typing can be made less verbose for:
 ## Current Pain Points
 1. Repetitive map declaration boilerplate:
 ```clojure
-(def ParseInput
+(def Source
   [:map
    [:raw :string]])
 ```
 
 2. Repetitive function schema wrapper boilerplate:
 ```clojure
-(defn* parse-descriptions [:=> [:cat ParseInput] [:vector :string]] [input] ...)
+(defn* to-lines [:=> [:cat Source] [:vector :string]] [input] ...)
 ```
 
 ## Findings
@@ -49,15 +49,20 @@ Evaluate whether Mentci Clojure/Malli typing can be made less verbose for:
 3. Reducing function signature noise is feasible with a local macro convention, but output typing must remain explicit or deterministic.
 - Example target authoring form:
 ```clojure
-(defn1 parse-descriptions ParseInput [input]
+(defn1 to-lines Source [input]
   ...)
 ```
 - Expansion strategy:
 - **Do not default to `:any`** (weakens schema contract).
 - Preferred options:
 - explicit output form in macro call
-- deterministic output inference rule (for example `ParseInput -> ParseOutput`, failing if unresolved)
-- emitted schema remains fully explicit (`[:=> [:cat ParseInput] ParseOutput]`)
+- deterministic output inference rule (for example `Source -> Lines`, failing if unresolved)
+- emitted schema remains fully explicit (`[:=> [:cat Source] Lines]`)
+
+4. Naming constraints from Sema/Criome protocol apply to syntax sugar:
+- Flow-role object names such as `ParseInput` are structurally weak.
+- Type-redundant names such as `InputText` are redundant when schema already encodes `:string`.
+- Prefer domain nouns (`Source`, `Lines`, `ConfigSource`) and direction methods (`to-lines`, `from-*`).
 
 ## Risk Notes
 1. `malli.experimental.lite` is experimental upstream; hard dependency could increase long-term maintenance risk.

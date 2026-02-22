@@ -8,6 +8,7 @@ Reduce repetitive Malli authoring noise while preserving:
 - explicit schema truth
 - instrumentation compatibility
 - methods-on-objects-first semantics (mirrored from Rust trait-domain rule)
+- domain-noun object naming (no `ParseInput`, no type-redundant names like `InputText`)
 
 ## 2. Scope
 - Clojure script schemas under `scripts/`.
@@ -27,14 +28,14 @@ needs a structural mirror of `Core/SEMA_RUST_GUIDELINES.md`:
 ### 3.1 Schema Declaration Sugar
 Current:
 ```clojure
-(def ParseInput
+(def Source
   [:map
    [:raw :string]])
 ```
 
 Target:
 ```clojure
-(defobj ParseInput
+(defobj Source
   {:raw :string})
 ```
 
@@ -45,12 +46,12 @@ Expansion:
 ### 3.2 Function Signature Sugar
 Current:
 ```clojure
-(defn* parse-descriptions [:=> [:cat ParseInput] [:vector :string]] [input] ...)
+(defn* to-lines [:=> [:cat Source] [:vector :string]] [input] ...)
 ```
 
 Target (input-first form):
 ```clojure
-(defn1 parse-descriptions ParseInput [input] ...)
+(defn1 to-lines Source [input] ...)
 ```
 
 Expansion:
@@ -58,12 +59,12 @@ Expansion:
 - macro uses one of two safe modes:
 1. explicit output:
 ```clojure
-(defn1 parse-descriptions ParseInput [:vector :string] [input] ...)
+(defn1 to-lines Source [:vector :string] [input] ...)
 ```
 2. deterministic inferred output (by naming contract):
 ```clojure
-;; ParseInput => ParseOutput (must exist, else compile-time error)
-(defn1 parse-descriptions ParseInput [input] ...)
+;; Source => Lines (must exist, else compile-time error)
+(defn1 to-lines Source [input] ...)
 ```
 
 ## 4. Implementation Plan
@@ -92,6 +93,9 @@ Expansion:
 
 6. If pilot is stable, draft migration guide for broader rollout.
 7. Add compile-time failure for unresolved inferred output types.
+8. Add compile-time failure for flow/redundant object names:
+- reject `*Input`/`*Output` flow-role suffixes in object schemas.
+- reject type-redundant names like `*Text` when schema is scalar `:string`.
 
 ## 5. Non-Goals (Phase 1)
 - Removing map field keys (`:raw`, `:path`, etc.) from object schemas.
