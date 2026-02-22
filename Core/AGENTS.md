@@ -25,6 +25,7 @@ Enforcement requirements:
 *   **Solar Baseline Prefix:** Every prompt-handling response (including intermediary updates and final response) must begin with the current ordinal solar baseline line.
     *   Format: `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
     *   Canonical example: `solar: 5919.12.05.04.04`
+    *   Layout rule: insert exactly one blank line immediately after the `solar:` line before any other response content.
     *   Canonical acquisition:
       1. `chronos --format am --precision second`
       2. fallback `cargo run --quiet --manifest-path Components/Cargo.toml --bin chronos -- --format am --precision second`
