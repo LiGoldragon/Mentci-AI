@@ -34,10 +34,13 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 6. Session synthesis:
    - If there is exactly one sub-commit for the prompt: prepend that commit description with the final `session:` message block (do not add a separate final commit).
    - If there are multiple sub-commits: duplicate the sub-commit branch, squash the duplicated branch into one final `session:` commit, and append the duplicated sub-branch change IDs in the final message.
+6.1 Preferred automation for finalization:
+   - Use `bb Components/scripts/session_finalize/main.clj` to synthesize a compliant `session:` message and safely target the finalized non-empty revision.
+   - This prevents moving bookmarks onto empty working-copy commits.
 7. Before declaring the prompt complete, run `bb Components/scripts/session_guard/main.clj`; non-zero exit means session synthesis is missing or malformed.
 8. Run `bb Components/scripts/root_guard/main.clj`; non-zero exit means top-level FS contract drift.
 9. Advance and push once:
-   - `jj bookmark set dev -r @`
+   - `jj bookmark set dev -r @- --allow-backwards`
    - `jj git push --bookmark dev`
 10. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
 11. Verify push landed before declaring completion:

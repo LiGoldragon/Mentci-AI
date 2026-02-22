@@ -112,7 +112,7 @@ After final session synthesis is complete (single or multi mode), push and verif
 
 Verification gate before `jj new dev`:
 ```
-jj bookmark set dev -r @
+jj bookmark set dev -r @- --allow-backwards
 jj git push --bookmark dev
 jj log -r 'bookmarks(dev) | remote_bookmarks(dev@origin)' --no-graph
 ```
