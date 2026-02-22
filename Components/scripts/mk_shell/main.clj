@@ -9,7 +9,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
@@ -21,10 +21,20 @@
 (def ShellMainInput
   [:map])
 
-(defn* validate-spec [:=> [:cat types/ShellSpec] :any] [spec]
+(defprotocol ShellOps
+  (validate-spec-for [this input])
+  (run-shell-for [this input]))
+
+(defrecord DefaultShell [])
+
+(impl DefaultShell ShellOps validate-spec-for
+  [:=> [:cat :any types/ShellSpec] :any]
+  [this spec]
   spec)
 
-(defn* main [:=> [:cat ShellMainInput] :any] [_]
+(impl DefaultShell ShellOps run-shell-for
+  [:=> [:cat :any ShellMainInput] :any]
+  [this input]
   (let [attrs-file (io/file ".attrs.json")
         ;; Support both structured attrs and traditional env vars
         spec-json (if (.exists attrs-file)
@@ -38,7 +48,7 @@
       (do (binding [*out* *err*] (println "Error: $out not set."))
           (System/exit 1))
       (do
-        (validate-spec spec)
+        (validate-spec-for this spec)
         (.mkdirs out-bin)
         (.mkdirs (io/file out))
         (let [shell-name (:name spec)
@@ -60,4 +70,10 @@
           (spit setup-file setup-content)
           (println (str "Generated shell setup for " shell-name " at " setup-file)))))))
 
-(main {})
+(def default-shell (->DefaultShell))
+
+(main ShellMainInput
+  [input]
+  (run-shell-for default-shell input))
+
+(-main {})

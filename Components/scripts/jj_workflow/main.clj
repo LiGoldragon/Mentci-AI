@@ -10,7 +10,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
@@ -24,6 +24,15 @@
 (def RunJJInput [:map [:runtime :map] [:args [:vector :string]]])
 (def AllowedTargetInput [:map [:targetBookmark :string] [:allowedPushBookmarks [:set :string]]])
 (def AllowedHostInput [:map [:host :string] [:allowedHosts [:set :string]]])
+
+(def Input
+  [:map
+   [:args [:vector :string]]])
+
+(defprotocol JJWorkflowOps
+  (run-cli-for [this input]))
+
+(defrecord DefaultJJWorkflow [])
 
 (defn* die [:=> [:cat DieInput] :any] [input]
   (println (:message input))
@@ -120,8 +129,9 @@
   (println "  commit <message>")
   (println "  push [remote] [bookmark]"))
 
-(defn* -main [:=> [:cat [:* :string]] :any] [& args]
-  (let [{:keys [runtimePath command rest]} (parse-args {:args (vec args)})
+(defn* run-cli [:=> [:cat Input] :any] [input]
+  (let [args (:args input)
+        {:keys [runtimePath command rest]} (parse-args {:args args})
         runtime-path (or runtimePath (default-runtime-path))
         runtime (load-runtime {:runtimePath runtime-path})
         working-bookmark (get runtime :workingBookmark "dev")
@@ -175,4 +185,16 @@
 
       (usage))))
 
-(-main (vec *command-line-args*))
+(impl DefaultJJWorkflow JJWorkflowOps run-cli-for
+  [:=> [:cat :any Input] :any]
+  [this input]
+  (run-cli input))
+
+(def default-jj-workflow (->DefaultJJWorkflow))
+
+(main Input
+  [input]
+  (run-cli-for default-jj-workflow input))
+
+(when (= *file* (System/getProperty "babashka.file"))
+  (-main {:args (vec *command-line-args*)}))

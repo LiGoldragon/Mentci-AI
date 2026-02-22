@@ -7,7 +7,7 @@
          '[clojure.java.io :as io])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -30,7 +30,18 @@
   #{"flake.nix" "flake.lock" ".gitignore" ".envrc" "AGENTS.md" "README.md"
     ".attrs.json" ".opencode.edn"})
 
-(defn* list-root-entries [:=> [:cat] [:vector Entry]] []
+(defprotocol RootGuardOps
+  (list-root-entries-for [this input])
+  (runtime-dir-for [this input])
+  (classify-violations-for [this input])
+  (fail-for [this input])
+  (pass-for [this input]))
+
+(defrecord DefaultRootGuard [])
+
+(impl DefaultRootGuard RootGuardOps list-root-entries-for
+  [:=> [:cat :any :map] [:vector Entry]]
+  [this input]
   (let [root (io/file ".")]
     (->> (.listFiles root)
          (map (fn [f]
@@ -39,12 +50,16 @@
          (sort-by :name)
          vec)))
 
-(defn* runtime-dir? [:=> [:cat [:map [:name :string]]] :boolean] [input]
+(impl DefaultRootGuard RootGuardOps runtime-dir-for
+  [:=> [:cat :any [:map [:name :string]]] :boolean]
+  [this input]
   (let [name (:name input)]
     (or (contains? allowed-runtime-dirs name)
         (.startsWith name ".jj_"))))
 
-(defn* classify-violations [:=> [:cat [:map [:entries [:vector Entry]]]] [:vector :string]] [input]
+(impl DefaultRootGuard RootGuardOps classify-violations-for
+  [:=> [:cat :any [:map [:entries [:vector Entry]]]] [:vector :string]]
+  [this input]
   (let [entries (:entries input)]
     (->> entries
          (mapcat (fn [{:keys [name dir?]}]
@@ -52,7 +67,7 @@
                      (and dir? (contains? allowed-domain-dirs name))
                      []
 
-                     (and dir? (runtime-dir? {:name name}))
+                     (and dir? (runtime-dir-for this {:name name}))
                      []
 
                      (and (not dir?) (contains? allowed-top-files name))
@@ -65,21 +80,28 @@
                      [(str "unexpected top-level file: " name)])))
          vec)))
 
-(defn* fail! [:=> [:cat [:map [:errors [:vector :string]]]] :any] [input]
+(impl DefaultRootGuard RootGuardOps fail-for
+  [:=> [:cat :any [:map [:errors [:vector :string]]]] :any]
+  [this input]
   (binding [*out* *err*]
     (println "Root guard failed:")
     (doseq [error (:errors input)]
       (println (str "- " error))))
   (System/exit 1))
 
-(defn* pass! [:=> [:cat] :any] []
+(impl DefaultRootGuard RootGuardOps pass-for
+  [:=> [:cat :any :map] :any]
+  [this input]
   (println "Root guard passed: top-level entries match the FS contract."))
 
+(def default-root-guard (->DefaultRootGuard))
+
 (main Input
-  (let [entries (list-root-entries)
-        errors (classify-violations {:entries entries})]
+  [input]
+  (let [entries (list-root-entries-for default-root-guard {})
+        errors (classify-violations-for default-root-guard {:entries entries})]
     (if (seq errors)
-      (fail! {:errors errors})
-      (pass!))))
+      (fail-for default-root-guard {:errors errors})
+      (pass-for default-root-guard {}))))
 
 (-main {:args (vec *command-line-args*)})

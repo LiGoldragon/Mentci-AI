@@ -7,12 +7,11 @@
 (require '[clojure.edn :as edn]
          '[clojure.java.io :as io]
          '[clojure.string :as str]
-         '[cheshire.core :as json]
-         '[clojure.set :as set])
+         '[cheshire.core :as json])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -68,12 +67,29 @@
 (def group-write java.nio.file.attribute.PosixFilePermission/GROUP_WRITE)
 (def others-write java.nio.file.attribute.PosixFilePermission/OTHERS_WRITE)
 
-(defn* fail [:=> [:cat FailInput] :any] [input]
+(defprotocol InputsRemountOps
+  (fail-for [this input])
+  (parse-args-for [this input])
+  (keywordize-keys-for [this input])
+  (find-jail-config-for [this input])
+  (read-jail-config-for [this input])
+  (read-whitelist-for [this input])
+  (delete-path-for [this input])
+  (remount-input-for [this input])
+  (strip-write-permissions-for [this input]))
+
+(defrecord DefaultInputsRemount [])
+
+(impl DefaultInputsRemount InputsRemountOps fail-for
+  [:=> [:cat :any FailInput] :any]
+  [this input]
   (binding [*out* *err*]
     (println (:message input)))
   (System/exit 1))
 
-(defn* parse-args [:=> [:cat ParseArgsInput] RemountArgs] [input]
+(impl DefaultInputsRemount InputsRemountOps parse-args-for
+  [:=> [:cat :any ParseArgsInput] RemountArgs]
+  [this input]
   (loop [remaining (:args input)
          options {:attrsPath ".attrs.json"
                   :inputsPath nil
@@ -97,46 +113,56 @@
             (System/exit 0))
 
           :else
-          (fail {:message (str "Unknown argument: " arg)}))))))
+          (fail-for this {:message (str "Unknown argument: " arg)}))))))
 
-(defn* keywordize-keys [:=> [:cat KeywordizeKeysInput] :map] [input]
+(impl DefaultInputsRemount InputsRemountOps keywordize-keys-for
+  [:=> [:cat :any KeywordizeKeysInput] :map]
+  [this input]
   (let [data (:data input)]
-    (into {} (for [[k v] data]
-               [(keyword k)
-                (if (map? v)
-                  (keywordize-keys {:data v})
-                  v)]))))
+    (into {}
+          (for [[k v] data]
+            [(keyword k)
+             (if (map? v)
+               (keywordize-keys-for this {:data v})
+               v)]))))
 
-(defn* find-jail-config [:=> [:cat FindJailConfigInput] [:maybe :map]] [input]
+(impl DefaultInputsRemount InputsRemountOps find-jail-config-for
+  [:=> [:cat :any FindJailConfigInput] [:maybe :map]]
+  [this input]
   (let [data (:data input)]
     (cond
       (and (map? data) (get data "inputsPath")) data
       (and (map? data) (get data :inputsPath)) data
-      (map? data) (some #(find-jail-config {:data %}) (vals data))
-      (string? data) (try (find-jail-config {:data (json/parse-string data)}) (catch Exception _ nil))
-      (coll? data) (some #(find-jail-config {:data %}) data)
+      (map? data) (some #(find-jail-config-for this {:data %}) (vals data))
+      (string? data) (try (find-jail-config-for this {:data (json/parse-string data)}) (catch Exception _ nil))
+      (coll? data) (some #(find-jail-config-for this {:data %}) data)
       :else nil)))
 
-(defn* read-jail-config [:=> [:cat ReadConfigInput] types/JailConfig] [input]
+(impl DefaultInputsRemount InputsRemountOps read-jail-config-for
+  [:=> [:cat :any ReadConfigInput] types/JailConfig]
+  [this input]
   (let [attrs-file (io/file (:attrsPath input))
         full-config (if (.exists attrs-file)
                       (json/parse-string (slurp attrs-file))
                       (when-let [env-val (System/getenv "jailConfig")]
                         (json/parse-string env-val)))
-        config-raw (find-jail-config {:data full-config})]
+        config-raw (find-jail-config-for this {:data full-config})]
     (when-not config-raw
-      (fail {:message "Configuration not found. Expected .attrs.json or jailConfig env var."}))
-    (let [config (keywordize-keys {:data config-raw})]
-      config)))
+      (fail-for this {:message "Configuration not found. Expected .attrs.json or jailConfig env var."}))
+    (keywordize-keys-for this {:data config-raw})))
 
-(defn* read-whitelist [:=> [:cat WhitelistInput] [:set :string]] [input]
+(impl DefaultInputsRemount InputsRemountOps read-whitelist-for
+  [:=> [:cat :any WhitelistInput] [:set :string]]
+  [this input]
   (let [whitelist-file (io/file (:whitelistPath input))]
     (if (.exists whitelist-file)
       (let [data (edn/read-string (slurp whitelist-file))]
         (or (:whitelist data) #{}))
-      (fail {:message (str "Whitelist file not found: " (:whitelistPath input))}))))
+      (fail-for this {:message (str "Whitelist file not found: " (:whitelistPath input))}))))
 
-(defn* delete-path! [:=> [:cat DeletePathInput] :any] [input]
+(impl DefaultInputsRemount InputsRemountOps delete-path-for
+  [:=> [:cat :any DeletePathInput] :any]
+  [this input]
   (let [path-str (:path input)
         path (.toPath (io/file path-str))]
     (when (java.nio.file.Files/exists path (into-array java.nio.file.LinkOption []))
@@ -149,21 +175,25 @@
             (finally
               (.close stream))))))))
 
-(defn* remount-input! [:=> [:cat RemountInput] :any] [input]
+(impl DefaultInputsRemount InputsRemountOps remount-input-for
+  [:=> [:cat :any RemountInput] :any]
+  [this input]
   (let [{:keys [name sourcePath targetPath]} input
         source-file (io/file sourcePath)
         target-file (io/file targetPath)]
     (when-not (.exists source-file)
-      (fail {:message (str "Source path for " name " does not exist: " sourcePath)}))
+      (fail-for this {:message (str "Source path for " name " does not exist: " sourcePath)}))
     (when-let [parent (.getParentFile target-file)]
       (.mkdirs parent))
-    (delete-path! {:path targetPath})
+    (delete-path-for this {:path targetPath})
     (java.nio.file.Files/createSymbolicLink
       (.toPath target-file)
       (.toPath source-file)
       (into-array java.nio.file.attribute.FileAttribute []))))
 
-(defn* strip-write-permissions! [:=> [:cat StripWriteInput] :map] [input]
+(impl DefaultInputsRemount InputsRemountOps strip-write-permissions-for
+  [:=> [:cat :any StripWriteInput] :map]
+  [this input]
   (let [root (.toPath (io/file (:path input)))]
     (if-not (java.nio.file.Files/exists root (into-array java.nio.file.LinkOption []))
       {:visited 0 :changed 0 :skipped 0}
@@ -191,11 +221,41 @@
                   (catch UnsupportedOperationException _
                     (update acc :skipped inc))
                   (catch Exception _
-                    (update acc :skipped inc)))) )
+                    (update acc :skipped inc)))))
             {:visited 0 :changed 0 :skipped 0}
             (iterator-seq (.iterator stream)))
           (finally
             (.close stream)))))))
+
+(def default-inputs-remount (->DefaultInputsRemount))
+
+;; Compatibility wrappers for existing tests/callers.
+(defn* fail [:=> [:cat FailInput] :any] [input]
+  (fail-for default-inputs-remount input))
+
+(defn* parse-args [:=> [:cat ParseArgsInput] RemountArgs] [input]
+  (parse-args-for default-inputs-remount input))
+
+(defn* keywordize-keys [:=> [:cat KeywordizeKeysInput] :map] [input]
+  (keywordize-keys-for default-inputs-remount input))
+
+(defn* find-jail-config [:=> [:cat FindJailConfigInput] [:maybe :map]] [input]
+  (find-jail-config-for default-inputs-remount input))
+
+(defn* read-jail-config [:=> [:cat ReadConfigInput] types/JailConfig] [input]
+  (read-jail-config-for default-inputs-remount input))
+
+(defn* read-whitelist [:=> [:cat WhitelistInput] [:set :string]] [input]
+  (read-whitelist-for default-inputs-remount input))
+
+(defn* delete-path! [:=> [:cat DeletePathInput] :any] [input]
+  (delete-path-for default-inputs-remount input))
+
+(defn* remount-input! [:=> [:cat RemountInput] :any] [input]
+  (remount-input-for default-inputs-remount input))
+
+(defn* strip-write-permissions! [:=> [:cat StripWriteInput] :map] [input]
+  (strip-write-permissions-for default-inputs-remount input))
 
 (main Input
   [input]

@@ -8,7 +8,7 @@
          '[clojure.java.shell :refer [sh]])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -76,6 +76,11 @@
 (def EnsureTopicReadmeInput
   [:map
    [:subject :string]])
+
+(defprotocol AnswerReportOps
+  (run-report-for [this input]))
+
+(defrecord DefaultAnswerReport [])
 
 (defn* fail [:=> [:cat FailInput] :any] [input]
   (binding [*out* *err*]
@@ -269,8 +274,9 @@
                "- This report is required for `answer`, `draft`, and `question` responses.\n"
                "- Reporting still applies when response scope is `no-files`.\n"))))
 
-(main Input
-  [input]
+(impl DefaultAnswerReport AnswerReportOps run-report-for
+  [:=> [:cat :any Input] :any]
+  [this input]
   (let [opts (parse-args {:args (:args input)})
         prompt (read-text {:value (:prompt opts)
                            :path (:prompt-file opts)
@@ -304,5 +310,11 @@
                     :prompt prompt
                     :answer answer})
     (println path)))
+
+(def default-answer-report (->DefaultAnswerReport))
+
+(main Input
+  [input]
+  (run-report-for default-answer-report input))
 
 (-main {:args (vec *command-line-args*)})

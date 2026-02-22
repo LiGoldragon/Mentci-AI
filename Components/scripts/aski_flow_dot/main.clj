@@ -13,7 +13,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -33,6 +33,11 @@
 (def Input
   [:map
    [:args [:vector :string]]])
+
+(defprotocol AskiFlowOps
+  (run-flow-cli-for [this input]))
+
+(defrecord DefaultAskiFlow [])
 
 (defn* to-id [:=> [:cat [:or :symbol :keyword :string]] :string] [value]
   (cond
@@ -183,8 +188,9 @@
 (defmacro aski-flow->dot-macro [flow]
   (graphviz-json->dot {:graph (aski-flow->graphviz-json {:flow flow :graphId "AskiFlow"})}))
 
-(main Input
-  [input]
+(impl DefaultAskiFlow AskiFlowOps run-flow-cli-for
+  [:=> [:cat :any Input] :any]
+  [this input]
   (let [args (:args input)
         flow-file (first args)
         graph-id (second args)]
@@ -195,6 +201,12 @@
       (let [flow (read-string (slurp flow-file))
             dot (aski-flow->dot {:flow flow :graphId graph-id})]
         (println dot)))))
+
+(def default-aski-flow (->DefaultAskiFlow))
+
+(main Input
+  [input]
+  (run-flow-cli-for default-aski-flow input))
 
 (when (= *file* (System/getProperty "babashka.file"))
   (-main {:args (vec *command-line-args*)}))

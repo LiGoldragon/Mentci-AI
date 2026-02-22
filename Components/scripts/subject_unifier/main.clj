@@ -8,7 +8,7 @@
          '[clojure.set :as set])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -40,6 +40,11 @@
    [:strategyPath :string]
    [:topicPath :string]
    [:exists? :boolean]])
+
+(defprotocol SubjectUnifierOps
+  (run-unifier-for [this input]))
+
+(defrecord DefaultSubjectUnifier [])
 
 (defn* parse-args [:=> [:cat ParseArgsInput] :map] [input]
   (let [args (:args input)]
@@ -211,8 +216,9 @@
                       (str content "\n\n" snippet))]
         (spit path updated)))))
 
-(main Input
-  [input]
+(impl DefaultSubjectUnifier SubjectUnifierOps run-unifier-for
+  [:=> [:cat :any Input] :any]
+  [this input]
   (let [{:keys [write?]} (parse-args {:args (:args input)})]
     (when write?
       (migrate-legacy-reports!)
@@ -249,5 +255,11 @@
                                          :exists? exists?})))
           (ensure-reports-readme-section!)
           (println "Applied subject unification changes."))))))
+
+(def default-subject-unifier (->DefaultSubjectUnifier))
+
+(main Input
+  [input]
+  (run-unifier-for default-subject-unifier input))
 
 (-main {:args (vec *command-line-args*)})

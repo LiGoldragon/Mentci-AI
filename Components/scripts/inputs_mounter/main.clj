@@ -11,7 +11,7 @@
          '[cheshire.core :as json])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -41,6 +41,11 @@
 (def Input
   [:map
    [:args [:vector :string]]])
+
+(defprotocol InputsMounterOps
+  (run-mounter-for [this input]))
+
+(defrecord DefaultInputsMounter [])
 
 (defn* fail! [:=> [:cat [:map [:message :string]]] :any] [input]
   (binding [*out* *err*]
@@ -164,8 +169,9 @@
                   (into-array java.nio.file.attribute.FileAttribute []))
                 {:action "linked-ro" :target targetPath :source sourcePath}))))))))
 
-(main Input
-  [input]
+(impl DefaultInputsMounter InputsMounterOps run-mounter-for
+  [:=> [:cat :any Input] :any]
+  [this input]
   (let [{:keys [attrs inputsRoot mode replace? write? whitelistPath]} (parse-args {:args (:args input)})
         _ (when-not (#{"ro" "rw"} mode)
             (fail! {:message (str "Invalid --mode: " mode " (expected ro|rw)")}))
@@ -206,5 +212,11 @@
       (println (str "Processed entries: " (count results)))
       (when-not write?
         (println "Dry run only. Re-run with --write to apply.")))))
+
+(def default-inputs-mounter (->DefaultInputsMounter))
+
+(main Input
+  [input]
+  (run-mounter-for default-inputs-mounter input))
 
 (-main {:args (vec *command-line-args*)})

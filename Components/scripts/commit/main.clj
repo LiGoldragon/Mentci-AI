@@ -10,7 +10,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
@@ -44,6 +44,15 @@
   [:map
    [:targetBookmark :string]
    [:allowedPushBookmarks [:set :string]]])
+
+(def Input
+  [:map
+   [:args [:vector :string]]])
+
+(defprotocol CommitOps
+  (run-cli-for [this input]))
+
+(defrecord DefaultCommit [])
 
 (defn* parse-commit-args [:=> [:cat ParseCommitArgsInput] :map] [input]
   (let [args (:args input)]
@@ -117,17 +126,30 @@
                       (System/exit (:exit res2)))
                   (println (str "Successfully committed and advanced bookmark '" target-bookmark "' from workspace.")))))))))))
 
-(defn* -main [:=> [:cat [:* :string]] :any] [& args]
-  (let [{:keys [runtimePath message]} (parse-commit-args {:args (vec args)})
+(defn* run-cli [:=> [:cat Input] :any] [input]
+  (let [args (:args input)
+        {:keys [runtimePath message]} (parse-commit-args {:args args})
         runtime-path (or runtimePath (default-runtime-path))
         runtime (load-runtime {:runtimePath runtime-path})
-        input {:message message
-               :runtimePath runtime-path
-               :workingBookmark (get runtime :workingBookmark "dev")
-               :targetBookmark (get runtime :targetBookmark "jailCommit")
-               :repoRoot (get runtime :repoRoot "")
-               :workspaceRoot (get runtime :workspaceRoot "")
-               :policyPath (get runtime :policyPath nil)}]
-    (run-commit input)))
+        payload {:message message
+                 :runtimePath runtime-path
+                 :workingBookmark (get runtime :workingBookmark "dev")
+                 :targetBookmark (get runtime :targetBookmark "jailCommit")
+                 :repoRoot (get runtime :repoRoot "")
+                 :workspaceRoot (get runtime :workspaceRoot "")
+                 :policyPath (get runtime :policyPath nil)}]
+    (run-commit payload)))
 
-(-main (vec *command-line-args*))
+(impl DefaultCommit CommitOps run-cli-for
+  [:=> [:cat :any Input] :any]
+  [this input]
+  (run-cli input))
+
+(def default-commit (->DefaultCommit))
+
+(main Input
+  [input]
+  (run-cli-for default-commit input))
+
+(when (= *file* (System/getProperty "babashka.file"))
+  (-main {:args (vec *command-line-args*)}))

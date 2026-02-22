@@ -11,7 +11,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* impl enable!]])
 
 (enable!)
 
@@ -61,40 +61,46 @@
    [:outputsPath :string]
    [:registryPath [:maybe :string]]])
 
-(defn* validate-config [:=> [:cat types/JailConfig] :any] [config]
+(defprotocol LauncherOps
+  (validate-config-for [this config])
+  (provision-input-for [this input])
+  (keywordize-keys-for [this input])
+  (find-jail-config-for [this input])
+  (load-component-index-for [this input])
+  (resolve-component-index-for [this input])
+  (write-component-registry-for [this input]))
+
+(defrecord DefaultLauncher [])
+
+(impl DefaultLauncher LauncherOps validate-config-for
+  [:=> [:cat :any types/JailConfig] :any]
+  [this config]
   config)
 
-(defn* provision-input [:=> [:cat ProvisionInput] :any] [input]
+(impl DefaultLauncher LauncherOps provision-input-for
+  [:=> [:cat :any ProvisionInput] :any]
+  [this input]
   (let [{:keys [name inputType sourcePath srcPath inputsRoot isImpure]} input
         target-root (io/file inputsRoot)
         target-path (io/file target-root name)
-        ;; Prefer srcPath for mounting (often a read-only store path)
         final-source (or srcPath sourcePath)]
     (.mkdirs target-root)
     (if isImpure
-      ;; Impure Mode: Mutable Copy
       (if (and (.exists target-path)
                (.isDirectory target-path)
                (not (java.nio.file.Files/isSymbolicLink (.toPath target-path))))
-        ;; It's already a real directory (user managed?), skip
         (println (str "Skipping " name " (Mutable): Already exists as a directory."))
-        ;; Else, it's either missing or a symlink (from previous pure run). Replace it.
         (do
           (when (.exists target-path)
-            (io/delete-file target-path)) ;; Deletes symlink
+            (io/delete-file target-path))
           (println (str "Materializing " name " [" inputType "] (Mutable)..."))
           (let [{:keys [exit err]} (sh "rsync" "-aL" "--chmod=u+w" (str final-source "/") (.getPath target-path))]
             (when-not (zero? exit)
               (println (str "Error materializing " name ": " err))))))
-      ;; Pure Mode: Symlink (Immutable)
       (do
-        ;; Clean up if it exists
         (when (.exists target-path)
           (if (and (.isDirectory target-path) (not (java.nio.file.Files/isSymbolicLink (.toPath target-path))))
-            ;; If it was a directory (from impure run), warn and skip? Or delete?
-            ;; Safety: Warn and skip. Pure jail shouldn't destroy user work.
             (println (str "Warning: " name " is a mutable directory. Skipping symlink in Pure mode."))
-            ;; Else delete (it's a symlink or file)
             (io/delete-file target-path)))
         (when-not (.exists target-path)
           (try
@@ -106,21 +112,27 @@
               (binding [*out* *err*]
                 (println (str "Error linking " name ": " (.getMessage e)))))))))))
 
-(defn* keywordize-keys [:=> [:cat KeywordizeKeysInput] :map] [input]
+(impl DefaultLauncher LauncherOps keywordize-keys-for
+  [:=> [:cat :any KeywordizeKeysInput] :map]
+  [this input]
   (let [data (:data input)]
-    (into {} (for [[k v] data] [(keyword k) (if (map? v) (keywordize-keys {:data v}) v)]))))
+    (into {} (for [[k v] data] [(keyword k) (if (map? v) (keywordize-keys-for this {:data v}) v)]))))
 
-(defn* find-jail-config [:=> [:cat FindJailConfigInput] [:maybe :map]] [input]
+(impl DefaultLauncher LauncherOps find-jail-config-for
+  [:=> [:cat :any FindJailConfigInput] [:maybe :map]]
+  [this input]
   (let [data (:data input)]
     (cond
       (and (map? data) (get data "inputsPath")) data
       (and (map? data) (get data :inputsPath)) data
-      (map? data) (some #(find-jail-config {:data %}) (vals data))
-      (string? data) (try (find-jail-config {:data (json/parse-string data)}) (catch Exception _ nil))
-      (coll? data) (some #(find-jail-config {:data %}) data)
+      (map? data) (some #(find-jail-config-for this {:data %}) (vals data))
+      (string? data) (try (find-jail-config-for this {:data (json/parse-string data)}) (catch Exception _ nil))
+      (coll? data) (some #(find-jail-config-for this {:data %}) data)
       :else nil)))
 
-(defn* load-component-index [:=> [:cat LoadComponentIndexInput] ComponentIndex] [input]
+(impl DefaultLauncher LauncherOps load-component-index-for
+  [:=> [:cat :any LoadComponentIndexInput] ComponentIndex]
+  [this input]
   (let [index-file (io/file (:indexPath input))]
     (when-not (.exists index-file)
       (binding [*out* *err*]
@@ -128,7 +140,9 @@
         (System/exit 1)))
     (edn/read-string (slurp index-file))))
 
-(defn* resolve-component-index [:=> [:cat ResolveComponentIndexInput] :map] [input]
+(impl DefaultLauncher LauncherOps resolve-component-index-for
+  [:=> [:cat :any ResolveComponentIndexInput] :map]
+  [this input]
   (let [components (:components (:index input))
         ids (map :id components)
         dup-ids (->> ids frequencies (filter (fn [[_ c]] (> c 1))) (map first) vec)]
@@ -154,13 +168,38 @@
              {}
              components)}))
 
-(defn* write-component-registry! [:=> [:cat WriteComponentRegistryInput] :string] [input]
+(impl DefaultLauncher LauncherOps write-component-registry-for
+  [:=> [:cat :any WriteComponentRegistryInput] :string]
+  [this input]
   (let [out-path (or (:registryPath input)
                      (str (:outputsPath input) "/component_registry.json"))
         out-file (io/file out-path)]
     (io/make-parents out-file)
     (spit out-file (json/generate-string (:registry input) {:pretty true}))
     out-path))
+
+(def default-launcher (->DefaultLauncher))
+
+(defn* validate-config [:=> [:cat types/JailConfig] :any] [config]
+  (validate-config-for default-launcher config))
+
+(defn* provision-input [:=> [:cat ProvisionInput] :any] [input]
+  (provision-input-for default-launcher input))
+
+(defn* keywordize-keys [:=> [:cat KeywordizeKeysInput] :map] [input]
+  (keywordize-keys-for default-launcher input))
+
+(defn* find-jail-config [:=> [:cat FindJailConfigInput] [:maybe :map]] [input]
+  (find-jail-config-for default-launcher input))
+
+(defn* load-component-index [:=> [:cat LoadComponentIndexInput] ComponentIndex] [input]
+  (load-component-index-for default-launcher input))
+
+(defn* resolve-component-index [:=> [:cat ResolveComponentIndexInput] :map] [input]
+  (resolve-component-index-for default-launcher input))
+
+(defn* write-component-registry! [:=> [:cat WriteComponentRegistryInput] :string] [input]
+  (write-component-registry-for default-launcher input))
 
 (defn* main [:=> [:cat JailMainInput] :any] [_]
   (println "Initializing Mentci-AI Level 5 Jail Environment (Clojure/Babashka)...")

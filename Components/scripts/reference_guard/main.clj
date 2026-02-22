@@ -7,7 +7,7 @@
          '[clojure.string :as str])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -30,26 +30,42 @@
    [:content :string]
    [:allowlist [:set :string]]])
 
-(defn* file-extension-allowed? [:=> [:cat [:map [:path :string]]] :boolean] [input]
+(defprotocol ReferenceGuardOps
+  (file-extension-allowed-for [this input])
+  (collect-files-for [this input])
+  (rel-path-for [this input])
+  (check-file-for [this input]))
+
+(defrecord DefaultReferenceGuard [])
+
+(impl DefaultReferenceGuard ReferenceGuardOps file-extension-allowed-for
+  [:=> [:cat :any [:map [:path :string]]] :boolean]
+  [this input]
   (boolean (re-find #"\.(md|edn|clj|nix|toml|json|yaml|yml)$" (:path input))))
 
-(defn* collect-files [:=> [:cat CollectFilesInput] [:vector :any]] [input]
+(impl DefaultReferenceGuard ReferenceGuardOps collect-files-for
+  [:=> [:cat :any CollectFilesInput] [:vector :any]]
+  [this input]
   (let [root (io/file (:root input))]
     (if (.exists root)
       (if (.isFile root)
-        (if (file-extension-allowed? {:path (.getPath root)}) [root] [])
+        (if (file-extension-allowed-for this {:path (.getPath root)}) [root] [])
         (->> (file-seq root)
              (filter #(.isFile %))
-             (filter #(file-extension-allowed? {:path (.getPath %)}))
+             (filter #(file-extension-allowed-for this {:path (.getPath %)}))
              vec))
       [])))
 
-(defn* rel-path [:=> [:cat [:map [:file :any]]] :string] [input]
+(impl DefaultReferenceGuard ReferenceGuardOps rel-path-for
+  [:=> [:cat :any [:map [:file :any]]] :string]
+  [this input]
   (let [cwd (.normalize (.toPath (io/file ".")))
         path (.normalize (.toPath ^java.io.File (:file input)))]
     (str (.relativize cwd path))))
 
-(defn* check-file [:=> [:cat FileCheckInput] [:vector :string]] [input]
+(impl DefaultReferenceGuard ReferenceGuardOps check-file-for
+  [:=> [:cat :any FileCheckInput] [:vector :string]]
+  [this input]
   (let [{:keys [path content allowlist]} input
         path-lc (str/lower-case path)]
     (if (contains? allowlist path)
@@ -66,6 +82,8 @@
                           (re-find #"\"inputs/(?!outputs\b)[^\"\n]+\"" content))
                   (str path-lc ": lowercase inputs/ path detected"))])))))
 
+(def default-reference-guard (->DefaultReferenceGuard))
+
 (main Input
   [_]
   (let [config {:roots ["AGENTS.md"
@@ -75,15 +93,16 @@
                         "Reports"
                         "Strategies"]
                 :allowlist #{"Strategies/Agent-Authority-Alignment/STRATEGY.md"
-                             "Strategies/Agent-Authority-Alignment/INTEGRATION.md"}}
-        files (mapcat #(collect-files {:root %}) (:roots config))
+                             "Strategies/Agent-Authority-Alignment/INTEGRATION.md"
+                             "Components/scripts/reference_guard/main.clj"}}
+        files (mapcat #(collect-files-for default-reference-guard {:root %}) (:roots config))
         errors (->> files
                     (mapcat (fn [file]
-                              (let [path (rel-path {:file file})
+                              (let [path (rel-path-for default-reference-guard {:file file})
                                     content (slurp file)]
-                                (check-file {:path path
-                                             :content content
-                                             :allowlist (:allowlist config)}))))
+                                (check-file-for default-reference-guard {:path path
+                                                                         :content content
+                                                                         :allowlist (:allowlist config)}))))
                     vec)]
     (if (seq errors)
       (do

@@ -8,7 +8,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -48,9 +48,20 @@
    [:content :string]
    [:allowlist [:set :string]]])
 
+(def ScriptMainContractInput
+  [:map
+   [:path :string]
+   [:content :string]
+   [:contractAllowlist [:set :string]]])
+
 (def Input
   [:map
    [:args [:vector :string]]])
+
+(defprotocol ScriptValidatorOps
+  (run-validator-for [this input]))
+
+(defrecord DefaultScriptValidator [])
 
 (defn* fail [:=> [:cat ScriptFailInput] :any] [input]
   (binding [*out* *err*]
@@ -92,18 +103,33 @@
 (defn* validate-clj [:=> [:cat ScriptValidateCljInput] :any] [input]
   (let [{:keys [path content allowlist]} input]
     (when-not (contains? allowlist path)
-      (when-not (contains-substring? {:content content :substring "defn*"})
-        (fail {:message (str "Missing defn* usage in " path)}))
-      (when-not (contains-substring? {:content content :substring "mentci.malli"})
-        (fail {:message (str "Missing mentci.malli require in " path)})))))
+      ;; Unit test files can use clojure.test directly and are not script entrypoints.
+      (when-not (str/ends-with? path "/test.clj")
+        (when-not (contains-substring? {:content content :substring "defn*"})
+          (fail {:message (str "Missing defn* usage in " path)}))
+        (when-not (contains-substring? {:content content :substring "mentci.malli"})
+          (fail {:message (str "Missing mentci.malli require in " path)}))))))
 
-(main Input
-  [input]
+(defn* validate-main-contract [:=> [:cat ScriptMainContractInput] :any] [input]
+  (let [{:keys [path content contractAllowlist]} input]
+    (when (and (str/ends-with? path "/main.clj")
+               (not (contains? contractAllowlist path)))
+      (when-not (contains-substring? {:content content :substring "(main "})
+        (fail {:message (str "Missing main macro usage in " path)}))
+      (when-not (contains-substring? {:content content :substring "(defprotocol "})
+        (fail {:message (str "Missing defprotocol in " path)}))
+      (when-not (contains-substring? {:content content :substring "(impl "})
+        (fail {:message (str "Missing impl usage in " path)})))))
+
+(impl DefaultScriptValidator ScriptValidatorOps run-validator-for
+  [:=> [:cat :any Input] :any]
+  [this input]
   (let [{:keys [scripts-dir]} (parse-args {:args (:args input)})
         scripts-dir (or scripts-dir "Components/scripts")
         config {:scriptsDir scripts-dir
                 :allowlist #{"Components/scripts/lib/types.clj"
-                             "Components/scripts/lib/malli.clj"}}
+                             "Components/scripts/lib/malli.clj"}
+                :contractAllowlist #{}}
         _ (validate-config {:config config})
         files (scan-files {:root scripts-dir})
         py-files (filter #(py-file? {:file %}) files)]
@@ -113,7 +139,14 @@
     (doseq [file (filter #(clj-file? {:file %}) files)]
       (let [path (.getPath file)
             content (slurp file)]
-        (validate-clj {:path path :content content :allowlist (:allowlist config)})))
+        (validate-clj {:path path :content content :allowlist (:allowlist config)})
+        (validate-main-contract {:path path :content content :contractAllowlist (:contractAllowlist config)})))
     (println (str "Script validation passed for " scripts-dir))))
+
+(def default-script-validator (->DefaultScriptValidator))
+
+(main Input
+  [input]
+  (run-validator-for default-script-validator input))
 
 (-main {:args (vec *command-line-args*)})

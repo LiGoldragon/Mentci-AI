@@ -9,7 +9,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
@@ -24,9 +24,17 @@
 (def TestDepsMainInput
   [:map])
 
+(defprotocol TestDepsOps
+  (check-dep-for [this input])
+  (run-audit-for [this input]))
+
+(defrecord DefaultTestDeps [])
+
 (def deps ["nix" "cargo" "rustc" "bb" "clojure" "jj" "jet" "gdb"])
 
-(defn* check-dep [:=> [:cat CheckDepInput] :boolean] [input]
+(impl DefaultTestDeps TestDepsOps check-dep-for
+  [:=> [:cat :any CheckDepInput] :boolean]
+  [this input]
   (let [name (:name input)]
   (let [res (sh "which" name)]
     (if (= 0 (:exit res))
@@ -35,10 +43,12 @@
       (do (println (format "[!!] %-10s NOT FOUND" name))
           false)))))
 
-(defn* main [:=> [:cat TestDepsMainInput] :any] [_]
+(impl DefaultTestDeps TestDepsOps run-audit-for
+  [:=> [:cat :any TestDepsMainInput] :any]
+  [this input]
   (println "Mentci-AI Dependency Audit (Clojure)")
   (println "------------------------------")
-  (let [results (map #(check-dep {:name %}) deps)
+  (let [results (map #(check-dep-for this {:name %}) deps)
         all-found? (every? true? results)]
     (println "------------------------------")
     (if all-found?
@@ -46,4 +56,10 @@
       (do (println "Warning: Missing dependencies detected for the current shell.")
           (System/exit 1)))))
 
-(main {})
+(def default-test-deps (->DefaultTestDeps))
+
+(main TestDepsMainInput
+  [_]
+  (run-audit-for default-test-deps {}))
+
+(-main {})

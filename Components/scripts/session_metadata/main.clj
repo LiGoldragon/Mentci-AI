@@ -1,56 +1,111 @@
 #!/usr/bin/env bb
 
+(require '[babashka.deps :as deps])
+(deps/add-deps '{:deps {metosin/malli {:mvn/version "0.17.0"}
+                        cheshire/cheshire {:mvn/version "5.13.0"}}})
+
 (require '[clojure.java.io :as io]
          '[clojure.string :as str]
+         '[clojure.java.shell :refer [sh]]
          '[cheshire.core :as json])
 
-;; Tool Stack Transparency:
-;; Runtime: Babashka (Clojure)
-;; Rationale: Fast CLI orchestration for session metadata management.
+(load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
+(require '[mentci.malli :refer [defn* impl main enable!]])
+
+(enable!)
 
 (def SESSION_FILE ".mentci/session_state.json")
 
-(defn load-session []
+(def Input
+  [:map
+   [:args [:vector :string]]])
+
+(def StateInput
+  [:map
+   [:state :map]])
+
+(def InitInput
+  [:map
+   [:prompt :string]
+   [:context :string]])
+
+(def IntentInput
+  [:map
+   [:intent :string]
+   [:context :string]])
+
+(def SynthesisInput
+  [:map
+   [:resultSummary :string]
+   [:chronosDate :string]])
+
+(defprotocol SessionMetadataOps
+  (load-session-for [this input])
+  (save-session-for [this input])
+  (init-session-for [this input])
+  (add-intent-for [this input])
+  (generate-synthesis-for [this input]))
+
+(defrecord DefaultSessionMetadata [])
+
+(impl DefaultSessionMetadata SessionMetadataOps load-session-for
+  [:=> [:cat :any :map] :map]
+  [this input]
   (if (.exists (io/file SESSION_FILE))
     (json/parse-string (slurp SESSION_FILE) true)
     {}))
 
-(defn save-session [state]
+(impl DefaultSessionMetadata SessionMetadataOps save-session-for
+  [:=> [:cat :any StateInput] :any]
+  [this input]
   (io/make-parents SESSION_FILE)
-  (spit SESSION_FILE (json/generate-string state {:pretty true})))
+  (spit SESSION_FILE (json/generate-string (:state input) {:pretty true})))
 
-(defn init-session [prompt context]
-  (let [state {:raw_prompt prompt
-               :initial_context context
-               :start_rev (str/trim (:out (clojure.java.shell/sh "jj" "log" "-r" "@" "--template" "change_id.short()")))
+(impl DefaultSessionMetadata SessionMetadataOps init-session-for
+  [:=> [:cat :any InitInput] :any]
+  [this input]
+  (let [state {:raw_prompt (:prompt input)
+               :initial_context (:context input)
+               :start_rev (str/trim (:out (sh "jj" "log" "-r" "@" "--template" "change_id.short()")))
                :intents []}]
-    (save-session state)
+    (save-session-for this {:state state})
     (println "Session initialized.")))
 
-(defn add-intent [intent context]
-  (let [state (load-session)]
-    (save-session (update state :intents conj {:intent intent :context context}))
-    (println (str "intent: " intent "
-[Prompt: " (subs (:raw_prompt state) 0 (min 100 (count (:raw_prompt state)))) "...]
-[Context: " context "]"))))
+(impl DefaultSessionMetadata SessionMetadataOps add-intent-for
+  [:=> [:cat :any IntentInput] :any]
+  [this input]
+  (let [state (load-session-for this {})
+        updated (update state :intents conj {:intent (:intent input) :context (:context input)})
+        raw-prompt (or (:raw_prompt state) "")]
+    (save-session-for this {:state updated})
+    (println (str "intent: " (:intent input) "\n"
+                  "[Prompt: " (subs raw-prompt 0 (min 100 (count raw-prompt))) "...]\n"
+                  "[Context: " (:context input) "]"))))
 
-(defn generate-synthesis [result_summary chronos_date]
-  (let [state (load-session)]
-    (println (str "session: " result_summary))
-    (println chronos_date)
-    (println "
-## Original Prompt")
+(impl DefaultSessionMetadata SessionMetadataOps generate-synthesis-for
+  [:=> [:cat :any SynthesisInput] :any]
+  [this input]
+  (let [state (load-session-for this {})]
+    (println (str "session: " (:resultSummary input)))
+    (println (:chronosDate input))
+    (println "\n## Original Prompt")
     (println (:raw_prompt state))
-    (println "
-## Agent Context")
+    (println "\n## Agent Context")
     (println (:initial_context state))
-    (println "
-## Logical Changes")
+    (println "\n## Logical Changes")
     (doseq [i (:intents state)]
       (println (str "- " (:intent i) " (" (:context i) ")")))))
 
-(case (first *command-line-args*)
-  "init" (init-session (nth *command-line-args* 1) (nth *command-line-args* 2))
-  "add" (add-intent (nth *command-line-args* 1) (nth *command-line-args* 2))
-  "synthesize" (generate-synthesis (nth *command-line-args* 1) (nth *command-line-args* 2))
-  (println "Usage: session_metadata.clj [init <prompt> <context> | add <intent> <context> | synthesize <result_summary> <chronos_date>]"))
+(def default-session-metadata (->DefaultSessionMetadata))
+
+(main Input
+  [input]
+  (let [args (:args input)
+        cmd (first args)]
+    (case cmd
+      "init" (init-session-for default-session-metadata {:prompt (nth args 1) :context (nth args 2)})
+      "add" (add-intent-for default-session-metadata {:intent (nth args 1) :context (nth args 2)})
+      "synthesize" (generate-synthesis-for default-session-metadata {:resultSummary (nth args 1) :chronosDate (nth args 2)})
+      (println "Usage: session_metadata.clj [init <prompt> <context> | add <intent> <context> | synthesize <result_summary> <chronos_date>]"))))
+
+(-main {:args (vec *command-line-args*)})

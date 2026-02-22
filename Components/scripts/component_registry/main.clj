@@ -10,7 +10,7 @@
          '[cheshire.core :as json])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* main enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -46,6 +46,11 @@
 (def Input
   [:map
    [:args [:vector :string]]])
+
+(defprotocol ComponentRegistryOps
+  (run-registry-for [this input]))
+
+(defrecord DefaultComponentRegistry [])
 
 (defn* fail! [:=> [:cat [:map [:message :string]]] :any] [input]
   (binding [*out* *err*]
@@ -120,8 +125,9 @@
       "json" (println (json/generate-string value {:pretty true}))
       (prn value))))
 
-(main Input
-  [input]
+(impl DefaultComponentRegistry ComponentRegistryOps run-registry-for
+  [:=> [:cat :any Input] :any]
+  [this input]
   (let [{:keys [indexPath format componentId]} (parse-args {:args (:args input)})
         index (load-index {:indexPath indexPath})
         resolved (resolve-index {:index index})]
@@ -129,5 +135,11 @@
       (emit {:value (lookup-component {:resolved resolved :componentId componentId})
              :format format})
       (emit {:value resolved :format format}))))
+
+(def default-component-registry (->DefaultComponentRegistry))
+
+(main Input
+  [input]
+  (run-registry-for default-component-registry input))
 
 (-main {:args (vec *command-line-args*)})

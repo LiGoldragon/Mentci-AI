@@ -5,11 +5,12 @@
 
 (require '[clojure.edn :as edn]
          '[clojure.java.io :as io]
-         '[clojure.string :as str])
+         '[clojure.string :as str]
+         '[clojure.java.shell :as sh])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 ;; Tool Stack Transparency:
 ;; Runtime: Babashka
@@ -37,48 +38,73 @@
   [:map
    [:args [:vector :string]]])
 
-(defn* get-current-user-id [:=> [:cat GetCurrentUserIdInput] :string] [_]
+(defprotocol LoggerOps
+  (get-current-user-id-for [this input])
+  (validate-entry-for [this input])
+  (current-ecliptic-for [this input])
+  (log-prompt-for [this input])
+  (run-logger-for [this input]))
+
+(defrecord DefaultLogger [])
+
+(impl DefaultLogger LoggerOps get-current-user-id-for
+  [:=> [:cat :any GetCurrentUserIdInput] :string]
+  [this input]
   (let [system-user (System/getProperty "user.name")]
     (if (= system-user "li")
       default-github-user
       system-user)))
 
-(defn* validate-entry [:=> [:cat types/IntentLog] :any] [entry]
+(impl DefaultLogger LoggerOps validate-entry-for
+  [:=> [:cat :any types/IntentLog] :any]
+  [this entry]
   entry)
 
-(defn* current-ecliptic [:=> [:cat CurrentEclipticInput] :string] [_]
+(impl DefaultLogger LoggerOps current-ecliptic-for
+  [:=> [:cat :any CurrentEclipticInput] :string]
+  [this input]
   (let [{:keys [exit out]} (sh/sh "chronos" "--format" "numeric")]
     (if (zero? exit)
       (str/trim out)
       "12.1.28.44 | 5919 AM")))
 
-(defn* log-prompt [:=> [:cat LogPromptInput] :any] [input]
+(impl DefaultLogger LoggerOps log-prompt-for
+  [:=> [:cat :any LogPromptInput] :any]
+  [this input]
   (let [{:keys [intentSummary model userId]} input
         log-file (io/file logs-dir (str "user_" userId ".edn"))
         timestamp (.toString (java.time.LocalDateTime/now))
-        ecliptic (current-ecliptic {})
+        ecliptic (current-ecliptic-for this {})
         entry {:timestamp timestamp
                :ecliptic ecliptic
                :userId userId
                :intentSummary intentSummary
                :model model
                :signature nil}]
-    (validate-entry entry)
+    (validate-entry-for this entry)
     (when-not (.exists logs-dir)
       (.mkdirs logs-dir))
     (spit log-file (str (pr-str entry) "\n") :append true)
     (println (str "Logged intent (Clojure/Malli): '" intentSummary "' to " log-file))))
 
-(defn* main [:=> [:cat LoggerMainInput] :any] [input]
+(impl DefaultLogger LoggerOps run-logger-for
+  [:=> [:cat :any LoggerMainInput] :any]
+  [this input]
   (let [args (:args input)]
     (if (empty? args)
       (println "Usage: logger.clj <intent> [--model <model>] [--user <user>]")
       (let [intent (first args)
             options (apply hash-map (map #(str/replace % #"^--" "") (rest args)))
-            user (or (get options "user") (get-current-user-id {}))
+            user (or (get options "user") (get-current-user-id-for this {}))
             model (get options "model" (System/getenv "MENTCI_MODEL"))]
-        (log-prompt {:intentSummary intent
-                     :model model
-                     :userId user})))))
+        (log-prompt-for this {:intentSummary intent
+                              :model model
+                              :userId user})))))
 
-(main {:args (vec *command-line-args*)})
+(def default-logger (->DefaultLogger))
+
+(main LoggerMainInput
+  [input]
+  (run-logger-for default-logger input))
+
+(-main {:args (vec *command-line-args*)})

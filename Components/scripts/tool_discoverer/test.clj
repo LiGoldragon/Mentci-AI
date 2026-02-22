@@ -5,7 +5,7 @@
 
 (deftest test-search-cargo-parsing
   (with-redefs [clojure.java.shell/sh (fn [& _] {:exit 0 :out "dot-parser = \"0.6.1\"\ngraphviz-rs = \"0.1.0\""})]
-    (let [results (search-cargo "dot")]
+    (let [results (search-cargo-for default-tool-discoverer {:query "dot"})]
       (is (= 2 (count results)))
       (is (= "dot-parser" (first results))))))
 
