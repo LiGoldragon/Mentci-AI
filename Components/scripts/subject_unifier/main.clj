@@ -68,8 +68,8 @@
 
 (defn subject-tier-for [subject]
   (or (some (fn [tier]
-              (when (or (.exists (io/file (str "Strategies/" tier "/" subject)))
-                        (.exists (io/file (str "Reports/" tier "/" subject))))
+              (when (or (.exists (io/file (str "Development/" tier "/" subject)))
+                        (.exists (io/file (str "Research/" tier "/" subject))))
                 tier))
             TierNames)
       "high"))
@@ -124,12 +124,12 @@
 (impl DefaultSubjectUnifier SubjectUnifierOps strategy-path-for PathInput :string
   [this input]
   (let [_ this]
-    (str "Strategies/" (or (:tier input) "high") "/" (:subject input))))
+    (str "Development/" (or (:tier input) "high") "/" (:subject input))))
 
 (impl DefaultSubjectUnifier SubjectUnifierOps report-topic-path-for PathInput :string
   [this input]
   (let [_ this]
-    (str "Reports/" (or (:tier input) "high") "/" (:subject input) "/README.md")))
+    (str "Research/" (or (:tier input) "high") "/" (:subject input) "/index.edn")))
 
 (impl DefaultSubjectUnifier SubjectUnifierOps strategy-dir-for {:file :any} :boolean
   [this input]
@@ -137,24 +137,24 @@
 
 (impl DefaultSubjectUnifier SubjectUnifierOps migrate-legacy-reports-for [:=> [:cat :any] :any]
   [this]
-  (let [reports-root (io/file "Reports")]
+  (let [reports-root (io/file "Research")]
     (when (.exists reports-root)
       (doseq [file (.listFiles reports-root)]
         (when (.isFile ^java.io.File file)
           (let [name (.getName ^java.io.File file)]
             (when (report-file-for this {:name name})
               (let [subject (report-subject-from-filename-for this {:value name})
-                    target-dir (io/file (str "Reports/high/" subject))
+                    target-dir (io/file (str "Research/high/" subject))
                     target-file (io/file target-dir name)]
                 (.mkdirs target-dir)
                 (.renameTo file target-file))))))
-      (let [legacy-topics (io/file "Reports/topics")]
+      (let [legacy-topics (io/file "Research/topics")]
         (when (.exists legacy-topics)
           (doseq [file (.listFiles legacy-topics)]
             (when (.isFile ^java.io.File file)
               (let [base (.getName ^java.io.File file)
                     subject (canonical-subject-for this {:value (str/replace base #"\.md$" "")})
-                    target (io/file (str "Reports/high/" subject "/README.md"))]
+                    target (io/file (str "Research/high/" subject "/index.edn"))]
                 (.mkdirs (.getParentFile target))
                 (when-not (.exists target)
                   (.renameTo file target)))))
@@ -165,12 +165,12 @@
 
 (impl DefaultSubjectUnifier SubjectUnifierOps list-report-subjects-for [:=> [:cat :any] :map]
   [this]
-  (let [root (io/file "Reports")]
+  (let [root (io/file "Research")]
     (if-not (.exists root)
       {:subjects #{}
        :subject->reports {}}
       (let [tier-dirs (->> TierNames
-                           (map #(io/file (str "Reports/" %)))
+                           (map #(io/file (str "Research/" %)))
                            (filter #(.exists ^java.io.File %)))
             tier-subject-dirs (->> tier-dirs
                                    (mapcat (fn [tier-dir]
@@ -197,8 +197,8 @@
                                          (filter #(report-file-for this {:name %}))
                                          sort
                                          (map #(if tier
-                                                 (str "Reports/" tier "/" raw-subject "/" %)
-                                                 (str "Reports/" raw-subject "/" %)))
+                                                 (str "Research/" tier "/" raw-subject "/" %)
+                                                 (str "Research/" raw-subject "/" %)))
                                          vec)]
                         (update acc subject (fnil into []) reports)))
                     {}
@@ -208,10 +208,10 @@
 
 (impl DefaultSubjectUnifier SubjectUnifierOps rename-strategy-dirs-for [:=> [:cat :any] :any]
   [this]
-  (let [root (io/file "Strategies")]
+  (let [root (io/file "Development")]
     (when (.exists root)
       (let [tier-dirs (->> TierNames
-                           (map #(io/file (str "Strategies/" %)))
+                           (map #(io/file (str "Development/" %)))
                            (filter #(.exists ^java.io.File %)))
             rename-under! (fn [parent]
                             (doseq [dir (or (.listFiles ^java.io.File parent) [])]
@@ -231,11 +231,11 @@
 
 (impl DefaultSubjectUnifier SubjectUnifierOps list-strategy-subjects-for [:=> [:cat :any] [:set :string]]
   [this]
-  (let [dir (io/file "Strategies")]
+  (let [dir (io/file "Development")]
     (if-not (.exists dir)
       #{}
       (let [tier-dirs (->> TierNames
-                           (map #(io/file (str "Strategies/" %)))
+                           (map #(io/file (str "Development/" %)))
                            (filter #(.exists ^java.io.File %)))
             tier-subjects (->> tier-dirs
                                (mapcat (fn [tier-dir]
@@ -255,14 +255,16 @@
   (let [{:keys [subject tier reportPaths strategyPath]} input
         path (report-topic-path-for this {:subject subject
                                           :tier tier})
-        content (str "# Subject Topic\n\n"
-                     "- Subject: `" subject "`\n"
-                     "- Strategy Path: `" strategyPath "`\n\n"
-                     "## Report Entries\n\n"
-                     (if (seq reportPaths)
-                       (str/join "\n" (map #(str "- `" % "`") reportPaths))
-                       "- _No report entries yet._")
-                     "\n")]
+        entries (if (seq reportPaths)
+                  reportPaths
+                  [])
+        content (str "{:kind :index\n"
+                     " :title \"Research Topic\"\n"
+                     " :subject \"" subject "\"\n"
+                     " :developmentPath \"" strategyPath "\"\n"
+                     " :entries ["
+                     (str/join " " (map #(str "\"" % "\"") entries))
+                     "]}\n")]
     (io/make-parents path)
     (spit path content)))
 
@@ -280,7 +282,7 @@
                  "Create and maintain a coherent strategy/report pairing for subject `" subject "`.\n\n"
                  "## Scope\n"
                  "- Ensure implementation guidance for this subject is captured.\n"
-                 "- Keep `Reports/<priority>/<Subject>/` and `Strategies/<priority>/<Subject>/` synchronized.\n\n"
+                 "- Keep `Research/<priority>/<Subject>/` and `Development/<priority>/<Subject>/` synchronized.\n\n"
                  "## Initial Plan\n"
                  "1. Inventory existing artifacts for the subject.\n"
                  "2. Define gaps and risks.\n"
@@ -294,17 +296,10 @@
 (impl DefaultSubjectUnifier SubjectUnifierOps ensure-reports-readme-section-for [:=> [:cat :any] :any]
   [this]
   (let [_ this
-        path "Reports/README.md"
-        marker "## Subject Topics"
-        snippet (str marker "\n"
-                     "Topics are tiered subdirectory names under `Reports/` (for example `Reports/high/Prompt-Report-System/`).\n"
-                     "Each topic must have a corresponding `Strategies/<priority>/<Subject>/` directory.\n")]
+        path "Research/index.edn"
+        snippet "{:kind :index :title \"Research\" :note \"Tiered research topics are organized under Research/<priority>/<Subject>/index.edn\"}\n"]
     (when (.exists (io/file path))
-      (let [content (slurp path)
-            updated (if (str/includes? content marker)
-                      (str/replace content #"(?s)## Subject Topics.*$" snippet)
-                      (str content "\n\n" snippet))]
-        (spit path updated)))))
+      (spit path snippet))))
 
 (impl DefaultSubjectUnifier SubjectUnifierOps run-unifier-for Input :any
   [this input]
@@ -322,14 +317,14 @@
                                                 (.exists (io/file (report-topic-path-for this {:subject subject
                                                                                                 :tier tier})))))
                                             all-subjects)))]
-      (println "Subject unification scan:")
-      (println (str "- Report subjects: " (count report-subjects)))
-      (println (str "- Strategy subjects: " (count strategy-subjects)))
+      (println "Research/Development unification scan:")
+      (println (str "- Research subjects: " (count report-subjects)))
+      (println (str "- Development subjects: " (count strategy-subjects)))
       (println (str "- Unified subjects: " (count all-subjects)))
-      (println (str "- Missing strategies: " (count missing-strategies)))
-      (println (str "- Missing topic READMEs: " (count missing-topics)))
+      (println (str "- Missing development subjects: " (count missing-strategies)))
+      (println (str "- Missing topic indexes: " (count missing-topics)))
       (when (seq missing-strategies)
-        (println "- Missing strategy subjects:")
+        (println "- Missing development subjects:")
         (doseq [subject missing-strategies]
           (println (str "  - " subject))))
       (if-not write?

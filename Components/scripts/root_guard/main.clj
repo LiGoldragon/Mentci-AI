@@ -21,7 +21,7 @@
    [:args [:vector :string]]])
 
 (def allowed-domain-dirs
-  #{"Inputs" "Components" "Outputs" "Reports" "Strategies" "Core" "Library"})
+  #{"Sources" "Components" "Outputs" "Research" "Development" "Core" "Library"})
 
 (def allowed-runtime-dirs
   #{".git" ".jj" ".direnv" "target"})

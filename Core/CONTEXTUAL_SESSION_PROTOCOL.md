@@ -21,8 +21,8 @@ Upon receiving a new user prompt (Directive), the agent must:
     *   Fallback command: `cargo run --quiet --manifest-path Components/chronos/Cargo.toml --bin chronos -- --format am --precision second`
 1.  **Store the Raw Prompt:** Copy the user's input exactly as provided.
 2.  **Formulate Initial Context:** Summarize the interpretation of the prompt, the intended strategy, and any identified constraints.
-2.5. **Discover Subject Context (Mandatory):** Search `Strategies/` and `Reports/` for existing subject(s) and load relevant files before creating new plan/work.
-    *   If either side exists (`Strategies/<priority>/<Subject>/` or `Reports/<priority>/<Subject>/`), consult both sides.
+2.5. **Discover Subject Context (Mandatory):** Search `Development/` and `Research/` for existing subject(s) and load relevant files before creating new plan/work.
+    *   If either side exists (`Development/<priority>/<Subject>/` or `Research/<priority>/<Subject>/`), consult both sides.
     *   Reuse and extend existing subject context unless an explicit split is required.
 3.  **Enforce Pre-Edit Cleanliness:** If the working tree is dirty at prompt start, commit pre-existing intent groups before making new edits for the prompt.
 
@@ -88,7 +88,7 @@ session: <Result Summary>
 Use `bb Components/scripts/session_metadata/main.clj` to manage prompt/context state during execution and to render final synthesis messages.
 
 ## 6. Phase 4: Prompt Report Emission
-After session synthesis, emit a prompt answer report under `Reports/`:
+After session synthesis, emit a prompt answer report under `Research/`:
 1.  **Write Report Artifact:** Use `bb Components/scripts/answer_report/main.clj` with prompt and final answer content.
 2.  **Classify Answer Kind:** Report kind must be one of `answer`, `draft`, or `question`.
 3.  **Classify Change Scope:** Use `modified-files` when repository files changed for the prompt; use `no-files` for question-only or advisory responses.
@@ -125,7 +125,7 @@ jj new dev
 ## 8. Completion Invariants
 Prompt completion is valid only when all of the following hold:
 1. The prompt's finalized commit is a `session:` commit with full context sections (`## Original Prompt`, `## Agent Context`, `## Logical Changes`) in the pushed `dev` lineage.
-2. A report artifact exists for the prompt in `Reports/<priority>/<Subject>/` (new report file or update under existing subject).
+2. A report artifact exists for the prompt in `Research/<priority>/<Subject>/` (new report file or update under existing subject).
 3. Freshness-linked workflows that use prior intel must record and verify the referenced parent change ID before execution.
 4. The finalized session head is pushed at end-of-session (default push target: `dev`; release flows default to `main`).
 5. If `jj new dev` is created, it is a next-session child and does not replace the requirement that the pushed finalized commit is the session closure point.

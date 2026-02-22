@@ -56,6 +56,7 @@
    [:second :string]
    [:kind [:enum "answer" "draft" "question"]]
    [:title :string]
+   [:tier :string]
    [:subject :string]])
 
 (def EnsureUniquePathInput
@@ -75,6 +76,7 @@
 
 (def EnsureTopicReadmeInput
   [:map
+   [:tier :string]
    [:subject :string]])
 
 (defprotocol AnswerReportOps
@@ -96,6 +98,15 @@
   (run-report-for [this input]))
 
 (defrecord DefaultAnswerReport [])
+
+(def TierNames ["high" "medium" "low"])
+
+(defn subject-tier-for [subject]
+  (or (some (fn [tier]
+              (when (.exists (io/file (str "Development/" tier "/" subject)))
+                tier))
+            TierNames)
+      "high"))
 
 (impl DefaultAnswerReport AnswerReportOps fail-for FailInput :any
   [this input]
@@ -234,14 +245,14 @@
   [this input]
   (if (and (:rawOverride input) (not (str/blank? (:rawOverride input))))
     (parse-chronos-raw-for this {:raw (:rawOverride input)})
-    (let [components-manifest? (.exists (io/file "Components/Cargo.toml"))
+    (let [components-chronos-manifest? (.exists (io/file "Components/chronos/Cargo.toml"))
           library-manifest? (.exists (io/file "Library/chronos/Cargo.toml"))
           attempts (cond-> [{:label "chronos-bin"
                              :argv ["chronos" "--format" "numeric" "--precision" "second"]}]
-                     components-manifest?
-                     (conj {:label "cargo-components-manifest"
+                     components-chronos-manifest?
+                     (conj {:label "cargo-components-chronos-manifest"
                             :argv ["cargo" "run" "--quiet"
-                                   "--manifest-path" "Components/Cargo.toml"
+                                   "--manifest-path" "Components/chronos/Cargo.toml"
                                    "--bin" "chronos" "--"
                                    "--format" "numeric" "--precision" "second"]})
 
@@ -259,9 +270,11 @@
 
 (impl DefaultAnswerReport AnswerReportOps build-filename-for BuildFilenameInput :string
   [this input]
-  (let [{:keys [year sign degree minute second kind title subject]} input
+  (let [{:keys [year sign degree minute second kind title tier subject]} input
         slug (safe-title-for this {:value title})]
-    (str "Reports/"
+    (str "Research/"
+         tier
+         "/"
          subject
          "/"
          year sign degree minute second "_" kind "_" slug ".md")))
@@ -277,22 +290,24 @@
 
 (impl DefaultAnswerReport AnswerReportOps ensure-topic-readme-for EnsureTopicReadmeInput :any
   [this input]
-  (let [subject (:subject input)
-        readme (str "Reports/" subject "/README.md")]
+  (let [{:keys [tier subject]} input
+        readme (str "Research/" tier "/" subject "/index.edn")]
     (when-not (.exists (io/file readme))
       (io/make-parents readme)
       (spit readme
-            (str "# Subject Topic\n\n"
-                 "- Subject: `" subject "`\n"
-                 "- Strategy Path: `Strategies/" subject "`\n\n"
-                 "## Report Entries\n\n"
-                 "- _Topic index. Report entries are stored in this directory._\n")))))
+            (str "{:kind :index\n"
+                 " :title \"Subject Topic\"\n"
+                 " :subject \"" subject "\"\n"
+                 " :developmentPath \"Development/" tier "/" subject "\"\n"
+                 " :entries []}\n")))))
 
 (impl DefaultAnswerReport AnswerReportOps write-report-for WriteReportInput :any
   [this input]
-  (let [{:keys [path chronosRaw kind changeScope title subject prompt answer]} input]
+  (let [{:keys [path chronosRaw kind changeScope title subject prompt answer]} input
+        tier (or (second (str/split path #"/")) "high")]
     (io/make-parents path)
-    (ensure-topic-readme-for this {:subject subject})
+    (ensure-topic-readme-for this {:tier tier
+                                   :subject subject})
     (spit path
           (str "# Agent Report\n\n"
                "- Chronography: `" chronosRaw "`\n"
@@ -324,6 +339,7 @@
         _ (when-not (#{"modified-files" "no-files"} change-scope)
             (fail-for this {:message (str "Invalid --change-scope: " change-scope)}))
         subject (canonical-subject-for this {:value (or (:subject opts) (:title opts))})
+        tier (subject-tier-for subject)
         chrono (read-chronos-for this {:rawOverride (:chronos-raw opts)})
         filename (build-filename-for this {:year (:year chrono)
                                            :sign (:sign chrono)
@@ -332,6 +348,7 @@
                                            :second (:second chrono)
                                            :kind kind
                                            :title (:title opts)
+                                           :tier tier
                                            :subject subject})
         path (ensure-unique-path-for this {:path filename})]
     (write-report-for this {:path path

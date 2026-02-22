@@ -27,14 +27,14 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Orchestration:** `Components/scripts/launcher/` (Jail), `Components/scripts/commit/` (Shipping).
 - **Truth Layer:** `Components/schema/*.capnp` (Semantic types), `Core/` (Architectural mandates).
 - **FS Ontology:** `Library/specs/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
-- **Strategy System:** `Strategies/<priority>/<Subject>/`. Status: **Operational.** Active subjects remain categorized by priority tier.
+- **Strategy System:** `Development/<priority>/<Subject>/`. Status: **Operational.** Active subjects remain categorized by priority tier.
 - **Strategy Queue:** `Library/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
 - **Development Loop:** `Library/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `Library/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `Components/scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
 - **Source Substrate:** `Sources/` (transitional alias: `Sources/`) read-only store paths, managed via `flake.nix` and `Components/nix/jail.nix`.
 - **VCS Guardrail:** `Sources/` (and transitional `Sources/`) is gitignored as mounted runtime substrate; source updates are managed through flake/input refresh workflows, not direct Git tracking.
-- **Audit Trail:** `jj log` (VCS), `Outputs/Logs/RELEASE_MILESTONES.md` (Human-readable history), `Outputs/Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Strategies/high/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
+- **Audit Trail:** `jj log` (VCS), `Outputs/Logs/RELEASE_MILESTONES.md` (Human-readable history), `Outputs/Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Development/high/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
 
 ## 3.1 Current Operational Snapshot (♓︎.5.9.42 | 5919 AM)
 - `dev` head: `727426e3` (`session: backfill missing bug sweep exchange with report and strategy`)
@@ -61,7 +61,7 @@ These files define the agent's operating logic and must be loaded automatically:
 2. Source naming migration window:
 - Continue `Sources/` -> `Sources/` textual/operational convergence while compatibility alias is active.
 3. Strategy queue hygiene:
-- Keep queue entries synchronized with active `Strategies/<priority>/<Subject>/` set.
+- Keep queue entries synchronized with active `Development/<priority>/<Subject>/` set.
 
 ## 4. Operational Requirements
 - **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Outputs/Logs/RELEASE_MILESTONES.md`.

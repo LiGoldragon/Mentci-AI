@@ -1,7 +1,7 @@
 # Testing Context: subject_unifier
 
 ## Purpose
-Verify bidirectional subject coverage between `Reports/` entries and `Strategies/` directories.
+Verify bidirectional subject coverage between `Research/` entries and `Development/` directories.
 
 ## Commands
 - `bb Components/scripts/subject_unifier/main.clj`
@@ -9,4 +9,4 @@ Verify bidirectional subject coverage between `Reports/` entries and `Strategies
 
 ## Expected Behavior
 - Dry run prints inventory and missing counterpart counts.
-- `--write` migrates legacy flat reports into `Reports/high/<Subject>/`, creates/updates topic `README.md` files, and creates missing `Strategies/high/<Subject>/` scaffolds.
+- `--write` migrates legacy flat research artifacts into `Research/high/<Subject>/`, creates/updates topic `index.edn` files, and creates missing `Development/high/<Subject>/` scaffolds.

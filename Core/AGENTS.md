@@ -39,18 +39,18 @@ Enforcement requirements:
 These are the highest-order rules for all languages and scripts.
 
 *   **Sub-Program Directory:** The `Library/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
-*   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `Strategies/<priority>/<Subject>/` dedicated directories (`<priority>` in `{high,medium,low}`).
+*   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `Development/<priority>/<Subject>/` dedicated directories (`<priority>` in `{high,medium,low}`).
     *   **Prioritization:** Strategies must be prioritized according to the **Strategy Queue** (Ref: `Library/STRATEGY_QUEUE.md`). Resiliency and efficiency are ranked highest.
     *   **Composition:** Strategies should consist of multiple files (e.g., `MISSION.md`, `ARCHITECTURE.md`, `ROADMAP.md`) and sub-folder source code drafts (`src/`).
     *   **Workflow:** Strategies are "lined up" for implementation-trials. Use cheaper models to explore dead-ends and effective paths (vibe-coding permitted here) before high-authority models formalize the final logic.
     *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `Library/STRATEGY_DEVELOPMENT.md`) to discover, package, and test the necessary tools and libraries.
     *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `Core/`, a component directory under `Components/` (for example `Components/mentci-aid/`), or `Components/tasks/`.
 *   **Per-Subject Indexing:** Subjects should be merged or split as context volume changes. Multi-subject files should be cross-referenced.
-*   **Subject Context Discovery (Mandatory):** Before planning or implementation, agents must search `Strategies/` and `Reports/` for matching subject(s) from the prompt domain and ingest the most relevant entries.
+*   **Subject Context Discovery (Mandatory):** Before planning or implementation, agents must search `Development/` and `Research/` for matching subject(s) from the prompt domain and ingest the most relevant entries.
     *   **Search First:** Use subject-name and keyword search to find existing context before creating new artifacts.
-    *   **Dual-Tree Read:** Read both sides (`Strategies/<priority>/<Subject>/` and `Reports/<priority>/<Subject>/`) when either side exists.
+    *   **Dual-Tree Read:** Read both sides (`Development/<priority>/<Subject>/` and `Research/<priority>/<Subject>/`) when either side exists.
     *   **Context Reuse Rule:** If matching subject context exists, continue from it instead of starting a disconnected track.
-*   **Strategy/Report Subject Unification:** Every subject in `Reports/` must have a corresponding `Strategies/<priority>/<Subject>/` directory, and every strategy subject must have a corresponding topic directory `Reports/<priority>/<Subject>/` with a topic index file `README.md`.
+*   **Development/Research Subject Unification:** Every subject in `Research/` must have a corresponding `Development/<priority>/<Subject>/` directory, and every development subject must have a corresponding topic directory `Research/<priority>/<Subject>/` with a topic index file `index.edn`.
     *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
     *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (strategy scaffold or report topic).
     *   **Canonical Tool:** Use `bb Components/scripts/subject_unifier/main.clj --write` to enforce and repair bidirectional subject coverage.

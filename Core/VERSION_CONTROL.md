@@ -59,7 +59,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 14.2. Session message timestamp format is mandatory:
    - commit/session text uses `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
    - release/version tags use cycle offset where `5919 AM -> 0`, `5920 AM -> 1`, etc.
-15. Every completed prompt must emit/update a report artifact in `Reports/<priority>/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
+15. Every completed prompt must emit/update a report artifact in `Research/<priority>/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
 16. Session push invariant: prompt completion is invalid until the finalized `session:` commit is pushed (default `dev`) and verified.
 
 ## 4. Dirty Tree Intent Separation

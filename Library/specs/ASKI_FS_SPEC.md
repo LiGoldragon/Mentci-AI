@@ -37,9 +37,9 @@ Agents updated")
 
 ### 2.0 Canonical Typed Root Set
 - Canonical top-level type root is modeled as:
-  - `(enum [Sources Components Outputs Reports Strategies Core Library])`
+  - `(enum [Sources Components Outputs Research Development Core Library])`
 - In Aski-FS sugared syntax, this is written directly as:
-  - `[Sources Components Outputs Reports Strategies Core Library]`
+  - `[Sources Components Outputs Research Development Core Library]`
 - Interpretation rule:
   - In schema/type position, `[]` denotes enum set membership.
   - Each first-letter-capitalized root name denotes a typed filesystem domain.
@@ -69,7 +69,7 @@ Agents updated")
 - **Behavior:** Subflows edit a **Temporary Branch** (anonymous `jj` revision).
 - **Promotion:**
     - **:success** -> The change is committed and becomes the new input for subscribed agents.
-    - **:failure** -> Initiates a **Debug Loop** (Ref: `Strategies/Debugging/`).
+    - **:failure** -> Initiates a **Debug Loop** (Ref: `Development/high/Debugging/`).
 
 ## 3. Symbolic Mapping (Aski-FS Structure-Driven)
 The following EDN structure represents the authoritative symbolic map of the `Sources` directory, utilizing the **Structure-Driven** syntax with **Symbol Keys**.

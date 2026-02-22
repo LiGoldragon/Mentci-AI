@@ -10,9 +10,9 @@
 
 ## 2. Tiered Priority Catalog
 
-Priority triage for every current category across both trees (`Strategies/` and `Reports/`) is maintained in:
+Priority triage for every current category across both trees (`Development/` and `Research/`) is maintained in:
 
-- `Strategies/high/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
+- `Development/high/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
 
 Tier definitions:
 - `high`: required for current authority, resiliency, and execution correctness.

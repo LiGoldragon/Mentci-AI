@@ -185,8 +185,8 @@
 (impl DefaultInterruptedJobQueue InterruptedJobQueueOps parse-args-for ParseArgsInput :map
   [this input]
   (loop [remaining (:args input)
-         opts {:source "Reports/high/Prompt-Report-System/591912042315_answer_interrupted-jobs-audit.md"
-               :output "Reports/high/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md"
+         opts {:source "Research/high/Prompt-Report-System/591912042315_answer_interrupted-jobs-audit.md"
+               :output "Research/high/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md"
                :write? false}]
     (if (empty? remaining)
       opts

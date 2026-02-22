@@ -88,10 +88,10 @@
                         "Core"
                         "Library"
                         "Components"
-                        "Reports"
-                        "Strategies"]
-                :allowlist #{"Strategies/Agent-Authority-Alignment/STRATEGY.md"
-                             "Strategies/Agent-Authority-Alignment/INTEGRATION.md"
+                        "Research"
+                        "Development"]
+                :allowlist #{"Development/high/Agent-Authority-Alignment/STRATEGY.md"
+                             "Development/high/Agent-Authority-Alignment/INTEGRATION.md"
                              "Components/scripts/reference_guard/main.clj"}}
         files (mapcat #(collect-files-for default-reference-guard {:root %}) (:roots config))
         errors (->> files

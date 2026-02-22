@@ -1,7 +1,7 @@
 # Strategy-Development Program
 
 **Status:** Operational
-**Objective:** Evolve a `Strategies/<priority>/<Subject>/` from a conceptual draft into a hardened, implementation-ready plan by auditing the tool substrate.
+**Objective:** Evolve a `Development/<priority>/<Subject>/` from a conceptual draft into a hardened, implementation-ready plan by auditing the tool substrate.
 
 ## 1. The Development Loop
 The Strategy-Development program iterates on a subject until it reaches "Level 5 Maturity":
@@ -16,6 +16,6 @@ The Strategy-Development program iterates on a subject until it reaches "Level 5
 - **Hardening (Strike 2 Intelligence):** High-authority models verify the integration and write the final implementation logic.
 
 ## 3. Integration with Strategy System
-Every active strategy in `Strategies/{high,medium,low}/` must eventually be processed by the Strategy-Development program before moving to `tasks/`.
+Every active strategy in `Development/{high,medium,low}/` must eventually be processed by the Strategy-Development program before moving to `tasks/`.
 
 *The Great Work continues.*
