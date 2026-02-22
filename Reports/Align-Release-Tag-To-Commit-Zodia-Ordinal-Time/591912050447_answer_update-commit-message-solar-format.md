@@ -25,6 +25,12 @@ Updated files:
 3. `Library/architecture/CHRONOGRAPHY.md`
 4. `Strategies/Align-Release-Tag-To-Commit-Zodia-Ordinal-Time/STRATEGY.md`
 
+Resumption verification:
+- Re-checked protocol files after interruption.
+- Commit/session format remains exactly:
+  - `spaceSeparated [dotSeparated [ZodiaUnicode deg min sec], concatenated [Year "AM"]]`
+  - concrete: `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
+
 ## Reporting Protocol Notes
 
 - This report is required for `answer`, `draft`, and `question` responses.
