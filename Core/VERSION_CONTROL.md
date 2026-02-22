@@ -40,15 +40,19 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
    - `jj bookmark set dev -r @`
    - `jj git push --bookmark dev`
 10. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
-11. After final session synthesis (single or multi mode), create a fresh child working commit to leave a clean tree and keep the finalized session commit immutable:
+11. Verify push landed before declaring completion:
+   - `jj log -r 'bookmarks(dev) | remote_bookmarks(dev@origin)' --no-graph`
+   - completion is invalid until local `dev` and remote `dev@origin` point to the finalized session lineage.
+12. Only after successful push verification, optionally create a fresh child working commit for the next prompt:
    - `jj new dev`
-12. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
-13. Every completed prompt must end with a `session:` commit on the active line; leaving trailing `intent:` commits at prompt completion is a protocol violation.
-13.1. Session message timestamp format is mandatory:
+   - this new child is **next-session preparation**, not part of the completed session.
+13. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
+14. Every completed prompt must end with a finalized `session:` commit in the pushed `dev` lineage; leaving trailing `intent:` commits at prompt completion is a protocol violation.
+14.1. Session message timestamp format is mandatory:
    - commit/session text uses `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
    - release/version tags use cycle offset where `5919 AM -> 0`, `5920 AM -> 1`, etc.
-14. Every completed prompt must emit/update a report artifact in `Reports/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
-15. Session push invariant: prompt completion is invalid until the finalized `session:` head is pushed (default `dev`).
+15. Every completed prompt must emit/update a report artifact in `Reports/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.
+16. Session push invariant: prompt completion is invalid until the finalized `session:` commit is pushed (default `dev`) and verified.
 
 ## 4. Dirty Tree Intent Separation
 When the working copy is dirty and multiple change-intents may be present:

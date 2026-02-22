@@ -108,7 +108,14 @@ bb Components/scripts/answer_report/main.clj \
 *The Great Work continues.*
 
 ## 7. Post-Synthesis Working Copy Hygiene
-After final session synthesis is complete (single or multi mode), create a fresh child working commit so the finalized session commit is left immutable and the tree stays clean for the next prompt.
+After final session synthesis is complete (single or multi mode), push and verify the finalized session commit first. Only then create a fresh child working commit so the finalized session commit is left immutable and the tree stays clean for the next prompt.
+
+Verification gate before `jj new dev`:
+```
+jj bookmark set dev -r @
+jj git push --bookmark dev
+jj log -r 'bookmarks(dev) | remote_bookmarks(dev@origin)' --no-graph
+```
 
 Canonical command:
 ```
@@ -121,3 +128,4 @@ Prompt completion is valid only when all of the following hold:
 2. A report artifact exists for the prompt in `Reports/<Subject>/` (new report file or update under existing subject).
 3. Freshness-linked workflows that use prior intel must record and verify the referenced parent change ID before execution.
 4. The finalized session head is pushed at end-of-session (default push target: `dev`; release flows default to `main`).
+5. If `jj new dev` is created, it is a next-session child and does not replace the requirement that the pushed finalized commit is the session closure point.
