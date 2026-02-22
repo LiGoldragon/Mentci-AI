@@ -93,3 +93,16 @@ Make `answer_report` Chronos resolution robust across repo layout changes and sh
 2. No behavior regression in filename/date extraction.
 3. Existing report format remains unchanged except improved error messaging.
 4. Add/update `TESTING_CONTEXT.md` with both binary-present and cargo-manifest fallback scenarios.
+
+### Implementation Status (2026-02-22)
+- Implemented in `Components/scripts/answer_report/main.clj`:
+  - `--chronos-raw` CLI override for deterministic tests.
+  - Chronos resolver order:
+    1. `chronos` binary
+    2. `cargo run --manifest-path Components/Cargo.toml --bin chronos`
+    3. optional `Library/chronos/Cargo.toml` manifest fallback if present
+  - Attempt execution now captures `IOException` (missing binary) and continues fallback.
+  - Failure output now prints each attempted command with exit/stderr/stdout.
+- Updated test context in `Components/scripts/answer_report/TESTING_CONTEXT.md`.
+- Current environment note:
+  - Cargo fallback reaches manifest but fails due existing `Components/build.rs` schema compilation errors in `schema/mentci.capnp`.

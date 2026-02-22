@@ -31,7 +31,21 @@
    [:label :string]])
 
 (def ChronosInput
-  [:map])
+  [:map
+   [:rawOverride [:maybe :string]]])
+
+(def ParseChronosRawInput
+  [:map
+   [:raw :string]])
+
+(def ChronosAttemptInput
+  [:map
+   [:label :string]
+   [:argv [:vector :string]]])
+
+(def ChronosFailureInput
+  [:map
+   [:attempts [:vector :map]]])
 
 (def BuildFilenameInput
   [:map
@@ -102,6 +116,9 @@
           (= arg "--subject")
           (recur (nnext remaining) (assoc opts :subject value))
 
+          (= arg "--chronos-raw")
+          (recur (nnext remaining) (assoc opts :chronos-raw value))
+
           :else
           (fail {:message (str "Unknown argument: " arg)}))))))
 
@@ -139,12 +156,9 @@
          (map #(canonical-segment {:value %}))
          (str/join "-"))))
 
-(defn* read-chronos [:=> [:cat ChronosInput] :map] [_]
-  (let [result (sh "cargo" "run" "--quiet" "--bin" "chronos" "--" "--format" "numeric" "--precision" "second")
-        raw (str/trim (:out result))
+(defn* parse-chronos-raw [:=> [:cat ParseChronosRawInput] :map] [input]
+  (let [raw (str/trim (:raw input))
         matched (re-find #"^(\d+)\.(\d+)\.(\d+)\.(\d+)\s+\|\s+(\d+)\s+AM$" raw)]
-    (when-not (= 0 (:exit result))
-      (fail {:message (str "Failed to run chronos:\n" (:err result))}))
     (when-not matched
       (fail {:message (str "Unexpected chronos output: " raw)}))
     (let [[_ sign degree minute second year] matched]
@@ -154,6 +168,59 @@
        :degree (pad2 {:value degree})
        :minute (pad2 {:value minute})
        :second (pad2 {:value second})})))
+
+(defn* run-chronos-attempt [:=> [:cat ChronosAttemptInput] :map] [input]
+  (try
+    (let [result (apply sh (:argv input))]
+      {:label (:label input)
+       :argv (:argv input)
+       :exit (:exit result)
+       :out (:out result)
+       :err (:err result)})
+    (catch java.io.IOException e
+      {:label (:label input)
+       :argv (:argv input)
+       :exit 127
+       :out ""
+       :err (.getMessage e)})))
+
+(defn* summarize-chronos-failure [:=> [:cat ChronosFailureInput] :string] [input]
+  (let [lines
+        (for [attempt (:attempts input)]
+          (str "- " (str/join " " (:argv attempt))
+               "\n  exit: " (:exit attempt)
+               (when-not (str/blank? (str (:err attempt)))
+                 (str "\n  stderr: " (str/trim (:err attempt))))
+               (when-not (str/blank? (str (:out attempt)))
+                 (str "\n  stdout: " (str/trim (:out attempt))))))]
+    (str "Failed to run chronos using all resolver paths:\n"
+         (str/join "\n" lines))))
+
+(defn* read-chronos [:=> [:cat ChronosInput] :map] [input]
+  (if (and (:rawOverride input) (not (str/blank? (:rawOverride input))))
+    (parse-chronos-raw {:raw (:rawOverride input)})
+    (let [components-manifest? (.exists (io/file "Components/Cargo.toml"))
+          library-manifest? (.exists (io/file "Library/chronos/Cargo.toml"))
+          attempts (cond-> [{:label "chronos-bin"
+                             :argv ["chronos" "--format" "numeric" "--precision" "second"]}]
+                     components-manifest?
+                     (conj {:label "cargo-components-manifest"
+                            :argv ["cargo" "run" "--quiet"
+                                   "--manifest-path" "Components/Cargo.toml"
+                                   "--bin" "chronos" "--"
+                                   "--format" "numeric" "--precision" "second"]})
+
+                     library-manifest?
+                     (conj {:label "cargo-library-chronos-manifest"
+                            :argv ["cargo" "run" "--quiet"
+                                   "--manifest-path" "Library/chronos/Cargo.toml"
+                                   "--bin" "chronos" "--"
+                                   "--format" "numeric" "--precision" "second"]}))
+          results (mapv run-chronos-attempt attempts)
+          success (first (filter #(= 0 (:exit %)) results))]
+      (if success
+        (parse-chronos-raw {:raw (:out success)})
+        (fail {:message (summarize-chronos-failure {:attempts results})})))))
 
 (defn* build-filename [:=> [:cat BuildFilenameInput] :string] [input]
   (let [{:keys [year sign degree minute second kind title subject]} input
@@ -218,7 +285,7 @@
         _ (when-not (#{"modified-files" "no-files"} change-scope)
             (fail {:message (str "Invalid --change-scope: " change-scope)}))
         subject (canonical-subject {:value (or (:subject opts) (:title opts))})
-        chrono (read-chronos {})
+        chrono (read-chronos {:rawOverride (:chronos-raw opts)})
         filename (build-filename {:year (:year chrono)
                                   :sign (:sign chrono)
                                   :degree (:degree chrono)
