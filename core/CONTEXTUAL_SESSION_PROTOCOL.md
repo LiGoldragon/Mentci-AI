@@ -46,6 +46,7 @@ When the session's work is complete and verified:
 - Duplicate the sub-commit branch to a synthesis branch.
 - Squash duplicated sub-commits into one final `session:` commit.
 - Append duplicated sub-branch change IDs under `## Squashed Change IDs` in the final message.
+- Preservation rule: once a `session:` commit is retained, do not abandon commits referenced in its metadata (especially `## Squashed Change IDs`) unless that same operation sequence rewrites the `session:` commit to keep references valid.
 
 ### 4.3 Canonical Final Message Shape
 Use this canonical description for the rewritten single commit (single mode) or final squashed commit (multi mode):

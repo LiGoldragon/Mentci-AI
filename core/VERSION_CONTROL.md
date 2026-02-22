@@ -37,6 +37,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 9. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
 10. After final session synthesis (single or multi mode), create a fresh child working commit to leave a clean tree and keep the finalized session commit immutable:
    - `jj new dev`
+11. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
 
 ## 4. Dirty Tree Intent Separation
 When the working copy is dirty and multiple change-intents may be present:
@@ -71,6 +72,7 @@ Use `mentci-jj log` to prefer `--no-signing` and avoid GPG failures.
 
 - **Safety Gate:** The Mentci Engine (`jj`) is configured to refuse snapshots of files exceeding size limits. Agents must **not** attempt to bypass this by increasing `snapshot.max-new-file-size` unless directed by the Top Admin.
 - **VCS Integrity:** If a binary file accidentally enters the history, it must be immediately purged using `jj abandon` or history rewriting before pushing to `main`.
+- **Reference safety:** Any purge/rewrite plan that uses `jj abandon` must first verify it will not invalidate references recorded in retained `session:` commit metadata.
 - **Proactive Ignoring:** New binary formats, compressed archives (`.tgz`, `.zip`), and directory-local artifacts should be added to `.gitignore` as soon as they are identified.
 
 ## 8. Related References
