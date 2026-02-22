@@ -19,8 +19,8 @@ Sweep summary:
 1. `validate_scripts` passed.
 2. `session_guard` passed at the time of sweep.
 3. `root_guard` failed due unexpected lowercase top-level directory `outputs`.
-4. Script test batch passed (`tool_discoverer`, `interrupted_job_queue`, `inputs_remount`).
-5. Static/path scans showed remaining drift markers and mixed `Inputs/` vs `Sources/` references in docs/strategy files.
+4. Script test batch passed (`tool_discoverer`, `interrupted_job_queue`, `sources_remount`).
+5. Static/path scans showed remaining drift markers and mixed `Sources/` vs `Sources/` references in docs/strategy files.
 
 Strategy implemented:
 - Updated `Strategies/Debugging/STRATEGY.md` with a deterministic sweep program, known-issues section, and fix workflow for iterative validation and closure.

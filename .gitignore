@@ -9,9 +9,9 @@ result
 /$(pwd)/
 gemini-cli-*.tgz
 *.tgz
-# Inputs are mounted/ephemeral read-only substrate (often symlinks/store paths).
+# Sources are mounted/ephemeral read-only substrate (often symlinks/store paths).
 # They are environment material, not repository source of truth.
-Inputs/
+Sources/
 inputs_backup/
 # Outputs are runtime/session artifacts and must not be versioned.
 Outputs/

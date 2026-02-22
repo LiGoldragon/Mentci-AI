@@ -36,13 +36,13 @@ Conditional top-level files (keep only if still actively consumed by tooling):
 
 Everything else must move under one of the 7 typed directories.
 Temporary migration note:
-- `Inputs/` may exist only as a short-lived compatibility alias while references are rewritten to `Sources/`.
+- `Sources/` may exist only as a short-lived compatibility alias while references are rewritten to `Sources/`.
 
 Current implementation notes:
 - `ARCHITECTURE.md` moved to `Library/architecture/ARCHITECTURE.md`.
 - `Work.md` moved to `Library/reports/WORK_CONTEXT.md`.
 - `BUGS.md` moved to `Library/reports/BUGS.md`.
-- `agent-inputs.edn` moved to `Core/agent-inputs.edn`.
+- `agent-sources.edn` moved to `Core/agent-sources.edn`.
 - `jj-project-config.toml` replaced by local ignored `.mentci/jj-project-config.toml` and tracked template `Core/jj-project-config.example.toml`.
 
 ## Placement Rules

@@ -13,7 +13,7 @@
    [:model :string]
    [:signature [:maybe :string]]])
 
-(def InputManifest
+(def SourceManifest
   [:map-of
    :keyword
    [:map
@@ -31,8 +31,8 @@
 
 (def JailConfig
   [:map
-   [:inputsPath :string]
-   [:inputManifest InputManifest]
+   [:sourcesPath :string]
+   [:sourceManifest SourceManifest]
    [:outputsPath {:optional true} :string]
    [:outputManifest {:optional true} OutputManifest]
    [:policyPath {:optional true} :string]

@@ -14,7 +14,7 @@ Implemented top-level FS minimization and enforcement.
 - `ARCHITECTURE.md` -> `Library/architecture/ARCHITECTURE.md`
 - `BUGS.md` -> `Library/reports/BUGS.md`
 - `Work.md` -> `Library/reports/WORK_CONTEXT.md`
-- `agent-inputs.edn` -> `Core/agent-inputs.edn`
+- `agent-sources.edn` -> `Core/agent-sources.edn`
 - `jj-project-config.toml` -> `Core/jj-project-config.example.toml`
 
 ### Top-level enforcement
@@ -32,11 +32,11 @@ Implemented top-level FS minimization and enforcement.
 - Nix wiring updated to current component paths and local JJ config location:
   - `flake.nix` uses `./Components/nix` and `./Components/scripts`
   - `Components/nix/dev_shell.nix` sets `JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"`
-  - `Components/nix/default.nix` / `Components/nix/jail_inputs.nix` use `inputs` consistently
+  - `Components/nix/default.nix` / `Components/nix/jail_sources.nix` use `inputs` consistently
 - Launcher/remount now use canonical whitelist path:
-  - `Core/agent-inputs.edn`
+  - `Core/agent-sources.edn`
 
 ### Validation
 - `bb Components/scripts/root_guard/main.clj` -> pass
-- `bb Components/scripts/inputs_remount/main.clj --help` -> pass
+- `bb Components/scripts/sources_remount/main.clj --help` -> pass
 - `bb Components/scripts/validate_scripts/main.clj` -> fails on pre-existing issue (`Components/scripts/program_version/main.clj` missing `defn*`)
