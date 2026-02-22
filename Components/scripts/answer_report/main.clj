@@ -228,7 +228,7 @@
     (str "Reports/"
          subject
          "/"
-         year "_" sign "_" degree "_" minute "_" second "_" kind "_" slug ".md")))
+         year sign degree minute second "_" kind "_" slug ".md")))
 
 (defn* ensure-unique-path [:=> [:cat EnsureUniquePathInput] :string] [input]
   (let [initial (:path input)]

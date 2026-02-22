@@ -12,7 +12,7 @@ Reports are required even when no repository files are modified (`change-scope: 
 ## Filename Contract
 Use chronographic naming:
 
-`YEAR_SIGN_DEGREE_MINUTE_SECOND_KIND_TITLE.md`
+`YEARSIGNDEGREEMINUTESECOND_KIND_TITLE.md`
 
 Generated via:
 

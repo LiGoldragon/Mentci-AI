@@ -31,7 +31,7 @@ docs/architecture/JjAutomation.md:3:This document is superseded by `docs/archite
 docs/architecture/RELEASE_PROTOCOL.md:47:- `docs/guides/RESTART_CONTEXT.md`
 docs/architecture/RELEASE_PROTOCOL.md:68:- Version Control: `docs/architecture/VERSION_CONTROL.md`
 docs/architecture/JAIL_COMMIT_PROTOCOL.md:5:Operational steps live in `docs/architecture/VERSION_CONTROL.md`.
-Reports/Guidelines-Wisdom-Reincorporation/5919_12_04_47_01_answer_guidelines-wisdom-reincorporation.md:15:Compared current Rust guideline against Inputs/criomos original, traced history, and confirmed the reduction was introduced intentionally at initial creation of docs/architecture/SEMA_RUST_GUIDELINES.md (not a later accidental truncation).
+Reports/Guidelines-Wisdom-Reincorporation/591912044701_answer_guidelines-wisdom-reincorporation.md:15:Compared current Rust guideline against Inputs/criomos original, traced history, and confirmed the reduction was introduced intentionally at initial creation of docs/architecture/SEMA_RUST_GUIDELINES.md (not a later accidental truncation).
 ```
 
 ### Lowercase Core Path Reintroduction

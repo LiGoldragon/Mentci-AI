@@ -9,6 +9,8 @@ Standardize true-solar time usage across session commits, releases, and prompt-h
 - Enforce forward protocol so all future prompt sessions begin with solar baseline.
 - Ensure release/version cycle mapping uses AM-offset:
   - `cycle = AnnoMundi - 5919` (`5919 -> 0`, `5920 -> 1`, ...).
+- Enforce condensed chronographic filename prefix:
+  - `YEARSIGNDEGREEMINUTESECOND_kind_title.md` (no separator in timestamp block).
 - Keep `Reports/<Subject>/` and `Strategies/<Subject>/` synchronized.
 
 ## Implementation Plan

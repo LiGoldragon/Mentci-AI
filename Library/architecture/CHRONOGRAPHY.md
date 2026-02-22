@@ -63,7 +63,8 @@ Precision is hierarchical and context-dependent. Coordinates may be truncated fr
     - `5919 AM` -> `v0.<sign>.<degree>.<minute>.<second>`
     - `5920 AM` -> `v1.<sign>.<degree>.<minute>.<second>`
 - **Audit Trail:** When required, include ecliptic time in commit messages or structured data checked into the repo.
-- **Filenaming:** Reports must use the `YEAR_SIGN_DEGREE_MINUTE_SECOND` format for durable sorting.
+- **Filenaming:** Reports must use the condensed `YEARSIGNDEGREEMINUTESECOND` prefix for durable sorting.
+  - Example: `591912050415_answer_topic-title.md`
 
 Session commit baseline line:
 - Required primary timestamp line in session descriptions:
