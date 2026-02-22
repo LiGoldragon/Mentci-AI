@@ -125,4 +125,38 @@ Expansion:
 3. **Over-aggressive migration**
 - Mitigation: staged adoption by script, with rollback path to `defn*`.
 
+## 8. Implementation Feasibility Review
+
+### Verdict
+Partially feasible. Core direction is implementable, but current placeholder naming
+(`fn`) is not executable in Clojure as written.
+
+### Blockers
+1. **`fn` macro name collides with Clojure special form**
+- The symbol `fn` is a language special form and cannot be repurposed as a project
+  macro entrypoint in normal call position.
+- Therefore the strategy's `fn` placeholder is not directly implementable.
+
+2. **Validator coupling to `defn*`**
+- `Components/scripts/validate_scripts/main.clj` currently enforces presence of
+  `defn*` + `mentci.malli` usage in scripts.
+- Any migration away from `defn*` requires validator evolution.
+
+3. **Missing implementation scaffolding**
+- `Components/scripts/lib/malli.clj` currently provides only `defn*` and `enable!`.
+- `defobj` / `impl` / scalar lint guards are not implemented yet.
+
+### Feasible Path
+1. Keep `defn*` as baseline.
+2. Replace `fn` placeholder with a non-colliding macro name (for example `fn*`).
+3. Implement `defobj` and optional `impl` in `Components/scripts/lib/malli.clj`.
+4. Update validator to accept `defn*` and/or new sanctioned macro forms.
+5. Pilot on one script, then expand incrementally.
+
+### Scope Classification
+- `defobj`: feasible now.
+- `impl`: feasible now.
+- `fn` (exact spelling): not feasible (special form collision).
+- unary-map noise reduction: feasible with boundary-aware migration.
+
 *The Great Work continues.*
