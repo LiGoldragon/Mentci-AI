@@ -50,12 +50,20 @@ This strategy assumes option (1): materialize `Components/` and migrate.
 
 ## Root Type Semantics
 - `Inputs`: read-only external substrate and mounted references.
-- `Components`: mutable implementation components (runtime-building units).
+- `Components`: mutable implementation components that belong to Mentci-AI but are managed as independent VC subtrees/repositories.
 - `Outputs`: generated/export artifacts for downstream consumption.
 - `Reports`: prompt/session answer artifacts grouped by subject.
 - `Strategies`: pre-implementation planning and research per subject.
 - `Core`: canonical operating protocols and ontology docs.
 - `Library`: reusable shared code and schemas.
+
+### Components VC Model (Clarification)
+`Components/` is not only a folder regrouping. It is intended to host subtrees with their own version-control trees so sub-components can evolve in parallel without blocking the root repository workflow.
+
+Implications:
+1. Each component subtree should have explicit sync policy (subtree/submodule/colocated strategy to be standardized).
+2. Root-level CI/validation must support parallel component evolution and pinned integration points.
+3. Migration plan must preserve standalone history for component projects where applicable.
 
 ## Implementation Phases
 1. Specification
@@ -91,6 +99,7 @@ This strategy assumes option (1): materialize `Components/` and migrate.
   - `tools/` -> `Components/tools/`
   - `workflows/` -> `Components/workflows/`
   - `nix/` -> `Components/nix/`
+  - for candidate independent projects, split into VC subtrees under `Components/` instead of plain moves
 
 3. Handle non-canonical but intentional roots:
 - `Logs/`: either map into `Outputs/Logs/` or add to enum as explicit durable audit root.
@@ -104,6 +113,7 @@ This strategy assumes option (1): materialize `Components/` and migrate.
 5. Enforce:
 - fail on new lowercase top-level roots unless explicitly temporary and allowlisted.
 - validate that all root dirs are within canonical set or runtime allowlist (`.git`, `.jj`, `.direnv`, `target`).
+- validate component VC boundaries (component manifests/pins present, integration refs resolvable).
 
 ## Risks
 - Tooling/scripts hardcoded to lowercase root paths.
