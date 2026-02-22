@@ -251,6 +251,22 @@
         "type": "github"
       }
     },
+    "bookofsol": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770989890,
+        "narHash": "sha256-Fzu07ueC16R6Szi06SMejtq9fXq4Z0KE+jGLJHYqqHQ=",
+        "owner": "LiGoldragon",
+        "repo": "TheBookOfSol",
+        "rev": "975d5b8bf7fdf8b9f6434db9003ac59bb5612e05",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "TheBookOfSol",
+        "type": "github"
+      }
+    },
     "cargo-doc-live": {
       "locked": {
         "lastModified": 1724704668,
@@ -1480,6 +1496,7 @@
         "aski": "aski",
         "attractor": "attractor",
         "attractor-docs": "attractor-docs",
+        "bookofsol": "bookofsol",
         "codex-cli-nix": "codex-cli-nix",
         "comply": "comply",
         "crane": "crane",

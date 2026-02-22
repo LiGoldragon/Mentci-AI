@@ -1,12 +1,13 @@
 # Astrology Reference Index
 
-This directory provides minimal symbolic correspondence references for agent orientation.
+This directory provides symbolic correspondence references for agent orientation and engineering design.
 
 Primary external reference source:
-- `Inputs/bookofsol` (mounted read-only through jail input flow)
+- `Inputs/TheBookOfSol` (mounted read-only through jail input flow)
 
-Use this directory as a stable local orientation layer. For deeper source material, consult `Inputs/bookofsol` directly.
+Use this directory as a stable local orientation layer. For deeper source material, consult `Inputs/TheBookOfSol` directly.
 
 Documents:
 - `Library/astrology/CORRESPONDENCE.md` (minimal stable map)
-- `Library/astrology/BOOKOFSOL_DRAFT_CORRESPONDENCE.md` (provisional expanded draft pending source sync)
+- `Library/astrology/BOOKOFSOL_DRAFT_CORRESPONDENCE.md` (expanded draft)
+- `Library/astrology/ENGINEERING_CORRESPONDENCE.md` (zodiac + planetary mapping to software/engineering design)

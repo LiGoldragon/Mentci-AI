@@ -4,9 +4,9 @@
 Draft correspondence for agent orientation.
 
 ## Source State
-- Intended source: `Inputs/bookofsol`
-- Current workspace state: `Inputs/bookofsol` is not present/mounted.
-- This draft is provisional and must be reconciled with concrete `Inputs/bookofsol` passages when available.
+- Source: `Inputs/TheBookOfSol`
+- Current workspace state: mounted and available.
+- This draft should be iteratively tightened with direct passage-level citations.
 
 ## Zodiac Crosswalk (Operational)
 
@@ -43,7 +43,7 @@ Draft correspondence for agent orientation.
 5. Record rationale in the report entry when category choice is non-obvious.
 
 ## Reconciliation TODO
-When `Inputs/bookofsol` is mounted again:
+Now that `Inputs/TheBookOfSol` is mounted:
 1. Add exact file/path citations under each section.
 2. Mark each row as `confirmed` or `adjusted` against source text.
-3. Remove provisional status from this document.
+3. Fold confirmed rows into canonical docs.

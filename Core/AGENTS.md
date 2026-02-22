@@ -46,6 +46,10 @@ These are the highest-order rules for all languages and scripts.
     *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `Library/STRATEGY_DEVELOPMENT.md`) to discover, package, and test the necessary tools and libraries.
     *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `Core/`, `Components/src/`, or `Components/tasks/`.
 *   **Per-Subject Indexing:** Subjects should be merged or split as context volume changes. Multi-subject files should be cross-referenced.
+*   **Subject Context Discovery (Mandatory):** Before planning or implementation, agents must search `Strategies/` and `Reports/` for matching subject(s) from the prompt domain and ingest the most relevant entries.
+    *   **Search First:** Use subject-name and keyword search to find existing context before creating new artifacts.
+    *   **Dual-Tree Read:** Read both sides (`Strategies/<Subject>/` and `Reports/<Subject>/`) when either side exists.
+    *   **Context Reuse Rule:** If matching subject context exists, continue from it instead of starting a disconnected track.
 *   **Strategy/Report Subject Unification:** Every subject in `Reports/` must have a corresponding `Strategies/<Subject>/` directory, and every strategy subject must have a corresponding topic directory `Reports/<Subject>/` with a topic index file `README.md`.
     *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
     *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (strategy scaffold or report topic).

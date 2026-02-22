@@ -21,6 +21,9 @@ Upon receiving a new user prompt (Directive), the agent must:
     *   Fallback command: `cargo run --quiet --manifest-path Components/Cargo.toml --bin chronos -- --format am --precision second`
 1.  **Store the Raw Prompt:** Copy the user's input exactly as provided.
 2.  **Formulate Initial Context:** Summarize the interpretation of the prompt, the intended strategy, and any identified constraints.
+2.5. **Discover Subject Context (Mandatory):** Search `Strategies/` and `Reports/` for existing subject(s) and load relevant files before creating new plan/work.
+    *   If either side exists (`Strategies/<Subject>/` or `Reports/<Subject>/`), consult both sides.
+    *   Reuse and extend existing subject context unless an explicit split is required.
 3.  **Enforce Pre-Edit Cleanliness:** If the working tree is dirty at prompt start, commit pre-existing intent groups before making new edits for the prompt.
 
 ## 3. Phase 2: Atomic Attribution (The Incremental Loop)

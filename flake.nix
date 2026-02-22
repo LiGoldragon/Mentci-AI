@@ -20,7 +20,7 @@
     maisiliym.url = "github:LiGoldragon/maisiliym";
     kibord.url = "github:LiGoldragon/kibord";
     bookofsol = {
-      url = "github:LiGoldragon/bookofsol";
+      url = "github:LiGoldragon/TheBookOfSol";
       flake = false;
     };
     aski = {
