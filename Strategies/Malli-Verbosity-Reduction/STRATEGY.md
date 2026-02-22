@@ -7,11 +7,21 @@ Reduce repetitive Malli authoring noise while preserving:
 - Sema single-object contracts
 - explicit schema truth
 - instrumentation compatibility
+- methods-on-objects-first semantics (mirrored from Rust trait-domain rule)
 
 ## 2. Scope
 - Clojure script schemas under `scripts/`.
 - `defn*` function-signature ergonomics in `scripts/lib/malli.clj`.
+- protocol/record-first expression of domain behavior in Clojure.
 - No wire-format or runtime behavior changes in this phase.
+
+## 2.1 Review Outcome (Methods-First Alignment)
+The strategy is feasible, but it must not optimize only syntax surface. It also
+needs a structural mirror of `Core/SEMA_RUST_GUIDELINES.md`:
+- behavior in an existing semantic method domain belongs in protocol methods;
+- free functions remain orchestration wrappers;
+- syntax sugar (`defobj`, `defn1`) should support protocol-based object methods
+  rather than reinforce ad-hoc free-function style.
 
 ## 3. Proposed Syntax Targets
 ### 3.1 Schema Declaration Sugar
@@ -65,25 +75,35 @@ Expansion:
 - No forced migration.
 - `defn*` remains canonical fallback for complex arities/schemas.
 
-3. Pilot conversion on one low-risk script:
-- `scripts/session_guard/main.clj` or `scripts/reference_guard/main.clj`
+3. Add methods-first helper path:
+- Introduce optional `defmethod1` macro shape for protocol method schemas where useful:
+```clojure
+(defmethod1 to-lines ParseInput ParseOutput [this] ...)
+```
+- Expansion target remains explicit Malli-compatible function schema.
 
-4. Validate with:
+4. Pilot conversion on one low-risk script:
+- `scripts/session_guard/main.clj` or `scripts/reference_guard/main.clj`
+- Ensure pilot includes at least one protocol/domain method extraction.
+
+5. Validate with:
 - `bb scripts/validate_scripts/main.clj`
 - script-local execution tests
 
-5. If pilot is stable, draft migration guide for broader rollout.
-6. Add compile-time failure for unresolved inferred output types.
+6. If pilot is stable, draft migration guide for broader rollout.
+7. Add compile-time failure for unresolved inferred output types.
 
 ## 5. Non-Goals (Phase 1)
 - Removing map field keys (`:raw`, `:path`, etc.) from object schemas.
 - Auto-inferring output schemas from function bodies.
 - Refactoring all existing scripts in one pass.
+- Replacing all orchestrator free functions with protocols where no domain object exists.
 
 ## 6. Success Criteria
 - Pilot script shows measurable schema/signature line-count reduction.
 - Validation and instrumentation behavior unchanged.
 - Readability remains acceptable to maintainers during code review.
+- Methods-first conformance check passes: domain behavior is protocol/record anchored.
 
 ## 7. Failure Modes and Mitigation
 1. **Macro opacity during debugging**

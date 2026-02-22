@@ -16,6 +16,10 @@ This document defines the mandatory Sema object rules for Clojure and its extens
 3. **Schema Is Sema**
    Schemas are the authoritative truth. Encodings are incidental.
 
+4. **Methods on Objects First**
+   Domain behavior must be expressed as protocol methods implemented by object-bearing
+   types/records. Namespace free functions are orchestration shells, not domain homes.
+
 ## Clojure Object Model
 
 ### Object Definition
@@ -44,6 +48,35 @@ Every function takes a single input object and returns a single output object.
     (throw (ex-info "Invalid greet input" {:errors (me/humanize (m/explain GreetInput input))})))
   {:message (str "Hello " (:name input))})
 ```
+
+### Methods-on-Objects-First Rule
+When behavior belongs to an object domain, define a protocol and implement it on a
+named object type (usually `defrecord`).
+
+```clojure
+(def ParseInput
+  [:map
+   [:raw :string]])
+
+(def ParseOutput
+  [:map
+   [:lines [:vector :string]]])
+
+(defprotocol ParseDescriptions
+  (to-lines [this]))
+
+(defrecord ParseRequest [raw]
+  ParseDescriptions
+  (to-lines [this]
+    {:lines (->> (clojure.string/split-lines (:raw this))
+                 (map clojure.string/trim)
+                 (remove clojure.string/blank?)
+                 vec)}))
+```
+
+Mapping to Rust trait-domain rule:
+- Rust `trait`/`impl` corresponds to Clojure `defprotocol` + `extend-type` or `defrecord` impl.
+- If a semantic behavior has a protocol domain, do not bypass it with unrelated helper fns.
 
 ### Direction Encodes Action
 Use `from_*`, `to_*`, `into_*` when construction or emission is implied.
@@ -100,6 +133,7 @@ Use the local `defn*` macro to reduce noise. It expands to `m/=>` plus `defn`.
 *   A namespace is a semantic layer.
 *   Related objects are grouped in a single namespace (e.g., `mentci.intent`).
 *   Do not duplicate meaning in function names. The namespace conveys the noun.
+*   Protocol names and object names carry durable semantics; helper wrappers remain thin.
 
 ## Documentation Protocol
 
