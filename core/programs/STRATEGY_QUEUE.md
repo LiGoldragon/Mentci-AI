@@ -24,6 +24,7 @@
 ## 3. Implementation Status
 - **Strategy-Development:** **Implemented.** Tooling: `scripts/tool_discoverer/main.clj`.
 - **Artifact-Sweep:** **Hardening.** Added `ARTIFACT_ANALYSIS.md` and prevention strategy.
+- **Artifact-Sweep:** **Hardening (Phase 2 queued).** Added recommit-recovery plan in `strategies/artifact-sweep/PHASE_2_RECOMMIT_RECOVERY.md` to remove post-rewrite DAG artifacts and queue drift.
 - **Project-Hardening:** **Implemented.** (Structural Phase). Scripts reorganized, schemas defined.
 - **Debugging:** **Operational.** Protocol in `strategies/debugging/STRATEGY.md`.
 - **Aski-Conversion:** **Drafted.** Strategy in `strategies/aski-conversion/STRATEGY.md`.
