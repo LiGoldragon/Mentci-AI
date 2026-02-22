@@ -27,3 +27,7 @@ Reference source:
 
 ## Source Handling Rule
 When adding deeper correspondences here, cite the exact `Inputs/bookofsol` file path used.
+
+## Provisional Note
+`Inputs/bookofsol` is currently unavailable in this workspace snapshot. The expanded
+mapping is drafted as a provisional orientation layer pending direct source sync.
