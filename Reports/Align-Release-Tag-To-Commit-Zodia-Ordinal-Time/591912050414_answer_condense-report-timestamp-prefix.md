@@ -24,7 +24,7 @@ Implemented:
 Validation:
 - `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/answer_report` -> pass
 - `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/subject_unifier` -> pass
-- smoke generation produced `Reports/Prompt-Report-System/591912050415_answer_condensed-filename-smoke.md` (then removed), confirming new format emission.
+- smoke generation produced a temporary condensed-filename report file and removed it after verification.
 
 ## Reporting Protocol Notes
 
