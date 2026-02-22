@@ -32,19 +32,19 @@ Enforcement requirements:
 These are the highest-order rules for all languages and scripts.
 
 *   **Sub-Program Directory:** The `core/programs/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
-*   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `strategies/<subject>/` dedicated directories.
+*   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `strategies/<Subject>/` dedicated directories.
     *   **Prioritization:** Strategies must be prioritized according to the **Strategy Queue** (Ref: `core/programs/STRATEGY_QUEUE.md`). Resiliency and efficiency are ranked highest.
     *   **Composition:** Strategies should consist of multiple files (e.g., `MISSION.md`, `ARCHITECTURE.md`, `ROADMAP.md`) and sub-folder source code drafts (`src/`).
     *   **Workflow:** Strategies are "lined up" for implementation-trials. Use cheaper models to explore dead-ends and effective paths (vibe-coding permitted here) before high-authority models formalize the final logic.
     *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `core/programs/STRATEGY_DEVELOPMENT.md`) to discover, package, and test the necessary tools and libraries.
     *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `core/`, `src/`, or `tasks/`.
 *   **Per-Subject Indexing:** Subjects should be merged or split as context volume changes. Multi-subject files should be cross-referenced.
-*   **Strategy/Report Subject Unification:** Every subject in `Reports/` must have a corresponding `strategies/<subject>/` directory, and every strategy subject must have a corresponding report topic file in `Reports/topics/<subject>.md`.
+*   **Strategy/Report Subject Unification:** Every subject in `Reports/` must have a corresponding `strategies/<Subject>/` directory, and every strategy subject must have a corresponding topic directory `Reports/<Subject>/` with a topic index file `README.md`.
     *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
     *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (strategy scaffold or report topic).
     *   **Canonical Tool:** Use `bb scripts/subject_unifier/main.clj --write` to enforce and repair bidirectional subject coverage.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
-*   **Assimilation of Inputs:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `inputs/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
+*   **Assimilation of Inputs:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Inputs/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 *   **Language Authority Hierarchy:**
     1.  **Aski:** Evolved multi-domain Clojure. Takes precedence for specs and LLM-friendly logic.
     2.  **Rust:** Core implementation and heavy lifting.
@@ -82,9 +82,9 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 *   **Script Typing:** All Clojure scripts must define Malli schemas for inputs/config and validate them.
 *   **Script Guard:** Run `bb scripts/validate_scripts.clj` when adding or editing scripts. Python is forbidden under `scripts/` except `scripts/prefetch_orchestrator.py`.
 *   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `core/SEMA_CLOJURE_GUIDELINES.md`, `core/SEMA_RUST_GUIDELINES.md`, and `core/SEMA_NIX_GUIDELINES.md`.
-*   **Attractor Code Reference:** Implementation lives in `inputs/brynary-attractor/attractor`. The `inputs/attractor` folder is specs only.
+*   **Attractor Code Reference:** Implementation lives in `Inputs/brynary-attractor/attractor`. The `Inputs/attractor` folder is specs only.
 *   **Attractor Backend Behavior:** `CliAgentBackend` spawns a subprocess with env merged from `process.env` and backend config. `SessionBackend` uses `unified-llm` `Client.fromEnv` (API keys via standard env vars).
-*   **Inputs Directory Rule:** Do not edit anything under `inputs/`. Treat it as read-only reference material.
+*   **Inputs Directory Rule:** Do not edit anything under `Inputs/`. Treat it as read-only reference material.
 *   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
 *   **Sema Object Style:** Strictly follow the ontology defined in `schema/*.capnp`.
 *   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers (example: in `nix/` code, use `namespace`, not `nixns`).

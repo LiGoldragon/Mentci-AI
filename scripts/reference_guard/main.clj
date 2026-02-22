@@ -75,8 +75,8 @@
                         "tasks"
                         "strategies"
                         "workflows"]
-                :allowlist #{"strategies/agent-authority-alignment/STRATEGY.md"
-                             "strategies/agent-authority-alignment/INTEGRATION.md"}}
+                :allowlist #{"strategies/Agent-Authority-Alignment/STRATEGY.md"
+                             "strategies/Agent-Authority-Alignment/INTEGRATION.md"}}
         files (mapcat #(collect-files {:root %}) (:roots config))
         errors (->> files
                     (mapcat (fn [file]

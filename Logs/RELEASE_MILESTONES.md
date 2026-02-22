@@ -12,6 +12,6 @@ This file maintains the durable record of session milestones and goal outcomes s
 - **Infrastructure:** Setup `nix-direnv` and automated Emacs RO-purity hooks.
 - **Sanitization:** Purged binary artifacts and established strict "No Binaries" rules.
 - **Script Hardening:** Reorganized orchestration scripts into autonomous directories with schemas and tests.
-- **Artifact Purge:** Implemented and executed `strategies/artifact-sweep/src/sweep.clj`, surgically removing redundant 'Canonical Aski framing' blocks from 80+ files.
+- **Artifact Purge:** Implemented and executed `strategies/Artifact-Sweep/src/sweep.clj`, surgically removing redundant 'Canonical Aski framing' blocks from 80+ files.
 
 ## [Previous Historical Logs Elided for Brevity - see git history]

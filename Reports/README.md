@@ -20,5 +20,5 @@ Generated via:
 
 
 ## Subject Topics
-Subject mapping files live in `Reports/topics/`.
-Each topic must have a corresponding `strategies/<subject>/` directory.
+Topics are subdirectory names under `Reports/` (for example `Reports/Prompt-Report-System/`).
+Each topic must have a corresponding `strategies/<Subject>/` directory.

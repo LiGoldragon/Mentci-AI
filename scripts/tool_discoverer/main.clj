@@ -40,5 +40,5 @@
 
 (let [subject (first *command-line-args*)]
   (if (str/blank? subject)
-    (println "Usage: tool_discoverer.clj <subject>")
+    (println "Usage: tool_discoverer.clj <Subject>")
     (println (json/generate-string (discover-tools subject) {:pretty true}))))

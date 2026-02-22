@@ -26,14 +26,14 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Orchestration:** `scripts/launcher/` (Jail), `scripts/commit/` (Shipping).
 - **Truth Layer:** `schema/*.capnp` (Semantic types), `core/` (Architectural mandates).
 - **FS Ontology:** `core/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
-- **Strategy System:** `strategies/<subject>/`. Status: **Operational.** Active: `agent-authority-alignment`, `artifact-sweep`, `aski-conversion`, `aski-refinement`, `attractor`, `debugging`, `mentci-rfs`, `project-hardening`, `strategy-development`, `universal-program-pack`.
+- **Strategy System:** `strategies/<Subject>/`. Status: **Operational.** Active: `Agent-Authority-Alignment`, `Artifact-Sweep`, `Aski-Conversion`, `Aski-Refinement`, `Attractor`, `Debugging`, `Mentci-RFS`, `Project-Hardening`, `Strategy-Development`, `Universal-Program-Pack`.
 - **Strategy Queue:** `core/programs/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
 - **Development Loop:** `core/programs/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
 - **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
 - **VCS Guardrail:** `Inputs/` is gitignored as mounted runtime substrate; input updates are managed through flake/input refresh workflows, not direct Git tracking.
-- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `strategies/artifact-sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
+- **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `strategies/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
 
 ## 4. Operational Requirements
 - **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Logs/RELEASE_MILESTONES.md`.

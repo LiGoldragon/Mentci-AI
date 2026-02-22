@@ -41,7 +41,8 @@
    [:minute :string]
    [:second :string]
    [:kind [:enum "answer" "draft" "question"]]
-   [:title :string]])
+   [:title :string]
+   [:subject :string]])
 
 (def EnsureUniquePathInput
   [:map
@@ -54,8 +55,13 @@
    [:kind [:enum "answer" "draft" "question"]]
    [:changeScope [:enum "modified-files" "no-files"]]
    [:title :string]
+   [:subject :string]
    [:prompt :string]
    [:answer :string]])
+
+(def EnsureTopicReadmeInput
+  [:map
+   [:subject :string]])
 
 (defn* fail [:=> [:cat FailInput] :any] [input]
   (binding [*out* *err*]
@@ -93,6 +99,9 @@
           (= arg "--title")
           (recur (nnext remaining) (assoc opts :title value))
 
+          (= arg "--subject")
+          (recur (nnext remaining) (assoc opts :subject value))
+
           :else
           (fail {:message (str "Unknown argument: " arg)}))))))
 
@@ -114,6 +123,22 @@
               (str/replace #"-+$" ""))]
     (if (str/blank? v) "agent-answer" v)))
 
+(defn* canonical-segment [:=> [:cat [:map [:value :string]]] :string] [input]
+  (let [v (str/lower-case (:value input))]
+    (cond
+      (= v "stt") "STT"
+      (= v "rfs") "RFS"
+      (= v "fs") "FS"
+      (= v "nixos") "NixOS"
+      :else (str/capitalize v))))
+
+(defn* canonical-subject [:=> [:cat [:map [:value :string]]] :string] [input]
+  (let [slug (safe-title {:value (:value input)})]
+    (->> (str/split slug #"-+")
+         (remove str/blank?)
+         (map #(canonical-segment {:value %}))
+         (str/join "-"))))
+
 (defn* read-chronos [:=> [:cat ChronosInput] :map] [_]
   (let [result (sh "cargo" "run" "--quiet" "--bin" "chronos" "--" "--format" "numeric" "--precision" "second")
         raw (str/trim (:out result))
@@ -131,17 +156,12 @@
        :second (pad2 {:value second})})))
 
 (defn* build-filename [:=> [:cat BuildFilenameInput] :string] [input]
-  (let [{:keys [year sign degree minute second kind title]} input
+  (let [{:keys [year sign degree minute second kind title subject]} input
         slug (safe-title {:value title})]
     (str "Reports/"
-         year "_"
-         sign "_"
-         degree "_"
-         minute "_"
-         second "_"
-         kind "_"
-         slug
-         ".md")))
+         subject
+         "/"
+         year "_" sign "_" degree "_" minute "_" second "_" kind "_" slug ".md")))
 
 (defn* ensure-unique-path [:=> [:cat EnsureUniquePathInput] :string] [input]
   (let [initial (:path input)]
@@ -151,14 +171,28 @@
         (recur (inc idx) (str/replace initial #"\.md$" (str "_" idx ".md")))
         candidate))))
 
+(defn* ensure-topic-readme! [:=> [:cat EnsureTopicReadmeInput] :any] [input]
+  (let [subject (:subject input)
+        readme (str "Reports/" subject "/README.md")]
+    (when-not (.exists (io/file readme))
+      (io/make-parents readme)
+      (spit readme
+            (str "# Subject Topic\n\n"
+                 "- Subject: `" subject "`\n"
+                 "- Strategy Path: `strategies/" subject "`\n\n"
+                 "## Report Entries\n\n"
+                 "- _Topic index. Report entries are stored in this directory._\n")))))
+
 (defn* write-report! [:=> [:cat WriteReportInput] :any] [input]
-  (let [{:keys [path chronosRaw kind changeScope title prompt answer]} input]
+  (let [{:keys [path chronosRaw kind changeScope title subject prompt answer]} input]
     (io/make-parents path)
+    (ensure-topic-readme! {:subject subject})
     (spit path
           (str "# Agent Report\n\n"
                "- Chronography: `" chronosRaw "`\n"
                "- Kind: `" kind "`\n"
                "- Change Scope: `" changeScope "`\n"
+               "- Subject: `" subject "`\n"
                "- Title: `" title "`\n\n"
                "## Prompt\n\n"
                prompt
@@ -182,6 +216,7 @@
             (fail {:message (str "Invalid --kind: " kind)}))
         _ (when-not (#{"modified-files" "no-files"} change-scope)
             (fail {:message (str "Invalid --change-scope: " change-scope)}))
+        subject (canonical-subject {:value (or (:subject opts) (:title opts))})
         chrono (read-chronos {})
         filename (build-filename {:year (:year chrono)
                                   :sign (:sign chrono)
@@ -189,13 +224,15 @@
                                   :minute (:minute chrono)
                                   :second (:second chrono)
                                   :kind kind
-                                  :title (:title opts)})
+                                  :title (:title opts)
+                                  :subject subject})
         path (ensure-unique-path {:path filename})]
     (write-report! {:path path
                     :chronosRaw (:raw chrono)
                     :kind kind
                     :changeScope change-scope
                     :title (:title opts)
+                    :subject subject
                     :prompt prompt
                     :answer answer})
     (println path)))

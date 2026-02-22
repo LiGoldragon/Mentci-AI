@@ -1,7 +1,7 @@
 # Strategy-Development Program
 
 **Status:** Operational
-**Objective:** Evolve a `strategies/<subject>/` from a conceptual draft into a hardened, implementation-ready plan by auditing the tool substrate.
+**Objective:** Evolve a `strategies/<Subject>/` from a conceptual draft into a hardened, implementation-ready plan by auditing the tool substrate.
 
 ## 1. The Development Loop
 The Strategy-Development program iterates on a subject until it reaches "Level 5 Maturity":

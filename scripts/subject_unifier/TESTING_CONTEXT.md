@@ -9,4 +9,4 @@ Verify bidirectional subject coverage between `Reports/` entries and `strategies
 
 ## Expected Behavior
 - Dry run prints inventory and missing counterpart counts.
-- `--write` creates missing `Reports/topics/<subject>.md` and `strategies/<subject>/` scaffolds.
+- `--write` migrates legacy flat reports into `Reports/<Subject>/`, creates/updates topic `README.md` files, and creates missing `strategies/<Subject>/` scaffolds.
