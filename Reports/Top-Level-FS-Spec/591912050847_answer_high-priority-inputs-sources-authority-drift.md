@@ -13,10 +13,10 @@ reports on all those high priority issues
 
 ## Agent Answer
 
-High-priority issue report: `Inputs` vs `Sources` authority drift.
+High-priority issue report: `Sources` vs `Sources` authority drift.
 
 Finding:
-- Strategy-level migration declares `Sources` canonical, but core authority docs still define `Inputs` as canonical root.
+- Strategy-level migration declares `Sources` canonical, but core authority docs still define `Sources` as canonical root.
 
 Impact:
 - Governance conflict between strategy and core contracts.
@@ -24,11 +24,11 @@ Impact:
 
 Evidence:
 - `Strategies/Top-Level-FS-Spec/STRATEGY.md` uses `Sources` canonical root model.
-- `Core/ASKI_FS_SPEC.md`, `Core/ARCHITECTURAL_GUIDELINES.md`, and `Library/RESTART_CONTEXT.md` still anchor on `Inputs` terminology.
+- `Library/specs/ASKI_FS_SPEC.md`, `Core/ARCHITECTURAL_GUIDELINES.md`, and `Library/RESTART_CONTEXT.md` still anchor on `Sources` terminology.
 
 Proposed resolution:
 1. Perform one coordinated authority update pass in core docs.
-2. Keep explicit compatibility alias (`Inputs -> Sources`) until reference sweep is complete.
+2. Keep explicit compatibility alias (`Sources -> Sources`) until reference sweep is complete.
 3. Add contract-driven checks so only one canonical root name is accepted at a time.
 
 

@@ -42,14 +42,14 @@ Observed top-level directories currently include:
 - normalization of remaining lowercase technical roots into canonical typed roots
 
 ### Structural Contradiction to Resolve
-`Core/ASKI_FS_SPEC.md` defines `Components` as a canonical root in the enum, but operational text still references `src/` and `scripts/` directly as component paths. Strategy must first establish whether:
+`Library/specs/ASKI_FS_SPEC.md` defines `Components` as a canonical root in the enum, but operational text still references `src/` and `scripts/` directly as component paths. Strategy must first establish whether:
 1. `Components/` becomes an actual top-level container, or
 2. enum/spec is adjusted to model existing direct technical roots.
 
 This strategy assumes option (1): materialize `Components/` and migrate.
 
 ## Root Type Semantics
-- `Sources`: read-only external substrate and mounted references (formerly `Inputs`).
+- `Sources`: read-only external substrate and mounted references (formerly `Sources`).
 - `Components`: mutable implementation components that belong to Mentci-AI but are managed as independent VC subtrees/repositories.
 - `Outputs`: generated/export artifacts for downstream consumption.
 - `Reports`: prompt/session answer artifacts grouped by subject.
@@ -67,7 +67,7 @@ Implications:
 
 ## Implementation Phases
 1. Specification
-- Extend `Core/ASKI_FS_SPEC.md` with enum-root model and sugared syntax mapping.
+- Extend `Library/specs/ASKI_FS_SPEC.md` with enum-root model and sugared syntax mapping.
 - Add root contract table and allowed child patterns.
 
 2. Compatibility Layer
@@ -91,7 +91,7 @@ Implications:
 2. Materialize `Components/` root:
 - create `Components/`
 - move technical implementation roots under it with stable sub-layout:
-  - `src/` -> `Components/src/`
+  - `src/` -> `Components/mentci-aid/src/`
   - `scripts/` -> `Components/scripts/`
   - `schema/` -> `Components/schema/`
   - `tasks/` -> `Components/tasks/`
@@ -108,8 +108,8 @@ Implications:
 
 4. Materialize missing canonical roots:
 - create `Strategies/` and `Outputs/` (if absent at cutover)
-- migrate `Inputs/` -> `Sources/` as canonical mounted/read-only non-tracked substrate
-- keep a temporary compatibility alias from `Inputs/` to `Sources/` until all references are rewritten.
+- migrate `Sources/` -> `Sources/` as canonical mounted/read-only non-tracked substrate
+- keep a temporary compatibility alias from `Sources/` to `Sources/` until all references are rewritten.
 
 5. Enforce:
 - fail on new lowercase top-level roots unless explicitly temporary and allowlisted.
@@ -142,7 +142,7 @@ Phase 1: Canonical Model
 Phase 2: Control-Plane Centralization
 - Refactor guard/check scripts to read root contracts from Aski-FS data.
 - Remove duplicated hardcoded root lists from script implementations.
-- Keep compatibility aliases (`Inputs` -> `Sources`) behind explicit translation maps until cutover completes.
+- Keep compatibility aliases (`Sources` -> `Sources`) behind explicit translation maps until cutover completes.
 
 Phase 3: Trusted Context Flow
 - Use Aski-FS declarations to generate/import context maps for scripts and components.
@@ -155,13 +155,13 @@ Phase 4: Convergence and Lock
 - Record migration completion in Reports and Restart Context.
 
 ## High-Priority Remediation: Authority Drift (Implemented)
-Issue addressed: strategy-level `Sources` canonical model diverged from core authority docs still naming `Inputs` as canonical.
+Issue addressed: strategy-level `Sources` canonical model diverged from core authority docs still naming `Sources` as canonical.
 
 Implemented synchronization pass:
-1. `Core/ASKI_FS_SPEC.md`
+1. `Library/specs/ASKI_FS_SPEC.md`
 - Canonical enum switched to `Sources`.
 - Directory semantics section renamed to `Sources`.
-- Explicit compatibility note kept for transitional `Inputs/` alias.
+- Explicit compatibility note kept for transitional `Sources/` alias.
 2. `Core/ARCHITECTURAL_GUIDELINES.md`
 - Reproducibility/assimilation text aligned to `Sources` naming.
 3. `Core/AGENTS.md`
@@ -170,4 +170,4 @@ Implemented synchronization pass:
 - Substrate and VCS guardrail text aligned to `Sources` naming.
 
 Remaining migration window:
-- Physical directory remains `Inputs/` today; compatibility alias policy remains active until full FS cutover.
+- Physical directory remains `Sources/` today; compatibility alias policy remains active until full FS cutover.

@@ -16,7 +16,7 @@ create and implement strategy for them
 Created and implemented remediation strategy across the three high-priority findings:
 1) Session protocol non-compliance: updated `Strategies/Commit-Protocol-Merge-Fanin/STRATEGY.md` with implemented remediation and operational default using `session_finalize`.
 2) Goal 1 stale task path drift: fixed `Core/HIGH_LEVEL_GOALS.md` to `Components/tasks/...` and aligned `Strategies/Attractor/DRAFT.md` paths.
-3) Inputs/Sources authority drift: synchronized `Core/ASKI_FS_SPEC.md`, `Core/ARCHITECTURAL_GUIDELINES.md`, `Core/AGENTS.md`, and `Library/RESTART_CONTEXT.md` to canonical `Sources` naming with explicit transitional `Inputs/` alias notes; updated `Strategies/Top-Level-FS-Spec/STRATEGY.md` remediation section.
+3) Sources/Sources authority drift: synchronized `Library/specs/ASKI_FS_SPEC.md`, `Core/ARCHITECTURAL_GUIDELINES.md`, `Core/AGENTS.md`, and `Library/RESTART_CONTEXT.md` to canonical `Sources` naming with explicit transitional `Sources/` alias notes; updated `Strategies/Top-Level-FS-Spec/STRATEGY.md` remediation section.
 
 
 ## Reporting Protocol Notes

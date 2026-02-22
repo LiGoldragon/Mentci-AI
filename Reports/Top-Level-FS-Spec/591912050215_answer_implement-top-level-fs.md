@@ -26,7 +26,7 @@ Implemented top-level FS minimization and enforcement.
 - Updated protocol to require root guard run:
   - `Core/VERSION_CONTROL.md`
 - Updated FS spec with root-file allowlist and guard reference:
-  - `Core/ASKI_FS_SPEC.md`
+  - `Library/specs/ASKI_FS_SPEC.md`
 
 ### Runtime/config rewiring
 - Nix wiring updated to current component paths and local JJ config location:

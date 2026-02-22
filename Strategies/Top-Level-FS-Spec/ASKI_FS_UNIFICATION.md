@@ -5,12 +5,12 @@ Unify filesystem governance under Aski-FS so path semantics, root policy, and co
 
 ## Canonical Root Contract (Target)
 - `[Sources Components Outputs Reports Strategies Core Library]`
-- Legacy `Inputs` is transitional only and must resolve to `Sources` through explicit mapping.
+- Legacy `Sources` is transitional only and must resolve to `Sources` through explicit mapping.
 
 ## Deliverables
 1. Single Aski-FS root contract data source.
 2. Guard scripts that load this contract instead of hardcoded root vectors.
-3. Compatibility translation map (`Inputs` -> `Sources`) with removal criteria.
+3. Compatibility translation map (`Sources` -> `Sources`) with removal criteria.
 4. Context projection artifacts for component/script execution.
 
 ## Phase Plan
@@ -27,7 +27,7 @@ Unify filesystem governance under Aski-FS so path semantics, root policy, and co
 - Fail fast when the loaded contract is stale or missing required keys.
 
 ### Phase 3: Path Translation Window
-- Add compatibility translator for legacy `Inputs/*` references.
+- Add compatibility translator for legacy `Sources/*` references.
 - Emit deprecation warnings on legacy path usage.
 - Track unresolved references as report artifacts under `Reports/Top-Level-FS-Spec/`.
 
@@ -39,18 +39,18 @@ Unify filesystem governance under Aski-FS so path semantics, root policy, and co
 ### Phase 5: Cutover and Lock
 - Remove legacy translator after reference sweep is zero.
 - Enforce `Sources/*`-only path policy in root/session guards.
-- Update `Core/ASKI_FS_SPEC.md` and `Library/RESTART_CONTEXT.md` to mark convergence complete.
+- Update `Library/specs/ASKI_FS_SPEC.md` and `Library/RESTART_CONTEXT.md` to mark convergence complete.
 
 ## Validation Gates
 1. `bb Components/scripts/root_guard/main.clj` passes with contract-driven checks.
-2. No unresolved `Inputs/` references in active code paths.
+2. No unresolved `Sources/` references in active code paths.
 3. Session guard and report generation remain functional after cutover.
 4. Top-level root inventory matches canonical enum + runtime exceptions only.
 
 ## Risks
 - Hidden legacy paths inside generated files or archived docs.
 - Drift between contract schema and guard loader expectations.
-- Partial migration causing mixed `Inputs`/`Sources` behavior.
+- Partial migration causing mixed `Sources`/`Sources` behavior.
 
 ## Mitigation
 - Run iterative sweeps with deterministic grep patterns.

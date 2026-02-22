@@ -8,7 +8,7 @@ Realign repository state with Core authority by removing artifacts created by mi
 ## 2. Source of Truth
 1. `Core/AGENTS.md`
 2. `Core/ARCHITECTURAL_GUIDELINES.md`
-3. `Core/ASKI_FS_SPEC.md`
+3. `Library/specs/ASKI_FS_SPEC.md`
 4. `Core/VERSION_CONTROL.md`
 5. `Core/HIGH_LEVEL_GOALS.md`
 

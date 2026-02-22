@@ -60,7 +60,7 @@ Current implementation notes:
 - Classify each path as `domain`, `runtime`, `required-file`, `conditional-file`, or `violation`.
 
 2. Freeze root allowlist
-- Add root allowlist to `Core/ASKI_FS_SPEC.md` and guard scripts.
+- Add root allowlist to `Library/specs/ASKI_FS_SPEC.md` and guard scripts.
 - Encode exception set (`.git`, `.jj`, `.direnv`, `target`).
 
 3. Move violations
@@ -70,7 +70,7 @@ Current implementation notes:
 
 4. Prune conditionals
 - For each conditional top-level file, either:
-  - keep at root with explicit rationale in `Core/ASKI_FS_SPEC.md`, or
+  - keep at root with explicit rationale in `Library/specs/ASKI_FS_SPEC.md`, or
   - relocate and leave a short deprecation stub only if needed for compatibility.
 
 5. Enforce
