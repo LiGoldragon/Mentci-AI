@@ -59,7 +59,13 @@ Implemented:
 
 Expansion:
 - expands to `defn* -main` with inferred `:any` output in concise mode.
+- accepts Malli lite input forms in concise mode and compiles them to schema types.
 - supports explicit function schema form for stricter contracts.
+
+Lite example:
+```clojure
+(main {:args [:vector :string]} [input] ...)
+```
 
 Example explicit schema:
 ```clojure
@@ -155,6 +161,7 @@ Partially feasible. Core direction is implementable, but current placeholder nam
 - `impl`: feasible now.
 - `fn` (exact spelling): not feasible (special form collision).
 - `main`: implemented and feasible now for entrypoints.
+- `main` + Malli lite input form: implemented and feasible now.
 - unary-map noise reduction: feasible with boundary-aware migration.
 
 *The Great Work continues.*

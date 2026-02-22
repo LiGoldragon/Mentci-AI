@@ -150,8 +150,17 @@ It expands to `defn* -main` with either:
 - inferred schema: `[:=> [:cat InputSchema] :any]`
 - explicit function schema when provided.
 
+In concise mode, non-symbol input forms are compiled via Malli lite syntax.
+
 ```clojure
 (main MainInput [input]
+  (println input))
+```
+
+Malli lite input form:
+
+```clojure
+(main {:args [:vector :string]} [input]
   (println input))
 ```
 
