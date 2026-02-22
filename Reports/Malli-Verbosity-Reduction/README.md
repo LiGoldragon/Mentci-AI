@@ -13,3 +13,4 @@
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_update-guideline-single-member-map-noise.md`
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_rename-defn1-defmethod1-to-fn-impl.md`
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_review-implementation-feasibility-new-clojure-syntax.md`
+- `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_add-main-macro-for-concise-defn-star.md`
