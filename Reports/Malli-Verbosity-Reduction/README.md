@@ -14,3 +14,4 @@
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_rename-defn1-defmethod1-to-fn-impl.md`
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_review-implementation-feasibility-new-clojure-syntax.md`
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_add-main-macro-for-concise-defn-star.md`
+- `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_sync-guideline-strategy-with-main-macro.md`

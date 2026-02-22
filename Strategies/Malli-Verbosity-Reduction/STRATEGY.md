@@ -14,6 +14,7 @@ Reduce repetitive Malli authoring noise while preserving:
 ## 2. Scope
 - Clojure script schemas under `scripts/`.
 - `defn*` function-signature ergonomics in `scripts/lib/malli.clj`.
+- `main` entrypoint ergonomics in `scripts/lib/malli.clj`.
 - protocol/record-first expression of domain behavior in Clojure.
 - reduction of redundant unary map wrappers (for example `[:map [:raw :string]]`).
 - No wire-format or runtime behavior changes in this phase.
@@ -23,7 +24,7 @@ The strategy is feasible, but it must not optimize only syntax surface. It also
 needs a structural mirror of `Core/SEMA_RUST_GUIDELINES.md`:
 - behavior in an existing semantic method domain belongs in protocol methods;
 - free functions remain orchestration wrappers;
-- syntax sugar (`defobj`, `fn`) should support protocol-based object methods
+- syntax sugar (`defobj`, `main`, `impl`) should support protocol-based object methods
   rather than reinforce ad-hoc free-function style.
 
 ## 3. Proposed Syntax Targets
@@ -45,34 +46,30 @@ Expansion:
 - For unary payloads, prefer scalar schemas over single-member maps.
 - Internal canonical schema remains unchanged for validation/runtime.
 
-### 3.2 Function Signature Sugar
+### 3.2 Entrypoint Sugar (Implemented)
 Current:
 ```clojure
-(defn* to-lines [:=> [:cat Source] [:vector :string]] [input] ...)
+(defn* -main [:=> [:cat MainInput] :any] [input] ...)
 ```
 
-Target (input-first form):
+Implemented:
 ```clojure
-(fn to-lines Source [input] ...)
+(main MainInput [input] ...)
 ```
 
 Expansion:
-- output schema is never silently weakened to `:any`
-- macro uses one of two safe modes:
-1. explicit output:
+- expands to `defn* -main` with inferred `:any` output in concise mode.
+- supports explicit function schema form for stricter contracts.
+
+Example explicit schema:
 ```clojure
-(fn to-lines Source [:vector :string] [input] ...)
-```
-2. deterministic inferred output (by naming contract):
-```clojure
-;; Source => Lines (must exist, else compile-time error)
-(fn to-lines Source [input] ...)
+(main [:=> [:cat MainInput] :any] [input] ...)
 ```
 
 ## 4. Implementation Plan
 1. Add new macros in `scripts/lib/malli.clj`:
 - `defobj` for map schema sugar
-- `fn` for single-input signature sugar with explicit or deterministic output typing
+- `main` for concise `-main` declaration (implemented)
 - optional `defscalar` alias for unary object declarations
 
 2. Keep `defn*` fully supported.
@@ -132,10 +129,10 @@ Partially feasible. Core direction is implementable, but current placeholder nam
 (`fn`) is not executable in Clojure as written.
 
 ### Blockers
-1. **`fn` macro name collides with Clojure special form**
+1. **General `fn` macro alias remains blocked**
 - The symbol `fn` is a language special form and cannot be repurposed as a project
   macro entrypoint in normal call position.
-- Therefore the strategy's `fn` placeholder is not directly implementable.
+- Replaced in practice by implemented `main` macro for entrypoint concision.
 
 2. **Validator coupling to `defn*`**
 - `Components/scripts/validate_scripts/main.clj` currently enforces presence of
@@ -157,6 +154,7 @@ Partially feasible. Core direction is implementable, but current placeholder nam
 - `defobj`: feasible now.
 - `impl`: feasible now.
 - `fn` (exact spelling): not feasible (special form collision).
+- `main`: implemented and feasible now for entrypoints.
 - unary-map noise reduction: feasible with boundary-aware migration.
 
 *The Great Work continues.*

@@ -143,6 +143,25 @@ Use the local `defn*` macro to reduce noise. It expands to `m/=>` plus `defn`.
   {:message (str "Hello " (:name input))})
 ```
 
+### Project Macro: main
+
+Use `main` for concise `-main` entrypoint declarations.
+It expands to `defn* -main` with either:
+- inferred schema: `[:=> [:cat InputSchema] :any]`
+- explicit function schema when provided.
+
+```clojure
+(main MainInput [input]
+  (println input))
+```
+
+Explicit schema form:
+
+```clojure
+(main [:=> [:cat MainInput] :any] [input]
+  (println input))
+```
+
 ## Namespace Discipline
 
 *   A namespace is a semantic layer.
