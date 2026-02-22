@@ -3,7 +3,7 @@
 - Chronography: `12.4.56.3 | 5919 AM`
 - Kind: `answer`
 - Change Scope: `modified-files`
-- Subject: `Docs-Top-Level-Obsolescence-Audit`
+- Subject: `Top-Level-FS-Spec`
 - Title: `obsolescence review for pwd and workspace`
 
 ## Prompt

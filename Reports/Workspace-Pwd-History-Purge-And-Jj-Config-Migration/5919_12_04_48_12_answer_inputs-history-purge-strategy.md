@@ -15,8 +15,8 @@ all of Inputs/ and inputs_backup/ shouldnt be in the history (all the directorie
 Created strategy package to remove Inputs/ and inputs_backup/ from full VCS history.
 
 Artifacts:
-- strategies/History-Inputs-Purge/STRATEGY.md
-- strategies/History-Inputs-Purge/PLAYBOOK.md
+- strategies/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/STRATEGY.md
+- strategies/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/PLAYBOOK.md
 - Library/STRATEGY_QUEUE.md (queue + status registration)
 
 Strategy highlights:

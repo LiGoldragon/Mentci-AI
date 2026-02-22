@@ -18,25 +18,35 @@ This increases search noise, queue drift, and duplicate planning effort.
 2. Method words do not define a new subject:
 - `Strategy`, `Audit`, `Review`, `Root-Cause`, `Expansion`, `Recovery`
 3. Scope-specific subjects are only allowed when they change system boundary:
-- example allowed split: `Top-Level-FS-Spec` vs `History-Inputs-Purge`
+- example allowed split: `Top-Level-FS-Spec` vs `Workspace-Pwd-History-Purge-And-Jj-Config-Migration`
 4. New subject creation requires justification that no canonical parent subject exists.
 
 ## 4. Consolidation Taxonomy
 ### 4.1 Governance/FS
 - Canonical: `Top-Level-FS-Spec`
-- Absorb likely duplicates: `Docs-Top-Level-Obsolescence-Audit`, `Core-Root-Migration-Audit`
+- Absorbed aliases:
+- `Docs-Top-Level-Obsolescence-Audit`
+- `Core-Root-Migration-Audit`
+- `Core-Library-Astral-Migration`
 
 ### 4.2 History/Purge/Rewrites
 - Canonical: `Workspace-Pwd-History-Purge-And-Jj-Config-Migration`
-- Absorb likely duplicates: `Workspace-Ancient-Copy-Root-Cause`, `Large-Commit-Audit`, `History-Inputs-Purge`
+- Absorbed aliases:
+- `Workspace-Ancient-Copy-Root-Cause`
+- `Large-Commit-Audit`
+- `History-Inputs-Purge`
 
 ### 4.3 Guidelines Harmonization
 - Canonical: `Guidelines-Wisdom-Reincorporation`
-- Absorb likely duplicates: `Expand-Guidelines-Reincorporation`, `Guideline-Wisdom-Expansion-Subaspect`
+- Absorbed aliases:
+- `Expand-Guidelines-Reincorporation`
+- `Guideline-Wisdom-Expansion-Subaspect`
 
 ### 4.4 Commit/Session Protocols
 - Canonical: `Commit-Protocol-Merge-Fanin`
-- Absorb likely duplicates: `Session-Aggregation-Guard`, `Force-Push-Rewritten-Dev-Main-And-Close-Dirty-Tree`
+- Absorbed aliases:
+- `Session-Aggregation-Guard`
+- `Force-Push-Rewritten-Dev-Main-And-Close-Dirty-Tree`
 
 ## 5. Merge Decision Function
 For candidate subject `S` and canonical `C`, merge when all hold:

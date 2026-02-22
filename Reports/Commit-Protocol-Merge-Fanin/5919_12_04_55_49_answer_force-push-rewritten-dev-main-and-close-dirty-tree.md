@@ -3,7 +3,7 @@
 - Chronography: `12.4.55.49 | 5919 AM`
 - Kind: `answer`
 - Change Scope: `modified-files`
-- Subject: `Force-Push-Rewritten-Dev-Main-And-Close-Dirty-Tree`
+- Subject: `Commit-Protocol-Merge-Fanin`
 - Title: `force-push rewritten dev-main and close dirty tree`
 
 ## Prompt

@@ -41,9 +41,9 @@ Patterns:
 
 Matches:
 ```
-strategies/Core-Root-Migration-Audit/STRATEGY.md:10:- Canonical authority root moved from `core/` to `Core/`.
-strategies/Core-Root-Migration-Audit/STRATEGY.md:11:- Program modules moved from `core/programs/` to `Library/`.
-strategies/Core-Root-Migration-Audit/STRATEGY.md:16:2. Add explicit guard checks for stale lowercase root references (`core/`, `core/programs/`).
+strategies/Top-Level-FS-Spec/STRATEGY.md:10:- Canonical authority root moved from `core/` to `Core/`.
+strategies/Top-Level-FS-Spec/STRATEGY.md:11:- Program modules moved from `core/programs/` to `Library/`.
+strategies/Top-Level-FS-Spec/STRATEGY.md:16:2. Add explicit guard checks for stale lowercase root references (`core/`, `core/programs/`).
 strategies/Core-Library-Symbiotic-Move/STRATEGY.md:21:- `core/programs/*` -> `Library/*`
 strategies/Core-Library-Symbiotic-Move/STRATEGY.md:22:- `core/INTENT_DISCOVERY.md` -> `Library/INTENT_DISCOVERY.md`
 strategies/Core-Library-Symbiotic-Move/STRATEGY.md:23:- `core/*` mandate files -> `Core/*`

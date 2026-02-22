@@ -13,7 +13,15 @@ ls -1 Reports
 ```edn
 {:alias->canonical
  {"Expand-Guidelines-Reincorporation" "Guidelines-Wisdom-Reincorporation"
-  "Guideline-Wisdom-Expansion-Subaspect" "Guidelines-Wisdom-Reincorporation"}}
+  "Guideline-Wisdom-Expansion-Subaspect" "Guidelines-Wisdom-Reincorporation"
+  "Docs-Top-Level-Obsolescence-Audit" "Top-Level-FS-Spec"
+  "Core-Root-Migration-Audit" "Top-Level-FS-Spec"
+  "Core-Library-Astral-Migration" "Top-Level-FS-Spec"
+  "Workspace-Ancient-Copy-Root-Cause" "Workspace-Pwd-History-Purge-And-Jj-Config-Migration"
+  "Large-Commit-Audit" "Workspace-Pwd-History-Purge-And-Jj-Config-Migration"
+  "History-Inputs-Purge" "Workspace-Pwd-History-Purge-And-Jj-Config-Migration"
+  "Session-Aggregation-Guard" "Commit-Protocol-Merge-Fanin"
+  "Force-Push-Rewritten-Dev-Main-And-Close-Dirty-Tree" "Commit-Protocol-Merge-Fanin"}}
 ```
 2. Validate no canonical cycles.
 
