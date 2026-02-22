@@ -52,7 +52,7 @@
 
 (defn* parse-args [:=> [:cat ParseArgsInput] :map] [input]
   (loop [remaining (:args input)
-         opts {:source "Reports/Prompt-Report-System/2026_02_22_answer_interrupted-jobs-audit.md"
+         opts {:source "Reports/Prompt-Report-System/20260222_answer_interrupted-jobs-audit.md"
                :output "Reports/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md"
                :write? false}]
     (if (empty? remaining)

@@ -70,11 +70,11 @@
          (str/join "-"))))
 
 (defn* report-file? [:=> [:cat [:map [:name :string]]] :boolean] [input]
-  (boolean (re-find #"^\d{12}_(answer|draft|question|strategy)_.+\.md$" (:name input))))
+  (boolean (re-find #"^(?:\d{8}|\d{12})_(answer|draft|question|strategy)_.+\.md$" (:name input))))
 
 (defn* report-subject-from-filename [:=> [:cat CanonicalInput] :string] [input]
   (let [name (:value input)
-        matched (re-find #"^\d{12}_(answer|draft|question|strategy)_(.+)\.md$" name)
+        matched (re-find #"^(?:\d{8}|\d{12})_(answer|draft|question|strategy)_(.+)\.md$" name)
         raw (or (nth matched 2 nil) "untitled")]
     (canonical-subject {:value raw})))
 

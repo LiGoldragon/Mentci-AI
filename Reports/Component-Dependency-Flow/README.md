@@ -7,4 +7,4 @@
 
 - `Reports/Component-Dependency-Flow/591912050232_strategy_component-dependency-flow.md`
 - `Reports/Component-Dependency-Flow/591912050240_answer_implement-components-index-flow.md`
-- `Reports/Component-Dependency-Flow/2026_02_22_answer_admin-mode-inputs-mounter.md`
+- `Reports/Component-Dependency-Flow/20260222_answer_admin-mode-inputs-mounter.md`
