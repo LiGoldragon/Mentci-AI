@@ -101,6 +101,10 @@ Example explicit schema:
 - `scripts/session_guard/main.clj` or `scripts/reference_guard/main.clj`
 - Ensure pilot includes at least one protocol/domain method extraction.
 
+Pilot executed:
+- Converted `Components/scripts/root_guard/main.clj` to `main` macro with `Input` naming.
+- Verified runtime and script validation for this candidate.
+
 5. Validate with:
 - `bb scripts/validate_scripts/main.clj`
 - script-local execution tests

@@ -41,7 +41,7 @@
         schema (if is-function-schema?
                  schema-or-input
                  `[:=> [:cat ~input-schema] :any])]
-    `(defn* -main ~schema ~args ~@body)))
+    `(defn* ~'-main ~schema ~args ~@body)))
 
 (defn enable! []
   (mi/instrument!))

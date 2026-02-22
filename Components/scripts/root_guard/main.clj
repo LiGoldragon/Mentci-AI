@@ -7,7 +7,7 @@
          '[clojure.java.io :as io])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* enable!]])
+(require '[mentci.malli :refer [defn* main enable!]])
 
 (enable!)
 
@@ -16,7 +16,7 @@
    [:name :string]
    [:dir? :boolean]])
 
-(def MainInput
+(def Input
   [:map
    [:args [:vector :string]]])
 
@@ -75,7 +75,7 @@
 (defn* pass! [:=> [:cat] :any] []
   (println "Root guard passed: top-level entries match the FS contract."))
 
-(defn* -main [:=> [:cat MainInput] :any] [_]
+(main Input
   (let [entries (list-root-entries)
         errors (classify-violations {:entries entries})]
     (if (seq errors)
