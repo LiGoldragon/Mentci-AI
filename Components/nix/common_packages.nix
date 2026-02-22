@@ -19,6 +19,7 @@ in
   pkgs.gdb
   pkgs.strace
   pkgs.valgrind
+  pkgs.bubblewrap
   pkgs.rsync
   codex_cli_nix.packages.${system}.default
   gemini_cli
@@ -28,6 +29,6 @@ in
   '')
   mentci_jj
   (pkgs.writeShellScriptBin "mentci-bootstrap" ''
-    ${pkgs.cargo}/bin/cargo run --quiet --manifest-path Components/Cargo.toml --bin mentci-ai -- job/jails bootstrap "$@"
+    ${pkgs.cargo}/bin/cargo run --quiet --manifest-path Components/mentci-aid/Cargo.toml --bin mentci-ai -- job/jails bootstrap "$@"
   '')
 ]
