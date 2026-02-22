@@ -9,11 +9,13 @@ Reduce repetitive Malli authoring noise while preserving:
 - instrumentation compatibility
 - methods-on-objects-first semantics (mirrored from Rust trait-domain rule)
 - domain-noun object naming (no `ParseInput`, no type-redundant names like `InputText`)
+- maximum signal with minimal syntax noise in Clojure authoring
 
 ## 2. Scope
 - Clojure script schemas under `scripts/`.
 - `defn*` function-signature ergonomics in `scripts/lib/malli.clj`.
 - protocol/record-first expression of domain behavior in Clojure.
+- reduction of redundant unary map wrappers (for example `[:map [:raw :string]]`).
 - No wire-format or runtime behavior changes in this phase.
 
 ## 2.1 Review Outcome (Methods-First Alignment)
@@ -29,18 +31,18 @@ needs a structural mirror of `Core/SEMA_RUST_GUIDELINES.md`:
 Current:
 ```clojure
 (def Source
-  [:map
-   [:raw :string]])
+  :string)
 ```
 
 Target:
 ```clojure
 (defobj Source
-  {:raw :string})
+  :string)
 ```
 
 Expansion:
-- `defobj` expands to canonical Malli vector schema (`[:map ...]`).
+- `defobj` supports scalar and map forms.
+- For unary payloads, prefer scalar schemas over single-member maps.
 - Internal canonical schema remains unchanged for validation/runtime.
 
 ### 3.2 Function Signature Sugar
@@ -71,6 +73,7 @@ Expansion:
 1. Add new macros in `scripts/lib/malli.clj`:
 - `defobj` for map schema sugar
 - `defn1` for single-input signature sugar with explicit or deterministic output typing
+- optional `defscalar` alias for unary object declarations
 
 2. Keep `defn*` fully supported.
 - No forced migration.
@@ -96,9 +99,11 @@ Expansion:
 8. Add compile-time failure for flow/redundant object names:
 - reject `*Input`/`*Output` flow-role suffixes in object schemas.
 - reject type-redundant names like `*Text` when schema is scalar `:string`.
+9. Add lint guard for unary map redundancy:
+- reject or warn on single-member map schemas unless annotated as required for compatibility.
 
 ## 5. Non-Goals (Phase 1)
-- Removing map field keys (`:raw`, `:path`, etc.) from object schemas.
+- Removing map field keys from multi-field object schemas.
 - Auto-inferring output schemas from function bodies.
 - Refactoring all existing scripts in one pass.
 - Replacing all orchestrator free functions with protocols where no domain object exists.
@@ -108,6 +113,7 @@ Expansion:
 - Validation and instrumentation behavior unchanged.
 - Readability remains acceptable to maintainers during code review.
 - Methods-first conformance check passes: domain behavior is protocol/record anchored.
+- Single-member map usage is reduced to compatibility-only cases with explicit rationale.
 
 ## 7. Failure Modes and Mitigation
 1. **Macro opacity during debugging**

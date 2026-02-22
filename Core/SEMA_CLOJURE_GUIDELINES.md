@@ -3,6 +3,11 @@
 This document defines the mandatory Sema object rules for Clojure and its extensions
 (Malli, Babashka). The rules are structural. Violations indicate category error, not style.
 
+## Signal-to-Noise Principle
+
+Clojure in this project is used to maximize semantic signal with minimal syntactic noise.
+Representations should be as small as possible while preserving object meaning and future evolution.
+
 ## Primary Rules
 
 1. **Single Object In/Out**
@@ -27,12 +32,21 @@ This document defines the mandatory Sema object rules for Clojure and its extens
 ## Clojure Object Model
 
 ### Object Definition
-Sema objects are EDN maps with a Malli schema. Object identity is the schema name.
+Sema objects are Malli-defined schemas. Object identity is the schema name.
+Use map objects for multi-field domain boundaries.
+Avoid single-member maps for unary payloads when no additional named fields are required.
 
 ```clojure
 (def Greeting
   [:map
    [:text :string]])
+```
+
+Unary payload example (preferred over `[:map [:raw :string]]` when semantics are unary):
+
+```clojure
+(def Source
+  :string)
 ```
 
 ### Function Signature Rule
@@ -59,20 +73,19 @@ named object type (usually `defrecord`).
 
 ```clojure
 (def Source
-  [:map
-   [:raw :string]])
+  :string)
 
 (def Lines
   [:map
    [:lines [:vector :string]]])
 
 (defprotocol ParseDescriptions
-  (to-lines [this]))
+  (to-lines [source]))
 
-(defrecord ParseRequest [raw]
+(extend-type String
   ParseDescriptions
-  (to-lines [this]
-    {:lines (->> (clojure.string/split-lines (:raw this))
+  (to-lines [source]
+    {:lines (->> (clojure.string/split-lines source)
                  (map clojure.string/trim)
                  (remove clojure.string/blank?)
                  vec)}))
@@ -87,17 +100,15 @@ Use `from_*`, `to_*`, `into_*` when construction or emission is implied.
 
 ```clojure
 (def ConfigSource
-  [:map
-   [:path :string]])
+  :string)
 
 (def Config
-  [:map
-   [:raw :string]])
+  :string)
 
 (defn config-from-file [input]
   (when-not (m/validate ConfigSource input)
     (throw (ex-info "Invalid config-from-file input" {:errors (me/humanize (m/explain ConfigSource input))})))
-  {:raw (slurp (:path input))})
+  (slurp input))
 ```
 
 ## Malli Requirements
