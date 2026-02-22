@@ -1,0 +1,5 @@
+{:version 1
+ :locations ["Core/EXTENSIONS.edn"
+             "Library/extensions/index.edn"
+             "Components/index.edn"
+             "Components/extensions/index.edn"]}

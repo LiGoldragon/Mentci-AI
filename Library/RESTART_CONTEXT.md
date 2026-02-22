@@ -20,6 +20,7 @@ These files define the agent's operating logic and must be loaded automatically:
 - `Core/ASKI_POSITIONING.md`: Teleological framing of the symbolic interface.
 - `Core/SEMA_*_GUIDELINES.md`: Language-specific structural rules (Rust, Clojure, Nix).
 - `Core/ASKI_FS_SPEC.md`: Filesystem Ontology.
+- `Core/EXTENSION_INDEX_PROTOCOL.md`: Optional extension-index contract for keeping Core stable while loading extensions from standard locations.
 
 ## 3. Component Status Map
 - **Engine (`mentci-aid`):** `Components/src/main.rs`. Status: **Experimental / Not in a running state.**

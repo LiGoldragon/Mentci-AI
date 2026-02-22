@@ -112,6 +112,16 @@ Mentci-AI incorporates the Attractor standard for workflow orchestration. It doe
 *   **Goal:** Reduce prompt/context surface area, improve execution reliability, and keep policy concise.
 *   **Documentation Role:** Docs state intent and contracts; code enforces operational mechanics.
 
+## 0.9. CORE SELF-CONTAINED EXTENSION INDEXES
+
+**Core must remain stable and universal; extension points are optional index files in fixed locations.**
+
+*   **Contract Source:** `Core/EXTENSION_INDEX_PROTOCOL.md`
+*   **Location Registry:** `Core/EXTENSION_INDEX_LOCATIONS.edn`
+*   **Resolver Tool:** `bb Components/scripts/extension_index/main.clj`
+*   **Rule:** Prefer adding capabilities by registering or updating index files in standard extension locations instead of editing multiple core authority files.
+*   **Operational Mode:** Missing extension indexes are non-fatal; extension loading remains optional.
+
 ## 1. Core Philosophy: The Semantic Layer
 
 **Names are not descriptions; they are commitments.**
