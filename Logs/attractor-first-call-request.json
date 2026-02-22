@@ -1,3 +1,0 @@
-{
-  "dot": "digraph FirstRealCall {\n  graph [label=\"Mentci First Real Attractor Call\", goal=\"Validate deterministic DOT handoff\"]\n  rankdir=LR\n\n  start [shape=Mdiamond, label=\"Start\"]\n  exit  [shape=Msquare, label=\"Exit\"]\n\n  start -> exit\n}\n"
-}
