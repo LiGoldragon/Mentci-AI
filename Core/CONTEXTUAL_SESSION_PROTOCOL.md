@@ -124,7 +124,7 @@ jj new dev
 
 ## 8. Completion Invariants
 Prompt completion is valid only when all of the following hold:
-1. The prompt's active head is a `session:` commit (no trailing `intent:` head for that prompt).
+1. The prompt's finalized commit is a `session:` commit with full context sections (`## Original Prompt`, `## Agent Context`, `## Logical Changes`) in the pushed `dev` lineage.
 2. A report artifact exists for the prompt in `Reports/<Subject>/` (new report file or update under existing subject).
 3. Freshness-linked workflows that use prior intel must record and verify the referenced parent change ID before execution.
 4. The finalized session head is pushed at end-of-session (default push target: `dev`; release flows default to `main`).

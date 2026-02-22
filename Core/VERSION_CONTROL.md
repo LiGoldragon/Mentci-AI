@@ -48,7 +48,12 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
    - this new child is **next-session preparation**, not part of the completed session.
 13. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
 14. Every completed prompt must end with a finalized `session:` commit in the pushed `dev` lineage; leaving trailing `intent:` commits at prompt completion is a protocol violation.
-14.1. Session message timestamp format is mandatory:
+14.1. Final `session:` commit message must include full context sections:
+   - `## Original Prompt`
+   - `## Agent Context`
+   - `## Logical Changes`
+   This is enforced by `bb Components/scripts/session_guard/main.clj`.
+14.2. Session message timestamp format is mandatory:
    - commit/session text uses `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
    - release/version tags use cycle offset where `5919 AM -> 0`, `5920 AM -> 1`, etc.
 15. Every completed prompt must emit/update a report artifact in `Reports/<Subject>/` (new file or existing subject update); prompts are not complete without report coverage.

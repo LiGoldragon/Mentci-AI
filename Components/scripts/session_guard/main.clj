@@ -28,13 +28,20 @@
   [:map
    [:descriptions [:vector :string]]])
 
+(def ValidateSessionMessageInput
+  [:map
+   [:description :string]])
+
 (defprotocol SessionGuardOps
   (run-command-for [this input])
   (parse-descriptions-for [this input])
+  (read-head-description-for [this input])
   (fail-for [this input])
   (pass-for [this input])
   (classify-prefix-for [this input])
-  (decide-for [this input]))
+  (decide-for [this input])
+  (validate-session-message-for [this input])
+  (validate-push-for [this input]))
 
 (defrecord DefaultSessionGuard [])
 
@@ -53,6 +60,15 @@
        (map str/trim)
        (remove str/blank?)
        vec))
+
+(impl DefaultSessionGuard SessionGuardOps read-head-description-for
+  [:=> [:cat :any :map] :string]
+  [this input]
+  (let [result (run-command-for this {:args ["git" "log" "-n" "1" "--pretty=%B"]})]
+    (when-not (= 0 (:exit result))
+      (fail-for this {:message (str "Session guard failed: unable to read HEAD commit description.\n"
+                                    (:err result))}))
+    (str (:out result))))
 
 (impl DefaultSessionGuard SessionGuardOps fail-for
   [:=> [:cat :any [:map [:message :string]]] :any]
@@ -107,6 +123,55 @@
             :else
             (recur (rest remaining) intent-count)))))))
 
+(impl DefaultSessionGuard SessionGuardOps validate-session-message-for
+  [:=> [:cat :any ValidateSessionMessageInput] :map]
+  [this input]
+  (let [description (:description input)
+        lines (->> (str/split-lines description)
+                   (map str/trim)
+                   (remove str/blank?)
+                   vec)
+        head-line (or (first lines) "")
+        required-sections ["## Original Prompt"
+                           "## Agent Context"
+                           "## Logical Changes"]
+        missing (->> required-sections
+                     (remove #(str/includes? description %))
+                     vec)]
+    (cond
+      (not (str/starts-with? head-line "session:"))
+      {:status :fail
+       :message "Session guard failed: HEAD commit is not a session commit."}
+
+      (seq missing)
+      {:status :fail
+       :message (str "Session guard failed: session commit missing required sections: "
+                     (str/join ", " missing))}
+
+      :else
+      {:status :pass
+       :message "Session guard passed: HEAD session commit contains required context sections."})))
+
+(impl DefaultSessionGuard SessionGuardOps validate-push-for
+  [:=> [:cat :any :map] :map]
+  [this input]
+  (let [local (run-command-for this {:args ["git" "rev-parse" "HEAD"]})
+        remote (run-command-for this {:args ["git" "ls-remote" "--heads" "origin" "dev"]})]
+    (when-not (= 0 (:exit local))
+      (fail-for this {:message (str "Session guard failed: unable to resolve local HEAD.\n" (:err local))}))
+    (when-not (= 0 (:exit remote))
+      (fail-for this {:message (str "Session guard failed: unable to resolve origin/dev.\n" (:err remote))}))
+    (let [local-hash (str/trim (:out local))
+          remote-line (str/trim (:out remote))
+          remote-hash (first (str/split remote-line #"\s+"))]
+      (if (= local-hash remote-hash)
+        {:status :pass
+         :message "Session guard passed: HEAD is pushed to origin/dev."}
+        {:status :fail
+         :message (str "Session guard failed: HEAD is not pushed to origin/dev.\n"
+                       "local HEAD: " local-hash "\n"
+                       "origin/dev: " (or remote-hash "<missing>"))}))))
+
 (def default-session-guard (->DefaultSessionGuard))
 
 (main Input
@@ -116,8 +181,17 @@
       (fail-for default-session-guard {:message (str "Session guard failed: unable to read jj log.\n" (:err log-result))}))
     (let [descriptions (parse-descriptions-for default-session-guard {:raw (:out log-result)})
           verdict (decide-for default-session-guard {:descriptions descriptions})]
-      (if (= :pass (:status verdict))
-        (pass-for default-session-guard {:message (:message verdict)})
-        (fail-for default-session-guard {:message (:message verdict)})))))
+      (if (not= :pass (:status verdict))
+        (fail-for default-session-guard {:message (:message verdict)})
+        (let [desc-verdict (validate-session-message-for default-session-guard
+                                                         {:description (read-head-description-for default-session-guard {})})]
+          (if (not= :pass (:status desc-verdict))
+            (fail-for default-session-guard {:message (:message desc-verdict)})
+            (let [push-verdict (validate-push-for default-session-guard {})]
+              (if (= :pass (:status push-verdict))
+                (pass-for default-session-guard {:message (str (:message verdict)
+                                                               "\n" (:message desc-verdict)
+                                                               "\n" (:message push-verdict))})
+                (fail-for default-session-guard {:message (:message push-verdict)})))))))))
 
 (-main {:args (vec *command-line-args*)})
