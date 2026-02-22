@@ -192,6 +192,13 @@ Concise form:
   ...)
 ```
 
+Concise form with explicit output:
+
+```clojure
+(impl DefaultTool ToolOps run-for Input :string [this input]
+  ...)
+```
+
 Concise auto-arg form:
 
 ```clojure

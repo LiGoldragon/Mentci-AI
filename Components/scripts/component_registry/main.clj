@@ -125,8 +125,7 @@
       "json" (println (json/generate-string value {:pretty true}))
       (prn value))))
 
-(impl DefaultComponentRegistry ComponentRegistryOps run-registry-for
-  [:=> [:cat :any Input] :any]
+(impl DefaultComponentRegistry ComponentRegistryOps run-registry-for Input :any
   [this input]
   (let [{:keys [indexPath format componentId]} (parse-args {:args (:args input)})
         index (load-index {:indexPath indexPath})

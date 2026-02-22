@@ -48,21 +48,18 @@
 
 (defrecord DefaultSessionMetadata [])
 
-(impl DefaultSessionMetadata SessionMetadataOps load-session-for
-  [:=> [:cat :any :map] :map]
+(impl DefaultSessionMetadata SessionMetadataOps load-session-for :map :map
   [this input]
   (if (.exists (io/file SESSION_FILE))
     (json/parse-string (slurp SESSION_FILE) true)
     {}))
 
-(impl DefaultSessionMetadata SessionMetadataOps save-session-for
-  [:=> [:cat :any StateInput] :any]
+(impl DefaultSessionMetadata SessionMetadataOps save-session-for StateInput :any
   [this input]
   (io/make-parents SESSION_FILE)
   (spit SESSION_FILE (json/generate-string (:state input) {:pretty true})))
 
-(impl DefaultSessionMetadata SessionMetadataOps init-session-for
-  [:=> [:cat :any InitInput] :any]
+(impl DefaultSessionMetadata SessionMetadataOps init-session-for InitInput :any
   [this input]
   (let [state {:raw_prompt (:prompt input)
                :initial_context (:context input)
@@ -71,8 +68,7 @@
     (save-session-for this {:state state})
     (println "Session initialized.")))
 
-(impl DefaultSessionMetadata SessionMetadataOps add-intent-for
-  [:=> [:cat :any IntentInput] :any]
+(impl DefaultSessionMetadata SessionMetadataOps add-intent-for IntentInput :any
   [this input]
   (let [state (load-session-for this {})
         updated (update state :intents conj {:intent (:intent input) :context (:context input)})
@@ -82,8 +78,7 @@
                   "[Prompt: " (subs raw-prompt 0 (min 100 (count raw-prompt))) "...]\n"
                   "[Context: " (:context input) "]"))))
 
-(impl DefaultSessionMetadata SessionMetadataOps generate-synthesis-for
-  [:=> [:cat :any SynthesisInput] :any]
+(impl DefaultSessionMetadata SessionMetadataOps generate-synthesis-for SynthesisInput :any
   [this input]
   (let [state (load-session-for this {})]
     (println (str "session: " (:resultSummary input)))

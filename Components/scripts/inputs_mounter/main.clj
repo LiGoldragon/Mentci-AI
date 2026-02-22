@@ -169,8 +169,7 @@
                   (into-array java.nio.file.attribute.FileAttribute []))
                 {:action "linked-ro" :target targetPath :source sourcePath}))))))))
 
-(impl DefaultInputsMounter InputsMounterOps run-mounter-for
-  [:=> [:cat :any Input] :any]
+(impl DefaultInputsMounter InputsMounterOps run-mounter-for Input :any
   [this input]
   (let [{:keys [attrs inputsRoot mode replace? write? whitelistPath]} (parse-args {:args (:args input)})
         _ (when-not (#{"ro" "rw"} mode)

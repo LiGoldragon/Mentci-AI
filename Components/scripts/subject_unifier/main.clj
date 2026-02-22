@@ -216,8 +216,7 @@
                       (str content "\n\n" snippet))]
         (spit path updated)))))
 
-(impl DefaultSubjectUnifier SubjectUnifierOps run-unifier-for
-  [:=> [:cat :any Input] :any]
+(impl DefaultSubjectUnifier SubjectUnifierOps run-unifier-for Input :any
   [this input]
   (let [{:keys [write?]} (parse-args {:args (:args input)})]
     (when write?

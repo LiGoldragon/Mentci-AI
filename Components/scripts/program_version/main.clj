@@ -37,14 +37,12 @@
 
 (defrecord DefaultProgramVersion [])
 
-(impl DefaultProgramVersion ProgramVersionOps sha256-for
-  [:=> [:cat :any HashInput] :any]
+(impl DefaultProgramVersion ProgramVersionOps sha256-for HashInput :any
   [this input]
   (let [digest (MessageDigest/getInstance "SHA-256")]
     (.digest digest (.getBytes (:data input) "UTF-8"))))
 
-(impl DefaultProgramVersion ProgramVersionOps encode-jj-for
-  [:=> [:cat :any EncodeInput] :string]
+(impl DefaultProgramVersion ProgramVersionOps encode-jj-for EncodeInput :string
   [this input]
   (let [big-int (BigInteger. 1 (:bytes input))
         base (BigInteger/valueOf (long (count JJ_ALPHABET)))]
@@ -57,13 +55,11 @@
               ch (.charAt JJ_ALPHABET (.intValue mod))]
           (recur (.divide n base) (str res ch)))))))
 
-(impl DefaultProgramVersion ProgramVersionOps core-dir-path-for
-  [:=> [:cat :any :map] :string]
+(impl DefaultProgramVersion ProgramVersionOps core-dir-path-for :map :string
   [this input]
   (if (.exists (io/file "Core")) "Core" "core"))
 
-(impl DefaultProgramVersion ProgramVersionOps program-version-for
-  [:=> [:cat :any :map] :string]
+(impl DefaultProgramVersion ProgramVersionOps program-version-for :map :string
   [this input]
   (let [core-dir (io/file (core-dir-path-for this {}))
         files (->> (file-seq core-dir)

@@ -39,8 +39,7 @@
 
 (defrecord DefaultRootGuard [])
 
-(impl DefaultRootGuard RootGuardOps list-root-entries-for
-  [:=> [:cat :any :map] [:vector Entry]]
+(impl DefaultRootGuard RootGuardOps list-root-entries-for :map [:vector Entry]
   [this input]
   (let [root (io/file ".")]
     (->> (.listFiles root)
@@ -51,14 +50,14 @@
          vec)))
 
 (impl DefaultRootGuard RootGuardOps runtime-dir-for
-  [:=> [:cat :any [:map [:name :string]]] :boolean]
+  {:name :string} :boolean
   [this input]
   (let [name (:name input)]
     (or (contains? allowed-runtime-dirs name)
         (.startsWith name ".jj_"))))
 
 (impl DefaultRootGuard RootGuardOps classify-violations-for
-  [:=> [:cat :any [:map [:entries [:vector Entry]]]] [:vector :string]]
+  {:entries [:vector Entry]} [:vector :string]
   [this input]
   (let [entries (:entries input)]
     (->> entries
@@ -81,7 +80,7 @@
          vec)))
 
 (impl DefaultRootGuard RootGuardOps fail-for
-  [:=> [:cat :any [:map [:errors [:vector :string]]]] :any]
+  {:errors [:vector :string]} :any
   [this input]
   (binding [*out* *err*]
     (println "Root guard failed:")
@@ -89,8 +88,7 @@
       (println (str "- " error))))
   (System/exit 1))
 
-(impl DefaultRootGuard RootGuardOps pass-for
-  [:=> [:cat :any :map] :any]
+(impl DefaultRootGuard RootGuardOps pass-for :map :any
   [this input]
   (println "Root guard passed: top-level entries match the FS contract."))
 

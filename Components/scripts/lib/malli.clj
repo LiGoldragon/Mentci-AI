@@ -11,6 +11,13 @@
      (m/=> ~name ~schema)
      (defn ~name ~args ~@body)))
 
+(defn args-vector? [v]
+  (and (vector? v)
+       (or (empty? v)
+           (symbol? (first v))
+           (map? (first v))
+           (vector? (first v)))))
+
 (defmacro impl
   "Define a protocol method implementation with Malli schema instrumentation.
    Explicit schema form:
@@ -20,8 +27,19 @@
      (impl Type Protocol method {:query :string} [this input] ...)
    Concise auto-arg form:
      (impl Type Protocol method Input ...body...)"
-  [type protocol method schema-or-input args-or-body & maybe-body]
-  (let [explicit-args? (vector? args-or-body)
+  [type protocol method schema-or-input maybe-output-or-args & tail]
+  (let [is-function-schema? (and (vector? schema-or-input)
+                                 (= :=> (first schema-or-input)))
+        explicit-output? (and (not is-function-schema?)
+                              (not (args-vector? maybe-output-or-args)))
+        output-schema (if explicit-output? maybe-output-or-args :any)
+        args-or-body (if explicit-output?
+                       (first tail)
+                       maybe-output-or-args)
+        maybe-body (if explicit-output?
+                     (clojure.core/rest tail)
+                     tail)
+        explicit-args? (vector? args-or-body)
         args (if explicit-args?
                args-or-body
                (if (symbol? schema-or-input)
@@ -32,14 +50,12 @@
         body (if explicit-args?
                maybe-body
                (cons args-or-body maybe-body))
-        is-function-schema? (and (vector? schema-or-input)
-                                 (= :=> (first schema-or-input)))
         input-schema (if (symbol? schema-or-input)
                        schema-or-input
                        `(ml/schema ~schema-or-input))
         schema (if is-function-schema?
                  schema-or-input
-                 `[:=> [:cat :any ~input-schema] :any])]
+                 `[:=> [:cat :any ~input-schema] ~output-schema])]
     `(do
        (m/=> ~method ~schema)
        (extend-type ~type

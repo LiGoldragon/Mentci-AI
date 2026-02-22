@@ -140,8 +140,7 @@
                  :policyPath (get runtime :policyPath nil)}]
     (run-commit payload)))
 
-(impl DefaultCommit CommitOps run-cli-for
-  [:=> [:cat :any Input] :any]
+(impl DefaultCommit CommitOps run-cli-for Input :any
   [this input]
   (run-cli input))
 

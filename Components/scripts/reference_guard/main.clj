@@ -39,12 +39,11 @@
 (defrecord DefaultReferenceGuard [])
 
 (impl DefaultReferenceGuard ReferenceGuardOps file-extension-allowed-for
-  [:=> [:cat :any [:map [:path :string]]] :boolean]
+  {:path :string} :boolean
   [this input]
   (boolean (re-find #"\.(md|edn|clj|nix|toml|json|yaml|yml)$" (:path input))))
 
-(impl DefaultReferenceGuard ReferenceGuardOps collect-files-for
-  [:=> [:cat :any CollectFilesInput] [:vector :any]]
+(impl DefaultReferenceGuard ReferenceGuardOps collect-files-for CollectFilesInput [:vector :any]
   [this input]
   (let [root (io/file (:root input))]
     (if (.exists root)
@@ -57,14 +56,13 @@
       [])))
 
 (impl DefaultReferenceGuard ReferenceGuardOps rel-path-for
-  [:=> [:cat :any [:map [:file :any]]] :string]
+  {:file :any} :string
   [this input]
   (let [cwd (.normalize (.toPath (io/file ".")))
         path (.normalize (.toPath ^java.io.File (:file input)))]
     (str (.relativize cwd path))))
 
-(impl DefaultReferenceGuard ReferenceGuardOps check-file-for
-  [:=> [:cat :any FileCheckInput] [:vector :string]]
+(impl DefaultReferenceGuard ReferenceGuardOps check-file-for FileCheckInput [:vector :string]
   [this input]
   (let [{:keys [path content allowlist]} input
         path-lc (str/lower-case path)]

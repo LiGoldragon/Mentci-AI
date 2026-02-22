@@ -80,15 +80,13 @@
 
 (defrecord DefaultInputsRemount [])
 
-(impl DefaultInputsRemount InputsRemountOps fail-for
-  [:=> [:cat :any FailInput] :any]
+(impl DefaultInputsRemount InputsRemountOps fail-for FailInput :any
   [this input]
   (binding [*out* *err*]
     (println (:message input)))
   (System/exit 1))
 
-(impl DefaultInputsRemount InputsRemountOps parse-args-for
-  [:=> [:cat :any ParseArgsInput] RemountArgs]
+(impl DefaultInputsRemount InputsRemountOps parse-args-for ParseArgsInput RemountArgs
   [this input]
   (loop [remaining (:args input)
          options {:attrsPath ".attrs.json"
@@ -115,8 +113,7 @@
           :else
           (fail-for this {:message (str "Unknown argument: " arg)}))))))
 
-(impl DefaultInputsRemount InputsRemountOps keywordize-keys-for
-  [:=> [:cat :any KeywordizeKeysInput] :map]
+(impl DefaultInputsRemount InputsRemountOps keywordize-keys-for KeywordizeKeysInput :map
   [this input]
   (let [data (:data input)]
     (into {}
@@ -126,8 +123,7 @@
                (keywordize-keys-for this {:data v})
                v)]))))
 
-(impl DefaultInputsRemount InputsRemountOps find-jail-config-for
-  [:=> [:cat :any FindJailConfigInput] [:maybe :map]]
+(impl DefaultInputsRemount InputsRemountOps find-jail-config-for FindJailConfigInput [:maybe :map]
   [this input]
   (let [data (:data input)]
     (cond
@@ -138,8 +134,7 @@
       (coll? data) (some #(find-jail-config-for this {:data %}) data)
       :else nil)))
 
-(impl DefaultInputsRemount InputsRemountOps read-jail-config-for
-  [:=> [:cat :any ReadConfigInput] types/JailConfig]
+(impl DefaultInputsRemount InputsRemountOps read-jail-config-for ReadConfigInput types/JailConfig
   [this input]
   (let [attrs-file (io/file (:attrsPath input))
         full-config (if (.exists attrs-file)
@@ -151,8 +146,7 @@
       (fail-for this {:message "Configuration not found. Expected .attrs.json or jailConfig env var."}))
     (keywordize-keys-for this {:data config-raw})))
 
-(impl DefaultInputsRemount InputsRemountOps read-whitelist-for
-  [:=> [:cat :any WhitelistInput] [:set :string]]
+(impl DefaultInputsRemount InputsRemountOps read-whitelist-for WhitelistInput [:set :string]
   [this input]
   (let [whitelist-file (io/file (:whitelistPath input))]
     (if (.exists whitelist-file)
@@ -160,8 +154,7 @@
         (or (:whitelist data) #{}))
       (fail-for this {:message (str "Whitelist file not found: " (:whitelistPath input))}))))
 
-(impl DefaultInputsRemount InputsRemountOps delete-path-for
-  [:=> [:cat :any DeletePathInput] :any]
+(impl DefaultInputsRemount InputsRemountOps delete-path-for DeletePathInput :any
   [this input]
   (let [path-str (:path input)
         path (.toPath (io/file path-str))]
@@ -175,8 +168,7 @@
             (finally
               (.close stream))))))))
 
-(impl DefaultInputsRemount InputsRemountOps remount-input-for
-  [:=> [:cat :any RemountInput] :any]
+(impl DefaultInputsRemount InputsRemountOps remount-input-for RemountInput :any
   [this input]
   (let [{:keys [name sourcePath targetPath]} input
         source-file (io/file sourcePath)
@@ -191,8 +183,7 @@
       (.toPath source-file)
       (into-array java.nio.file.attribute.FileAttribute []))))
 
-(impl DefaultInputsRemount InputsRemountOps strip-write-permissions-for
-  [:=> [:cat :any StripWriteInput] :map]
+(impl DefaultInputsRemount InputsRemountOps strip-write-permissions-for StripWriteInput :map
   [this input]
   (let [root (.toPath (io/file (:path input)))]
     (if-not (java.nio.file.Files/exists root (into-array java.nio.file.LinkOption []))

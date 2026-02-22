@@ -33,8 +33,7 @@
 
 (defrecord DefaultToolDiscoverer [])
 
-(impl DefaultToolDiscoverer ToolDiscovererOps search-nix-for
-  [:=> [:cat :any QueryInput] [:vector :string]]
+(impl DefaultToolDiscoverer ToolDiscovererOps search-nix-for QueryInput [:vector :string]
   [this input]
   (let [query (:query input)]
     (println (str "Searching nixpkgs for: " query))
@@ -48,8 +47,7 @@
           (println "Nix search failed:" err)
           [])))))
 
-(impl DefaultToolDiscoverer ToolDiscovererOps search-cargo-for
-  [:=> [:cat :any QueryInput] [:vector :string]]
+(impl DefaultToolDiscoverer ToolDiscovererOps search-cargo-for QueryInput [:vector :string]
   [this input]
   (let [query (:query input)]
     (println (str "Searching crates.io for: " query))
@@ -63,8 +61,7 @@
           (println "Cargo search failed:" err)
           [])))))
 
-(impl DefaultToolDiscoverer ToolDiscovererOps discover-tools-for
-  [:=> [:cat :any DiscoverInput] :map]
+(impl DefaultToolDiscoverer ToolDiscovererOps discover-tools-for DiscoverInput :map
   [this input]
   (let [subject (:subject input)
         nix-results (search-nix-for this {:query subject})

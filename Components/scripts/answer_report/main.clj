@@ -274,8 +274,7 @@
                "- This report is required for `answer`, `draft`, and `question` responses.\n"
                "- Reporting still applies when response scope is `no-files`.\n"))))
 
-(impl DefaultAnswerReport AnswerReportOps run-report-for
-  [:=> [:cat :any Input] :any]
+(impl DefaultAnswerReport AnswerReportOps run-report-for Input :any
   [this input]
   (let [opts (parse-args {:args (:args input)})
         prompt (read-text {:value (:prompt opts)

@@ -27,13 +27,11 @@
 
 (defrecord DefaultShell [])
 
-(impl DefaultShell ShellOps validate-spec-for
-  [:=> [:cat :any types/ShellSpec] :any]
+(impl DefaultShell ShellOps validate-spec-for types/ShellSpec :any
   [this spec]
   spec)
 
-(impl DefaultShell ShellOps run-shell-for
-  [:=> [:cat :any ShellMainInput] :any]
+(impl DefaultShell ShellOps run-shell-for ShellMainInput :any
   [this input]
   (let [attrs-file (io/file ".attrs.json")
         ;; Support both structured attrs and traditional env vars

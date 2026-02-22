@@ -188,8 +188,7 @@
 (defmacro aski-flow->dot-macro [flow]
   (graphviz-json->dot {:graph (aski-flow->graphviz-json {:flow flow :graphId "AskiFlow"})}))
 
-(impl DefaultAskiFlow AskiFlowOps run-flow-cli-for
-  [:=> [:cat :any Input] :any]
+(impl DefaultAskiFlow AskiFlowOps run-flow-cli-for Input :any
   [this input]
   (let [args (:args input)
         flow-file (first args)

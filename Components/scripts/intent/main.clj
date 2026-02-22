@@ -35,13 +35,11 @@
 
 (defrecord DefaultIntent [])
 
-(impl DefaultIntent IntentOps generate-hash-for
-  [:=> [:cat :any GenerateHashInput] :string]
+(impl DefaultIntent IntentOps generate-hash-for GenerateHashInput :string
   [this input]
   (subs (str (java.util.UUID/randomUUID)) 0 8))
 
-(impl DefaultIntent IntentOps sanitize-name-for
-  [:=> [:cat :any SanitizeNameInput] :string]
+(impl DefaultIntent IntentOps sanitize-name-for SanitizeNameInput :string
   [this input]
   (let [name (:name input)]
     (-> name
@@ -49,8 +47,7 @@
         (str/replace #"\s+" "-")
         (str/replace #"[^a-z0-9-]" ""))))
 
-(impl DefaultIntent IntentOps run-intent-for
-  [:=> [:cat :any IntentMainInput] :any]
+(impl DefaultIntent IntentOps run-intent-for IntentMainInput :any
   [this input]
   (let [args (:args input)]
     (if (empty? args)

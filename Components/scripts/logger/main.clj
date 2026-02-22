@@ -47,29 +47,25 @@
 
 (defrecord DefaultLogger [])
 
-(impl DefaultLogger LoggerOps get-current-user-id-for
-  [:=> [:cat :any GetCurrentUserIdInput] :string]
+(impl DefaultLogger LoggerOps get-current-user-id-for GetCurrentUserIdInput :string
   [this input]
   (let [system-user (System/getProperty "user.name")]
     (if (= system-user "li")
       default-github-user
       system-user)))
 
-(impl DefaultLogger LoggerOps validate-entry-for
-  [:=> [:cat :any types/IntentLog] :any]
+(impl DefaultLogger LoggerOps validate-entry-for types/IntentLog :any
   [this entry]
   entry)
 
-(impl DefaultLogger LoggerOps current-ecliptic-for
-  [:=> [:cat :any CurrentEclipticInput] :string]
+(impl DefaultLogger LoggerOps current-ecliptic-for CurrentEclipticInput :string
   [this input]
   (let [{:keys [exit out]} (sh/sh "chronos" "--format" "numeric")]
     (if (zero? exit)
       (str/trim out)
       "12.1.28.44 | 5919 AM")))
 
-(impl DefaultLogger LoggerOps log-prompt-for
-  [:=> [:cat :any LogPromptInput] :any]
+(impl DefaultLogger LoggerOps log-prompt-for LogPromptInput :any
   [this input]
   (let [{:keys [intentSummary model userId]} input
         log-file (io/file logs-dir (str "user_" userId ".edn"))
@@ -87,8 +83,7 @@
     (spit log-file (str (pr-str entry) "\n") :append true)
     (println (str "Logged intent (Clojure/Malli): '" intentSummary "' to " log-file))))
 
-(impl DefaultLogger LoggerOps run-logger-for
-  [:=> [:cat :any LoggerMainInput] :any]
+(impl DefaultLogger LoggerOps run-logger-for LoggerMainInput :any
   [this input]
   (let [args (:args input)]
     (if (empty? args)

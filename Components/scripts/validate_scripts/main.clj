@@ -121,8 +121,7 @@
       (when-not (contains-substring? {:content content :substring "(impl "})
         (fail {:message (str "Missing impl usage in " path)})))))
 
-(impl DefaultScriptValidator ScriptValidatorOps run-validator-for
-  [:=> [:cat :any Input] :any]
+(impl DefaultScriptValidator ScriptValidatorOps run-validator-for Input :any
   [this input]
   (let [{:keys [scripts-dir]} (parse-args {:args (:args input)})
         scripts-dir (or scripts-dir "Components/scripts")

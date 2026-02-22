@@ -32,8 +32,7 @@
 
 (def deps ["nix" "cargo" "rustc" "bb" "clojure" "jj" "jet" "gdb"])
 
-(impl DefaultTestDeps TestDepsOps check-dep-for
-  [:=> [:cat :any CheckDepInput] :boolean]
+(impl DefaultTestDeps TestDepsOps check-dep-for CheckDepInput :boolean
   [this input]
   (let [name (:name input)]
   (let [res (sh "which" name)]
@@ -43,8 +42,7 @@
       (do (println (format "[!!] %-10s NOT FOUND" name))
           false)))))
 
-(impl DefaultTestDeps TestDepsOps run-audit-for
-  [:=> [:cat :any TestDepsMainInput] :any]
+(impl DefaultTestDeps TestDepsOps run-audit-for TestDepsMainInput :any
   [this input]
   (println "Mentci-AI Dependency Audit (Clojure)")
   (println "------------------------------")

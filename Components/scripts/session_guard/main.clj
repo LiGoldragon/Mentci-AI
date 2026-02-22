@@ -45,24 +45,21 @@
 
 (defrecord DefaultSessionGuard [])
 
-(impl DefaultSessionGuard SessionGuardOps run-command-for
-  [:=> [:cat :any CommandInput] :map]
+(impl DefaultSessionGuard SessionGuardOps run-command-for CommandInput :map
   [this input]
   (let [result (apply sh (:args input))]
     {:exit (:exit result)
      :out (:out result)
      :err (:err result)}))
 
-(impl DefaultSessionGuard SessionGuardOps parse-descriptions-for
-  [:=> [:cat :any ParseInput] [:vector :string]]
+(impl DefaultSessionGuard SessionGuardOps parse-descriptions-for ParseInput [:vector :string]
   [this input]
   (->> (str/split-lines (:raw input))
        (map str/trim)
        (remove str/blank?)
        vec))
 
-(impl DefaultSessionGuard SessionGuardOps read-head-description-for
-  [:=> [:cat :any :map] :string]
+(impl DefaultSessionGuard SessionGuardOps read-head-description-for :map :string
   [this input]
   (let [result (run-command-for this {:args ["git" "log" "-n" "1" "--pretty=%B"]})]
     (when-not (= 0 (:exit result))
@@ -71,19 +68,19 @@
     (str (:out result))))
 
 (impl DefaultSessionGuard SessionGuardOps fail-for
-  [:=> [:cat :any [:map [:message :string]]] :any]
+  {:message :string} :any
   [this input]
   (binding [*out* *err*]
     (println (:message input)))
   (System/exit 1))
 
 (impl DefaultSessionGuard SessionGuardOps pass-for
-  [:=> [:cat :any [:map [:message :string]]] :any]
+  {:message :string} :any
   [this input]
   (println (:message input)))
 
 (impl DefaultSessionGuard SessionGuardOps classify-prefix-for
-  [:=> [:cat :any [:map [:value :string]]] :string]
+  {:value :string} :string
   [this input]
   (let [value (:value input)]
     (cond
@@ -91,8 +88,7 @@
       (str/starts-with? value "intent:") "intent"
       :else "other")))
 
-(impl DefaultSessionGuard SessionGuardOps decide-for
-  [:=> [:cat :any DecideInput] :map]
+(impl DefaultSessionGuard SessionGuardOps decide-for DecideInput :map
   [this input]
   (let [descriptions (:descriptions input)]
     (loop [remaining descriptions
@@ -123,8 +119,7 @@
             :else
             (recur (rest remaining) intent-count)))))))
 
-(impl DefaultSessionGuard SessionGuardOps validate-session-message-for
-  [:=> [:cat :any ValidateSessionMessageInput] :map]
+(impl DefaultSessionGuard SessionGuardOps validate-session-message-for ValidateSessionMessageInput :map
   [this input]
   (let [description (:description input)
         lines (->> (str/split-lines description)
@@ -152,8 +147,7 @@
       {:status :pass
        :message "Session guard passed: HEAD session commit contains required context sections."})))
 
-(impl DefaultSessionGuard SessionGuardOps validate-push-for
-  [:=> [:cat :any :map] :map]
+(impl DefaultSessionGuard SessionGuardOps validate-push-for :map :map
   [this input]
   (let [local (run-command-for this {:args ["git" "rev-parse" "HEAD"]})
         remote (run-command-for this {:args ["git" "ls-remote" "--heads" "origin" "dev"]})]

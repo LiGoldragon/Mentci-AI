@@ -185,8 +185,7 @@
 
       (usage))))
 
-(impl DefaultJJWorkflow JJWorkflowOps run-cli-for
-  [:=> [:cat :any Input] :any]
+(impl DefaultJJWorkflow JJWorkflowOps run-cli-for Input :any
   [this input]
   (run-cli input))
 

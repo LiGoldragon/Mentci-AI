@@ -72,13 +72,11 @@
 
 (defrecord DefaultLauncher [])
 
-(impl DefaultLauncher LauncherOps validate-config-for
-  [:=> [:cat :any types/JailConfig] :any]
+(impl DefaultLauncher LauncherOps validate-config-for types/JailConfig :any
   [this config]
   config)
 
-(impl DefaultLauncher LauncherOps provision-input-for
-  [:=> [:cat :any ProvisionInput] :any]
+(impl DefaultLauncher LauncherOps provision-input-for ProvisionInput :any
   [this input]
   (let [{:keys [name inputType sourcePath srcPath inputsRoot isImpure]} input
         target-root (io/file inputsRoot)
@@ -112,14 +110,12 @@
               (binding [*out* *err*]
                 (println (str "Error linking " name ": " (.getMessage e)))))))))))
 
-(impl DefaultLauncher LauncherOps keywordize-keys-for
-  [:=> [:cat :any KeywordizeKeysInput] :map]
+(impl DefaultLauncher LauncherOps keywordize-keys-for KeywordizeKeysInput :map
   [this input]
   (let [data (:data input)]
     (into {} (for [[k v] data] [(keyword k) (if (map? v) (keywordize-keys-for this {:data v}) v)]))))
 
-(impl DefaultLauncher LauncherOps find-jail-config-for
-  [:=> [:cat :any FindJailConfigInput] [:maybe :map]]
+(impl DefaultLauncher LauncherOps find-jail-config-for FindJailConfigInput [:maybe :map]
   [this input]
   (let [data (:data input)]
     (cond
@@ -130,8 +126,7 @@
       (coll? data) (some #(find-jail-config-for this {:data %}) data)
       :else nil)))
 
-(impl DefaultLauncher LauncherOps load-component-index-for
-  [:=> [:cat :any LoadComponentIndexInput] ComponentIndex]
+(impl DefaultLauncher LauncherOps load-component-index-for LoadComponentIndexInput ComponentIndex
   [this input]
   (let [index-file (io/file (:indexPath input))]
     (when-not (.exists index-file)
@@ -140,8 +135,7 @@
         (System/exit 1)))
     (edn/read-string (slurp index-file))))
 
-(impl DefaultLauncher LauncherOps resolve-component-index-for
-  [:=> [:cat :any ResolveComponentIndexInput] :map]
+(impl DefaultLauncher LauncherOps resolve-component-index-for ResolveComponentIndexInput :map
   [this input]
   (let [components (:components (:index input))
         ids (map :id components)
@@ -168,8 +162,7 @@
              {}
              components)}))
 
-(impl DefaultLauncher LauncherOps write-component-registry-for
-  [:=> [:cat :any WriteComponentRegistryInput] :string]
+(impl DefaultLauncher LauncherOps write-component-registry-for WriteComponentRegistryInput :string
   [this input]
   (let [out-path (or (:registryPath input)
                      (str (:outputsPath input) "/component_registry.json"))

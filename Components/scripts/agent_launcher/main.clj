@@ -65,15 +65,13 @@
 
 (defrecord DefaultAgentLauncher [])
 
-(impl DefaultAgentLauncher AgentLauncherOps fail-for
-  [:=> [:cat :any FailInput] :any]
+(impl DefaultAgentLauncher AgentLauncherOps fail-for FailInput :any
   [this input]
   (binding [*out* *err*]
     (println (:message input)))
   (System/exit 1))
 
-(impl DefaultAgentLauncher AgentLauncherOps parse-args-for
-  [:=> [:cat :any ParseArgsInput] :map]
+(impl DefaultAgentLauncher AgentLauncherOps parse-args-for ParseArgsInput :map
   [this input]
   (let [args (:args input)]
     (loop [remaining args
@@ -100,22 +98,19 @@
             :else
             (assoc opts :command (vec remaining))))))))
 
-(impl DefaultAgentLauncher AgentLauncherOps resolve-entry-for
-  [:=> [:cat :any ResolveEntryInput] :string]
+(impl DefaultAgentLauncher AgentLauncherOps resolve-entry-for ResolveEntryInput :string
   [this input]
   (let [{:keys [prefix provider entry]} input]
     (or entry (str prefix "/" provider "/api-key"))))
 
-(impl DefaultAgentLauncher AgentLauncherOps resolve-env-var-for
-  [:=> [:cat :any ResolveEnvVarInput] :string]
+(impl DefaultAgentLauncher AgentLauncherOps resolve-env-var-for ResolveEnvVarInput :string
   [this input]
   (let [{:keys [provider envVar]} input]
     (or envVar
         (get env-by-provider provider)
         (fail-for this {:message (str "Unknown provider '" provider "'. Use --env-var or extend env-by-provider.")}))))
 
-(impl DefaultAgentLauncher AgentLauncherOps gopass-secret-for
-  [:=> [:cat :any GopassSecretInput] :string]
+(impl DefaultAgentLauncher AgentLauncherOps gopass-secret-for GopassSecretInput :string
   [this input]
   (let [entry (:entry input)
         {:keys [exit out err]} (sh/sh "gopass" "show" "--password" entry)]
@@ -123,8 +118,7 @@
       (fail-for this {:message (str "gopass failed for " entry ": " (str/trim (or err out)))}))
     (str/trim out)))
 
-(impl DefaultAgentLauncher AgentLauncherOps run-agent-for
-  [:=> [:cat :any RunInput] :any]
+(impl DefaultAgentLauncher AgentLauncherOps run-agent-for RunInput :any
   [this input]
   (let [{:keys [provider gopass-prefix entry env-var command]} input
         prefix (or gopass-prefix (System/getenv "MENTCI_GOPASS_PREFIX") default-gopass-prefix)
