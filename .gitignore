@@ -8,5 +8,7 @@ result
 /workspace/
 gemini-cli-*.tgz
 *.tgz
+# Inputs are mounted/ephemeral read-only substrate (often symlinks/store paths).
+# They are environment material, not repository source of truth.
 Inputs/
 inputs_backup/

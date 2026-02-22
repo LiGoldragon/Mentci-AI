@@ -5,8 +5,8 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Active Bookmark:** `dev`.
-*   **Current Programming Version:** `6z7my288` (Ref: `scripts/program_version/main.clj`).
-*   **Latest Release Tag:** `v0.12.3.58.3` (Ref: `Logs/RELEASE_MILESTONES.md`).
+*   **Current Programming Version:** `lm7x953n` (Ref: `scripts/program_version/main.clj`).
+*   **Latest Release Tag:** `v0.12.3.58.4` (Ref: Git tag state).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (**mentci-aid**) designed for autonomous symbolic manipulation. It operates within a Pure Nix Jail environment and uses Jujutsu (`jj`) for version control.
@@ -32,6 +32,7 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Obsolescence Pipeline:** `core/programs/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
 - **Input Substrate:** `Inputs/` (Read-only store paths), managed via `flake.nix` and `jail.nix`.
+- **VCS Guardrail:** `Inputs/` is gitignored as mounted runtime substrate; input updates are managed through flake/input refresh workflows, not direct Git tracking.
 - **Audit Trail:** `jj log` (VCS), `Logs/RELEASE_MILESTONES.md` (Human-readable history), `Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `strategies/artifact-sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
 
 ## 4. Operational Requirements
