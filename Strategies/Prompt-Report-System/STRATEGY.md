@@ -50,6 +50,11 @@ explicit, finishable units without losing auditability.
 2. `Reports/<Subject>/README.md` indexes the new recovery artifacts.
 3. Latest head is a `session:` commit and pushed to `dev`.
 
+## Implementation Status
+- Implemented extractor: `Components/scripts/interrupted_job_queue/main.clj`
+- Generated queue artifact: `Reports/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md`
+- Script test context: `Components/scripts/interrupted_job_queue/TESTING_CONTEXT.md`
+
 ## Current Review Result
 The prior strategy file was a placeholder and did not provide a usable interrupted-job
 recovery flow. This revision makes the strategy executable and testable.
