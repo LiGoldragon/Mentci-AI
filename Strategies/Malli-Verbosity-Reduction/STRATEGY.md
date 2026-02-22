@@ -49,21 +49,21 @@ Expansion:
 ### 3.2 Entrypoint Sugar (Implemented)
 Current:
 ```clojure
-(defn* -main [:=> [:cat MainInput] :any] [input] ...)
+(defn* -main [:=> [:cat Input] :any] [input] ...)
 ```
 
 Implemented:
 ```clojure
-(main MainInput [input] ...)
+(main Input [input] ...)
 ```
 
 Implemented auto-arg shorthand:
 ```clojure
-(main MainInput
+(main Input
   ...)
 ```
 Where arg is derived from type symbol by lowercasing first letter
-(`MainInput -> mainInput`, `Input -> input`).
+(`Input -> input`).
 
 Expansion:
 - expands to `defn* -main` with inferred `:any` output in concise mode.
@@ -77,7 +77,7 @@ Lite example:
 
 Example explicit schema:
 ```clojure
-(main [:=> [:cat MainInput] :any] [input] ...)
+(main [:=> [:cat Input] :any] [input] ...)
 ```
 
 ## 4. Implementation Plan
@@ -112,6 +112,8 @@ Example explicit schema:
 - reject type-redundant names like `*Text` when schema is scalar `:string`.
 9. Add lint guard for unary map redundancy:
 - reject or warn on single-member map schemas unless annotated as required for compatibility.
+10. Add context-local entrypoint naming guard:
+- in `main.clj`, prefer schema name `Input`; flag `MainInput` and similar redundant restatements.
 
 ## 5. Non-Goals (Phase 1)
 - Removing map field keys from multi-field object schemas.

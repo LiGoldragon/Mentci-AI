@@ -17,3 +17,4 @@
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_sync-guideline-strategy-with-main-macro.md`
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_main-macro-lite-input-support.md`
 - `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_main-autoarg-from-type-name.md`
+- `Reports/Malli-Verbosity-Reduction/2026_02_22_answer_context-local-main-input-naming.md`

@@ -146,6 +146,8 @@ Use the local `defn*` macro to reduce noise. It expands to `m/=>` plus `defn`.
 ### Project Macro: main
 
 Use `main` for concise `-main` entrypoint declarations.
+In `main.clj`, prefer entrypoint schema name `Input` (not `MainInput`) because
+file context already provides the `main` semantic layer.
 It expands to `defn* -main` with either:
 - inferred schema: `[:=> [:cat InputSchema] :any]`
 - explicit function schema when provided.
@@ -153,15 +155,15 @@ It expands to `defn* -main` with either:
 In concise mode, non-symbol input forms are compiled via Malli lite syntax.
 
 ```clojure
-(main MainInput [input]
+(main Input [input]
   (println input))
 ```
 
 Auto-arg form (derived from type name):
 
 ```clojure
-(main MainInput
-  (println mainInput))
+(main Input
+  (println input))
 ```
 
 Malli lite input form:
@@ -174,7 +176,7 @@ Malli lite input form:
 Explicit schema form:
 
 ```clojure
-(main [:=> [:cat MainInput] :any] [input]
+(main [:=> [:cat Input] :any] [input]
   (println input))
 ```
 
