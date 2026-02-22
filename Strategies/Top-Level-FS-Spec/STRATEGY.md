@@ -4,10 +4,10 @@
 Define and enforce typed top-level filesystem ontology where first-letter-capitalized root directories map to explicit semantic types.
 
 ## Canonical Root Enum
-`(enum [Inputs Components Outputs Reports Strategies Core Library])`
+`(enum [Sources Components Outputs Reports Strategies Core Library])`
 
 In Aski-FS sugared syntax, this is:
-`[Inputs Components Outputs Reports Strategies Core Library]`
+`[Sources Components Outputs Reports Strategies Core Library]`
 
 Rationale: in Aski-FS, `[]` denotes an enum declaration when used as a type-set in schema position.
 
@@ -19,7 +19,7 @@ Rationale: in Aski-FS, `[]` denotes an enum declaration when used as a type-set 
 ## Current State Review (2026-02-22)
 ### Canonical Enum vs Observed Roots
 Canonical enum:
-- `Inputs`
+- `Sources`
 - `Components`
 - `Outputs`
 - `Reports`
@@ -49,7 +49,7 @@ Observed top-level directories currently include:
 This strategy assumes option (1): materialize `Components/` and migrate.
 
 ## Root Type Semantics
-- `Inputs`: read-only external substrate and mounted references.
+- `Sources`: read-only external substrate and mounted references (formerly `Inputs`).
 - `Components`: mutable implementation components that belong to Mentci-AI but are managed as independent VC subtrees/repositories.
 - `Outputs`: generated/export artifacts for downstream consumption.
 - `Reports`: prompt/session answer artifacts grouped by subject.
@@ -108,7 +108,8 @@ Implications:
 
 4. Materialize missing canonical roots:
 - create `Strategies/` and `Outputs/` (if absent at cutover)
-- keep `Inputs/` mounted/read-only (non-tracked substrate).
+- migrate `Inputs/` -> `Sources/` as canonical mounted/read-only non-tracked substrate
+- keep a temporary compatibility alias from `Inputs/` to `Sources/` until all references are rewritten.
 
 5. Enforce:
 - fail on new lowercase top-level roots unless explicitly temporary and allowlisted.
@@ -128,3 +129,27 @@ Implications:
 - Subject/report/strategy workflows remain operational post-cutover.
 - A root inventory check shows only canonical typed roots plus approved runtime roots.
 - No active references to migrated lowercase root paths remain.
+
+## Aski-FS Unification Program (Begin Now)
+Objective: move all filesystem control logic under Aski-FS as the authoritative language/spec, so repository path semantics are centrally declared and machine-checked.
+
+Phase 1: Canonical Model
+- Define `Sources` as the canonical root in Aski-FS contracts.
+- Encode root enum, allowlists, and runtime exceptions in a single Aski-FS data source.
+- Initial artifact path: `Library/specs/ASKI_FS_ROOT_CONTRACT.edn`.
+- Treat filesystem semantics as schema authority, not scattered script constants.
+
+Phase 2: Control-Plane Centralization
+- Refactor guard/check scripts to read root contracts from Aski-FS data.
+- Remove duplicated hardcoded root lists from script implementations.
+- Keep compatibility aliases (`Inputs` -> `Sources`) behind explicit translation maps until cutover completes.
+
+Phase 3: Trusted Context Flow
+- Use Aski-FS declarations to generate/import context maps for scripts and components.
+- Reduce per-file boilerplate path setup where runtime can derive context from Aski-FS contracts.
+- Ensure generated context remains explicit and auditable, not implicit magic.
+
+Phase 4: Convergence and Lock
+- Remove legacy alias paths after reference sweep is clean.
+- Enforce a single-path policy (`Sources/` only) in guards and session checks.
+- Record migration completion in Reports and Restart Context.

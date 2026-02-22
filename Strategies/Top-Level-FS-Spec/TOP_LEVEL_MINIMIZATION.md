@@ -2,12 +2,12 @@
 
 ## Objective
 Reduce repository root contents to:
-1. The canonical 7 typed directories: `Inputs/`, `Components/`, `Outputs/`, `Reports/`, `Strategies/`, `Core/`, `Library/`.
+1. The canonical 7 typed directories: `Sources/`, `Components/`, `Outputs/`, `Reports/`, `Strategies/`, `Core/`, `Library/`.
 2. A strict allowlist of top-level files that must exist at root by design.
 
 ## Root Contract
 Allowed top-level directories:
-- `Inputs`
+- `Sources`
 - `Components`
 - `Outputs`
 - `Reports`
@@ -35,6 +35,9 @@ Conditional top-level files (keep only if still actively consumed by tooling):
 - `.opencode.edn`
 
 Everything else must move under one of the 7 typed directories.
+Temporary migration note:
+- `Inputs/` may exist only as a short-lived compatibility alias while references are rewritten to `Sources/`.
+
 Current implementation notes:
 - `ARCHITECTURE.md` moved to `Library/architecture/ARCHITECTURE.md`.
 - `Work.md` moved to `Library/reports/WORK_CONTEXT.md`.
@@ -49,7 +52,7 @@ Current implementation notes:
 - Session/answer artifacts -> `Reports/`
 - Planning artifacts -> `Strategies/`
 - Runtime outputs/logs -> `Outputs/`
-- External mounted substrate -> `Inputs/` (read-only, gitignored)
+- External mounted substrate -> `Sources/` (read-only, gitignored)
 
 ## Execution Plan
 1. Inventory and classify
@@ -76,9 +79,9 @@ Current implementation notes:
 
 ## Guard Specification
 Root check fails if:
-- Any top-level directory is not in `{Inputs, Components, Outputs, Reports, Strategies, Core, Library}` or runtime exception set.
+- Any top-level directory is not in `{Sources, Components, Outputs, Reports, Strategies, Core, Library}` or runtime exception set.
 - Any top-level file is not in the required-file set or explicit conditional allowlist.
-- Any lowercase duplicate of canonical roots appears (`core/`, `strategies/`, `inputs/`, etc.).
+- Any lowercase duplicate of canonical roots appears (`core/`, `strategies/`, `sources/`, etc.).
 
 ## Risks
 - Tooling still hardcodes legacy root paths.

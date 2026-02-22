@@ -1,0 +1,11 @@
+{:version 1
+ :canonicalRoots [Sources Components Outputs Reports Strategies Core Library]
+ :runtimeRoots [".git" ".jj" ".direnv" "target"]
+ :requiredTopLevelFiles ["flake.nix"
+                         "flake.lock"
+                         ".gitignore"
+                         ".envrc"
+                         "AGENTS.md"]
+ :conditionalTopLevelFiles ["README.md" ".attrs.json" ".opencode.edn"]
+ :compatibilityAliases
+ {Inputs Sources}}
