@@ -92,11 +92,16 @@
 
 (impl DefaultSessionFinalize SessionFinalizeOps run-command-for RunCommandInput :map
   [this input]
-  (let [_ this
-        result (apply sh (:args input))]
-    {:exit (:exit result)
-     :out (:out result)
-     :err (:err result)}))
+  (let [_ this]
+    (try
+      (let [result (apply sh (:args input))]
+        {:exit (:exit result)
+         :out (:out result)
+         :err (:err result)})
+      (catch java.io.IOException e
+        {:exit 127
+         :out ""
+         :err (.getMessage e)}))))
 
 (impl DefaultSessionFinalize SessionFinalizeOps parse-args-for ParseArgsInput :map
   [this input]
