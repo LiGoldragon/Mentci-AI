@@ -2,6 +2,8 @@
 
 ## Objective
 Reorganize all strategy subjects into 12 symbolic categories that mirror the zodiac, so agents can orient quickly and find the right strategy domain without ambiguity.
+The same zodiac category lattice must be applied to both `Strategies/` and `Reports/`
+so discovery is bilateral: consulting one side requires consulting the mirrored side.
 
 Naming format for category directories:
 - `ZodiacSign-ShortAppropriateCategoryName`
@@ -23,16 +25,19 @@ Naming format for category directories:
 
 ## Scope
 - Keep strategy subjects intact, but nest them under one zodiac-category container.
+- Mirror report subjects under the same zodiac-category containers.
 - Add symbolic correspondence spec for discoverability and orientation.
 - Add deterministic mapping rules so agents can classify new subjects consistently.
 
 ## Filesystem Shape
 - `Strategies/<Zodiac-Category>/<Subject>/...`
-- `Reports/<Zodiac-Category>/<Subject>/...` (optional second phase if report taxonomy is also zodiacized)
+- `Reports/<Zodiac-Category>/<Subject>/...`
 
-Phase-1 minimum:
-- Zodiac division applied to `Strategies/`.
-- Existing `Reports/<Subject>/` left stable to reduce migration risk.
+Mirror invariant:
+- Every strategy subject path has a corresponding report subject path under the same
+  zodiac category.
+- Every report subject path has a corresponding strategy subject path under the same
+  zodiac category.
 
 ## Classification Rules
 For each strategy subject, choose category by primary intent:
@@ -55,16 +60,25 @@ Tie-breaker:
 - Create deterministic map: `Subject -> Zodiac-Category`.
 - Include rationale sentence per mapping.
 
-3. Move strategy directories
+3. Move strategy and report directories
 - Use `git mv` to preserve history.
 - Update path references in `Core/`, `Library/`, strategy/readme/report indexes, and helper scripts.
+- Update subject-unification tooling to resolve zodiac category + subject pairs.
 
 4. Add compatibility aliases (temporary)
 - Add lookup fallback for old `Strategies/<Subject>` paths where scripts assume flat layout.
+- Add lookup fallback for old `Reports/<Subject>` paths where scripts assume flat layout.
 - Remove fallback after full rewrite verification.
 
 5. Enforce
-- Extend guard tooling to fail on strategies outside zodiac category containers.
+- Extend guard tooling to fail on strategies or reports outside zodiac category containers.
+- Extend guard tooling to fail if mirrored counterpart is missing on either side.
+
+6. Consult-both workflow rule
+- When an agent opens `Strategies/<Zodiac-Category>/<Subject>/...`, it must also open
+  `Reports/<Zodiac-Category>/<Subject>/README.md` (or latest report entry) before
+  declaring context acquisition complete.
+- Same requirement in reverse when starting from reports.
 
 ## Risks
 - High path churn across references.
@@ -78,6 +92,9 @@ Tie-breaker:
 
 ## Acceptance Criteria
 - Exactly 12 zodiac category directories exist under `Strategies/`.
+- Exactly 12 zodiac category directories exist under `Reports/`.
 - Every strategy subject is inside one (and only one) category.
+- Every report subject is inside one (and only one) category.
 - Symbolic correspondence spec is present and referenced from core guidance.
-- Strategy discovery tooling can resolve by subject and zodiac category.
+- Strategy/report discovery tooling resolves by `(category, subject)` pair.
+- Mirror invariant passes: no orphaned subject on either side.

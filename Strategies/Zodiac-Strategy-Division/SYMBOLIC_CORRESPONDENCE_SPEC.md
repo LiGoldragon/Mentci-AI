@@ -24,6 +24,17 @@ Category directory names must use:
 
 ## Assignment Rule
 Each strategy subject must be assigned by dominant operational intent (not by incidental tasks).
+The corresponding report subject must use the same zodiac category assignment.
+
+## Bilateral Mirror Rule (Strategy <-> Report)
+For each subject assignment:
+- Strategy path: `Strategies/<Category>/<Subject>/`
+- Report path: `Reports/<Category>/<Subject>/`
+
+Consultation contract:
+- Category lookup is not complete until both sides are checked:
+  - strategy intent/plan (`Strategies/...`)
+  - report evidence/state (`Reports/...`)
 
 ## Future Tooling Contract
 A machine-readable map should be kept at:
