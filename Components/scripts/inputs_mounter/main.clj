@@ -11,7 +11,7 @@
          '[cheshire.core :as json])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* impl main enable!]])
+(require '[mentci.malli :refer [impl main enable!]])
 
 (enable!)
 
@@ -43,16 +43,26 @@
    [:args [:vector :string]]])
 
 (defprotocol InputsMounterOps
+  (fail-for [this input])
+  (parse-args-for [this input])
+  (keywordize-keys-for [this input])
+  (find-jail-config-for [this input])
+  (load-whitelist-for [this input])
+  (key-name-for [this input])
+  (ensure-parent-for [this input])
+  (ensure-link-for [this input])
   (run-mounter-for [this input]))
 
 (defrecord DefaultInputsMounter [])
 
-(defn* fail! [:=> [:cat [:map [:message :string]]] :any] [input]
+(impl DefaultInputsMounter InputsMounterOps fail-for {:message :string} :any
+  [this input]
   (binding [*out* *err*]
     (println (:message input)))
   (System/exit 1))
 
-(defn* parse-args [:=> [:cat ParseArgsInput] :map] [input]
+(impl DefaultInputsMounter InputsMounterOps parse-args-for ParseArgsInput :map
+  [this input]
   (loop [remaining (:args input)
          opts {:attrs ".attrs.json"
                :inputsRoot "Inputs"
@@ -88,30 +98,33 @@
             (System/exit 0))
 
           :else
-          (fail! {:message (str "Unknown argument: " arg)}))))))
+          (fail-for this {:message (str "Unknown argument: " arg)}))))))
 
-(defn* keywordize-keys [:=> [:cat KeywordizeKeysInput] :map] [input]
+(impl DefaultInputsMounter InputsMounterOps keywordize-keys-for KeywordizeKeysInput :map
+  [this input]
   (let [data (:data input)]
     (into {}
           (for [[k v] data]
             [(keyword k)
              (cond
-               (map? v) (keywordize-keys {:data v})
-               (vector? v) (mapv (fn [i] (if (map? i) (keywordize-keys {:data i}) i)) v)
+               (map? v) (keywordize-keys-for this {:data v})
+               (vector? v) (mapv (fn [i] (if (map? i) (keywordize-keys-for this {:data i}) i)) v)
                :else v)]))))
 
-(defn* find-jail-config [:=> [:cat FindJailConfigInput] [:maybe :map]] [input]
+(impl DefaultInputsMounter InputsMounterOps find-jail-config-for FindJailConfigInput [:maybe :map]
+  [this input]
   (let [data (:data input)]
     (cond
       (and (map? data) (get data "inputManifest")) data
       (and (map? data) (get data :inputManifest)) data
-      (map? data) (some #(find-jail-config {:data %}) (vals data))
-      (string? data) (try (find-jail-config {:data (json/parse-string data)})
+      (map? data) (some #(find-jail-config-for this {:data %}) (vals data))
+      (string? data) (try (find-jail-config-for this {:data (json/parse-string data)})
                           (catch Exception _ nil))
-      (coll? data) (some #(find-jail-config {:data %}) data)
+      (coll? data) (some #(find-jail-config-for this {:data %}) data)
       :else nil)))
 
-(defn* load-whitelist [:=> [:cat LoadWhitelistInput] [:set :string]] [input]
+(impl DefaultInputsMounter InputsMounterOps load-whitelist-for LoadWhitelistInput [:set :string]
+  [this input]
   (let [f (io/file (:path input))]
     (if (.exists f)
       (let [parsed (edn/read-string (slurp f))
@@ -119,24 +132,27 @@
         (if (set? items) items #{}))
       #{})))
 
-(defn* key->name [:=> [:cat [:map [:value :any]]] :string] [input]
+(impl DefaultInputsMounter InputsMounterOps key-name-for {:value :any} :string
+  [this input]
   (let [v (:value input)]
     (cond
       (keyword? v) (name v)
       (symbol? v) (name v)
       :else (str v))))
 
-(defn* ensure-parent! [:=> [:cat [:map [:path :string]]] :any] [input]
+(impl DefaultInputsMounter InputsMounterOps ensure-parent-for {:path :string} :any
+  [this input]
   (io/make-parents (str (:path input) "/.keep")))
 
-(defn* ensure-link! [:=> [:cat EnsureLinkInput] :map] [input]
+(impl DefaultInputsMounter InputsMounterOps ensure-link-for EnsureLinkInput :map
+  [this input]
   (let [{:keys [targetPath sourcePath write? replace?]} input
         target (io/file targetPath)
         source (io/file sourcePath)
         exists? (.exists target)
         symlink? (and exists? (java.nio.file.Files/isSymbolicLink (.toPath target)))]
     (when-not (.exists source)
-      (fail! {:message (str "Source path missing: " sourcePath)}))
+      (fail-for this {:message (str "Source path missing: " sourcePath)}))
     (cond
       (and exists? symlink?
            (= (.getCanonicalPath (.getAbsoluteFile target))
@@ -152,7 +168,7 @@
           (if (.isDirectory target)
             (let [{:keys [exit err]} (sh "rm" "-rf" targetPath)]
               (when-not (zero? exit)
-                (fail! {:message (str "Failed to remove existing path: " targetPath "\n" err)})))
+                (fail-for this {:message (str "Failed to remove existing path: " targetPath "\n" err)})))
             (io/delete-file target true)))
         (if-not write?
           {:action "would-link" :target targetPath :source sourcePath}
@@ -160,7 +176,7 @@
             (case (:mode (meta input))
               "rw" (let [{:keys [exit err]} (sh "rsync" "-aL" "--delete" (str sourcePath "/") (str targetPath "/"))]
                      (when-not (zero? exit)
-                       (fail! {:message (str "Failed to copy input to " targetPath "\n" err)}))
+                       (fail-for this {:message (str "Failed to copy input to " targetPath "\n" err)}))
                      {:action "copied-rw" :target targetPath :source sourcePath})
               (do
                 (java.nio.file.Files/createSymbolicLink
@@ -171,32 +187,32 @@
 
 (impl DefaultInputsMounter InputsMounterOps run-mounter-for Input :any
   [this input]
-  (let [{:keys [attrs inputsRoot mode replace? write? whitelistPath]} (parse-args {:args (:args input)})
+  (let [{:keys [attrs inputsRoot mode replace? write? whitelistPath]} (parse-args-for this {:args (:args input)})
         _ (when-not (#{"ro" "rw"} mode)
-            (fail! {:message (str "Invalid --mode: " mode " (expected ro|rw)")}))
+            (fail-for this {:message (str "Invalid --mode: " mode " (expected ro|rw)")}))
         attrs-file (io/file attrs)]
     (when-not (.exists attrs-file)
-      (fail! {:message (str "Missing attrs json file: " attrs)}))
+      (fail-for this {:message (str "Missing attrs json file: " attrs)}))
     (let [raw (json/parse-string (slurp attrs-file))
-          config-raw (find-jail-config {:data raw})
+          config-raw (find-jail-config-for this {:data raw})
           _ (when-not config-raw
-              (fail! {:message (str "Could not find jailConfig in " attrs)}))
-          config (keywordize-keys {:data config-raw})
-          whitelist (load-whitelist {:path whitelistPath})
+              (fail-for this {:message (str "Could not find jailConfig in " attrs)}))
+          config (keywordize-keys-for this {:data config-raw})
+          whitelist (load-whitelist-for this {:path whitelistPath})
           manifest (:inputManifest config)
-          _ (ensure-parent! {:path (str inputsRoot "/.keep")})
+          _ (ensure-parent-for this {:path (str inputsRoot "/.keep")})
           results (->> manifest
                        (sort-by key)
                        (reduce (fn [acc [name spec]]
-                                 (let [name-str (key->name {:value name})]
+                                 (let [name-str (key-name-for this {:value name})]
                                    (if (contains? whitelist name-str)
                                      (let [source (or (:srcPath spec) (:sourcePath spec))
                                            target (str inputsRoot "/" name-str)
-                                           result (ensure-link! (with-meta {:targetPath target
-                                                                            :sourcePath source
-                                                                            :write? write?
-                                                                            :replace? replace?}
-                                                                  {:mode mode}))]
+                                           result (ensure-link-for (with-meta {:targetPath target
+                                                                               :sourcePath source
+                                                                               :write? write?
+                                                                               :replace? replace?}
+                                                                     {:mode mode}))]
                                        (conj acc result))
                                      (conj acc {:action "skip-not-whitelisted"
                                                 :target (str inputsRoot "/" name-str)

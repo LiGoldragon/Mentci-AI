@@ -220,39 +220,11 @@
 
 (def default-inputs-remount (->DefaultInputsRemount))
 
-;; Compatibility wrappers for existing tests/callers.
-(defn* fail [:=> [:cat FailInput] :any] [input]
-  (fail-for default-inputs-remount input))
-
-(defn* parse-args [:=> [:cat ParseArgsInput] RemountArgs] [input]
-  (parse-args-for default-inputs-remount input))
-
-(defn* keywordize-keys [:=> [:cat KeywordizeKeysInput] :map] [input]
-  (keywordize-keys-for default-inputs-remount input))
-
-(defn* find-jail-config [:=> [:cat FindJailConfigInput] [:maybe :map]] [input]
-  (find-jail-config-for default-inputs-remount input))
-
-(defn* read-jail-config [:=> [:cat ReadConfigInput] types/JailConfig] [input]
-  (read-jail-config-for default-inputs-remount input))
-
-(defn* read-whitelist [:=> [:cat WhitelistInput] [:set :string]] [input]
-  (read-whitelist-for default-inputs-remount input))
-
-(defn* delete-path! [:=> [:cat DeletePathInput] :any] [input]
-  (delete-path-for default-inputs-remount input))
-
-(defn* remount-input! [:=> [:cat RemountInput] :any] [input]
-  (remount-input-for default-inputs-remount input))
-
-(defn* strip-write-permissions! [:=> [:cat StripWriteInput] :map] [input]
-  (strip-write-permissions-for default-inputs-remount input))
-
 (main Input
   [input]
-  (let [args (parse-args {:args (:args input)})
-        config (read-jail-config {:attrsPath (:attrsPath args)})
-        whitelist (read-whitelist {:whitelistPath (:whitelistPath args)})
+  (let [args (parse-args-for default-inputs-remount {:args (:args input)})
+        config (read-jail-config-for default-inputs-remount {:attrsPath (:attrsPath args)})
+        whitelist (read-whitelist-for default-inputs-remount {:whitelistPath (:whitelistPath args)})
         inputs-path (or (:inputsPath args) (:inputsPath config) "Inputs")
         input-manifest (:inputManifest config)
         inputs-root (io/file inputs-path)]
@@ -265,10 +237,10 @@
           (let [source-path (or (:srcPath item-spec) (:sourcePath item-spec))
                 target-path (.getPath (io/file inputs-root name-str))]
             (println (str "Re-mounting " name-str " -> " source-path))
-            (remount-input! {:name name-str
-                             :sourcePath source-path
-                             :targetPath target-path})
-            (let [report (strip-write-permissions! {:path source-path})]
+            (remount-input-for default-inputs-remount {:name name-str
+                                                       :sourcePath source-path
+                                                       :targetPath target-path})
+            (let [report (strip-write-permissions-for default-inputs-remount {:path source-path})]
               (println (format "RO enforced for %s source tree (visited=%d changed=%d skipped=%d)"
                                name-str
                                (:visited report)

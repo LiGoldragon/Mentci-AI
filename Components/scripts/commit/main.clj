@@ -50,11 +50,18 @@
    [:args [:vector :string]]])
 
 (defprotocol CommitOps
+  (parse-commit-args-for [this input])
+  (default-runtime-path-for [this input])
+  (load-runtime-for [this input])
+  (load-allowed-push-bookmarks-for [this input])
+  (assert-target-allowed-for [this input])
+  (run-commit-for [this input])
   (run-cli-for [this input]))
 
 (defrecord DefaultCommit [])
 
-(defn* parse-commit-args [:=> [:cat ParseCommitArgsInput] :map] [input]
+(impl DefaultCommit CommitOps parse-commit-args-for ParseCommitArgsInput :map
+  [this input]
   (let [args (:args input)]
     (if (and (>= (count args) 2) (= (first args) "--runtime"))
       {:runtimePath (second args)
@@ -62,7 +69,8 @@
       {:runtimePath nil
        :message (str/join " " args)})))
 
-(defn* default-runtime-path [:=> [:cat] :string] []
+(impl DefaultCommit CommitOps default-runtime-path-for :map :string
+  [this _]
   (let [workspace-runtime (io/file "workspace/.mentci/runtime.json")
         local-runtime (io/file ".mentci/runtime.json")]
     (cond
@@ -70,7 +78,8 @@
       (.exists local-runtime) (.getPath local-runtime)
       :else (.getPath workspace-runtime))))
 
-(defn* load-runtime [:=> [:cat LoadRuntimeInput] :map] [input]
+(impl DefaultCommit CommitOps load-runtime-for LoadRuntimeInput :map
+  [this input]
   (let [runtime-path (:runtimePath input)
         runtime-file (io/file runtime-path)]
     (when-not (.exists runtime-file)
@@ -78,7 +87,8 @@
       (System/exit 1))
     (json/parse-string (slurp runtime-file) true)))
 
-(defn* load-allowed-push-bookmarks [:=> [:cat LoadPolicyInput] [:set :string]] [input]
+(impl DefaultCommit CommitOps load-allowed-push-bookmarks-for LoadPolicyInput [:set :string]
+  [this input]
   (let [policy-path (:policyPath input)]
     (if (str/blank? policy-path)
       #{}
@@ -91,14 +101,16 @@
                 bookmarks (get policy :allowedPushBookmarks [])]
             (set (map str bookmarks))))))))
 
-(defn* assert-target-allowed [:=> [:cat AllowedTargetInput] :any] [input]
+(impl DefaultCommit CommitOps assert-target-allowed-for AllowedTargetInput :any
+  [this input]
   (let [{:keys [targetBookmark allowedPushBookmarks]} input]
     (when (and (seq allowedPushBookmarks)
                (not (contains? allowedPushBookmarks targetBookmark)))
       (println (str "Error: target bookmark '" targetBookmark "' is not allowed by jail policy. Allowed: " (vec allowedPushBookmarks)))
       (System/exit 1))))
 
-(defn* run-commit [:=> [:cat CommitMainInput] :any] [input]
+(impl DefaultCommit CommitOps run-commit-for CommitMainInput :any
+  [this input]
   (let [{:keys [message workingBookmark targetBookmark repoRoot workspaceRoot policyPath]} input]
     (if (or (str/blank? repoRoot) (str/blank? workspaceRoot))
       (do (println "Error: runtime missing repoRoot or workspaceRoot.")
@@ -106,12 +118,12 @@
       (let [working-bookmark workingBookmark
             target-bookmark targetBookmark
             workspace-root workspaceRoot
-            allowed-push-bookmarks (load-allowed-push-bookmarks {:policyPath policyPath})]
+            allowed-push-bookmarks (load-allowed-push-bookmarks-for this {:policyPath policyPath})]
         (when (= working-bookmark target-bookmark)
           (println (str "Error: target bookmark '" target-bookmark "' must differ from working bookmark '" working-bookmark "'."))
           (System/exit 1))
-        (assert-target-allowed {:targetBookmark target-bookmark
-                                :allowedPushBookmarks allowed-push-bookmarks})
+        (assert-target-allowed-for this {:targetBookmark target-bookmark
+                                         :allowedPushBookmarks allowed-push-bookmarks})
         (if (str/blank? message)
           (do (println "Usage: mentci-commit [--runtime <path>] <message>")
               (System/exit 1))
@@ -126,11 +138,12 @@
                       (System/exit (:exit res2)))
                   (println (str "Successfully committed and advanced bookmark '" target-bookmark "' from workspace.")))))))))))
 
-(defn* run-cli [:=> [:cat Input] :any] [input]
+(impl DefaultCommit CommitOps run-cli-for Input :any
+  [this input]
   (let [args (:args input)
-        {:keys [runtimePath message]} (parse-commit-args {:args args})
-        runtime-path (or runtimePath (default-runtime-path))
-        runtime (load-runtime {:runtimePath runtime-path})
+        {:keys [runtimePath message]} (parse-commit-args-for this {:args args})
+        runtime-path (or runtimePath (default-runtime-path-for this {}))
+        runtime (load-runtime-for this {:runtimePath runtime-path})
         payload {:message message
                  :runtimePath runtime-path
                  :workingBookmark (get runtime :workingBookmark "dev")
@@ -138,11 +151,7 @@
                  :repoRoot (get runtime :repoRoot "")
                  :workspaceRoot (get runtime :workspaceRoot "")
                  :policyPath (get runtime :policyPath nil)}]
-    (run-commit payload)))
-
-(impl DefaultCommit CommitOps run-cli-for Input :any
-  [this input]
-  (run-cli input))
+    (run-commit-for this payload)))
 
 (def default-commit (->DefaultCommit))
 

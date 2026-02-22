@@ -10,7 +10,7 @@
          '[cheshire.core :as json])
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* impl main enable!]])
+(require '[mentci.malli :refer [impl main enable!]])
 
 (enable!)
 
@@ -48,16 +48,24 @@
    [:args [:vector :string]]])
 
 (defprotocol ComponentRegistryOps
+  (fail-for [this input])
+  (parse-args-for [this input])
+  (load-index-for [this input])
+  (resolve-index-for [this input])
+  (lookup-component-for [this input])
+  (emit-for [this input])
   (run-registry-for [this input]))
 
 (defrecord DefaultComponentRegistry [])
 
-(defn* fail! [:=> [:cat [:map [:message :string]]] :any] [input]
+(impl DefaultComponentRegistry ComponentRegistryOps fail-for {:message :string} :any
+  [this input]
   (binding [*out* *err*]
     (println (:message input)))
   (System/exit 1))
 
-(defn* parse-args [:=> [:cat ParseArgsInput] :map] [input]
+(impl DefaultComponentRegistry ComponentRegistryOps parse-args-for ParseArgsInput :map
+  [this input]
   (loop [remaining (:args input)
          options {:indexPath "Components/index.edn"
                   :format "edn"
@@ -81,27 +89,28 @@
             (System/exit 0))
 
           :else
-          (fail! {:message (str "Unknown argument: " arg)}))))))
+          (fail-for this {:message (str "Unknown argument: " arg)}))))))
 
-(defn* load-index [:=> [:cat LoadIndexInput] ComponentIndex] [input]
+(impl DefaultComponentRegistry ComponentRegistryOps load-index-for LoadIndexInput ComponentIndex
+  [this input]
   (let [f (io/file (:indexPath input))]
     (when-not (.exists f)
-      (fail! {:message (str "Component index file not found: " (:indexPath input))}))
-    (let [parsed (edn/read-string (slurp f))]
-      parsed)))
+      (fail-for this {:message (str "Component index file not found: " (:indexPath input))}))
+    (edn/read-string (slurp f))))
 
-(defn* resolve-index [:=> [:cat ResolveInput] :map] [input]
+(impl DefaultComponentRegistry ComponentRegistryOps resolve-index-for ResolveInput :map
+  [this input]
   (let [components (:components (:index input))
         ids (map :id components)
         dup-ids (->> ids frequencies (filter (fn [[_ c]] (> c 1))) (map first) vec)]
     (when (seq dup-ids)
-      (fail! {:message (str "Duplicate component ids in index: " (str/join ", " dup-ids))}))
+      (fail-for this {:message (str "Duplicate component ids in index: " (str/join ", " dup-ids))}))
     (let [resolved
           (reduce (fn [acc c]
                     (let [p (:path c)
                           f (io/file p)]
                       (when-not (.exists f)
-                        (fail! {:message (str "Component path does not exist: " p)}))
+                        (fail-for this {:message (str "Component path does not exist: " p)}))
                       (assoc acc (:id c)
                              {:id (:id c)
                               :path p
@@ -112,14 +121,16 @@
       {:version (:version (:index input))
        :components resolved})))
 
-(defn* lookup-component [:=> [:cat LookupInput] :map] [input]
+(impl DefaultComponentRegistry ComponentRegistryOps lookup-component-for LookupInput :map
+  [this input]
   (let [resolved (:resolved input)
         component (get-in resolved [:components (:componentId input)])]
     (when-not component
-      (fail! {:message (str "Unknown component id: " (:componentId input))}))
+      (fail-for this {:message (str "Unknown component id: " (:componentId input))}))
     component))
 
-(defn* emit [:=> [:cat [:map [:value :any] [:format :string]]] :any] [input]
+(impl DefaultComponentRegistry ComponentRegistryOps emit-for {:value :any :format :string} :any
+  [this input]
   (let [{:keys [value format]} input]
     (case format
       "json" (println (json/generate-string value {:pretty true}))
@@ -127,13 +138,13 @@
 
 (impl DefaultComponentRegistry ComponentRegistryOps run-registry-for Input :any
   [this input]
-  (let [{:keys [indexPath format componentId]} (parse-args {:args (:args input)})
-        index (load-index {:indexPath indexPath})
-        resolved (resolve-index {:index index})]
+  (let [{:keys [indexPath format componentId]} (parse-args-for this {:args (:args input)})
+        index (load-index-for this {:indexPath indexPath})
+        resolved (resolve-index-for this {:index index})]
     (if componentId
-      (emit {:value (lookup-component {:resolved resolved :componentId componentId})
-             :format format})
-      (emit {:value resolved :format format}))))
+      (emit-for this {:value (lookup-component-for this {:resolved resolved :componentId componentId})
+                      :format format})
+      (emit-for this {:value resolved :format format}))))
 
 (def default-component-registry (->DefaultComponentRegistry))
 

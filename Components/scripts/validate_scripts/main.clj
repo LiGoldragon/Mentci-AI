@@ -8,7 +8,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* impl main enable!]])
+(require '[mentci.malli :refer [impl main enable!]])
 
 (enable!)
 
@@ -59,16 +59,27 @@
    [:args [:vector :string]]])
 
 (defprotocol ScriptValidatorOps
+  (fail-for [this input])
+  (parse-args-for [this input])
+  (validate-config-for [this input])
+  (clj-file-for [this input])
+  (py-file-for [this input])
+  (scan-files-for [this input])
+  (contains-substring-for [this input])
+  (validate-clj-for [this input])
+  (validate-main-contract-for [this input])
   (run-validator-for [this input]))
 
 (defrecord DefaultScriptValidator [])
 
-(defn* fail [:=> [:cat ScriptFailInput] :any] [input]
+(impl DefaultScriptValidator ScriptValidatorOps fail-for ScriptFailInput :any
+  [this input]
   (binding [*out* *err*]
     (println (:message input)))
   (System/exit 1))
 
-(defn* parse-args [:=> [:cat ScriptParseArgsInput] :map] [input]
+(impl DefaultScriptValidator ScriptValidatorOps parse-args-for ScriptParseArgsInput :map
+  [this input]
   (let [args (:args input)]
     (loop [remaining args
            opts {}]
@@ -80,66 +91,70 @@
             (recur (nnext remaining) (assoc opts :scripts-dir (second remaining)))
 
             :else
-            (fail {:message (str "Unknown argument: " arg)})))))))
+            (fail-for this {:message (str "Unknown argument: " arg)})))))))
 
-(defn* validate-config [:=> [:cat ScriptValidateConfigInput] :any] [input]
+(impl DefaultScriptValidator ScriptValidatorOps validate-config-for ScriptValidateConfigInput :any
+  [this input]
   (:config input))
 
-(defn* clj-file? [:=> [:cat ScriptFileCheckInput] :boolean] [input]
+(impl DefaultScriptValidator ScriptValidatorOps clj-file-for ScriptFileCheckInput :boolean
+  [this input]
   (str/ends-with? (.getName (:file input)) ".clj"))
 
-(defn* py-file? [:=> [:cat ScriptFileCheckInput] :boolean] [input]
+(impl DefaultScriptValidator ScriptValidatorOps py-file-for ScriptFileCheckInput :boolean
+  [this input]
   (str/ends-with? (.getName (:file input)) ".py"))
 
-(defn* scan-files [:=> [:cat ScriptScanFilesInput] [:vector :any]] [input]
+(impl DefaultScriptValidator ScriptValidatorOps scan-files-for ScriptScanFilesInput [:vector :any]
+  [this input]
   (->> (file-seq (io/file (:root input)))
        (filter #(.isFile %))
        vec))
 
-(defn* contains-substring? [:=> [:cat ScriptContainsSubstringInput] :boolean] [input]
+(impl DefaultScriptValidator ScriptValidatorOps contains-substring-for ScriptContainsSubstringInput :boolean
+  [this input]
   (let [{:keys [content substring]} input]
     (not (nil? (str/index-of content substring)))))
 
-(defn* validate-clj [:=> [:cat ScriptValidateCljInput] :any] [input]
+(impl DefaultScriptValidator ScriptValidatorOps validate-clj-for ScriptValidateCljInput :any
+  [this input]
   (let [{:keys [path content allowlist]} input]
     (when-not (contains? allowlist path)
-      ;; Unit test files can use clojure.test directly and are not script entrypoints.
       (when-not (str/ends-with? path "/test.clj")
-        (when-not (contains-substring? {:content content :substring "defn*"})
-          (fail {:message (str "Missing defn* usage in " path)}))
-        (when-not (contains-substring? {:content content :substring "mentci.malli"})
-          (fail {:message (str "Missing mentci.malli require in " path)}))))))
+        (when-not (contains-substring-for this {:content content :substring "mentci.malli"})
+          (fail-for this {:message (str "Missing mentci.malli require in " path)}))))))
 
-(defn* validate-main-contract [:=> [:cat ScriptMainContractInput] :any] [input]
+(impl DefaultScriptValidator ScriptValidatorOps validate-main-contract-for ScriptMainContractInput :any
+  [this input]
   (let [{:keys [path content contractAllowlist]} input]
     (when (and (str/ends-with? path "/main.clj")
                (not (contains? contractAllowlist path)))
-      (when-not (contains-substring? {:content content :substring "(main "})
-        (fail {:message (str "Missing main macro usage in " path)}))
-      (when-not (contains-substring? {:content content :substring "(defprotocol "})
-        (fail {:message (str "Missing defprotocol in " path)}))
-      (when-not (contains-substring? {:content content :substring "(impl "})
-        (fail {:message (str "Missing impl usage in " path)})))))
+      (when-not (contains-substring-for this {:content content :substring "(main "})
+        (fail-for this {:message (str "Missing main macro usage in " path)}))
+      (when-not (contains-substring-for this {:content content :substring "(defprotocol "})
+        (fail-for this {:message (str "Missing defprotocol in " path)}))
+      (when-not (contains-substring-for this {:content content :substring "(impl "})
+        (fail-for this {:message (str "Missing impl usage in " path)})))))
 
 (impl DefaultScriptValidator ScriptValidatorOps run-validator-for Input :any
   [this input]
-  (let [{:keys [scripts-dir]} (parse-args {:args (:args input)})
+  (let [{:keys [scripts-dir]} (parse-args-for this {:args (:args input)})
         scripts-dir (or scripts-dir "Components/scripts")
         config {:scriptsDir scripts-dir
                 :allowlist #{"Components/scripts/lib/types.clj"
                              "Components/scripts/lib/malli.clj"}
                 :contractAllowlist #{}}
-        _ (validate-config {:config config})
-        files (scan-files {:root scripts-dir})
-        py-files (filter #(py-file? {:file %}) files)]
+        _ (validate-config-for this {:config config})
+        files (scan-files-for this {:root scripts-dir})
+        py-files (filter #(py-file-for this {:file %}) files)]
     (when (seq py-files)
       (doseq [file py-files]
-        (fail {:message (str "Python script found in scripts/: " (.getPath file))})))
-    (doseq [file (filter #(clj-file? {:file %}) files)]
+        (fail-for this {:message (str "Python script found in scripts/: " (.getPath file))})))
+    (doseq [file (filter #(clj-file-for this {:file %}) files)]
       (let [path (.getPath file)
             content (slurp file)]
-        (validate-clj {:path path :content content :allowlist (:allowlist config)})
-        (validate-main-contract {:path path :content content :contractAllowlist (:contractAllowlist config)})))
+        (validate-clj-for this {:path path :content content :allowlist (:allowlist config)})
+        (validate-main-contract-for this {:path path :content content :contractAllowlist (:contractAllowlist config)})))
     (println (str "Script validation passed for " scripts-dir))))
 
 (def default-script-validator (->DefaultScriptValidator))

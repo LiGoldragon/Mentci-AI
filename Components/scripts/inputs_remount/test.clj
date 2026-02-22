@@ -24,9 +24,9 @@
       (spit (str target-path "/stale.txt") "stale")
       (spit (str src-path "/fresh.txt") "fresh")
 
-      (remount-input! {:name "foo"
-                       :sourcePath src-path
-                       :targetPath target-path})
+      (remount-input-for default-inputs-remount {:name "foo"
+                                                 :sourcePath src-path
+                                                 :targetPath target-path})
 
       (let [target (.toPath (io/file target-path))]
         (is (java.nio.file.Files/isSymbolicLink target))
@@ -47,7 +47,7 @@
       (.setWritable (io/file nested-path) true false)
       (.setWritable (io/file file-path) true false)
 
-      (let [report (strip-write-permissions! {:path src-path})]
+      (let [report (strip-write-permissions-for default-inputs-remount {:path src-path})]
         (is (> (:visited report) 0))
         (is (> (:changed report) 0))
         (is (false? (.canWrite (io/file src-path))))

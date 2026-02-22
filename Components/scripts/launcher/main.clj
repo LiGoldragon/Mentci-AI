@@ -11,7 +11,7 @@
 
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/types.clj"))
 (load-file (str (.getParent (.getParentFile (io/file *file*))) "/lib/malli.clj"))
-(require '[mentci.malli :refer [defn* impl enable!]])
+(require '[mentci.malli :refer [defn* impl main enable!]])
 
 (enable!)
 
@@ -172,29 +172,8 @@
     out-path))
 
 (def default-launcher (->DefaultLauncher))
-
-(defn* validate-config [:=> [:cat types/JailConfig] :any] [config]
-  (validate-config-for default-launcher config))
-
-(defn* provision-input [:=> [:cat ProvisionInput] :any] [input]
-  (provision-input-for default-launcher input))
-
-(defn* keywordize-keys [:=> [:cat KeywordizeKeysInput] :map] [input]
-  (keywordize-keys-for default-launcher input))
-
-(defn* find-jail-config [:=> [:cat FindJailConfigInput] [:maybe :map]] [input]
-  (find-jail-config-for default-launcher input))
-
-(defn* load-component-index [:=> [:cat LoadComponentIndexInput] ComponentIndex] [input]
-  (load-component-index-for default-launcher input))
-
-(defn* resolve-component-index [:=> [:cat ResolveComponentIndexInput] :map] [input]
-  (resolve-component-index-for default-launcher input))
-
-(defn* write-component-registry! [:=> [:cat WriteComponentRegistryInput] :string] [input]
-  (write-component-registry-for default-launcher input))
-
-(defn* main [:=> [:cat JailMainInput] :any] [_]
+(main JailMainInput
+  [_]
   (println "Initializing Mentci-AI Level 5 Jail Environment (Clojure/Babashka)...")
   (let [attrs-path (or (System/getenv "NIX_ATTRS_JSON_FILE") ".attrs.json")
         attrs-file (io/file attrs-path)
@@ -202,11 +181,11 @@
                       (json/parse-string (slurp attrs-file))
                       (when-let [env-val (System/getenv "jailConfig")]
                         (json/parse-string env-val)))
-        config-raw (find-jail-config {:data full-config})]
+        config-raw (find-jail-config-for default-launcher {:data full-config})]
     (if-not config-raw
       (do (println "Error: Configuration not found.") (System/exit 1))
-      (let [config (keywordize-keys {:data config-raw})
-            _ (validate-config config)
+      (let [config (keywordize-keys-for default-launcher {:data config-raw})
+            _ (validate-config-for default-launcher config)
             inputs-path (get config :inputsPath "Inputs")
             inputs-root (io/file inputs-path)
             input-manifest (get config :inputManifest {})
@@ -224,11 +203,11 @@
         (println (format "Outputs root: %s" outputs-path))
         (when policy-path
           (println (format "Jail policy file (read-only): %s" policy-path)))
-        (let [component-index (load-component-index {:indexPath component-index-path})
-              component-registry (resolve-component-index {:index component-index})
-              written-path (write-component-registry! {:registry component-registry
-                                                       :outputsPath outputs-path
-                                                       :registryPath component-registry-path})]
+        (let [component-index (load-component-index-for default-launcher {:indexPath component-index-path})
+              component-registry (resolve-component-index-for default-launcher {:index component-index})
+              written-path (write-component-registry-for default-launcher {:registry component-registry
+                                                                            :outputsPath outputs-path
+                                                                            :registryPath component-registry-path})]
           (println (format "Component registry loaded from: %s" component-index-path))
           (println (format "Component registry exported to: %s" written-path)))
         ;; Load Whitelist
@@ -246,12 +225,12 @@
               (if (contains? whitelist name-str)
                 (do
                   (println (str "Mounting " name-str " [" input-type "]..."))
-                  (provision-input {:name name-str
-                                    :inputType input-type
-                                    :sourcePath source-path
-                                    :srcPath src-path
-                                    :inputsRoot (.getPath inputs-root)
-                                    :isImpure is-impure}))
+                  (provision-input-for default-launcher {:name name-str
+                                                         :inputType input-type
+                                                         :sourcePath source-path
+                                                         :srcPath src-path
+                                                         :inputsRoot (.getPath inputs-root)
+                                                         :isImpure is-impure}))
                 (println (str "Skipping " name-str " (Not in whitelist)"))))))
         (println "Jail Launcher Complete.")
         (let [context-file (io/file "Library/guides/Level5-Ai-Coding.md")]
@@ -261,4 +240,4 @@
             (println "\n-----------------------------------\n")))
         (println "Welcome to the Mentci-AI Jail.")))))
 
-(main {})
+(-main {})
