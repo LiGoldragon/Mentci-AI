@@ -1,5 +1,5 @@
 {:kind :index
- :title "Subject Topic"
- :entries [
- ]
- :sourceReadme "Research/high/Agent-Authority-Alignment/README.md"}
+ :title "Research Topic"
+ :subject "Agent-Authority-Alignment"
+ :developmentPath "Development/high/Agent-Authority-Alignment"
+ :entries ["Research/high/Agent-Authority-Alignment/591912050818_answer_enforce-blank-line-after-solar-line.md" "Research/high/Agent-Authority-Alignment/591912050825_answer_code-first-solar-prefix-and-guideline.md" "Research/high/Agent-Authority-Alignment/591912050913_answer_core-self-contained-optional-index-extensions.md"]}

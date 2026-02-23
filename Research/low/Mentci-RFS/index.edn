@@ -1,5 +1,5 @@
 {:kind :index
- :title "Subject Topic"
- :entries [
- ]
- :sourceReadme "Research/low/Mentci-RFS/README.md"}
+ :title "Research Topic"
+ :subject "Mentci-RFS"
+ :developmentPath "Development/low/Mentci-RFS"
+ :entries []}

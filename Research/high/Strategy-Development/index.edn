@@ -1,7 +1,5 @@
 {:kind :index
- :title "Subject Topic"
- :entries [
-  "Research/high/Strategy-Development/591912050828_answer_review-goals-and-strategies.md"
-  "Research/high/Strategy-Development/591912050858_answer_create-and-implement-high-priority-remediation-strategies.md"
- ]
- :sourceReadme "Research/high/Strategy-Development/README.md"}
+ :title "Research Topic"
+ :subject "Strategy-Development"
+ :developmentPath "Development/high/Strategy-Development"
+ :entries ["Research/high/Strategy-Development/591912050828_answer_review-goals-and-strategies.md" "Research/high/Strategy-Development/591912050858_answer_create-and-implement-high-priority-remediation-strategies.md" "Research/high/Strategy-Development/591912050948_answer_persist-context-to-restart-strategies-reports.md"]}

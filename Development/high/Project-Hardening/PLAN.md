@@ -22,6 +22,7 @@ Every tool must have a `TESTING_CONTEXT.md` defining:
 - **Mocking Strategy:** How external dependencies (like `jj` or `nix`) are handled during tests.
 
 ## 5. Implementation Roadmap
+0.  **Phase 0 (Environment Sustainability)**: Stabilize `nix develop` and `root_guard` to ensure a consistent execution environment. (Completed: ♓︎.5.50.48 5919AM).
 1.  **Phase 1 (Structural)**: Reorganize `scripts/`.
 2.  **Phase 2 (Semantic)**: Write `.capnp` specs.
 3.  **Phase 3 (Quality)**: Implement missing tests and `TESTING_CONTEXT.md`.

@@ -24,7 +24,7 @@
   #{"Sources" "Components" "Outputs" "Research" "Development" "Core" "Library"})
 
 (def allowed-runtime-dirs
-  #{".git" ".jj" ".direnv" "target"})
+  #{".git" ".jj" ".direnv" "target" ".mentci"})
 
 (def allowed-top-files
   #{"flake.nix" "flake.lock" ".gitignore" ".envrc" "AGENTS.md" "README.md"

@@ -1,5 +1,5 @@
 {:kind :index
- :title "Subject Topic"
- :entries [
- ]
- :sourceReadme "Research/medium/Aski-Refinement/README.md"}
+ :title "Research Topic"
+ :subject "Aski-Refinement"
+ :developmentPath "Development/medium/Aski-Refinement"
+ :entries []}

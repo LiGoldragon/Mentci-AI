@@ -1,7 +1,5 @@
 {:kind :index
- :title "Subject Topic"
- :entries [
-  "Research/high/Commit-Protocol-Merge-Fanin/591912044736_answer_commit-protocol-merge-fanin-strategy.md"
-  "Research/high/Commit-Protocol-Merge-Fanin/591912045549_answer_force-push-rewritten-dev-main-and-close-dirty-tree.md"
- ]
- :sourceReadme "Research/high/Commit-Protocol-Merge-Fanin/README.md"}
+ :title "Research Topic"
+ :subject "Commit-Protocol-Merge-Fanin"
+ :developmentPath "Development/high/Commit-Protocol-Merge-Fanin"
+ :entries ["Research/high/Commit-Protocol-Merge-Fanin/591912044736_answer_commit-protocol-merge-fanin-strategy.md" "Research/high/Commit-Protocol-Merge-Fanin/591912045549_answer_force-push-rewritten-dev-main-and-close-dirty-tree.md" "Research/high/Commit-Protocol-Merge-Fanin/591912050806_answer_defective-commit-message-root-cause.md" "Research/high/Commit-Protocol-Merge-Fanin/591912050815_answer_implement-commit-message-fix-with-session-finalize.md" "Research/high/Commit-Protocol-Merge-Fanin/591912050847_answer_high-priority-session-protocol-noncompliance.md" "Research/high/Commit-Protocol-Merge-Fanin/591912050935_answer_release-to-main.md"]}

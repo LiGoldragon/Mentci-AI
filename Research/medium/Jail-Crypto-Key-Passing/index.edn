@@ -1,5 +1,5 @@
 {:kind :index
- :title "Subject Topic"
- :entries [
- ]
- :sourceReadme "Research/medium/Jail-Crypto-Key-Passing/README.md"}
+ :title "Research Topic"
+ :subject "Jail-Crypto-Key-Passing"
+ :developmentPath "Development/medium/Jail-Crypto-Key-Passing"
+ :entries ["Research/medium/Jail-Crypto-Key-Passing/591912051405_answer_strategy-jail-crypto-key-passing-ed25519.md" "Research/medium/Jail-Crypto-Key-Passing/591912051409_answer_update-jail-key-gopass-path-admin-agent.md" "Research/medium/Jail-Crypto-Key-Passing/591912051417_answer_add-readme-key-setup-guide.md" "Research/medium/Jail-Crypto-Key-Passing/591912051424_answer_add-interactive-jail-key-setup-script.md" "Research/medium/Jail-Crypto-Key-Passing/591912051449_answer_fix-jail-key-setup-classcast-sh-call.md" "Research/medium/Jail-Crypto-Key-Passing/591912051460_answer_key-setup-store-pubkey-as-named-field.md"]}
