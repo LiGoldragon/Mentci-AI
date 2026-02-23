@@ -14,6 +14,10 @@ let
     inherit craneLib pkgs;
   };
 
+  mentci_vcs = import ./mentci_vcs.nix {
+    inherit craneLib pkgs;
+  };
+
   execute = pkgs.runCommand "mentci-execute" { } ''
     mkdir -p "$out/bin"
     ln -s "${mentci_ai}/bin/execute" "$out/bin/execute"
@@ -35,6 +39,7 @@ let
     inherit scripts_dir;
     inherit gemini_cli;
     inherit mentci_clj;
+    inherit mentci_vcs;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -57,6 +62,6 @@ let
   };
 in
 {
-  inherit mentci_ai execute execute_check attractor mentci_clj common_packages jail_sources gemini_cli dev_shell;
+  inherit mentci_ai mentci_vcs execute execute_check attractor mentci_clj common_packages jail_sources gemini_cli dev_shell;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }
