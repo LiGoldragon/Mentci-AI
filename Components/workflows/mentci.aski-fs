@@ -9,18 +9,28 @@
    "flake.lock" {:kind :file :role :tooling :durability :mutable}
    "Components/nix/jail.nix" {:kind :file :role :tooling :durability :stable}
 
-   "Components/Cargo.toml" {:kind :file :role :entrypoint :durability :stable}
-   "Components/Cargo.lock" {:kind :file :role :tooling :durability :mutable}
-   "Inputs.aski-fs" {:kind :file :role :schema :durability :stable}
+   "Components/mentci-aid/Cargo.toml" {:kind :file :role :entrypoint :durability :stable}
+   "Components/chronos/Cargo.toml" {:kind :file :role :entrypoint :durability :stable}
+   "Components/workflows/mentci.aski-fs" {:kind :file :role :schema :durability :stable}
 
    "schema" {:kind :dir
              :children {"mentci.capnp" {:kind :file :role :schema :durability :stable}
                         "atom_filesystem.capnp" {:kind :file :role :schema :durability :stable}}}
 
-   "src" {:kind :dir
-          :children {"main.rs" {:kind :file :role :entrypoint :durability :mutable}
-                     "edn_loader.rs" {:kind :file :role :tooling :durability :mutable}
-                     "dot_loader.rs" {:kind :file :role :tooling :durability :mutable}}}
+   "mentci-aid" {:kind :dir
+                 :children {"src" {:kind :dir
+                                   :children {"main.rs" {:kind :file :role :entrypoint :durability :mutable}
+                                              "edn_loader.rs" {:kind :file :role :tooling :durability :mutable}
+                                              "dot_loader.rs" {:kind :file :role :tooling :durability :mutable}
+                                              "attractor_validator.rs" {:kind :file :role :tooling :durability :mutable}
+                                              "jail_bootstrap.rs" {:kind :file :role :tooling :durability :mutable}}}
+                            "tests" {:kind :dir :role :tooling :durability :mutable}
+                            "build.rs" {:kind :file :role :tooling :durability :mutable}
+                            "Cargo.toml" {:kind :file :role :entrypoint :durability :stable}}}
+   "chronos" {:kind :dir
+              :children {"src" {:kind :dir
+                                :children {"main.rs" {:kind :file :role :entrypoint :durability :mutable}}}
+                         "Cargo.toml" {:kind :file :role :entrypoint :durability :stable}}}
 
    "scripts" {:kind :dir
               :children {"launcher.clj" {:kind :file :role :tooling :durability :mutable}
@@ -41,7 +51,7 @@
                      "attractor.nix" {:kind :file :role :tooling :durability :mutable}
                      "common_packages.nix" {:kind :file :role :tooling :durability :mutable}
                      "dev_shell.nix" {:kind :file :role :tooling :durability :mutable}
-                     "jail_inputs.nix" {:kind :file :role :tooling :durability :mutable}
+                     "jail_sources.nix" {:kind :file :role :tooling :durability :mutable}
                      "mentci_ai.nix" {:kind :file :role :tooling :durability :mutable}
                      "mentci_clj.nix" {:kind :file :role :tooling :durability :mutable}}}
 
@@ -86,7 +96,7 @@
                            "mentci.aski-fs" {:kind :file :role :workflow :durability :mutable}
                            "mentci.aski-fs.deps.edn" {:kind :file :role :spec :durability :stable}}}
 
-   "Inputs" {:kind :dir
+   "Sources" {:kind :dir
              :role :tooling
              :durability :mutable
              :children {"mentci-ai" {:kind :dir :inputType :atom}
