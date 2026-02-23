@@ -1,4 +1,4 @@
-{ pkgs, mentci_box, capnp }:
+{ pkgs, mentci_box, capnproto }:
 
 let
   defaultRequest = ../mentci-box/default_request.bin;

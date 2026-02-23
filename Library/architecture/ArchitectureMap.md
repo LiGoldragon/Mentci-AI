@@ -4,11 +4,12 @@ The following flowchart describes the structural and operational layers of Mentc
 
 ```mermaid
 graph TD
-    subgraph "Layer 0: Environment (Nix Jail)"
+    subgraph "Layer 0: Environment (Nix Jail & Mentci-Box)"
         A[nix develop] --> B(Components/nix/jail.nix)
         B --> C[__structuredAttrs]
         C --> D(execute)
-        D --> E{Sources/}
+        D --> MB(mentci-box)
+        MB --> E{Sources/}
         E --> E1[Atom Sources]
         E --> E2[Flake Sources]
         E --> E3[Attractor Specs]

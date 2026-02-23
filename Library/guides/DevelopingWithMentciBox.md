@@ -27,11 +27,11 @@ execute launcher
 ```
 
 ### 3.3 Launch the Mentci-Box
-The simplest way to start a sandboxed shell is using the `mentci-box-default` package (or the `execute sandbox` alias):
+The simplest way to start a sandboxed shell is using the `mentciBoxDefault` package:
 
 ```bash
 # Using the default wrapper
-nix run .#mentci-box-default
+nix run .#mentciBoxDefault
 ```
 
 Alternatively, you can provide a custom Cap'n Proto request:

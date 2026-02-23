@@ -16,6 +16,12 @@ structural. Violations indicate category error, not style.
 3. **Schema Is Sema**
    Schemas define truth. Encodings are incidental.
 
+4. **Logic-Data Separation (Structured Attributes)**
+   Nix variables must be passed to external tools (scripts, daemons) using 
+   **`__structuredAttrs = true`**. Ad-hoc routing of state through arbitrary 
+   environment variables is forbidden when a structured data channel exists. 
+   Tools must ingest the resulting `.attrs.json` file.
+
 ## Naming and Ontology
 
 *   `camelCase` denotes functions, relations, flow.

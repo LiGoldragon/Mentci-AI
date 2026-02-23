@@ -92,6 +92,8 @@
         packages = {
           default = namespace.mentci_ai;
           mentciAi = namespace.mentci_ai;
+          mentciBox = namespace.mentci_box;
+          mentciBoxDefault = namespace.mentci_box_default;
           execute = namespace.execute;
           mentciClj = namespace.mentci_clj;
           attractor = namespace.attractor;

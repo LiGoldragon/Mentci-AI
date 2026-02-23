@@ -32,6 +32,7 @@ To automate implementation details and liberate the human mind through autonomou
 ## Usage
 - `nix develop`: Enter the Level 5 Jail environment.
 - `execute launcher`: Initialize the Jail (provisions Sources).
+- `nix run .#mentciBoxDefault`: Start the default Mentci-Box isolation environment.
 - `cargo build --manifest-path Components/mentci-aid/Cargo.toml`: Compile the daemon and Cap'n Proto schemas.
 - `cargo run --manifest-path Components/mentci-aid/Cargo.toml -- Components/workflows/example.dot`: Run the workflow engine.
 - `execute sandbox -- /bin/sh`: Start a Bubblewrap-backed sandbox shell.
