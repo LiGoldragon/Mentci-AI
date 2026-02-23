@@ -5,6 +5,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/fb7944c166a3b630f177938e478f0378e64ce108";
     flake-utils.url = "github:numtide/flake-utils";
     crane.url = "github:ipetkov/crane";
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Level 5 / Criome Ecosystem Sources
     criomos.url = "github:Criome/CriomOS";
@@ -69,7 +73,7 @@
       };
     
       outputs = inputs@{
-        self, nixpkgs, flake-utils, crane, 
+        self, nixpkgs, flake-utils, crane, fenix,
         criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
         webpublish, goldragon, maisiliym, kibord, bookofsol, bookofgoldragon, aski, attractor, opencode, codex-cli-nix, leash, ...
       }:
@@ -78,10 +82,14 @@
             attractorSrc = inputs.attractor;
             attractorDocsSrc = inputs."attractor-docs";
             pkgs = import nixpkgs { inherit system; };
-            craneLib = crane.mkLib pkgs;
+            rustToolchain = fenix.packages.${system}.latest.toolchain;
+            rustAnalyzer = fenix.packages.${system}.rust-analyzer;
+            craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
     
             namespace = import ./Components/nix {
               inherit pkgs craneLib system inputs;
+              rust_toolchain = rustToolchain;
+              rust_analyzer = rustAnalyzer;
               codex_cli_nix = codex-cli-nix;
               attractor_src = attractorSrc;
               attractor_docs_src = attractorDocsSrc;

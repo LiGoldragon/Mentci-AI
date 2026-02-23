@@ -1,6 +1,12 @@
-{ pkgs, src }:
+{ pkgs, src, rust_toolchain }:
 
-pkgs.rustPlatform.buildRustPackage {
+let
+  rustPlatform = pkgs.makeRustPlatform {
+    cargo = rust_toolchain;
+    rustc = rust_toolchain;
+  };
+in
+rustPlatform.buildRustPackage {
   pname = "pi-agent-rust";
   version = "unstable";
   src = src;
@@ -8,6 +14,5 @@ pkgs.rustPlatform.buildRustPackage {
   cargoLock = {
     lockFile = "${src}/Cargo.lock";
   };
-
   doCheck = false;
 }

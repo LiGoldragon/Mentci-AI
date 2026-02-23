@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, gemini_cli, gemini_tui, mentci_vcs, coding_agent, unified_llm, pi_agent_rust }:
+{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, mentci_vcs, coding_agent, unified_llm, pi_agent_rust }:
 
 [
   pkgs.babashka
@@ -7,9 +7,8 @@
   pkgs.jet
   pkgs.jujutsu
   pkgs.capnproto
-  pkgs.cargo
-  pkgs.rustc
-  pkgs.rust-analyzer
+  rust_toolchain
+  rust_analyzer
   pkgs.git
   pkgs.gdb
   pkgs.strace

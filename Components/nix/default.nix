@@ -1,5 +1,7 @@
 { pkgs
 , craneLib
+, rust_toolchain
+, rust_analyzer
 , codex_cli_nix
 , system
 , inputs
@@ -40,6 +42,7 @@ let
   pi_agent_rust = import ./pi_agent_rust.nix {
     inherit pkgs;
     src = pi_agent_rust_src;
+    rust_toolchain = rust_toolchain;
   };
 
   execute = pkgs.runCommand "mentci-execute" { } ''
@@ -56,6 +59,7 @@ let
 
   common_packages = import ./common_packages.nix {
     inherit pkgs system;
+    inherit rust_toolchain rust_analyzer;
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
     inherit mentci_vcs coding_agent unified_llm pi_agent_rust;
