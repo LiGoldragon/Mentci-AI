@@ -251,6 +251,22 @@
         "type": "github"
       }
     },
+    "bookofgoldragon": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771856075,
+        "narHash": "sha256-DJcstaqEFcu+hCOwA5XC5lM11PuyBKwNu8042d2YikM=",
+        "owner": "LiGoldragon",
+        "repo": "TheBookOfGoldragon",
+        "rev": "24109057f9a9265bcc18546966655bcf09af34cc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "TheBookOfGoldragon",
+        "type": "github"
+      }
+    },
     "bookofsol": {
       "flake": false,
       "locked": {
@@ -1480,6 +1496,7 @@
         "aski": "aski",
         "attractor": "attractor",
         "attractor-docs": "attractor-docs",
+        "bookofgoldragon": "bookofgoldragon",
         "bookofsol": "bookofsol",
         "codex-cli-nix": "codex-cli-nix",
         "crane": "crane",

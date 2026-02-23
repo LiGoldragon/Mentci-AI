@@ -88,6 +88,8 @@ The following EDN structure represents the authoritative symbolic map of the `So
    goldragon  [:flake]
    maisiliym  [:flake]
    kibord     [:flake]
+   bookofsol  [:untyped]
+   bookofgoldragon [:untyped]
    aski       [:flake]
    attractor  [:untyped]
    attractor-docs [:untyped]

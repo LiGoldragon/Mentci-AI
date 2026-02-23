@@ -36,6 +36,7 @@ let
     maisiliym = mkInput "maisiliym" "flake";
     kibord = mkInput "kibord" "flake";
     bookofsol = mkInput "bookofsol" "untyped";
+    bookofgoldragon = mkInput "bookofgoldragon" "untyped";
     aski = mkInput "aski" "flake";
     attractor = mkInput "attractor" "untyped";
     attractor-docs = mkInput "attractor-docs" "untyped";

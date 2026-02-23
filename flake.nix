@@ -23,6 +23,10 @@
       url = "github:LiGoldragon/TheBookOfSol";
       flake = false;
     };
+    bookofgoldragon = {
+      url = "github:LiGoldragon/TheBookOfGoldragon";
+      flake = false;
+    };
     aski = {
       url = "github:Criome/aski";
       flake = false;
@@ -58,7 +62,7 @@
       outputs = inputs@{
         self, nixpkgs, flake-utils, crane, 
         criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
-        webpublish, goldragon, maisiliym, kibord, bookofsol, aski, attractor, opencode, codex-cli-nix, leash, ...
+        webpublish, goldragon, maisiliym, kibord, bookofsol, bookofgoldragon, aski, attractor, opencode, codex-cli-nix, leash, ...
       }:
         flake-utils.lib.eachDefaultSystem (system:
           let
