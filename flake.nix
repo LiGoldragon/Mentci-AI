@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     crane.url = "github:ipetkov/crane";
 
-    # Level 5 / Criome Ecosystem Inputs
+    # Level 5 / Criome Ecosystem Sources
     criomos.url = "github:Criome/CriomOS";
     sema.url = "github:Criome/sema";
     lojix.url = "github:Criome/lojix";
@@ -14,7 +14,7 @@
     skrips.url = "github:Criome/skrips";
     mkZolaWebsite.url = "github:Criome/mkZolaWebsite";
 
-    # LiGoldragon Inputs
+    # LiGoldragon Sources
     webpublish.url = "github:LiGoldragon/WebPublish";
     goldragon.url = "github:LiGoldragon/goldragon";
     maisiliym.url = "github:LiGoldragon/maisiliym";
@@ -44,7 +44,7 @@
         };
         codex-cli-nix.url = "github:sadjow/codex-cli-nix";
 
-        # Research Inputs
+        # Research Sources
         comply = {
           url = "github:strongdm/comply";
           flake = false;
@@ -70,10 +70,9 @@
             attractorDocsSrc = inputs."attractor-docs";
             pkgs = import nixpkgs { inherit system; };
             craneLib = crane.mkLib pkgs;
-            src = craneLib.cleanCargoSource ./Components;
     
             namespace = import ./Components/nix {
-              inherit pkgs craneLib system inputs src;
+              inherit pkgs craneLib system inputs;
               codex_cli_nix = codex-cli-nix;
               attractor_src = attractorSrc;
               attractor_docs_src = attractorDocsSrc;
@@ -83,7 +82,7 @@
 
             jail = import ./Components/nix/jail.nix {
               inherit pkgs;
-              inputs = namespace.jail_inputs;
+              Sources = namespace.jail_sources;
             };
 
             devShell = namespace.dev_shell { inherit jail; };
@@ -93,6 +92,7 @@
         packages = {
           default = namespace.mentci_ai;
           mentciAi = namespace.mentci_ai;
+          execute = namespace.execute;
           mentciClj = namespace.mentci_clj;
           attractor = namespace.attractor;
           gemini-cli = namespace.gemini_cli;
@@ -100,10 +100,14 @@
 
         checks = {
           attractor = namespace.attractor;
+          execute = namespace.execute_check;
         };
 
         apps.default = flake-utils.lib.mkApp {
           drv = namespace.mentci_ai;
+        };
+        apps.execute = flake-utils.lib.mkApp {
+          drv = namespace.execute;
         };
 
         devShells.default = devShell;

@@ -7,7 +7,7 @@
 
 ### Nix
 - **Role:** Environment management and isolation (Jail).
-- **Usage:** Defines the reproducible development shell and project Inputs via `flake.nix` and `Components/nix/jail.nix`.
+- **Usage:** Defines the reproducible development shell and project Sources via `flake.nix` and `Components/nix/jail.nix`.
 
 ## Agentic Interface & Orchestration
 ### Jujutsu (jj)

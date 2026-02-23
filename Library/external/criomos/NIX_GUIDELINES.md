@@ -143,7 +143,7 @@ final: prev: {
 
 *All values that cross module or file boundaries should be attrsets.* Primitive types (strings, bools) are for internal logic only.
 
-Every reusable function should accept at most one argument: an attribute set. This makes the function's signature self-documenting, as the attribute keys act as named arguments. When multiple Inputs or outputs are required, they must be fields within a single input or output attrset.
+Every reusable function should accept at most one argument: an attribute set. This makes the function's signature self-documenting, as the attribute keys act as named arguments. When multiple Sources or outputs are required, they must be fields within a single input or output attrset.
 
 ```nix
 # ❌ BAD: Positional arguments are ambiguous at the call site.

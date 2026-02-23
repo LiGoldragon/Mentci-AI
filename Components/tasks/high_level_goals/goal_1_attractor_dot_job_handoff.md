@@ -9,7 +9,7 @@ Make the first real Attractor call using a versioned DOT artifact and verify det
 ## Checklist
 
 - [x] Confirm prerequisites are available.
-- [x] Verify `Inputs/untyped/brynary-attractor/attractor` exists.
+- [x] Verify `Sources/untyped/brynary-attractor/attractor` exists.
 - [x] Verify tools: `bun`, `curl`, `jq`. (`bun` provided via `nix shell nixpkgs#bun` for this run.)
 - [x] Reserve a local test port and define run workspace under `workspace/` or `Outputs/Logs/`. (Used `127.0.0.1:38080`, artifacts in `Outputs/Logs/`.)
 
@@ -19,7 +19,7 @@ Make the first real Attractor call using a versioned DOT artifact and verify det
 - [x] Record artifact identity (`jj log -r @` changeset, file path, and optional `sha256sum`).
 
 - [x] Start Attractor server.
-- [x] Launch from `Inputs/untyped/brynary-attractor/attractor` via `bun run bin/attractor-server.ts`.
+- [x] Launch from `Sources/untyped/brynary-attractor/attractor` via `bun run bin/attractor-server.ts`.
 - [x] Pin host/port (`ATTRACTOR_HOST=127.0.0.1`, `ATTRACTOR_PORT=<port>`).
 - [x] Capture server stdout/stderr logs to a run log file.
 - [x] Confirm port is listening before submitting job.
@@ -79,7 +79,7 @@ Make the first real Attractor call using a versioned DOT artifact and verify det
 
 ```bash
 # Start server
-(cd Inputs/untyped/brynary-attractor/attractor && \
+(cd Sources/untyped/brynary-attractor/attractor && \
   ATTRACTOR_HOST=127.0.0.1 ATTRACTOR_PORT=38080 bun run bin/attractor-server.ts)
 
 # Create pipeline

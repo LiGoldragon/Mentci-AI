@@ -20,7 +20,7 @@ struct ToolInput {
 }
 
 struct LauncherInput {
-  inputsPath @0 :Text;
+  sourcesPath @0 :Text;
   isImpure @1 :Bool;
 }
 

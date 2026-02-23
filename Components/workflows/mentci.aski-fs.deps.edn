@@ -15,7 +15,7 @@
   {:when {:touch "Library/specs/WORKFLOW_STANDARD.md"}
    :read [{:path "Library/specs/ATTRACTOR_DOT_REFERENCE.md" :section "DOT DSL Subset"}]}
   {:when {:touch "Library/specs/ATTRACTOR_DOT_REFERENCE.md"}
-   :read [{:path "Inputs/attractor/attractor-spec.md" :section "DOT DSL Schema"}]}
+   :read [{:path "Sources/attractor/attractor-spec.md" :section "DOT DSL Schema"}]}
   {:when {:touch "Library/RESTART_CONTEXT.md"}
    :read [{:path "Core/AGENTS.md" :section "Core Sema Object Principles (Primary)"}]}
   {:when {:touch "Components/scripts/launcher/main.clj"}
@@ -25,7 +25,7 @@
           {:path "Library/guides/MIGRATION_GEMINI_TO_OPENCODE.md" :section "Agent Launcher Secrets (gopass)"}]}
   {:when {:touch "Components/scripts/validate_scripts/main.clj"}
    :read [{:path "Core/AGENTS.md" :section "Script Guard"}]}
-  {:when {:touch "Components/src/main.rs"}
+  {:when {:touch "Components/mentci-aid/src/main.rs"}
    :read [{:path "Library/specs/WORKFLOW_STANDARD.md" :section "Standard Workflow Patterns"}]}
   {:when {:touch "Components/workflows/mentci.aski-fs"}
    :read [{:path "Library/specs/ASKI_FS_DSL.md" :section "Core Constructs"}]}]}

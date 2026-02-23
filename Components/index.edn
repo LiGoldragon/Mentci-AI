@@ -12,9 +12,13 @@
    :path "Components/scripts"
    :interfaces ["bb.entrypoints"]
    :status :active}
-  {:id "src"
-   :path "Components/src"
-   :interfaces ["rust.engine"]
+  {:id "mentci-aid"
+   :path "Components/mentci-aid"
+   :interfaces ["rust.engine" "rust.daemon"]
+   :status :active}
+  {:id "chronos"
+   :path "Components/chronos"
+   :interfaces ["rust.time.tool"]
    :status :active}
   {:id "tasks"
    :path "Components/tasks"

@@ -55,7 +55,7 @@
 (impl DefaultSolarPrefix SolarPrefixOps read-solar-for [:=> [:cat :any] :string]
   [this]
   (let [attempts [["chronos" "--format" "am" "--precision" "second"]
-                  ["cargo" "run" "--quiet" "--manifest-path" "Components/Cargo.toml" "--bin" "chronos" "--" "--format" "am" "--precision" "second"]]
+                  ["cargo" "run" "--quiet" "--manifest-path" "Components/chronos/Cargo.toml" "--bin" "chronos" "--" "--format" "am" "--precision" "second"]]
         results (map #(run-command-for this {:args %}) attempts)
         success (first (filter #(zero? (:exit %)) results))]
     (when-not success

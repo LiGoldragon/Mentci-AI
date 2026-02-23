@@ -11,4 +11,4 @@ Emit the canonical solar response prefix in executable form.
 - Prints one blank line immediately after the solar line.
 - Resolves solar time via:
   1. `chronos --format am --precision second`
-  2. fallback `cargo run --quiet --manifest-path Components/Cargo.toml --bin chronos -- --format am --precision second`
+  2. fallback `cargo run --quiet --manifest-path Components/chronos/Cargo.toml --bin chronos -- --format am --precision second`

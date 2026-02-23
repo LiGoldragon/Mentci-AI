@@ -24,7 +24,7 @@
    [:inputType :string]
    [:sourcePath :string]
    [:srcPath [:maybe :string]]
-   [:inputsRoot :string]
+   [:sourcesRoot :string]
    [:isImpure :boolean]])
 
 (def KeywordizeKeysInput
@@ -78,8 +78,8 @@
 
 (impl DefaultLauncher LauncherOps provision-input-for ProvisionInput :any
   [this input]
-  (let [{:keys [name inputType sourcePath srcPath inputsRoot isImpure]} input
-        target-root (io/file inputsRoot)
+  (let [{:keys [name inputType sourcePath srcPath sourcesRoot isImpure]} input
+        target-root (io/file sourcesRoot)
         target-path (io/file target-root name)
         final-source (or srcPath sourcePath)]
     (.mkdirs target-root)
@@ -119,8 +119,8 @@
   [this input]
   (let [data (:data input)]
     (cond
-      (and (map? data) (get data "inputsPath")) data
-      (and (map? data) (get data :inputsPath)) data
+      (and (map? data) (get data "sourcesPath")) data
+      (and (map? data) (get data :sourcesPath)) data
       (map? data) (some #(find-jail-config-for this {:data %}) (vals data))
       (string? data) (try (find-jail-config-for this {:data (json/parse-string data)}) (catch Exception _ nil))
       (coll? data) (some #(find-jail-config-for this {:data %}) data)
@@ -186,9 +186,9 @@
       (do (println "Error: Configuration not found.") (System/exit 1))
       (let [config (keywordize-keys-for default-launcher {:data config-raw})
             _ (validate-config-for default-launcher config)
-            inputs-path (get config :inputsPath "Inputs")
-            inputs-root (io/file inputs-path)
-            input-manifest (get config :inputManifest {})
+            sources-path (get config :sourcesPath "Sources")
+            sources-root (io/file sources-path)
+            source-manifest (get config :sourceManifest {})
             outputs-path (get config :outputsPath "Outputs")
             policy-path (get config :policyPath nil)
             component-index-path (get config :componentIndexPath "Components/index.edn")
@@ -211,13 +211,13 @@
           (println (format "Component registry loaded from: %s" component-index-path))
           (println (format "Component registry exported to: %s" written-path)))
         ;; Load Whitelist
-        (let [whitelist-path (io/file "Core/agent-inputs.edn")
+        (let [whitelist-path (io/file "Core/agent-sources.edn")
               whitelist (if (.exists whitelist-path)
                           (-> (slurp whitelist-path) edn/read-string :whitelist)
                           #{})]
-          (println (format "Mounting Inputs from whitelist: %s" whitelist))
+          (println (format "Mounting Sources from whitelist: %s" whitelist))
           (println "Launching Nix Jail...")
-          (doseq [[item-name item-spec] input-manifest]
+          (doseq [[item-name item-spec] source-manifest]
             (let [name-str (clojure.core/name item-name)
                   source-path (:sourcePath item-spec)
                   src-path (:srcPath item-spec)
@@ -229,7 +229,7 @@
                                                          :inputType input-type
                                                          :sourcePath source-path
                                                          :srcPath src-path
-                                                         :inputsRoot (.getPath inputs-root)
+                                                         :sourcesRoot (.getPath sources-root)
                                                          :isImpure is-impure}))
                 (println (str "Skipping " name-str " (Not in whitelist)"))))))
         (println "Jail Launcher Complete.")

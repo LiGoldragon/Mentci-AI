@@ -21,7 +21,7 @@ Migration completed. Scripts are in Clojure and validated with Malli.
 | Python Script | Clojure Equivalent | Responsibility |
 | :--- | :--- | :--- |
 | `logger.py` | `logger.clj` | Deprecated: logging is no longer required; use `jj log` for audit. |
-| `jail_launcher.py` | `launcher.clj` | Ingesting `.attrs.json` and symlinking `Inputs/`. |
+| `jail_launcher.py` | `launcher.clj` | Ingesting `.attrs.json` and symlinking `Sources/`. |
 | `jail_commit.py` | `commit.clj` | Wrapping `jj` for workspace-to-host shipping. |
 | `test_deps.py` | `test_deps.clj` | Verifying Clojure/Nix environment integrity. |
 

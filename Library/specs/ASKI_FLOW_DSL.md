@@ -88,7 +88,7 @@ A Vector can be a target, allowing for hierarchical workflow definition.
 *   **Compiler:** A "Flattener" pass that converts the Vector into an Adjacency List (Graph) for the runtime engine.
     *   Index `i` connects to `i+1` by default.
     *   Map entries override default connections.
-*   **Runtime:** The existing `Components/src/main.rs` engine can be adapted to run this Graph structure easily.
+*   **Runtime:** The existing `Components/mentci-aid/src/main.rs` engine can be adapted to run this Graph structure easily.
 
 ## 6. DOT Structured-Data Conversion Standard
 

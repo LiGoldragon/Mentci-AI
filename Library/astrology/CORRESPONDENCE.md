@@ -4,7 +4,7 @@
 This is a minimal orienting map for symbolic navigation. It is not a complete astrological corpus.
 
 Reference source:
-- `Inputs/TheBookOfSol`
+- `Sources/TheBookOfSol`
 
 ## Zodiac Function Summary
 - Aries: initiation, decisive movement, first action
@@ -26,4 +26,4 @@ Reference source:
 3. Select corresponding strategy category or create one with explicit rationale.
 
 ## Source Handling Rule
-When adding deeper correspondences here, cite the exact `Inputs/TheBookOfSol` file path used.
+When adding deeper correspondences here, cite the exact `Sources/TheBookOfSol` file path used.

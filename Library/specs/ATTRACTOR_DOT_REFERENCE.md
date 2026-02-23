@@ -1,7 +1,7 @@
 # Attractor DOT Data Reference
 
-Extracted from `Inputs/attractor/attractor-spec.md` for incorporation. For the live implementation,
-use `Inputs/brynary-attractor/attractor`.
+Extracted from `Sources/attractor/attractor-spec.md` for incorporation. For the live implementation,
+use `Sources/brynary-attractor/attractor`.
 
 ## Overview
 Attractor uses **Graphviz DOT** syntax to define agentic workflows.

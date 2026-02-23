@@ -1,6 +1,6 @@
 # Mentci-AI High-Level Architectural Guidelines
 
-*   **Reproducibility:** The `Sources/` directory (transitional alias: `Inputs/`) contains read-only symlinks to all project dependencies and ecosystem sources, managed by `Components/scripts/launcher/main.clj`.
+*   **Reproducibility:** The `Sources/` directory (transitional alias: `Sources/`) contains read-only symlinks to all project dependencies and ecosystem sources, managed by `Components/scripts/launcher/main.clj`.
 *   **Purity:** Respect the `RO Indicator`. In pure mode, Sources are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
 
 ## 0.0. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
@@ -13,7 +13,7 @@
 4.  **Nix (Low-Level Utility):** The substrate of reproducibility. Only used for its specific usefulness. Should be **phased out** as early as possible or hidden behind low-level Aski interfaces (see **Lojix**, the Aski-Nix subsystem).
 
 **Assimilation of Sources:**
-- **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `Sources/` (transitional alias: `Inputs/`).
+- **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `Sources/` (transitional alias: `Sources/`).
 - They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 - Their logic must be ported to the higher-authority languages (Aski/Rust) to fully integrate with the Mentci-AI ecosystem.
 
@@ -74,7 +74,7 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 
 **Processes orchestrate sub-processes in a fractal hierarchy.**
 
-*   **Master Process:** The top-level `mentci-ai` process is self-hosted. It mounts `Sources/` (or transitional `Inputs/`) and configures its environment exactly like a jailed process but operates with full **Admin Developer Mode** privileges.
+*   **Master Process:** The top-level `mentci-ai` process is self-hosted. It mounts `Sources/` (or transitional `Sources/`) and configures its environment exactly like a jailed process but operates with full **Admin Developer Mode** privileges.
 *   **Sub-Flow Isolation:** Sub-processes are spawned as isolated sub-flows, typically within strict Nix Jails.
 *   **State Separation:** Sub-flows must operate on **unique, internal Jujutsu bookmarks**. They do not commit directly to the parent's bookmark until finalization.
 *   **Supervision:** Parent processes supervise the lifecycle, sources, and outputs of their child sub-flows.
@@ -156,7 +156,7 @@ High-level architectural context (framing, mission statements, global mandates) 
     *   `to_*`: Emission/Projection.
     *   `into_*`: Consuming transformation.
     *   *Forbidden:* `read`, `write`, `load`, `save` when direction suffices.
-*   **Single Object In/Out:** Methods accept at most one explicit object (struct) and return one object. Complex Inputs/outputs require their own container structs.
+*   **Single Object In/Out:** Methods accept at most one explicit object (struct) and return one object. Complex Sources/outputs require their own container structs.
 *   **Schema is Sema:** Transmissible objects are defined in Sema schemas. Wire formats (Cap'n Proto) are implementation details, not domain APIs.
 
 ## 4. Sema Object Style (Nix)

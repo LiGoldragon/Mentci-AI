@@ -13,5 +13,5 @@
 - No network mocks required.
 - Chronography timestamp is resolved in this order:
   1. `chronos` binary on `PATH`
-  2. `cargo run --manifest-path Components/Cargo.toml --bin chronos`
+  2. `cargo run --manifest-path Components/chronos/Cargo.toml --bin chronos`
 - Deterministic tests can bypass runtime invocation with `--chronos-raw`.

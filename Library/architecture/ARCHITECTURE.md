@@ -8,14 +8,14 @@ graph TD
         A[nix develop] --> B(Components/nix/jail.nix)
         B --> C[__structuredAttrs]
         C --> D(Components/scripts/launcher/main.clj)
-        D --> E{Inputs/}
-        E --> E1[Atom Inputs]
-        E --> E2[Flake Inputs]
+        D --> E{Sources/}
+        E --> E1[Atom Sources]
+        E --> E2[Flake Sources]
         E --> E3[Attractor Specs]
     end
 
     subgraph "Layer 1: Execution (mentci-aid)"
-        F[Components/src/main.rs] --> G[PipelineEngine]
+        F[Components/mentci-aid/src/main.rs] --> G[PipelineEngine]
         G --> H[Graph Traversal]
         H --> I{Handlers}
         I --> J[ExecutionEnvironment]
@@ -35,7 +35,7 @@ graph TD
 ## Architectural Components
 
 ### 1. Nix Jail (Isolation)
-The project operates within a **Pure Nix Jail**. `Components/nix/jail.nix` uses structured attributes to pass data to `Components/scripts/launcher/main.clj`, which organizes all Inputs into a standardized filesystem ontology under `Inputs/`.
+The project operates within a **Pure Nix Jail**. `Components/nix/jail.nix` uses structured attributes to pass data to `Components/scripts/launcher/main.clj`, which organizes all Sources into a standardized filesystem ontology under `Sources/`.
 
 ### 2. mentci-aid (Rust Daemon)
 A **Level 5 Pipeline Engine** and autonomous "Aid" built in Rust. It implements the **Attractor** specification:
@@ -55,7 +55,7 @@ The system follows a fractal, "Russian-doll" architecture for process supervisio
 
 ### 4.1. The Master Process
 The top-level **"mentci-ai process"** is a self-hosted supervisor.
-*   **Setup:** It configures its own environment exactly like a jailed process (mounting `Inputs/`, sourcing `setup` scripts), ensuring consistency.
+*   **Setup:** It configures its own environment exactly like a jailed process (mounting `Sources/`, sourcing `setup` scripts), ensuring consistency.
 *   **Privilege:** Unlike jailed sub-processes, the Master Process operates in **Admin Developer Mode** (see `ARCHITECTURAL_GUIDELINES.md`), with unrestricted network and system access.
 *   **Role:** It orchestrates high-level goals and supervises the execution of sub-flows.
 

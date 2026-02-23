@@ -4,11 +4,11 @@
 Operational mapping from zodiac/planetary symbolism to engineering and software design decisions.
 
 Primary source anchors:
-- `Inputs/TheBookOfSol/The_Zodiac.md`
-- `Inputs/TheBookOfSol/The_Solar_Matrix_of_Creation.md`
-- `Inputs/TheBookOfSol/Sidereal.md`
-- `Inputs/TheBookOfSol/1-Sol.md`
-- `Inputs/TheBookOfSol/2-Luna.md`
+- `Sources/TheBookOfSol/The_Zodiac.md`
+- `Sources/TheBookOfSol/The_Solar_Matrix_of_Creation.md`
+- `Sources/TheBookOfSol/Sidereal.md`
+- `Sources/TheBookOfSol/1-Sol.md`
+- `Sources/TheBookOfSol/2-Luna.md`
 
 ## Core Model
 - Zodiac signs are treated as functional phases of system lifecycle.

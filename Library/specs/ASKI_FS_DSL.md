@@ -90,7 +90,7 @@ Surface sugar is normalized into canonical EDN with explicit type tags and ids.
   {"docs" {:kind :dir
            :children {"specs" {:kind :dir}}}
    "src" {:kind :dir}
-   "Components/Cargo.toml" {:kind :file :role :entrypoint :durability :stable}}}}
+   "Components/mentci-aid/Cargo.toml" {:kind :file :role :entrypoint :durability :stable}}}}
 ```
 
 ## 6. Capnp Emission Rules
@@ -112,4 +112,4 @@ Convention:
 Examples:
 - `nix/mentci_ai.nix` -> `mentci_ai`
 - `nix/common_packages.nix` -> `common_packages`
-- `nix/jail_inputs.nix` -> `jail_inputs`
+- `nix/jail_sources.nix` -> `jail_sources`

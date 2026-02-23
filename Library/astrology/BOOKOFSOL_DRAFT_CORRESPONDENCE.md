@@ -4,7 +4,7 @@
 Draft correspondence for agent orientation.
 
 ## Source State
-- Source: `Inputs/TheBookOfSol`
+- Source: `Sources/TheBookOfSol`
 - Current workspace state: mounted and available.
 - This draft should be iteratively tightened with direct passage-level citations.
 
@@ -43,7 +43,7 @@ Draft correspondence for agent orientation.
 5. Record rationale in the report entry when category choice is non-obvious.
 
 ## Reconciliation TODO
-Now that `Inputs/TheBookOfSol` is mounted:
+Now that `Sources/TheBookOfSol` is mounted:
 1. Add exact file/path citations under each section.
 2. Mark each row as `confirmed` or `adjusted` against source text.
 3. Fold confirmed rows into canonical docs.

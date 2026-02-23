@@ -1,11 +1,11 @@
-{ pkgs, Inputs, inputsPath ? "Inputs", outputsPath ? "Outputs", componentIndexPath ? "Components/index.edn", componentRegistryPath ? null }:
+{ pkgs, Sources, sourcesPath ? "Sources", outputsPath ? "Outputs", componentIndexPath ? "Components/index.edn", componentRegistryPath ? null }:
 
 let
   lib = pkgs.lib;
 
   mkInput = name: inputType: 
     let
-      input = Inputs.${name};
+      input = Sources.${name};
       # If it has a .src (is a derivation), use it. Otherwise use the whole thing (flake input/path).
       src = if (lib.isDerivation input && input ? src) then input.src else input;
     in {
@@ -15,7 +15,7 @@ let
     };
 
   # -- Ontology Resides in Data --
-  inputManifest = {
+  sourceManifest = {
     mentci-ai = {
       sourcePath = "${./.}";
       srcPath = "${./.}";
@@ -78,7 +78,7 @@ pkgs.mkShell {
   
   # This will be available in .attrs.json
   jailConfig = {
-    inherit inputsPath inputManifest outputsPath outputManifest;
+    inherit sourcesPath sourceManifest outputsPath outputManifest;
     inherit componentIndexPath componentRegistryPath;
     policyPath = "${jailPolicyFile}";
   };
@@ -92,6 +92,6 @@ pkgs.mkShell {
 
   shellHook = ''
     # Minimal Shim: Call Clojure launcher
-    bb ${./Components/scripts/launcher/main.clj}
+    bb ${../scripts/launcher/main.clj}
   '';
 }

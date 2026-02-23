@@ -1,0 +1,9 @@
+[package]
+name = "chronos"
+version = "0.1.0"
+edition = "2021"
+description = "Solar ordinal-zodiac chronography utility"
+
+[[bin]]
+name = "chronos"
+path = "src/main.rs"

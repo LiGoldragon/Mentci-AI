@@ -7,7 +7,7 @@ structural. Violations indicate category error, not style.
 
 1. **Single Object In/Out**
    Every method accepts at most one explicit object argument and returns exactly
-   one object. When multiple Inputs or outputs are required, define a new object.
+   one object. When multiple Sources or outputs are required, define a new object.
 
 2. **Everything Is an Object**
    Reusable behavior belongs to named types or traits. Free functions exist only

@@ -11,7 +11,7 @@ This document tracks the technical milestones required to reach Level 5 (The Dar
 *Focus: Implementing specific snippets from natural language.*
 - [x] **Conversational Implementation:** Agent can generate boilerplate and functions.
 - [x] **Explaining Logic:** Agent provides rationale for code changes.
-- [x] **Multi-File Reasoning:** Ability to read and relate multiple files (e.g., `Components/Cargo.toml` and `main.rs`).
+- [x] **Multi-File Reasoning:** Ability to read and relate multiple files (e.g., `Components/mentci-aid/Cargo.toml` and `main.rs`).
 
 ## Level 3: Agentic (Autonomous Action)
 *Focus: Operating the system and tools to achieve a result.*
@@ -31,7 +31,7 @@ This document tracks the technical milestones required to reach Level 5 (The Dar
 ## Level 5: Dark Factory (Architectural Intent)
 *Focus: Total automation of the implementation-verification loop.*
 - [ ] **Commit-on-Success:** The engine automatically creates a Jujutsu commit after every successful state-altering tool call.
-- [ ] **Spec-First Engine:** Implementation of `Codergen` in the Rust daemon (`Components/src/main.rs`).
+- [ ] **Spec-First Engine:** Implementation of `Codergen` in the Rust daemon (`Components/mentci-aid/src/main.rs`).
 - [ ] **Self-Healing Loops:** Agent automatically runs tests and iterates on failure without human prompts.
 - [ ] **Architectural Enforcement:** Linting matrix that blocks code violating **Sema Object Style**.
 - [ ] **Topological Synthesis:** Generating entire modules based solely on Schema/EDN definitions.

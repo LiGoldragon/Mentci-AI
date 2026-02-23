@@ -169,7 +169,7 @@ let config = Config::from(string_value);
 internal representations only.
 
 Every method accepts at most one explicit object argument (excluding `self`) and
-returns exactly one object. When multiple Inputs or outputs are required, a new
+returns exactly one object. When multiple Sources or outputs are required, a new
 object must be specified to contain them.
 
 ```rust

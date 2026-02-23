@@ -4,15 +4,15 @@
 (global-auto-revert-mode t)
 (setq auto-revert-verbose nil) ; Keep it quiet
 
-;; 2. Read-Only Mode for Inputs
-;; Matches any file under the project's Inputs/ directory
-(defun mentci-apply-read-only-for-Inputs ()
-  "Force read-only mode for files in the Inputs directory."
-  (when (string-match-p "/Inputs/" (buffer-file-name))
+;; 2. Read-Only Mode for Sources
+;; Matches any file under the project's Sources/ directory
+(defun mentci-apply-read-only-for-Sources ()
+  "Force read-only mode for files in the Sources directory."
+  (when (string-match-p "/Sources/" (buffer-file-name))
     (read-only-mode 1)
     (message "Mentci: Entering RO mode for system input artifact.")))
 
-(add-hook 'find-file-hook #'mentci-apply-read-only-for-Inputs)
+(add-hook 'find-file-hook #'mentci-apply-read-only-for-Sources)
 
 ;; 3. Git-Gutter Update Logic
 (defun mentci-refresh-git-gutter ()

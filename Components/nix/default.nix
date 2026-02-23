@@ -5,15 +5,19 @@
 , inputs
 , attractor_src
 , attractor_docs_src
-, src
 , scripts_dir
 , repo_root
 }:
 
 let
   mentci_ai = import ./mentci_ai.nix {
-    inherit craneLib pkgs src;
+    inherit craneLib pkgs;
   };
+
+  execute = pkgs.runCommand "mentci-execute" { } ''
+    mkdir -p "$out/bin"
+    ln -s "${mentci_ai}/bin/execute" "$out/bin/execute"
+  '';
 
   attractor = import ./attractor.nix {
     inherit pkgs;
@@ -33,7 +37,7 @@ let
     inherit mentci_clj;
   };
 
-  jail_inputs = import ./jail_inputs.nix {
+  jail_sources = import ./jail_sources.nix {
     inherit inputs;
     attractor_src = attractor_src;
     attractor_docs_src = attractor_docs_src;
@@ -47,8 +51,12 @@ let
       inherit common_packages;
       inherit repo_root;
     };
+
+  execute_check = import ./execute_check.nix {
+    inherit pkgs mentci_ai;
+  };
 in
 {
-  inherit mentci_ai attractor mentci_clj common_packages jail_inputs gemini_cli dev_shell;
+  inherit mentci_ai execute execute_check attractor mentci_clj common_packages jail_sources gemini_cli dev_shell;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

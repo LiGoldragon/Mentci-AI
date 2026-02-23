@@ -3,7 +3,7 @@
 This document records the Attractor API surface currently referenced by Mentci-AI and the primary use-cases it enables.
 
 Mentci-AI incorporates the Attractor standard and API patterns. The reference implementation is read-only under:
-- `Inputs/untyped/brynary-attractor/attractor`
+- `Sources/untyped/brynary-attractor/attractor`
 
 ## 1. API Surfaces
 
@@ -14,7 +14,7 @@ Attractor is exposed through two primary interfaces:
 ### 1.1 TypeScript Runtime API
 
 Primary exports are available from:
-- `Inputs/untyped/brynary-attractor/attractor/src/index.ts`
+- `Sources/untyped/brynary-attractor/attractor/src/index.ts`
 
 Core entry points:
 - `parse(dot: string)` parses DOT into a graph object.
@@ -54,8 +54,8 @@ Interviewer exports:
 ### 1.2 DOT Node-Type Mapping API
 
 Canonical shape-to-handler mapping is documented in:
-- `Inputs/untyped/brynary-attractor/attractor/README.md`
-- `Inputs/untyped/brynary-attractor/docs/specs/attractor-spec.md`
+- `Sources/untyped/brynary-attractor/attractor/README.md`
+- `Sources/untyped/brynary-attractor/docs/specs/attractor-spec.md`
 
 Key mappings:
 - `Mdiamond` -> `start`
@@ -71,7 +71,7 @@ Key mappings:
 ### 1.3 HTTP Server API
 
 Reference route implementation:
-- `Inputs/untyped/brynary-attractor/attractor/src/server/routes.ts`
+- `Sources/untyped/brynary-attractor/attractor/src/server/routes.ts`
 
 Base resource:
 - `/pipelines`

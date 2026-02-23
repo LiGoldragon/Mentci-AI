@@ -6,7 +6,7 @@
 - Home Manager modules are in `nix/homeModule/` (with `min/`, `med/`, `max/` profiles).
 - Package and tooling overlays are in `nix/pkdjz/` and `nix/mkPkgs/`.
 - Schema definitions are in `capnp/`; website templates live in `mkWebpage/`.
-- Inputs are pinned in `npins/` and `flake.lock`.
+- Sources are pinned in `npins/` and `flake.lock`.
 
 ## Build, Test, and Development Commands
 - `nix flake show` to discover available outputs for this flake.
