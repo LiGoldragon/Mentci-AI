@@ -32,13 +32,13 @@ Run this deterministic bug sweep for repository health checks:
 5. Static marker scan:
    - `rg -n "TODO|FIXME|BUG|HACK|XXX" Components Core Library Development Research -S`
 6. Path drift scan:
-   - `rg -n "Inputs/|Sources/|tasks/high_level_goals/goal_1_attractor_dot_job_handoff.md" Core Library Development Research -S`
+   - `rg -n "Sources/|Sources/|tasks/high_level_goals/goal_1_attractor_dot_job_handoff.md" Core Library Development Research -S`
 
 ## 6. Current Known Issues from Sweep
 1. Root guard drift remains:
    - `bb Components/scripts/root_guard/main.clj` fails on lowercase top-level `outputs`.
 2. Historical path-text drift remains in some docs/strategies:
-   - `Inputs/` references still appear where migration to `Sources` is transitional or incomplete.
+   - `Sources/` references still appear where migration to `Sources` is transitional or incomplete.
 
 ## 7. Fix Workflow
 1. Fix highest-severity failures first (`root_guard`, `session_guard`, broken task paths).

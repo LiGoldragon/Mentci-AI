@@ -9,7 +9,7 @@ Define how `agent-authority-alignment` composes with existing strategy sub-goals
 - Upstream overlap:
 - Remove stale authority references and duplicated policy fragments.
 - Shared sub-goal:
-- Treat legacy path references (`docs/architecture/AGENTS.md`, lowercase `inputs/` where now incorrect) as instruction artifacts.
+- Treat legacy path references (`docs/architecture/AGENTS.md`, lowercase `Sources/` where now incorrect) as instruction artifacts.
 - Combined deliverable:
 - Extend artifact detection rules to include stale authority/path patterns.
 

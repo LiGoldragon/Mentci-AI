@@ -5,11 +5,11 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Primary Working Bookmark:** `dev`.
-*   **Current Programming Version:** `76j6my3v` (Ref: `Components/scripts/program_version/main.clj`).
+*   **Current Programming Version:** `1v4rpwsy` (Ref: `execute version`).
 *   **Latest Release Tag:** `v0.12.5.45.52` (release target for this snapshot).
 
 ## 1. Project Overview
-Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository currently operates with a split control-plane state (`dev` active development lineage, `main` release lineage) and an in-progress deterministic cleanup program.
+Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository currently operates with a native Rust actor-based orchestration layer (`execute`) following the transition from legacy Clojure scripts.
 
 ## 2. Mandatory Core Context (The Program)
 These files define the agent's operating logic and must be loaded automatically:
@@ -26,13 +26,12 @@ These files define the agent's operating logic and must be loaded automatically:
 R&D is the mirrored two-tree model:
 1. `Development/<priority>/<Subject>/` contains executable plans and implementation guidance.
 2. `Research/<priority>/<Subject>/` contains prompt-traceable findings and answer artifacts.
-3. Topic names mirror across both trees by subject; counterpart integrity is enforced with `bb Components/scripts/subject_unifier/main.clj`.
+3. Topic names mirror across both trees by subject; counterpart integrity is enforced with `execute unify`.
 
 ## 4. Component Status Map
 - **Engine (`mentci-aid`):** `Components/mentci-aid/src/main.rs`. Status: **Experimental / not in running state**.
 - **Rust componentization:** `Components/mentci-aid/` and `Components/chronos/` are standalone crates.
-- **Unified Rust script tool:** `execute` lives at `Components/mentci-aid/src/bin/execute.rs`.
-- **Script orchestration surface:** `Components/scripts/<name>/main.clj` with per-script `TestingContext.md` (mixed maturity; see Risks).
+- **Symbolic Orchestrator:** `execute` lives at `Components/mentci-aid/src/bin/execute.rs` and uses `ractor` actors.
 - **Filesystem ontology authority:** `Library/specs/AskiFsSpec.md`.
 - **Source substrate:** `Sources/` mounted read-only via jail tooling.
 - **High-Weight Specs:**
@@ -40,14 +39,8 @@ R&D is the mirrored two-tree model:
   - `Library/specs/LojixSyntaxSpec.md`: `lojix` syntax rules (extended EDN).
   - `Library/architecture/MentciBoxIsolation.md`: Mentci Box isolation protocol.
 
-## 5. Current Operational Snapshot (♓︎.5.45.52 | 5919 AM)
-- `dev` head: `2749f72` (`intent: execute section-6 cleanup and add one-subject rd synthesis`)
-- `main` head (pre-release update): `3781ce0` (`intent: rescan and align core library readmes and high-priority docs`)
-
-Recent high-signal commits:
-1. `3781ce0` (main): Core/Library/high-priority consistency pass + restart refresh prep.
-2. `7e24e16` (dev): script-surface deadweight/hard-wiring research (`Artifact-Sweep`).
-3. `2749f72` (dev): section-6 cleanup (`Development/low`) + one-subject R&D synthesis.
+## 5. Current Operational Snapshot (♓︎.6.4.45 | 5919 AM)
+- `dev` head: `0cd7a9f` (`session: harden VCS mandates and finalize migration research`)
 
 Section sweep progress (`Development/high/Repo-Intent-Realignment/SectionSweepProgram.md`):
 - Completed: sections `1` to `10` (Full Repository Sweep).
@@ -55,15 +48,14 @@ Section sweep progress (`Development/high/Repo-Intent-Realignment/SectionSweepPr
 
 ## 6. Guard Health Snapshot
 Latest observed gate outcomes:
-1. `validate_scripts`: passing.
-2. `reference_guard`: passing.
-3. `subject_unifier` (dry-run): passing.
-4. `session_guard`: failing due trailing `intent:` chain above latest `session:`.
-5. `root_guard`: failing on top-level drift (`outputs` directory, `result` file).
+1. `root-guard`: passing.
+2. `link-guard`: passing.
+3. `session-guard`: passing.
+4. `unify` (dry-run): passing.
 
 Interpretation:
-- Policy/reference hygiene is mostly converging.
-- Session finalization discipline and root contract closure remain the blocking control gates.
+- The transition to native Rust actors for repository integrity has been successful.
+- Obsolete Clojure scripts have been removed, simplifying the orchestration surface.
 
 ## 7. High-Importance Active Risks
 1. **Control-plane divergence risk:** `main` and `dev` are both advancing; convergence protocol (`dev` -> finalized session -> release) is not yet consistently enforced.

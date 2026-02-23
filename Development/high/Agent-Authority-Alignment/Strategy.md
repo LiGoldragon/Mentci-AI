@@ -22,7 +22,7 @@ Establish `Core/AGENTS.md` as the single canonical agent authority file and remo
 - stale AGENTS path
 - stale goals path (`docs/architecture/HIGH_LEVEL_GOALS.md`)
 - stale restart-context path variants
-- legacy `Inputs/` references that should now be `Sources/`
+- legacy `Sources/` references that should now be `Sources/`
 - Create an edit matrix with file, line, old path, new path.
 
 3. **Path and SSOT Repairs**
@@ -43,12 +43,12 @@ Establish `Core/AGENTS.md` as the single canonical agent authority file and remo
 - Add a checker script that flags:
 - `docs/architecture/AGENTS.md` references
 - `docs/architecture/HIGH_LEVEL_GOALS.md` references
-- unintended lowercase `inputs/` references to repository paths
+- unintended lowercase `Sources/` references to repository paths
 - Integrate checker into normal validation flow.
 
 ## 4. Strategy Doubts and Failure Modes
 1. **Blind replacement risk**
-- Problem: mechanical `inputs/` -> `Sources/` can modify historical text or intentional legacy examples.
+- Problem: mechanical `Sources/` -> `Sources/` can modify historical text or intentional legacy examples.
 - Mitigation: use allowlisted, context-aware replacements and manual review for ambiguous matches.
 
 2. **Runtime assumption mismatch**

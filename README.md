@@ -34,11 +34,12 @@ To automate implementation details and liberate the human mind through autonomou
 - `cargo build --manifest-path Components/mentci-aid/Cargo.toml`: Compile the daemon and Cap'n Proto schemas.
 - `cargo run --manifest-path Components/mentci-aid/Cargo.toml -- Components/workflows/example.dot`: Run the workflow engine.
 - `cargo run --manifest-path Components/mentci-aid/Cargo.toml -- sandbox -- /bin/sh`: Start a Bubblewrap-backed sandbox shell (`execute sandbox` alias is also available).
-- `cargo run --manifest-path Components/mentci-aid/Cargo.toml --bin execute -- list`: List discovered script entrypoints through the recovered unified Rust script tool.
+- `cargo run --manifest-path Components/mentci-aid/Cargo.toml --bin execute -- root-guard`: Run the filesystem integrity guard.
+- `cargo run --manifest-path Components/mentci-aid/Cargo.toml --bin execute -- link-guard`: Run the cross-tier link guard.
+- `cargo run --manifest-path Components/mentci-aid/Cargo.toml --bin execute -- version`: Get the content-addressed program version.
 - `nix build .#execute`: Build the exported `execute` app package from flake outputs.
 - `cargo test --manifest-path Components/mentci-aid/Cargo.toml`: Run `mentci-aid` standalone tests.
 - `cargo test --manifest-path Components/chronos/Cargo.toml`: Run `chronos` standalone tests.
-- `bb Components/scripts/logger/main.clj "<intent>" --model "<model>" --user "<user>"`: Optional legacy intent log entry (`jj log` is preferred for audit trails).
 
 ---
 *The Great Work continues.*

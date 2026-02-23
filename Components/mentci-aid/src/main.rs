@@ -13,24 +13,9 @@ use std::path::PathBuf;
 use std::process::Command;
 use tracing::{error, info};
 
-pub mod atom_filesystem_capnp {
-    include!(concat!(env!("OUT_DIR"), "/atom_filesystem_capnp.rs"));
-}
-
-#[allow(unused_parens)]
-pub mod mentci_capnp {
-    include!(concat!(env!("OUT_DIR"), "/mentci_capnp.rs"));
-}
-
-// --- Local Modules ---
-pub mod dot_loader;
-pub mod edn_loader;
-pub mod jail_bootstrap;
-pub mod attractor_validator;
-pub mod sandbox;
-use dot_loader::DotLoader;
-use edn_loader::EdnLoader;
-use attractor_validator::AttractorValidator;
+use mentci_aid::dot_loader::DotLoader;
+use mentci_aid::edn_loader::EdnLoader;
+use mentci_aid::attractor_validator::AttractorValidator;
 
 // --- Execution Environment ---
 
