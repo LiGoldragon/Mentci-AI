@@ -37,7 +37,7 @@ let
     inherit pkgs system;
     inherit codex_cli_nix;
     inherit scripts_dir;
-    inherit gemini_cli;
+    inherit gemini_cli gemini_tui;
     inherit mentci_clj;
     inherit mentci_vcs;
   };
