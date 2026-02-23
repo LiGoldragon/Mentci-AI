@@ -1,0 +1,10 @@
+[package]
+name = "mentci-box-lib"
+version = "0.1.0"
+edition = "2021"
+description = "Core sandbox logic for Mentci-AI."
+
+[dependencies]
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+tracing = "0.1"

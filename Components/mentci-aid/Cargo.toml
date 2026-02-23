@@ -24,6 +24,7 @@ dot-parser = "0.6.1"
 edn-rs = "0.17.4"
 pest = "2.8.6"
 regex = "1.12.3"
+mentci-box-lib = { path = "../mentci-box-lib" }
 
 [build-dependencies]
 capnpc = "0.19"

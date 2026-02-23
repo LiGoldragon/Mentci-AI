@@ -45,12 +45,8 @@
         codex-cli-nix.url = "github:sadjow/codex-cli-nix";
 
         # Research Sources
-        comply = {
-          url = "github:strongdm/comply";
-          flake = false;
-        };
-        cxdb = {
-          url = "github:strongdm/cxdb";
+        leash = {
+          url = "github:strongdm/leash";
           flake = false;
         };
         activeadmin = {
@@ -62,7 +58,7 @@
       outputs = inputs@{
         self, nixpkgs, flake-utils, crane, 
         criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
-        webpublish, goldragon, maisiliym, kibord, bookofsol, aski, attractor, opencode, codex-cli-nix, ...
+        webpublish, goldragon, maisiliym, kibord, bookofsol, aski, attractor, opencode, codex-cli-nix, leash, ...
       }:
         flake-utils.lib.eachDefaultSystem (system:
           let

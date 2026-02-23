@@ -42,8 +42,7 @@ let
     opencode = mkInput "opencode" "untyped";
     
     # Research
-    comply = mkInput "comply" "untyped";
-    cxdb = mkInput "cxdb" "untyped";
+    leash = mkInput "leash" "untyped";
     activeadmin = mkInput "activeadmin" "untyped";
   };
 

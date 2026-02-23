@@ -1,0 +1,12 @@
+[package]
+name = "aski-cli"
+version = "0.1.0"
+edition = "2021"
+description = "CLI tool for testing and translating Aski syntax."
+
+[dependencies]
+anyhow = "1.0"
+aski-lib = { path = "../aski-lib" }
+clap = { version = "4.0", features = ["derive"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"

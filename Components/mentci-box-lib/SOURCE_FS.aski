@@ -1,0 +1,7 @@
+([:v1]
+ {Components
+  {mentci-box-lib
+   {:_meta {:role :library :durability :stable}
+    Cargo.toml [:file :cargo-config]
+    src
+    {lib.rs [:file :rust-source]}}}})

@@ -91,7 +91,8 @@ The following EDN structure represents the authoritative symbolic map of the `So
    aski       [:flake]
    attractor  [:untyped]
    attractor-docs [:untyped]
-   opencode   [:untyped]}})
+   opencode   [:untyped]
+   leash      [:untyped]}})
 ```
 
 **Expansion Logic:**

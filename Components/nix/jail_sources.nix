@@ -3,7 +3,7 @@
 {
   inherit (inputs) criomos sema lojix seahawk skrips mkZolaWebsite;
   inherit (inputs) webpublish goldragon maisiliym kibord bookofsol aski opencode;
-  inherit (inputs) comply cxdb activeadmin;
+  inherit (inputs) leash activeadmin;
   attractor = attractor_src;
   attractor-docs = attractor_docs_src;
 }
