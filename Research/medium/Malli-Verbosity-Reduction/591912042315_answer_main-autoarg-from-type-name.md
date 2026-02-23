@@ -24,7 +24,7 @@ Existing forms still supported:
 - `(main [:=> ...] [args] ...body...)` (explicit function schema)
 
 Implementation:
-- `Components/scripts/lib/malli.clj`
+- `executelib/malli.clj`
   - Added auto-arg mode when second form is not a vector.
   - Symbol schemas derive arg name by lowercasing first character.
   - Non-symbol schemas in auto mode use fallback arg `[input]`.

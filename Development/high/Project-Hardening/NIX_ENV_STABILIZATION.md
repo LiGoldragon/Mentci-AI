@@ -14,11 +14,11 @@ Every Rust component defined as a standalone derivation (using `craneLib`) MUST 
 - **Guard:** `git add -N Cargo.lock` to ensure Nix can see the file during derivation evaluation.
 
 ### 2.2 Root Guard Compliance
-The `root_guard` ensures the repository root remains clean. Any necessary runtime configuration directories (like `.mentci`) must be explicitly allowed in `Components/scripts/root_guard/main.clj`.
+The `root_guard` ensures the repository root remains clean. Any necessary runtime configuration directories (like `.mentci`) must be explicitly allowed in `execute`.
 
 ## 3. Implementation Details
 - Component: `Components/mentci-vcs`
-- Guard: `Components/scripts/root_guard`
+- Guard: `executeroot_guard`
 - Action: Added `Cargo.lock`, updated `allowed-runtime-dirs`, and removed extraneous root artifacts (`result`, `outputs/`).
 
 *The Great Work continues.*

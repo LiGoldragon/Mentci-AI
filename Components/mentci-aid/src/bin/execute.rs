@@ -104,6 +104,13 @@ async fn main() -> anyhow::Result<()> {
                 }
             }
         }
+        "launcher" => {
+            let res = ractor::call!(orchestrator, SymbolicMessage::LaunchJail)?;
+            if let Err(e) = res {
+                eprintln!("Launch failed: {}", e);
+                std::process::exit(1);
+            }
+        }
         "finalize" => {
             let mut summary = String::new();
             let mut prompt = String::new();

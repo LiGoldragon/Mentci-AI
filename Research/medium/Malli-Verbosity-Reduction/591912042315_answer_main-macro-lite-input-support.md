@@ -15,7 +15,7 @@ no, I want main macro to create malli lite syntax types, otherwise its useless!
 Implemented `main` macro support for Malli lite input syntax compilation.
 
 Code change:
-- `Components/scripts/lib/malli.clj`
+- `executelib/malli.clj`
   - Added `malli.experimental.lite` require.
   - Updated `main` macro so concise mode compiles non-symbol input forms with `ml/schema`.
   - Symbol input (for existing named schemas) remains supported.

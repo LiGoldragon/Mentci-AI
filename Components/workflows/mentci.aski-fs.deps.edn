@@ -7,7 +7,7 @@
           {:path "Core/SEMA_RUST_GUIDELINES.md" :section "Primary Rules"}
           {:path "Core/SEMA_NIX_GUIDELINES.md" :section "Primary Rules"}]}
   {:when {:touch "Core/SEMA_CLOJURE_GUIDELINES.md"}
-   :read [{:path "Components/scripts/lib/malli.clj" :section "defn*"}]}
+   :read [{:path "executelib/malli.clj" :section "defn*"}]}
   {:when {:touch "Core/SEMA_RUST_GUIDELINES.md"}
    :read [{:path "Core/ARCHITECTURAL_GUIDELINES.md" :section "Sema Object Style (Rust)"}]}
   {:when {:touch "Core/SEMA_NIX_GUIDELINES.md"}
@@ -18,12 +18,12 @@
    :read [{:path "Sources/attractor/attractor-spec.md" :section "DOT DSL Schema"}]}
   {:when {:touch "Library/RestartContext.md"}
    :read [{:path "Core/AGENTS.md" :section "Core Sema Object Principles (Primary)"}]}
-  {:when {:touch "Components/scripts/launcher/main.clj"}
-   :read [{:path "Components/scripts/lib/types.clj" :section "JailConfig"}]}
-  {:when {:touch "Components/scripts/agent_launcher/main.clj"}
-   :read [{:path "Components/scripts/lib/malli.clj" :section "defn*"}
+  {:when {:touch "execute"}
+   :read [{:path "executelib/types.clj" :section "JailConfig"}]}
+  {:when {:touch "execute"}
+   :read [{:path "executelib/malli.clj" :section "defn*"}
           {:path "Library/guides/MigrationGeminiToOpencode.md" :section "Agent Launcher Secrets (gopass)"}]}
-  {:when {:touch "Components/scripts/validate_scripts/main.clj"}
+  {:when {:touch "execute"}
    :read [{:path "Core/AGENTS.md" :section "Script Guard"}]}
   {:when {:touch "Components/mentci-aid/src/main.rs"}
    :read [{:path "Library/specs/WorkflowStandard.md" :section "Standard Workflow Patterns"}]}

@@ -32,7 +32,7 @@ Establish `Core/AGENTS.md` as the single canonical agent authority file and remo
 
 4. **Strategy-System Alignment**
 - Reconcile queue status with strategy file status and actual implementation state.
-- Ensure strategy docs reference current script paths (for example `Components/scripts/<name>/main.clj`).
+- Ensure strategy docs reference current script paths (for example `execute`).
 - Add missing active strategies to the queue where applicable.
 
 5. **Goal Execution Integrity**

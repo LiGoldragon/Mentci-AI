@@ -85,7 +85,7 @@ Issue addressed: trailing `intent:` commits without final `session:` synthesis a
 
 Actions:
 1. Add executable finalization tool:
-- `Components/scripts/session_finalize/main.clj`
+- `execute`
 - Generates compliant `session:` message blocks with required sections.
 - Targets non-empty revision safely (`@` fallback to `@-`).
 2. Update protocol docs to safe bookmark targeting:

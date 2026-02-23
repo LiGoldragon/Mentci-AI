@@ -13,7 +13,7 @@ modify script to store pubkey in a gopass named field, and dont ask for things t
 
 ## Agent Answer
 
-Updated `Components/scripts/jail_key_setup/main.clj` per request.
+Updated `execute` per request.
 
 What changed:
 - No prompt for canonical gopass paths anymore.

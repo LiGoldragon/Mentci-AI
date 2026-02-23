@@ -21,7 +21,7 @@ Executed a focused consistency sweep across:
 Implemented fixes:
 1. Corrected broken transitional alias wording from `Sources` self-aliasing to explicit `Inputs` -> `Sources` migration notes in core authority/spec docs.
 2. Normalized high-priority strategy references to canonical paths (`Outputs/Logs/...`, `Development/...`, `Components/tasks/...`, `Research/high/...`).
-3. Updated stale README pathing (`Research/README.md` now points to `Components/scripts/answer_report/main.clj`).
+3. Updated stale README pathing (`Research/README.md` now points to `execute`).
 4. Refreshed `Library/RestartContext.md` metadata and operational snapshot (heads, guard status, open risks).
 5. Added a new milestone entry in `Outputs/Logs/ReleaseMilestones.md` for this sweep.
 

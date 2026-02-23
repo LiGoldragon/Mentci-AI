@@ -7,7 +7,7 @@ graph TD
     subgraph "Layer 0: Environment (Nix Jail)"
         A[nix develop] --> B(Components/nix/jail.nix)
         B --> C[__structuredAttrs]
-        C --> D(Components/scripts/launcher/main.clj)
+        C --> D(execute)
         D --> E{Sources/}
         E --> E1[Atom Sources]
         E --> E2[Flake Sources]
@@ -24,7 +24,7 @@ graph TD
 
     subgraph "Layer 2: Semantic Truth & Persistence"
         L[Components/schema/*.capnp] -.-> F
-        M[Components/scripts/logger/main.clj] ==> N[Outputs/Logs/*.edn]
+        M[execute] ==> N[Outputs/Logs/*.edn]
         I -- Handshake Logging --> M
     end
 
@@ -35,7 +35,7 @@ graph TD
 ## Architectural Components
 
 ### 1. Nix Jail (Isolation)
-The project operates within a **Pure Nix Jail**. `Components/nix/jail.nix` uses structured attributes to pass data to `Components/scripts/launcher/main.clj`, which organizes all Sources into a standardized filesystem ontology under `Sources/`.
+The project operates within a **Pure Nix Jail**. `Components/nix/jail.nix` uses structured attributes to pass data to `execute`, which organizes all Sources into a standardized filesystem ontology under `Sources/`.
 
 ### 2. mentci-aid (Rust Daemon)
 A **Level 5 Pipeline Engine** and autonomous "Aid" built in Rust. It implements the **Attractor** specification:

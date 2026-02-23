@@ -14,7 +14,7 @@ I failed to run the key setup:
 
 ## Agent Answer
 
-Fixed `Components/scripts/jail_key_setup/main.clj` runtime crash.
+Fixed `execute` runtime crash.
 
 Root cause:
 - `run-command-for` passed an options map into `clojure.java.shell/sh` using `apply`, which in this Babashka runtime caused a `ClassCastException` (`Object[]` -> `String[]`).

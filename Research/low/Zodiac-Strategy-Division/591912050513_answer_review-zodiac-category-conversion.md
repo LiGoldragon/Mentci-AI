@@ -31,7 +31,7 @@ review conversion of subjects to zodiac-based categories, report
 - `subject_unifier` reads/writes `Development/<Subject>` and `Research/<Subject>` directly.
 - This blocks migration to `(category, subject)` resolution without tool rewrite.
 - Evidence:
-  - `Components/scripts/subject_unifier/main.clj`
+  - `execute`
 
 4. Medium: Core guidance still states flat `<Subject>` paths as canonical.
 - Multiple authority docs still specify `Development/<Subject>` and `Research/<Subject>`.
@@ -46,7 +46,7 @@ review conversion of subjects to zodiac-based categories, report
 - Subject counterpart symmetry exists at flat level, but zodiac-bilateral lookup is not available.
 - Discovery remains subject-name only, not `(zodiac-category, subject)`.
 - Evidence:
-  - `Components/scripts/subject_unifier/main.clj`
+  - `execute`
   - `Research/Zodiac-Strategy-Division/index.edn`
 
 ## Review Verdict

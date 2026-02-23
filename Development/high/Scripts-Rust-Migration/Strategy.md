@@ -3,12 +3,12 @@
 **Linked Goal:** `Goal 0: mentci-aid Stabilization`
 
 ## 1. Goal
-Migrate `Components/scripts/*` operational logic from Babashka/Clojure to Rust without interrupting current jail/bootstrap workflows.
+Migrate `execute*` operational logic from Babashka/Clojure to Rust without interrupting current jail/bootstrap workflows.
 
 ## 2. Scope
 - In scope:
-  - All script entrypoints under `Components/scripts/<name>/main.clj`.
-  - Shared script utilities in `Components/scripts/lib/`.
+  - All script entrypoints under `execute`.
+  - Shared script utilities in `executelib/`.
   - Script validation and execution wiring in Nix/runtime launch paths.
 - Out of scope:
   - Rewriting `Sources/` code.
@@ -81,7 +81,7 @@ Migrate `Components/scripts/*` operational logic from Babashka/Clojure to Rust w
 - Mitigation: update `TestingContext.md`, `Library/RestartContext.md`, and report artifacts per migration slice.
 
 ## 9. Completion Criteria
-1. No operational dependency on Babashka for `Components/scripts/*` flows.
+1. No operational dependency on Babashka for `execute*` flows.
 2. One primary Rust tool covers script responsibilities via subcommands.
 3. Any standalone binaries are justified by independent utility and documented.
 4. Validation and session protocol tooling run through Rust-native equivalents.

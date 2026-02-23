@@ -24,19 +24,23 @@ To automate implementation details and liberate the human mind through autonomou
 - `Components/schema/`: The semantic truth (Cap'n Proto).
 - `Components/nix/jail.nix`: The isolated dev environment definition.
 - `Components/mentci-aid/src/main.rs`: The Rust daemon implementation (**mentci-aid**).
-- `Components/scripts/`: Babashka/Clojure orchestration and logging.
+- `execute`: High-performance Rust/Actor orchestrator.
 - `Components/workflows/`: DOT files defining agent execution graphs.
 - `Outputs/Logs/`: Durable audit trails and milestone logs.
 - `Library/`: Secondary documentation (architecture, specs, guides).
 
 ## Usage
 - `nix develop`: Enter the Level 5 Jail environment.
+- `execute launcher`: Initialize the Jail (provisions Sources).
 - `cargo build --manifest-path Components/mentci-aid/Cargo.toml`: Compile the daemon and Cap'n Proto schemas.
 - `cargo run --manifest-path Components/mentci-aid/Cargo.toml -- Components/workflows/example.dot`: Run the workflow engine.
-- `cargo run --manifest-path Components/mentci-aid/Cargo.toml -- sandbox -- /bin/sh`: Start a Bubblewrap-backed sandbox shell (`execute sandbox` alias is also available).
-- `cargo run --manifest-path Components/mentci-aid/Cargo.toml --bin execute -- root-guard`: Run the filesystem integrity guard.
-- `cargo run --manifest-path Components/mentci-aid/Cargo.toml --bin execute -- link-guard`: Run the cross-tier link guard.
-- `cargo run --manifest-path Components/mentci-aid/Cargo.toml --bin execute -- version`: Get the content-addressed program version.
+- `execute sandbox -- /bin/sh`: Start a Bubblewrap-backed sandbox shell.
+- `execute root-guard`: Run the filesystem integrity guard.
+- `execute link-guard`: Run the cross-tier link guard.
+- `execute session-guard`: Verify the commit graph and session state.
+- `execute version`: Get the content-addressed program version.
+- `execute unify --write`: Enforce R&D mirror counterpart coverage.
+- `execute finalize`: Cryptographically synthesize and push the session.
 - `nix build .#execute`: Build the exported `execute` app package from flake outputs.
 - `cargo test --manifest-path Components/mentci-aid/Cargo.toml`: Run `mentci-aid` standalone tests.
 - `cargo test --manifest-path Components/chronos/Cargo.toml`: Run `chronos` standalone tests.

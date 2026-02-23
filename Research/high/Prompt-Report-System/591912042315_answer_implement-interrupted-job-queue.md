@@ -15,13 +15,13 @@ implement it
 Implemented the interrupted-job recovery strategy as executable tooling plus generated queue artifact.
 
 Implemented components:
-1. `Components/scripts/interrupted_job_queue/main.clj`
+1. `execute`
 - Parses interruption audit prompt list.
 - Classifies each recovered prompt into subject/class/priority.
 - Deduplicates prompts and emits a queue table.
 - Supports dry run and `--write` mode.
 
-2. `Components/scripts/interrupted_job_queue/TestingContext.md`
+2. `executeinterrupted_job_queue/TestingContext.md`
 - Adds quick command checks and expected behavior.
 
 3. `Research/Prompt-Report-System/InterruptedJobQueue.md`
@@ -32,10 +32,10 @@ Implemented components:
 - Updated with implementation status and artifact pointers.
 
 Validation:
-- `bb Components/scripts/interrupted_job_queue/main.clj` (pass)
-- `bb Components/scripts/interrupted_job_queue/main.clj --write` (pass)
-- `execute root-guard --scripts-dir Components/scripts/interrupted_job_queue` (pass)
-- Full-tree script validation currently fails on a pre-existing issue: `Components/scripts/program_version/main.clj` missing `defn*` usage.
+- `execute job-queue` (pass)
+- `execute job-queue --write` (pass)
+- `execute root-guard --scripts-dir executeinterrupted_job_queue` (pass)
+- Full-tree script validation currently fails on a pre-existing issue: `execute` missing `defn*` usage.
 
 ## Reporting Protocol Notes
 

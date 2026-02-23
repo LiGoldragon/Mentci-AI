@@ -8,10 +8,6 @@
    :path "schema"
    :interfaces ["schema.capnp" "schema.edn"]
    :status :active}
-  {:id "scripts"
-   :path "scripts"
-   :interfaces ["bb.entrypoints"]
-   :status :active}
   {:id "mentci-aid"
    :path "mentci-aid"
    :interfaces ["rust.engine" "rust.daemon"]

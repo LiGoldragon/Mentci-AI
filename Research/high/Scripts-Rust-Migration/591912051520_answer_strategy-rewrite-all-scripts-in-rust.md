@@ -5,7 +5,7 @@
 - Prompt: `strategy to rewrite all the scripts in rust`
 
 ## Summary
-Defined a full migration strategy to port all `Components/scripts/*` entrypoints from Babashka/Clojure to Rust using a staged, low-risk rollout.
+Defined a full migration strategy to port all `execute*` entrypoints from Babashka/Clojure to Rust using a staged, low-risk rollout.
 
 ## Produced Strategy Artifacts
 1. `Development/Scripts-Rust-Migration/Strategy.md`

@@ -10,7 +10,7 @@ strategy for components to dynamically receive the location of their required ex
 ## Outcome
 Created a dedicated strategy for centrally managed component-location resolution:
 - Canonical registry in `Components/registry/component_locations.edn`
-- Validation + normalization entrypoint (`Components/scripts/component_registry/main.clj` proposed)
+- Validation + normalization entrypoint (`execute` proposed)
 - Structured runtime injection (`jailConfig` + env/path)
 - Consumer-side ID-based resolution APIs (Clojure + Rust)
 - Migration phases, enforcement rules, and acceptance criteria

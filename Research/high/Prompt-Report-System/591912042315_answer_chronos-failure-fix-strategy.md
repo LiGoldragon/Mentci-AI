@@ -13,7 +13,7 @@ strategy to fix
 ## Agent Answer
 
 Created a concrete remediation strategy for the Chronos failure in
-`Components/scripts/answer_report/main.clj`.
+`execute`.
 
 Root cause captured:
 - `answer_report` runs `cargo run --bin chronos` from repo root.

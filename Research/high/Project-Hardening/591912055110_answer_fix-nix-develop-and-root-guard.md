@@ -9,7 +9,7 @@
 ## Resolution
 
 1.  Generated `Components/mentci-vcs/Cargo.lock` via `cargo update` and added it to git tracking (`git add -N`).
-2.  Updated `Components/scripts/root_guard/main.clj` to include `.mentci` in `allowed-runtime-dirs`.
+2.  Updated `execute` to include `.mentci` in `allowed-runtime-dirs`.
 3.  Removed the `result` symlink and `outputs/` directory from the root.
 
 ## Verification

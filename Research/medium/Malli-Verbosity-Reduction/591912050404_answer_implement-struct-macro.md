@@ -13,7 +13,7 @@ implement defobj, after renaming it to "struct"
 
 ## Agent Answer
 
-Implemented a new `struct` macro in `Components/scripts/lib/malli.clj` as the renamed schema-short-style macro. It supports scalar/vector/symbol schema forms directly and compiles map literals through Malli lite schema expansion. Updated Clojure guidelines and the Malli verbosity strategy to use `struct` terminology.
+Implemented a new `struct` macro in `executelib/malli.clj` as the renamed schema-short-style macro. It supports scalar/vector/symbol schema forms directly and compiles map literals through Malli lite schema expansion. Updated Clojure guidelines and the Malli verbosity strategy to use `struct` terminology.
 
 
 ## Reporting Protocol Notes

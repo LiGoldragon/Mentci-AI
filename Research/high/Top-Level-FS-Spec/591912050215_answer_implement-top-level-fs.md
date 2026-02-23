@@ -19,8 +19,8 @@ Implemented top-level FS minimization and enforcement.
 
 ### Top-level enforcement
 - Added root contract checker:
-  - `Components/scripts/root_guard/main.clj`
-  - `Components/scripts/root_guard/TestingContext.md`
+  - `execute`
+  - `executeroot_guard/TestingContext.md`
 - Added local runtime config ignore:
   - `/.mentci/` in `.gitignore`
 - Updated protocol to require root guard run:
@@ -38,5 +38,5 @@ Implemented top-level FS minimization and enforcement.
 
 ### Validation
 - `execute root-guard` -> pass
-- `bb Components/scripts/sources_remount/main.clj --help` -> pass
-- `execute root-guard` -> fails on pre-existing issue (`Components/scripts/program_version/main.clj` missing `defn*`)
+- `execute remount --help` -> pass
+- `execute root-guard` -> fails on pre-existing issue (`execute` missing `defn*`)

@@ -12,7 +12,7 @@ research scripts that are not even needed, or have unecessary features or hard-w
 
 ## Agent Answer
 
-Script-surface audit completed for `Components/scripts/`.
+Script-surface audit completed for `execute`.
 
 Primary conclusion:
 1. The script layer has several **useful core controls** (`validate_scripts`, `reference_guard`, `session_finalize`, `launcher`), but also includes **legacy or overlapping utilities** with weak runtime ownership.
@@ -22,19 +22,19 @@ Primary conclusion:
 
 ### High Priority (act soon)
 
-1. `Components/scripts/admin_shell/main.clj`
+1. `execute`
 - Issue: hard-wired stale Rust manifest path: `--manifest-path Components/Cargo.toml`.
 - Evidence: script bootstrap argv uses `Components/Cargo.toml`, but repository now builds from `Components/mentci-aid/Cargo.toml`.
 - Impact: admin shell bootstrap path can fail or drift from real runtime surface.
 - Action: fix path immediately or deprecate until corrected.
 
-2. `Components/scripts/session_metadata/main.clj`
+2. `execute`
 - Issue: overlapping session-state workflow duplicates `session_finalize` responsibilities and writes local mutable file `.mentci/session_state.json`.
 - Evidence: `Core/ContextualSessionProtocol.md` marks it as optional, while `session_finalize` + `session_guard` are authoritative closure tools.
 - Impact: dual protocol surfaces increase session inconsistency risk.
 - Action: mark as legacy/optional explicitly and stop treating as primary flow.
 
-3. `Components/scripts/sources_mounter/main.clj` vs `Components/scripts/launcher/main.clj`
+3. `execute` vs `execute`
 - Issue: significant overlap in source-manifest parsing, whitelist handling, and mount/materialization behavior.
 - Evidence: both implement config discovery from `.attrs.json`/`jailConfig` and use `Core/agent-sources.edn`.
 - Impact: duplicated behavior surface and drift risk.
@@ -42,33 +42,33 @@ Primary conclusion:
 
 ### Medium Priority (simplify next)
 
-1. `Components/scripts/tool_discoverer/main.clj`
+1. `execute`
 - Issue: optional network-style package discovery (`nix search`, `cargo search`) with low coupling to core stabilization goals.
 - Impact: likely non-essential operational surface; adds maintenance/test overhead.
 - Action: downgrade to explicit utility status or remove from active sweep/testing expectations.
 
-2. `Components/scripts/intent/main.clj`
+2. `execute`
 - Issue: bespoke bookmark creation UX with random UUID prefix and direct `jj new` orchestration.
 - Impact: may conflict with stricter session protocol flow and increase branch/bookmark churn.
 - Action: narrow scope or fold into documented `jj` workflow tools.
 
-3. `Components/scripts/validate_scripts/main.clj`
+3. `execute`
 - Issue: hard-wired allowlists and heuristic contract checks (`defprotocol`, `impl`, `(main`) rather than policy data loading.
 - Impact: guard drift requires script edits for policy evolution.
 - Action: externalize allowlist/contract config to EDN policy file.
 
-4. `Components/scripts/reference_guard/main.clj`
+4. `execute`
 - Issue: hard-wired roots and allowlist exceptions in code.
 - Impact: policy updates require code changes; exception growth is brittle.
 - Action: externalize roots/allowlist patterns to one policy artifact.
 
 ### Low Priority (keep as-is for now)
 
-1. `Components/scripts/jail_key_setup/main.clj`
+1. `execute`
 - Hard-wired constants (`mentci-ai/admin-agent`, `public_key`, `/tmp/mentci_admin_ed25519`) are mostly intentional by design contract.
 - Action: retain, but ensure docs consistently describe canonical-only behavior.
 
-2. `Components/scripts/mk_shell/main.clj`
+2. `execute`
 - Appears still wired through `Components/nix/mk-shell.nix` builder path.
 - Action: keep until Nix integration is redesigned.
 

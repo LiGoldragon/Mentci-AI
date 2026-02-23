@@ -51,9 +51,9 @@ explicit, finishable units without losing auditability.
 3. Latest head is a `session:` commit and pushed to `dev`.
 
 ## Implementation Status
-- Implemented extractor: `Components/scripts/interrupted_job_queue/main.clj`
+- Implemented extractor: `execute`
 - Generated queue artifact: `Research/high/Prompt-Report-System/InterruptedJobQueue.md`
-- Script test context: `Components/scripts/interrupted_job_queue/TestingContext.md`
+- Script test context: `executeinterrupted_job_queue/TestingContext.md`
 
 ## Current Review Result
 The prior strategy file was a placeholder and did not provide a usable interrupted-job
@@ -62,7 +62,7 @@ recovery flow. This revision makes the strategy executable and testable.
 ## Chronos Invocation Fix Strategy (Answer Report)
 
 ### Problem
-`Components/scripts/answer_report/main.clj` invokes Chronos with:
+`execute` invokes Chronos with:
 - `cargo run --quiet --bin chronos -- ...`
 
 The repo root no longer contains `Cargo.toml`; the Chronos manifest is at
@@ -73,7 +73,7 @@ Make `answer_report` Chronos resolution robust across repo layout changes and sh
 
 ### Plan
 1. Replace single hardcoded Chronos call with a resolver function in
-   `Components/scripts/answer_report/main.clj`.
+   `execute`.
 2. Resolution order:
    - Try direct binary: `chronos --format numeric --precision second`.
    - Try cargo with explicit manifest path:
@@ -95,7 +95,7 @@ Make `answer_report` Chronos resolution robust across repo layout changes and sh
 4. Add/update `TestingContext.md` with both binary-present and cargo-manifest fallback scenarios.
 
 ### Implementation Status (2026-02-22)
-- Implemented in `Components/scripts/answer_report/main.clj`:
+- Implemented in `execute`:
   - `--chronos-raw` CLI override for deterministic tests.
   - Chronos resolver order:
     1. `chronos` binary
@@ -103,6 +103,6 @@ Make `answer_report` Chronos resolution robust across repo layout changes and sh
     3. optional `Library/chronos/Cargo.toml` manifest fallback if present
   - Attempt execution now captures `IOException` (missing binary) and continues fallback.
   - Failure output now prints each attempted command with exit/stderr/stdout.
-- Updated test context in `Components/scripts/answer_report/TestingContext.md`.
+- Updated test context in `executeanswer_report/TestingContext.md`.
 - Current environment note:
   - Cargo fallback reaches manifest but fails due existing `Components/mentci-aid/build.rs` schema compilation errors in `schema/mentci.capnp`.

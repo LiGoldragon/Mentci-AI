@@ -29,7 +29,7 @@ Core design choices:
   - `GIT_SSH_COMMAND` SSH remote auth
   - SSH-based commit signing (`git config gpg.format ssh` + signing key pub path)
 - New proposed resolver script integration point:
-  - `Components/scripts/jail_key_resolver/main.clj`
+  - `execute`
 
 Also included rollout phases, policy extension shape, failure behavior, and test plan aligned with existing jail push SSH harness.
 

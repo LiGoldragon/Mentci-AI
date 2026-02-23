@@ -44,7 +44,7 @@ feasability of converting clj to new lite syntax
 
 ## Main Blockers
 
-1. Validator hard requirement on `defn*` usage (`Components/scripts/validate_scripts/main.clj`).
+1. Validator hard requirement on `defn*` usage (`execute`).
 2. Missing canonical replacement macros for all target forms (`defobj`, `impl` not yet baseline).
 3. Need for naming-policy enforcement during migration (`Input` in `main.clj`, no redundant flow/type names).
 

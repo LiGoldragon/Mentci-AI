@@ -13,7 +13,7 @@ Added a dedicated admin-shell workflow that creates/reuses a mutable Mentci work
 - Help text updated to mark `--capnp` optional.
 
 2. Added interactive admin shell script:
-- `Components/scripts/admin_shell/main.clj`
+- `execute`
 - Validates args, bootstraps workspace with `mentci-ai job/jails bootstrap`, then launches `mentci-jail-run` with workspace CWD.
 - Defaults:
   - `outputName=mentci-ai-admin`
@@ -22,7 +22,7 @@ Added a dedicated admin-shell workflow that creates/reuses a mutable Mentci work
   - `targetBookmark=jailCommit`
 
 3. Added script testing context:
-- `Components/scripts/admin_shell/TestingContext.md`
+- `executeadmin_shell/TestingContext.md`
 
 4. Added top-level command in dev shell package set:
 - `Components/nix/common_packages.nix` now exports `mentci-admin-shell`.

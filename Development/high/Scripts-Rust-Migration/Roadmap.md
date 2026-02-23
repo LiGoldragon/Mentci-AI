@@ -1,7 +1,7 @@
 # Scripts Rust Migration Roadmap
 
 ## Phase 0: Baseline Inventory
-1. Freeze script inventory (`Components/scripts/*/main.clj`) and classify by risk.
+1. Freeze script inventory (`execute`) and classify by risk.
 2. Capture invocation matrix:
 - required args
 - env var dependencies

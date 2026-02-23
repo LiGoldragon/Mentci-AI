@@ -39,45 +39,39 @@ R&D is the mirrored two-tree model:
   - `Library/specs/LojixSyntaxSpec.md`: `lojix` syntax rules (extended EDN).
   - `Library/architecture/MentciBoxIsolation.md`: Mentci Box isolation protocol.
 
-## 5. Current Operational Snapshot (♓︎.6.4.45 | 5919 AM)
-- `dev` head: `0cd7a9f` (`session: harden VCS mandates and finalize migration research`)
+## 5. Current Operational Snapshot (♓︎.6.6.15 | 5919 AM)
+- `dev` head: `968e572` (`session: fix chronos warnings and report on Rust data ergonomics`)
 
-Section sweep progress (`Development/high/Repo-Intent-Realignment/SectionSweepProgram.md`):
-- Completed: sections `1` to `10` (Full Repository Sweep).
-- Current Status: All core and library documentation synchronized with refined authority tiers.
+Section sweep progress:
+- **Status:** **COMPLETED** (Full Repository Sweep 1-10).
+- **Outcome:** All core and library documentation synchronized with refined authority tiers.
 
 ## 6. Guard Health Snapshot
 Latest observed gate outcomes:
 1. `root-guard`: passing.
 2. `link-guard`: passing.
 3. `session-guard`: passing.
-4. `unify` (dry-run): passing.
+4. `unify`: passing.
 
 Interpretation:
 - The transition to native Rust actors for repository integrity has been successful.
-- Obsolete Clojure scripts have been removed, simplifying the orchestration surface.
+- **Logic-Data Separation** is enforced via EDN sidecar configurations.
+- Obsolete Clojure scripts have been removed.
 
 ## 7. High-Importance Active Risks
-1. **Control-plane divergence risk:** `main` and `dev` are both advancing; convergence protocol (`dev` -> finalized session -> release) is not yet consistently enforced.
-2. **Session closure risk:** trailing intent chains degrade audit clarity and violate completion invariants.
-3. **Top-level FS contract drift:** unresolved `outputs` and `result` conflict with root guard contract.
-4. **Script-surface complexity risk:** overlapping script capabilities and hard-wired policy/path constants increase drift potential.
+1. **Control-plane divergence risk:** `main` and `dev` are both advancing; convergence protocol (`dev` -> finalized session -> release) needs consistent enforcement.
+2. **Component Maturity:** `mentci-fs` and `aski-lib` are in early prototype stages.
 
 ## 8. Immediate Priorities (Execution Order)
-1. Close control-plane hygiene:
-- re-establish single promotion flow (`dev` -> `main`) post-release.
-2. Repair session protocol health:
-- synthesize/close trailing `intent:` chains into protocol-compliant `session:` commits.
-3. Resolve root contract drift:
-- decide explicit contract handling for `outputs` and `result`.
-4. Complete remaining section sweeps (`7` to `10`) with per-section research checkpoints.
+1. Stabilize `mentci-box` V1 for robust bootstrap.
+2. Mature `mentci-fs` for concise filesystem comprehension.
+3. Implement `actor-first` logic for remaining orchestration tasks.
 
 ## 9. Script-Surface Realignment Focus
-From current `Artifact-Sweep` research:
-1. Fix/deprecate stale-wired `admin_shell` bootstrap path.
-2. Converge overlapping source-mount paths (`launcher` vs `sources_mounter`/`sources_remount`).
-3. Reclassify optional utilities (`tool_discoverer`, `intent`, `session_metadata`) out of critical path.
-4. Externalize guard policy allowlists/roots from code to data contracts.
+1. **DEPRECATED:** legacy Clojure scripts (`root_guard`, `reference_guard`, `session_guard`, `program_version`, `subject_unifier`, `intent`, `session_finalize`, `logger`, `session_metadata`, `solar_prefix`, `answer_report`).
+2. **PORTED:** These functions now reside in `execute` subcommands (Rust/Actor).
+3. **EXTERNALIZED:** Guard policy allowlists and constants reside in `.edn` sidecars.
+4. **REMAINING:** Converge overlapping source-mount paths (`launcher` vs `sources_mounter`/`sources_remount`).
 
 ## 10. Operational Requirements
 - Any major component/protocol/input mapping changes must update this file and append `Outputs/Logs/ReleaseMilestones.md`.

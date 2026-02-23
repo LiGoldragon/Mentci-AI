@@ -66,7 +66,7 @@ Agents updated")
 - **Behavior:** Intended for consumption by the Parent Agent or external supervisors.
 - **Lifecycle:** Once validated, outputs are often promoted to the `Sources/` of another agent or merged into the primary repository.
 
-### 2.3 Components (`Components/mentci-aid/`, `Components/chronos/`, `Components/scripts/`, `Components/tasks/`)
+### 2.3 Components (`Components/mentci-aid/`, `Components/chronos/`, `execute`, `Components/tasks/`)
 - **Mode:** Writable (via Subflows).
 - **Behavior:** Subflows edit a **Temporary Branch** (anonymous `jj` revision).
 - **Promotion:**

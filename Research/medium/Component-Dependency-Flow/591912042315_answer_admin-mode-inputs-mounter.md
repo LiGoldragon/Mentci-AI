@@ -13,8 +13,8 @@ I need a mounter that works in admin mode (outside jail)
 ## Agent Answer
 
 Implemented a standalone admin-side inputs mounter:
-- `Components/scripts/sources_mounter/main.clj`
-- `Components/scripts/sources_mounter/TestingContext.md`
+- `execute`
+- `executesources_mounter/TestingContext.md`
 
 What it does:
 1. Reads `jailConfig.sourceManifest` from an attrs JSON (default `.attrs.json`).
@@ -25,13 +25,13 @@ What it does:
 
 Usage:
 - Dry run:
-  - `bb Components/scripts/sources_mounter/main.clj`
+  - `bb execute`
 - Apply read-only mounts:
-  - `bb Components/scripts/sources_mounter/main.clj --replace --write`
+  - `bb execute --replace --write`
 
 Validation:
 - Script-local validator pass:
-  - `execute root-guard --scripts-dir Components/scripts/sources_mounter`
+  - `execute root-guard --scripts-dir executesources_mounter`
 - Mount run pass and symlink targets verified under `Sources/`.
 
 Caveat:

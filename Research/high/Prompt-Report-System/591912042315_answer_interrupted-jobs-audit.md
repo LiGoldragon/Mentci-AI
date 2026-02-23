@@ -92,7 +92,7 @@ Representative interruption chain (ordered):
 68. `implement top level fs`
 69. `strategy for components to dynamically receive location...`
 70. `move the index file directly in Components/`
-71. `what is Components/scripts/validate_scripts/main.clj for?`
+71. `what is execute for?`
 72. `what's its failure about?`
 73. `remove any python script still in repo`
 74. `what are the .jj_ directories for?`

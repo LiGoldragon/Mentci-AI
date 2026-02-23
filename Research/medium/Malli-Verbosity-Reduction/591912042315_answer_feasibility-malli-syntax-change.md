@@ -41,7 +41,7 @@ Overall: **feasible with constraints**.
 
 ## Recommended Implementation Order
 
-1. Implement local `defobj` and `defn1` in `Components/scripts/lib/malli.clj`.
+1. Implement local `defobj` and `defn1` in `executelib/malli.clj`.
 2. Add compile-time failure for unresolved inferred output.
 3. Pilot on one low-risk script.
 4. Validate instrumentation and script guards.

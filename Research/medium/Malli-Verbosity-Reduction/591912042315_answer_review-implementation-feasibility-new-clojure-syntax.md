@@ -24,11 +24,11 @@ The strategy direction is implementable, but one currently specified syntax choi
 - Current strategy section using `(fn to-lines Source ...)` is therefore blocked in direct implementation.
 
 2. Validator currently enforces `defn*`
-- `Components/scripts/validate_scripts/main.clj` checks script contents for `defn*` and `mentci.malli` usage.
+- `execute` checks script contents for `defn*` and `mentci.malli` usage.
 - Migration to alternate syntax must first update validator policy.
 
 3. Macro scaffolding not yet present
-- `Components/scripts/lib/malli.clj` currently only provides `defn*`/`enable!`.
+- `executelib/malli.clj` currently only provides `defn*`/`enable!`.
 - `defobj` and `impl` remain strategy targets, not implemented artifacts.
 
 ## Feasible Components Matrix
@@ -42,7 +42,7 @@ The strategy direction is implementable, but one currently specified syntax choi
 
 1. Keep `defn*` as baseline contract.
 2. Replace `fn` placeholder with non-colliding macro name (for example `fn*`).
-3. Implement `defobj` and optional `impl` in `Components/scripts/lib/malli.clj`.
+3. Implement `defobj` and optional `impl` in `executelib/malli.clj`.
 4. Update validator to accept sanctioned macro variants.
 5. Pilot in one low-risk script and measure readability + safety.
 

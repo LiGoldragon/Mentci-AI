@@ -29,16 +29,16 @@ Changes:
 - `Research/<priority>/<Subject>/index.edn` generated from existing topic README entries.
 
 4. Updated tooling to operate on the new namespace and index model:
-- `Components/scripts/subject_unifier/main.clj`
+- `execute`
   - now scans `Research/` + `Development/`
   - topic index path now resolves to `index.edn`
-- `Components/scripts/answer_report/main.clj`
+- `execute`
   - report output now writes into `Research/<tier>/<Subject>/...`
   - subject tier resolved from `Development/<tier>/<Subject>/`
   - topic index bootstrap uses `index.edn`
-- `Components/scripts/reference_guard/main.clj`
+- `execute`
   - roots switched from old trees to new trees
-- `Components/scripts/root_guard/main.clj`
+- `execute`
   - canonical root set switched to `Research` and `Development`
 
 5. Updated core/library references to new names and index format:

@@ -85,5 +85,5 @@ If uncertain, keep separate but add cross-reference in both READMEs.
 ## 8. Acceptance Criteria
 1. Subject count reduced by at least 30% without loss of report artifacts.
 2. No duplicate-intent subject pairs remain in `Development/` + `Research/`.
-3. `bb scripts/subject_unifier/main.clj --write` keeps state stable (no oscillation).
+3. `execute unify --write` keeps state stable (no oscillation).
 4. Queue entries in `Library/StrategyQueue.md` point only to canonical subjects.

@@ -1,9 +1,9 @@
 # Architecture: Jail Key Resolver and Signing/Push Path
 
 ## Components
-- `Components/scripts/jail_key_resolver/main.clj` (new)
-- `Components/scripts/commit/main.clj` (integration point)
-- `Components/scripts/jj_workflow/main.clj` (integration point)
+- `execute` (new)
+- `execute` (integration point)
+- `execute` (integration point)
 - `.mentci/runtime.json` (runtime authority)
 - `gopass` backend (secret source)
 

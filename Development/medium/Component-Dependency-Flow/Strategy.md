@@ -25,7 +25,7 @@ Registry records:
 
 2. **Validation + normalization**
 - A validator script checks schema + existence + uniqueness and emits normalized map.
-- Proposed entrypoint: `Components/scripts/component_registry/main.clj`.
+- Proposed entrypoint: `execute`.
 
 3. **Injection layer**
 - Launcher/runtime injects resolved dependency map into component execution via structured data:
@@ -46,7 +46,7 @@ Minimum fields:
 
 ## Required Runtime APIs
 - Clojure helper:
-  - `Components/scripts/lib/component_registry.clj`
+  - `executelib/component_registry.clj`
   - `resolve-component-path` by `componentId`
 - Rust helper:
   - `Components/mentci-aid/src/component_registry.rs`

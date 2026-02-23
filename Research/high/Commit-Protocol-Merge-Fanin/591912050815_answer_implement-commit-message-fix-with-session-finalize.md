@@ -13,7 +13,7 @@ use that report to implement a fix
 
 ## Agent Answer
 
-Implemented a commit-protocol fix by adding `Components/scripts/session_finalize/main.clj`, which creates compliant `session:` commit messages (with required sections), resolves the target revision safely (`@` falls back to `@-` when working copy is empty/blank), sets bookmarks to the finalized non-empty revision, pushes, and verifies remote bookmark hash. Added testing context for the script and updated `Core/VersionControlProtocol.md` plus `Core/ContextualSessionProtocol.md` to use safe bookmark targeting (`jj bookmark set dev -r @- --allow-backwards`) and recommend the new finalization automation.
+Implemented a commit-protocol fix by adding `execute`, which creates compliant `session:` commit messages (with required sections), resolves the target revision safely (`@` falls back to `@-` when working copy is empty/blank), sets bookmarks to the finalized non-empty revision, pushes, and verifies remote bookmark hash. Added testing context for the script and updated `Core/VersionControlProtocol.md` plus `Core/ContextualSessionProtocol.md` to use safe bookmark targeting (`jj bookmark set dev -r @- --allow-backwards`) and recommend the new finalization automation.
 
 
 ## Reporting Protocol Notes

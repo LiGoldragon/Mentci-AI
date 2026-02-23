@@ -41,7 +41,7 @@ Permissions:
 - Runtime file carries `workspaceRoot`, `policyPath`, target bookmark, and key settings.
 
 2. **Key Resolve Step (new script)**
-- Proposed entrypoint: `Components/scripts/jail_key_resolver/main.clj`.
+- Proposed entrypoint: `execute`.
 - Reads runtime + env.
 - Resolves deterministic gopass path.
 - Executes: `gopass show --password <entry>`.

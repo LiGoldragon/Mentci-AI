@@ -91,7 +91,7 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
-    # Minimal Shim: Call Clojure launcher
-    bb ${../scripts/launcher/main.clj}
+    # Minimal Shim: Call Rust actor launcher
+    cargo run --quiet --manifest-path ${../mentci-aid/Cargo.toml} --bin execute -- launcher
   '';
 }

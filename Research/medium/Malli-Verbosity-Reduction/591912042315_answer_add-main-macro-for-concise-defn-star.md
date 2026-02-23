@@ -12,7 +12,7 @@ then make a "main" macro for a more concise defn*
 
 ## Agent Answer
 
-Implemented `main` macro in `Components/scripts/lib/malli.clj`.
+Implemented `main` macro in `executelib/malli.clj`.
 
 Behavior:
 1. Common concise form:

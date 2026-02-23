@@ -14,12 +14,12 @@ Removed all Python source/bytecode files from the repository and removed policy 
 - All `*.py` and `__pycache__/*.pyc` files under `Components/tools/edn_format/`.
 
 ### Updated
-- `Components/scripts/validate_scripts/main.clj`
+- `execute`
   - removed the allowlist exception for `prefetch_orchestrator.py`.
-  - now fails on any Python file under `Components/scripts/`.
+  - now fails on any Python file under `execute`.
 - `Core/AGENTS.md`
   - removed Python prefetch orchestrator requirement/command.
-  - updated script guard rule: Python forbidden under `Components/scripts/` with no exceptions.
+  - updated script guard rule: Python forbidden under `execute` with no exceptions.
 - `Library/guides/TransitionPythonToClojure.md`
   - removed “only exception” wording.
 - `Components/workflows/mentci.aski-fs`
@@ -28,4 +28,4 @@ Removed all Python source/bytecode files from the repository and removed policy 
 ### Verification
 - `rg --files -g '*.py' -g '*.pyc' -g '*.pyo'` returns no results.
 - `execute root-guard` still fails on pre-existing unrelated issue:
-  - `Missing defn* usage in Components/scripts/program_version/main.clj`.
+  - `Missing defn* usage in execute`.

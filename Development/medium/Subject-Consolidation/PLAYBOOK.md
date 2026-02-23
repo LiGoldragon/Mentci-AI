@@ -35,7 +35,7 @@ ls -1 Reports
 1. `rg` for alias names returns zero active references.
 2. Subject parity still valid:
 ```bash
-bb scripts/subject_unifier/main.clj --write
+execute unify --write
 ```
 3. Queue paths in `Library/StrategyQueue.md` are canonical.
 

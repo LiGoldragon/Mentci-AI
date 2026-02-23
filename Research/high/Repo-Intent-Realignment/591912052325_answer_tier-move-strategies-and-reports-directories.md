@@ -27,8 +27,8 @@ Changes applied:
 - `Core/AGENTS.md`, `Core/ContextualSessionProtocol.md`, `Core/VersionControlProtocol.md`
 - `Library/RestartContext.md`, `Library/StrategyDevelopment.md`, `Library/StrategyQueue.md`
 - `Research/index.edn`, new `Development/index.edn`
-- `Components/scripts/subject_unifier/main.clj` + testing context (tier-aware scanning/writing)
-- `Components/scripts/interrupted_job_queue/main.clj` + testing context (new default report paths)
+- `execute` + testing context (tier-aware scanning/writing)
+- `execute` + testing context (new default report paths)
 
 4. Updated subject index READMEs to point to tiered strategy/report paths.
 

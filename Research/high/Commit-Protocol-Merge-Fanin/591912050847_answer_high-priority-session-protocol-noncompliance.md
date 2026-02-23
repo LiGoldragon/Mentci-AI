@@ -26,7 +26,7 @@ Evidence:
 - Session guard output explicitly reports trailing intent commits and requests a `session:` final commit.
 
 Proposed resolution:
-1. Run `Components/scripts/session_finalize/main.clj` to synthesize compliant session message sections.
+1. Run `execute` to synthesize compliant session message sections.
 2. Ensure bookmark targets finalized non-empty revision (`@-` safeguard), not empty working copy.
 3. Re-run `execute session-guard` as completion gate.
 

@@ -16,7 +16,7 @@ Automate strategy execution support while preserving durable, restartable contex
 
 ## 3. Active Program
 1. Tool discovery support:
-- Maintain `Components/scripts/tool_discoverer/main.clj` for package/tool lookup.
+- Maintain `execute` for package/tool lookup.
 2. Session context capture:
 - Treat `Library/RestartContext.md` as the primary session-resume snapshot and update it after major structural changes.
 3. Sweep protocol:

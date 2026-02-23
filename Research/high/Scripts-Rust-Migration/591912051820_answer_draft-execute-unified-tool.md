@@ -9,7 +9,7 @@ Implemented a first Rust draft of the consolidated tool `execute` as a single en
 
 ## Implementation
 1. Added `Components/src/bin/execute.rs`:
-- discovers all script entrypoints under `Components/scripts/*/main.clj`
+- discovers all script entrypoints under `execute`
 - exposes:
   - `execute list`
   - `execute <script> [args...]`

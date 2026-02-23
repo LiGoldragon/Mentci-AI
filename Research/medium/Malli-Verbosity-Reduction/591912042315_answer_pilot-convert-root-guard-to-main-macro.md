@@ -13,7 +13,7 @@ apply conversion to best candidate and test
 ## Agent Answer
 
 Applied pilot conversion to best low-risk candidate:
-- `Components/scripts/root_guard/main.clj`
+- `execute`
 
 Conversion performed:
 1. Renamed entrypoint schema from `MainInput` to context-local `Input`.
@@ -22,11 +22,11 @@ Conversion performed:
 
 Bug fixed during pilot:
 - `main` macro originally emitted qualified `-main` symbol (`mentci.malli/-main`) which caused runtime failure.
-- Fixed in `Components/scripts/lib/malli.clj` by emitting unqualified `-main` symbol.
+- Fixed in `executelib/malli.clj` by emitting unqualified `-main` symbol.
 
 Tests run:
 - `execute root-guard` -> pass.
-- `execute root-guard --scripts-dir Components/scripts/root_guard` -> pass.
+- `execute root-guard --scripts-dir executeroot_guard` -> pass.
 - Macro expansion check for `(main Input ...)` -> expands to `(defn* -main [:=> [:cat Input] :any] [input] ...)`.
 
 Strategy state updated:

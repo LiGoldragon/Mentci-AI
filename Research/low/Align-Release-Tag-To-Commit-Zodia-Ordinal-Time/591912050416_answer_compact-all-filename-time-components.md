@@ -22,7 +22,7 @@ Implemented:
 
 Validation:
 - No remaining files under `Research/` or `Development/` match underscore date-time patterns.
-- `execute root-guard --scripts-dir Components/scripts/subject_unifier` -> pass
+- `execute root-guard --scripts-dir executesubject_unifier` -> pass
 - `execute root-guard` -> pass
 - `execute session-guard` -> pass
 

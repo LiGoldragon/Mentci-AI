@@ -9,6 +9,7 @@ pub mod session_actor;
 pub mod intent_actor;
 pub mod session_guard;
 pub mod report_actor;
+pub mod launcher;
 
 #[derive(Debug)]
 pub enum SymbolicMessage {
@@ -18,6 +19,7 @@ pub enum SymbolicMessage {
     GetProgramVersion(RpcReplyPort<String>),
     UnifySubjects(bool, RpcReplyPort<Result<(), String>>),
     InitializeIntent(String, RpcReplyPort<Result<String, String>>),
+    LaunchJail(RpcReplyPort<Result<(), String>>),
     EmitReport(
         String, // prompt
         String, // answer
@@ -90,6 +92,11 @@ impl Actor for Orchestrator {
             SymbolicMessage::InitializeIntent(name, reply) => {
                 let (actor, _handle) = Actor::spawn(None, intent_actor::IntentActor, ()).await?;
                 let res = ractor::call!(actor, intent_actor::IntentMessage::Initialize, name)?;
+                reply.send(res)?;
+            }
+            SymbolicMessage::LaunchJail(reply) => {
+                let (actor, _handle) = Actor::spawn(None, launcher::Launcher, ()).await?;
+                let res = ractor::call!(actor, launcher::LauncherMessage::Launch)?;
                 reply.send(res)?;
             }
             SymbolicMessage::EmitReport(prompt, answer, subject, title, kind, reply) => {

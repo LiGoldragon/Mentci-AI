@@ -15,20 +15,20 @@ continue conversion and testing
 Continued migration from `defn* -main` to `main Input ...` on additional low-risk scripts.
 
 Converted scripts:
-1. `Components/scripts/session_guard/main.clj`
-2. `Components/scripts/component_registry/main.clj`
-3. `Components/scripts/reference_guard/main.clj`
-4. `Components/scripts/sources_mounter/main.clj`
-5. `Components/scripts/interrupted_job_queue/main.clj`
-6. `Components/scripts/agent_launcher/main.clj`
-7. `Components/scripts/answer_report/main.clj`
-8. `Components/scripts/aski_flow_dot/main.clj`
-9. `Components/scripts/sources_remount/main.clj`
-10. `Components/scripts/subject_unifier/main.clj`
-11. `Components/scripts/validate_scripts/main.clj`
+1. `execute`
+2. `execute`
+3. `execute`
+4. `execute`
+5. `execute`
+6. `execute`
+7. `execute`
+8. `execute`
+9. `execute`
+10. `execute`
+11. `execute`
 
 Intentionally not converted in this batch:
-- `Components/scripts/commit/main.clj` and `Components/scripts/jj_workflow/main.clj` keep `defn* -main` because they use varargs (`& args`) entrypoints.
+- `execute` and `execute` keep `defn* -main` because they use varargs (`& args`) entrypoints.
 
 Conversion pattern applied:
 - Add `main` to `mentci.malli` require list.
@@ -38,16 +38,16 @@ Conversion pattern applied:
 
 Runtime checks:
 - `execute session-guard` -> pass
-- `bb Components/scripts/component_registry/main.clj --id scripts` -> pass
+- `execute component-registry --id scripts` -> pass
 - `execute link-guard` -> fails with existing reference-policy findings (same guard behavior class, not syntax regression)
-- `bb Components/scripts/sources_mounter/main.clj` -> pass
-- `bb Components/scripts/interrupted_job_queue/main.clj` -> pass
+- `bb execute` -> pass
+- `execute job-queue` -> pass
 - `execute unify` -> pass (dry-run scan)
-- `bb Components/scripts/aski_flow_dot/main.clj` -> usage exit without args (expected)
-- `bb Components/scripts/sources_remount/main.clj --help` -> pass
-- `bb Components/scripts/agent_launcher/main.clj --provider openai -- gopass --version` -> fails on missing local secret (environmental, not syntax)
+- `bb execute` -> usage exit without args (expected)
+- `execute remount --help` -> pass
+- `execute launcher --provider openai -- gopass --version` -> fails on missing local secret (environmental, not syntax)
 - `execute report ...` -> fails when `chronos` binary is unavailable from repo root (environmental dependency)
-- `execute root-guard --scripts-dir Components/scripts/validate_scripts` -> pass
+- `execute root-guard --scripts-dir executevalidate_scripts` -> pass
 
 Validator checks (per converted script dirs):
 - `session_guard` -> pass

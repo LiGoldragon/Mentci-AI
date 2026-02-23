@@ -12,7 +12,7 @@ implement it
 
 ## Agent Answer
 
-Implemented the Chronos resolution strategy in `Components/scripts/answer_report/main.clj`.
+Implemented the Chronos resolution strategy in `execute`.
 
 Changes made:
 1. Added `--chronos-raw` argument in CLI parsing for deterministic testing.
@@ -26,10 +26,10 @@ Changes made:
    - If all attempts fail, output now includes each attempted command plus exit/stderr/stdout.
 5. Kept chronography parse contract unchanged (`sign.degree.minute.second | year AM`).
 6. Updated test context:
-   - `Components/scripts/answer_report/TestingContext.md` now documents resolver order and `--chronos-raw` usage.
+   - `executeanswer_report/TestingContext.md` now documents resolver order and `--chronos-raw` usage.
 
 Validation:
-- `execute root-guard --scripts-dir Components/scripts/answer_report` -> pass
+- `execute root-guard --scripts-dir executeanswer_report` -> pass
 - `execute report --prompt "Q" --answer "A" --subject Prompt-Report-System --title chronos-raw-smoke --chronos-raw "12.1.2.3 | 5919 AM"` -> pass
 - Resolver-path run now fails gracefully with actionable diagnostics in this environment because:
   - `chronos` binary is absent on PATH, and

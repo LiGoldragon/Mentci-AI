@@ -22,7 +22,7 @@ detailed report on "Key removal (:raw, etc.): not feasible without semantic brea
 
 ## What `:raw` Does in This Codebase
 
-In current usage, `:raw` is the field carrying unprocessed text input. Example in `Components/scripts/session_guard/main.clj`:
+In current usage, `:raw` is the field carrying unprocessed text input. Example in `execute`:
 - Schema: `ParseInput = [:map [:raw :string]]`
 - Access: `(str/split-lines (:raw input))`
 

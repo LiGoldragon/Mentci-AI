@@ -44,7 +44,7 @@ mentci-clj = pkgs.stdenv.mkDerivation {
 
 ## 5. Phase 4: Cleanup
 - Keep Python out of Mentci scripts.
-- Do not add new `.py` scripts under `Components/scripts/`.
+- Do not add new `.py` scripts under `execute`.
 
 ## 6. Verification Matrix
 - [x] Remove logger tooling references once no longer in use.

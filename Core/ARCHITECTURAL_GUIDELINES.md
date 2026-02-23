@@ -1,6 +1,6 @@
 # Mentci-AI High-Level Architectural Guidelines
 
-*   **Reproducibility:** The `Sources/` directory contains read-only symlinks to all project dependencies and ecosystem sources, managed by `Components/scripts/launcher/main.clj`.
+*   **Reproducibility:** The `Sources/` directory contains read-only symlinks to all project dependencies and ecosystem sources, managed by `execute`.
 *   **Purity:** Respect the `RO Indicator`. In pure mode, Sources are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
 
 ## 0.0. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
@@ -17,13 +17,13 @@
 - They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 - Their logic must be ported to the higher-authority languages (Aski/Rust) to fully integrate with the Mentci-AI ecosystem.
 
-## 0.1. SHELL CODE IS FORBIDDEN (CLOJURE MANDATE)
+## 0.1. RUST ACTOR MANDATE (ORCHESTRATION)
 
-**Bash/Shell scripts are forbidden for logic.**
+**All core orchestration and symbolic manipulation must be implemented as Rust actors.**
 
-*   **Clojure (Babashka) Only:** All glue code, launchers, and build scripts must be written in **Clojure**, executed via the **Babashka** runtime for fast startup.
-*   **Structured Attributes:** Nix variables must be passed to Clojure using `__structuredAttrs = true`. The script must ingest the resulting JSON (`.attrs.json`).
-*   **Minimal Shim:** The *only* permissible Bash code is the single-line shim required to invoke the Clojure entrypoint (e.g., `bb Components/scripts/launcher/main.clj`).
+*   **Actor-First:** Use the `ractor` framework for all supervised task execution.
+*   **Minimal Shim:** The *only* permissible shim is the call to the `execute` orchestrator within the Nix Jail `shellHook`.
+*   **Clojure Role:** Clojure (Babashka) is reserved for **agile prototyping** and experimental tools. Once a tool stabilizes, it must be hardened into a Rust actor.
 
 ## 0.2. SOURCE CONTROL PROTOCOL (JJ & PUSH)
 

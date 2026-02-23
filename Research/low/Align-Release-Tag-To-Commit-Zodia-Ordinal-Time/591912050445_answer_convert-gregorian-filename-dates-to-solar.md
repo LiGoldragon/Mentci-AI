@@ -29,8 +29,8 @@ Applied migration:
 
 Validation:
 - No remaining Gregorian-prefixed report filenames under `Research/` or `Development/`.
-- `bb Components/scripts/interrupted_job_queue/test.clj` -> pass
-- `execute root-guard --scripts-dir Components/scripts/interrupted_job_queue` -> pass
+- `bb executeinterrupted_job_queue/test.clj` -> pass
+- `execute root-guard --scripts-dir executeinterrupted_job_queue` -> pass
 - `execute root-guard` -> pass
 - `execute session-guard` -> pass
 

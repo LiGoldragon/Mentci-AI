@@ -13,4 +13,4 @@
    :regex "(?i)`inputs/[^`\\\\n]+`|\"inputs/[^\"\\\\n]+\""
    :message "lowercase inputs/ path detected"}
  ]
- :allowlist ["src/actors/link_guard.rs" "Components/mentci-aid/src/actors/link_guard.edn" "Components/scripts/reference_guard/main.clj"]}
+ :allowlist ["src/actors/link_guard.rs" "Components/mentci-aid/src/actors/link_guard.edn" "execute"]}

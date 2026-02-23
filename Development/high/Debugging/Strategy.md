@@ -26,9 +26,9 @@ Run this deterministic bug sweep for repository health checks:
 2. `execute root-guard`
 3. `execute session-guard`
 4. Script test batch:
-   - `bb Components/scripts/tool_discoverer/test.clj`
-   - `bb Components/scripts/interrupted_job_queue/test.clj`
-   - `bb Components/scripts/sources_remount/test.clj`
+   - `bb executetool_discoverer/test.clj`
+   - `bb executeinterrupted_job_queue/test.clj`
+   - `bb executesources_remount/test.clj`
 5. Static marker scan:
    - `rg -n "TODO|FIXME|BUG|HACK|XXX" Components Core Library Development Research -S`
 6. Path drift scan:

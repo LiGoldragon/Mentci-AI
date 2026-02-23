@@ -92,7 +92,7 @@ Implications:
 - create `Components/`
 - move technical implementation roots under it with stable sub-layout:
   - `src/` -> `Components/mentci-aid/src/`
-  - `scripts/` -> `Components/scripts/`
+  - `scripts/` -> `execute`
   - `schema/` -> `Components/schema/`
   - `tasks/` -> `Components/tasks/`
   - `tests/` -> `Components/tests/`

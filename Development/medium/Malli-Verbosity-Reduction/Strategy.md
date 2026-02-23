@@ -115,23 +115,23 @@ Example explicit schema:
 - Ensure pilot includes at least one protocol/domain method extraction.
 
 Pilot executed:
-- Converted `Components/scripts/root_guard/main.clj` to `main` macro with `Input` naming.
+- Converted `execute` to `main` macro with `Input` naming.
 - Verified runtime and script validation for this candidate.
 - Continued batch conversion and validation:
-  - `Components/scripts/session_guard/main.clj`
-  - `Components/scripts/component_registry/main.clj`
-  - `Components/scripts/reference_guard/main.clj`
-  - `Components/scripts/sources_mounter/main.clj`
-  - `Components/scripts/interrupted_job_queue/main.clj`
-  - `Components/scripts/agent_launcher/main.clj`
-  - `Components/scripts/answer_report/main.clj`
-  - `Components/scripts/aski_flow_dot/main.clj`
-  - `Components/scripts/sources_remount/main.clj`
-  - `Components/scripts/subject_unifier/main.clj`
-  - `Components/scripts/validate_scripts/main.clj`
+  - `execute`
+  - `execute`
+  - `execute`
+  - `execute`
+  - `execute`
+  - `execute`
+  - `execute`
+  - `execute`
+  - `execute`
+  - `execute`
+  - `execute`
  - Remaining `defn* -main` entrypoints are varargs wrappers and intentionally unchanged in this phase:
-   - `Components/scripts/commit/main.clj`
-   - `Components/scripts/jj_workflow/main.clj`
+   - `execute`
+   - `execute`
 
 5. Validate with:
 - `bb scripts/validate_scripts/main.clj`
@@ -184,18 +184,18 @@ Partially feasible. Core direction is implementable, but current placeholder nam
 - Replaced in practice by implemented `main` macro for entrypoint concision.
 
 2. **Validator coupling to `defn*`**
-- `Components/scripts/validate_scripts/main.clj` currently enforces presence of
+- `execute` currently enforces presence of
   `defn*` + `mentci.malli` usage in scripts.
 - Any migration away from `defn*` requires validator evolution.
 
 3. **Missing implementation scaffolding**
-- `Components/scripts/lib/malli.clj` currently provides only `defn*` and `enable!`.
+- `executelib/malli.clj` currently provides only `defn*` and `enable!`.
 - `struct` / `impl` / scalar lint guards are not implemented yet.
 
 ### Feasible Path
 1. Keep `defn*` as baseline.
 2. Replace `fn` placeholder with a non-colliding macro name (for example `fn*`).
-3. Implement `struct` and optional `impl` in `Components/scripts/lib/malli.clj`.
+3. Implement `struct` and optional `impl` in `executelib/malli.clj`.
 4. Update validator to accept `defn*` and/or new sanctioned macro forms.
 5. Pilot on one script, then expand incrementally.
 
@@ -210,11 +210,11 @@ Partially feasible. Core direction is implementable, but current placeholder nam
 ## 9. Impl-Only Migration Start (Current)
 
 Initial implementation landed for methods-first migration:
-- Added `impl` macro to `Components/scripts/lib/malli.clj`:
+- Added `impl` macro to `executelib/malli.clj`:
   - `(impl <Type> <Protocol> <method> <schema> [this input] ...)`
   - expands to Malli-instrumented protocol method implementation via `extend-type`.
 - Migrated classification domain behavior in
-  `Components/scripts/interrupted_job_queue/main.clj` to protocol methods:
+  `execute` to protocol methods:
   - `QueueClassifier` protocol
   - `DefaultClassifier` record
   - method implementations: `subject-for`, `class-for`, `priority-for`,
@@ -223,11 +223,11 @@ Initial implementation landed for methods-first migration:
   around method calls for compatibility while migration proceeds.
 
 Verification added:
-- New test file: `Components/scripts/interrupted_job_queue/test.clj`
+- New test file: `executeinterrupted_job_queue/test.clj`
 - Covers classifier method dispatch and queue build+dedup behavior.
 - Validated with:
-  - `bb Components/scripts/interrupted_job_queue/test.clj`
-  - `execute root-guard --scripts-dir Components/scripts/interrupted_job_queue`
+  - `bb executeinterrupted_job_queue/test.clj`
+  - `execute root-guard --scripts-dir executeinterrupted_job_queue`
 
 *The Great Work continues.*
 
