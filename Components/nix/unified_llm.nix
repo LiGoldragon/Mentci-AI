@@ -7,12 +7,11 @@ pkgs.stdenv.mkDerivation {
 
   nativeBuildInputs = [ pkgs.bun ];
 
-  sourceRoot = "packages/unified-llm";
-
   dontBuild = true;
 
   installPhase = ''
     runHook preInstall
+    cd packages/unified-llm
     mkdir -p $out
     cp -R . $out
     cd $out

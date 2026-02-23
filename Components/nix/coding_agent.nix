@@ -7,16 +7,13 @@ pkgs.stdenv.mkDerivation {
 
   nativeBuildInputs = [ pkgs.bun ];
 
-  sourceRoot = "packages/coding-agent";
-
-  # Don't try to build anything by default
   dontBuild = true;
 
   installPhase = ''
     runHook preInstall
+    cd packages/coding-agent
     mkdir -p $out
     cp -R . $out
-    # Run bun install inside the destination
     cd $out
     bun install --production
     runHook postInstall
