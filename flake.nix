@@ -52,6 +52,10 @@
           url = "github:badlogic/pi-mono";
           flake = false;
         };
+        pi-agent-rust = {
+          url = "github:Dicklesworthstone/pi_agent_rust";
+          flake = false;
+        };
 
         # Research Sources
         leash = {
@@ -82,6 +86,7 @@
               attractor_src = attractorSrc;
               attractor_docs_src = attractorDocsSrc;
               pi_mono_src = inputs.pi-mono;
+              pi_agent_rust_src = inputs.pi-agent-rust;
               repo_root = ./.;
             };
 
@@ -103,6 +108,7 @@
           attractor = namespace.attractor;
           codingAgent = namespace.coding_agent;
           unifiedLlm = namespace.unified_llm;
+          piAgentRust = namespace.pi_agent_rust;
           gemini-cli = namespace.gemini_cli;
         };
 
@@ -116,6 +122,10 @@
         };
         apps.execute = flake-utils.lib.mkApp {
           drv = namespace.execute;
+        };
+        apps.pi = flake-utils.lib.mkApp {
+          drv = namespace.pi_agent_rust;
+          exePath = "/bin/pi";
         };
 
         devShells.default = devShell;

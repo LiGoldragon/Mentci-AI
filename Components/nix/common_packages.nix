@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, gemini_cli, gemini_tui, mentci_vcs, coding_agent, unified_llm }:
+{ pkgs, codex_cli_nix, system, gemini_cli, gemini_tui, mentci_vcs, coding_agent, unified_llm, pi_agent_rust }:
 
 [
   pkgs.babashka
@@ -22,6 +22,7 @@
   mentci_vcs
   coding_agent
   unified_llm
+  pi_agent_rust
   (pkgs.writeShellScriptBin "mentci-commit" ''
     mentci-vcs commit "$@"
   '')

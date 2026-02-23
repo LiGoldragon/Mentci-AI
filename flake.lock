@@ -1409,6 +1409,22 @@
         "type": "github"
       }
     },
+    "pi-agent-rust": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771872833,
+        "narHash": "sha256-OD5YL7u1hVImbNNWQ5ETNF9GOJnG/d2tSL/Q94LRLU4=",
+        "owner": "Dicklesworthstone",
+        "repo": "pi_agent_rust",
+        "rev": "2f0b74135957a4a8b5ba57746566793fd6fe9896",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Dicklesworthstone",
+        "repo": "pi_agent_rust",
+        "type": "github"
+      }
+    },
     "pi-mono": {
       "flake": false,
       "locked": {
@@ -1526,6 +1542,7 @@
         "mkZolaWebsite": "mkZolaWebsite_2",
         "nixpkgs": "nixpkgs_6",
         "opencode": "opencode",
+        "pi-agent-rust": "pi-agent-rust",
         "pi-mono": "pi-mono",
         "seahawk": "seahawk_2",
         "sema": "sema",

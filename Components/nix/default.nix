@@ -6,6 +6,7 @@
 , attractor_src
 , attractor_docs_src
 , pi_mono_src
+, pi_agent_rust_src
 , repo_root
 }:
 
@@ -36,6 +37,11 @@ let
     src = pi_mono_src;
   };
 
+  pi_agent_rust = import ./pi_agent_rust.nix {
+    inherit pkgs;
+    src = pi_agent_rust_src;
+  };
+
   execute = pkgs.runCommand "mentci-execute" { } ''
     mkdir -p "$out/bin"
     ln -s "${mentci_ai}/bin/execute" "$out/bin/execute"
@@ -52,7 +58,7 @@ let
     inherit pkgs system;
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
-    inherit mentci_vcs coding_agent unified_llm;
+    inherit mentci_vcs coding_agent unified_llm pi_agent_rust;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -79,6 +85,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell coding_agent unified_llm;
+  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell coding_agent unified_llm pi_agent_rust;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }
