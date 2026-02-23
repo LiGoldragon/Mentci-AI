@@ -54,6 +54,7 @@ These are the highest-order rules for all languages and scripts.
     *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
     *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (development scaffold or research topic).
     *   **Canonical Tool:** Use `bb Components/scripts/subject_unifier/main.clj --write` to enforce and repair bidirectional subject coverage.
+*   **R&D Mirror Contract:** Repository R&D consists of the paired trees `Development/` and `Research/`. Topic names mirror across both trees: `Development/` carries executable guidance, `Research/` carries prompt-traceable findings.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
 *   **Assimilation of Sources:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Sources/` (transitional alias: `Inputs/`). They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 *   **Language Authority Hierarchy:**

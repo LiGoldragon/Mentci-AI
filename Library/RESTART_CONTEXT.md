@@ -4,67 +4,87 @@
 
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
-*   **Active Bookmark:** `dev`.
-*   **Current Programming Version:** `4462v1kd` (Ref: `Components/scripts/program_version/main.clj`).
-*   **Latest Release Tag:** `v0.12.4.55.26` (Ref: Git tag state).
+*   **Primary Working Bookmark:** `dev`.
+*   **Current Programming Version:** `76j6my3v` (Ref: `Components/scripts/program_version/main.clj`).
+*   **Latest Release Tag:** `v0.12.5.45.52` (release target for this snapshot).
 
 ## 1. Project Overview
-Mentci-AI is a Level 5 "Dark Factory" AI daemon (**mentci-aid**) designed for autonomous symbolic manipulation. It operates within a Pure Nix Jail environment and uses Jujutsu (`jj`) for version control.
+Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository currently operates with a split control-plane state (`dev` active development lineage, `main` release lineage) and an in-progress deterministic cleanup program.
 
 ## 2. Mandatory Core Context (The Program)
 These files define the agent's operating logic and must be loaded automatically:
-- `Core/AGENTS.md`: Instruction set and response signatures.
-- `Core/ARCHITECTURAL_GUIDELINES.md`: The laws of naming, casing, and authority.
-- `Core/VERSION_CONTROL.md`: JJ protocols and "Commit Every Intent" mandate.
-- `Core/HIGH_LEVEL_GOALS.md`: Durable roadmap (Current: Goal 0 - Stabilization).
-- `Library/architecture/ASKI_POSITIONING.md`: Teleological framing of the symbolic interface.
-- `Core/SEMA_*_GUIDELINES.md`: Language-specific structural rules (Rust, Clojure, Nix).
-- `Library/specs/ASKI_FS_SPEC.md`: Filesystem Ontology.
-- `Core/EXTENSION_INDEX_PROTOCOL.md`: Optional extension-index contract for keeping Core stable while loading extensions from standard locations.
+- `Core/AGENTS.md`
+- `Core/ARCHITECTURAL_GUIDELINES.md`
+- `Core/VERSION_CONTROL.md`
+- `Core/HIGH_LEVEL_GOALS.md`
+- `Library/architecture/ASKI_POSITIONING.md`
+- `Core/SEMA_*_GUIDELINES.md`
+- `Library/specs/ASKI_FS_SPEC.md`
+- `Core/EXTENSION_INDEX_PROTOCOL.md`
 
-## 3. Component Status Map
-- **Engine (`mentci-aid`):** `Components/mentci-aid/src/main.rs`. Status: **Experimental / Not in a running state.**
-- **Orchestration:** `Components/scripts/launcher/` (Jail), `Components/scripts/commit/` (Shipping).
-- **Truth Layer:** `Components/schema/*.capnp` (Semantic types), `Core/` (Architectural mandates).
-- **FS Ontology:** `Library/specs/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
-- **Development System:** `Development/<priority>/<Subject>/`. Status: **Operational.** Active subjects remain categorized by priority tier.
-- **Development Queue:** `Library/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
-- **Development Loop:** `Library/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
-- **Obsolescence Pipeline:** `Library/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
-- **Orchestration Scripts:** `Components/scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
-- **Source Substrate:** `Sources/` (transitional alias: `Inputs/`) read-only store paths, managed via `flake.nix` and `Components/nix/jail.nix`.
-- **VCS Guardrail:** `Sources/` (and transitional `Inputs/`) is gitignored as mounted runtime substrate; source updates are managed through flake/input refresh workflows, not direct Git tracking.
-- **Audit Trail:** `jj log` (VCS), `Outputs/Logs/RELEASE_MILESTONES.md` (Human-readable history), `Outputs/Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Development/high/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
+## 3. R&D Topology Contract (High Importance)
+R&D is the mirrored two-tree model:
+1. `Development/<priority>/<Subject>/` contains executable plans and implementation guidance.
+2. `Research/<priority>/<Subject>/` contains prompt-traceable findings and answer artifacts.
+3. Topic names mirror across both trees by subject; counterpart integrity is enforced with `bb Components/scripts/subject_unifier/main.clj`.
 
-## 3.1 Current Operational Snapshot (♓︎.5.24.28 | 5919 AM)
-- `dev` head: `0233794` (`intent: execute section-5 development-medium cleanup sweep`)
-- `main` head: `0faae18a` (`session: release main from dev and record release action`)
-- Recent major commits:
-  - `0997858`: checkpointed and cleaned tree state after large migration/recovery batches.
-  - `45b63e5`: completed section-4 cleanup sweep for `Development/high/`.
-  - `0233794`: completed section-5 cleanup sweep for `Development/medium/`.
-- Current shipped component topology:
-  - `Components/mentci-aid/` and `Components/chronos/` are standalone Rust components.
-  - `execute` is available as `Components/mentci-aid/src/bin/execute.rs`.
-- Session/guard health (latest sweep):
-  - `validate_scripts`: passing.
-  - `reference_guard`: passing.
-  - `subject_unifier`: passing (dry-run).
-  - `session_guard`: failing (`13` trailing `intent:` commits above latest `session:`).
-  - `root_guard`: failing on top-level drift (`outputs` directory and `result` file).
+## 4. Component Status Map
+- **Engine (`mentci-aid`):** `Components/mentci-aid/src/main.rs`. Status: **Experimental / not in running state**.
+- **Rust componentization:** `Components/mentci-aid/` and `Components/chronos/` are standalone crates.
+- **Unified Rust script tool:** `execute` lives at `Components/mentci-aid/src/bin/execute.rs`.
+- **Script orchestration surface:** `Components/scripts/<name>/main.clj` with per-script `TESTING_CONTEXT.md` (mixed maturity; see Risks).
+- **Filesystem ontology authority:** `Library/specs/ASKI_FS_SPEC.md`.
+- **Source substrate:** `Sources/` (transitional alias: `Inputs/`) mounted read-only via jail tooling.
 
-## 3.2 Open Risks / Next Checks
-1. Top-level FS drift:
-- Resolve `outputs` (lowercase) and `result` top-level drift vs root guard contract.
-2. Namespace convergence:
-- Continue removing stale `Inputs` transitional references where they conflict with canonical `Sources` naming.
-3. Development queue hygiene:
-- Keep queue entries synchronized with active `Development/<priority>/<Subject>/` set.
-4. Session finalization hygiene:
-- Reconcile trailing `intent:` chains into protocol-compliant `session:` commits before release closure.
+## 5. Current Operational Snapshot (♓︎.5.45.52 | 5919 AM)
+- `dev` head: `2749f72` (`intent: execute section-6 cleanup and add one-subject rd synthesis`)
+- `main` head (pre-release update): `3781ce0` (`intent: rescan and align core library readmes and high-priority docs`)
 
-## 4. Operational Requirements
-- **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Outputs/Logs/RELEASE_MILESTONES.md`.
-- **Purity:** All work occurs in the Nix Jail. Editor synchronization is managed via `Components/tools/emacs/mentci.el`.
+Recent high-signal commits:
+1. `3781ce0` (main): Core/Library/high-priority consistency pass + restart refresh prep.
+2. `7e24e16` (dev): script-surface deadweight/hard-wiring research (`Artifact-Sweep`).
+3. `2749f72` (dev): section-6 cleanup (`Development/low`) + one-subject R&D synthesis.
+
+Section sweep progress (`Development/high/Repo-Intent-Realignment/SECTION_SWEEP_PROGRAM.md`):
+- Completed: sections `1` to `6`.
+- Remaining: sections `7` to `10` (`Research/high`, `Research/medium`, `Research/low`, root files).
+
+## 6. Guard Health Snapshot
+Latest observed gate outcomes:
+1. `validate_scripts`: passing.
+2. `reference_guard`: passing.
+3. `subject_unifier` (dry-run): passing.
+4. `session_guard`: failing due trailing `intent:` chain above latest `session:`.
+5. `root_guard`: failing on top-level drift (`outputs` directory, `result` file).
+
+Interpretation:
+- Policy/reference hygiene is mostly converging.
+- Session finalization discipline and root contract closure remain the blocking control gates.
+
+## 7. High-Importance Active Risks
+1. **Control-plane divergence risk:** `main` and `dev` are both advancing; convergence protocol (`dev` -> finalized session -> release) is not yet consistently enforced.
+2. **Session closure risk:** trailing intent chains degrade audit clarity and violate completion invariants.
+3. **Top-level FS contract drift:** unresolved `outputs` and `result` conflict with root guard contract.
+4. **Script-surface complexity risk:** overlapping script capabilities and hard-wired policy/path constants increase drift potential.
+
+## 8. Immediate Priorities (Execution Order)
+1. Close control-plane hygiene:
+- re-establish single promotion flow (`dev` -> `main`) post-release.
+2. Repair session protocol health:
+- synthesize/close trailing `intent:` chains into protocol-compliant `session:` commits.
+3. Resolve root contract drift:
+- decide explicit contract handling for `outputs` and `result`.
+4. Complete remaining section sweeps (`7` to `10`) with per-section research checkpoints.
+
+## 9. Script-Surface Realignment Focus
+From current `Artifact-Sweep` research:
+1. Fix/deprecate stale-wired `admin_shell` bootstrap path.
+2. Converge overlapping source-mount paths (`launcher` vs `sources_mounter`/`sources_remount`).
+3. Reclassify optional utilities (`tool_discoverer`, `intent`, `session_metadata`) out of critical path.
+4. Externalize guard policy allowlists/roots from code to data contracts.
+
+## 10. Operational Requirements
+- Any major component/protocol/input mapping changes must update this file and append `Outputs/Logs/RELEASE_MILESTONES.md`.
+- Keep R&D mirror integrity (Development/Research counterpart coverage) when adding new subjects.
 
 *The Great Work continues.*

@@ -11,6 +11,8 @@ Required outcome:
 - It successfully orchestrates complex DAGs within Nix Jails.
 - It adheres strictly to Sema Object Style and Handshake Logging.
 - **Assimilation:** Attractor (StrongDM) and Attractor-Docs (Brynary) are fully assimilated (rewritten internally in Sema-standard Aski + Rust + Clojure + Nix) as native components.
+- **R&D Mirror Integrity:** `Development/` and `Research/` remain mirrored by subject so execution guidance and traceable findings stay aligned.
+- **Control-Gate Integrity:** session and root guard health are maintained as release-blocking gates.
 
 ## Goal 1: Attractor DOT Job Handoff
 

@@ -2,6 +2,11 @@
 
 Prompt-level research artifacts are stored in this directory.
 
+## R&D Mirror Note
+- R&D in this repository is the paired model: `Research/` + `Development/`.
+- Every research topic must have a same-name development counterpart at `Development/<priority>/<Subject>/`.
+- `Research/` is evidence and traceability; `Development/` is executable planning and implementation direction.
+
 ## Required Coverage
 - `answer`: standard completion response.
 - `draft`: partial/proposed response.

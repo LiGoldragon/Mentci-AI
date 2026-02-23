@@ -33,4 +33,9 @@ Tier definitions:
 11. `Prompt-Report-System`
 12. `Recover-Lost-Work-After-Rewrite`
 
+## 4. Current Execution Context
+1. Deterministic section sweep is in progress and currently completed through section `6` (`Development/low`).
+2. Remaining sweep sections are `Research/high`, `Research/medium`, `Research/low`, and root files.
+3. R&D mirror integrity is mandatory: every active execution subject in `Development/` must keep a synchronized topic index in `Research/`.
+
 *The Great Work continues.*
