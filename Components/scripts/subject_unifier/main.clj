@@ -196,9 +196,6 @@
                                          (map #(.getName ^java.io.File %))
                                          (filter #(report-file-for this {:name %}))
                                          sort
-                                         (map #(if tier
-                                                 (str "Research/" tier "/" raw-subject "/" %)
-                                                 (str "Research/" raw-subject "/" %)))
                                          vec)]
                         (update acc subject (fnil into []) reports)))
                     {}
@@ -258,10 +255,16 @@
         entries (if (seq reportPaths)
                   reportPaths
                   [])
+        ;; Localize strategyPath relative to index.edn location
+        ;; Research/<tier>/<subject>/index.edn -> Development/<tier>/<subject>
+        ;; Result: ../../../Development/<tier>/<subject>
+        localized-strategy-path (if tier
+                                  (str "../../../" strategyPath)
+                                  (str "../../" strategyPath))
         content (str "{:kind :index\n"
                      " :title \"Research Topic\"\n"
                      " :subject \"" subject "\"\n"
-                     " :developmentPath \"" strategyPath "\"\n"
+                     " :developmentPath \"" localized-strategy-path "\"\n"
                      " :entries ["
                      (str/join " " (map #(str "\"" % "\"") entries))
                      "]}\n")]

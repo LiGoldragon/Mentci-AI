@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Scripts-Rust-Migration"
- :developmentPath "Development/high/Scripts-Rust-Migration"
- :entries ["Research/high/Scripts-Rust-Migration/591912051520_answer_strategy-rewrite-all-scripts-in-rust.md" "Research/high/Scripts-Rust-Migration/591912051801_answer_strategy-clj-to-rust-with-shared-test-gate.md" "Research/high/Scripts-Rust-Migration/591912051808_answer_refine-single-rust-tool-policy.md" "Research/high/Scripts-Rust-Migration/591912051813_answer_set-primary-rust-tool-name-execute.md" "Research/high/Scripts-Rust-Migration/591912051820_answer_draft-execute-unified-tool.md" "Research/high/Scripts-Rust-Migration/591912051832_answer_add-execute-tests-and-nix-wiring.md"]}
+ :developmentPath "../../../Development/high/Scripts-Rust-Migration"
+ :entries ["591912051520_answer_strategy-rewrite-all-scripts-in-rust.md" "591912051801_answer_strategy-clj-to-rust-with-shared-test-gate.md" "591912051808_answer_refine-single-rust-tool-policy.md" "591912051813_answer_set-primary-rust-tool-name-execute.md" "591912051820_answer_draft-execute-unified-tool.md" "591912051832_answer_add-execute-tests-and-nix-wiring.md"]}

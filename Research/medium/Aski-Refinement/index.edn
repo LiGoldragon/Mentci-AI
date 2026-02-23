@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Aski-Refinement"
- :developmentPath "Development/medium/Aski-Refinement"
+ :developmentPath "../../../Development/medium/Aski-Refinement"
  :entries []}

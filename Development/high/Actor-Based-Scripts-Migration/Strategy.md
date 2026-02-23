@@ -15,7 +15,7 @@ Re-implement the `execute` orchestration layer and its constituent scripts in Ru
     - [ ] `ReferenceGuard`
     - [ ] `ProgramVersion`
     - [ ] `SubjectUnifier`
-4. [ ] **Phase 4: Guideline Integration**
+4. [x] **Phase 4: Guideline Integration**
     - Update `SEMA_RUST_GUIDELINES.md` with actor-first concurrency rules.
 
 ## Architectural Notes

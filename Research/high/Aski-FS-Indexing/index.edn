@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Aski-FS-Indexing"
- :developmentPath "Development/high/Aski-FS-Indexing"
- :entries ["Research/high/Aski-FS-Indexing/591912060143_answer_aski-fs-per-directory-indexing.md" "Research/high/Aski-FS-Indexing/591912060150_answer_aski-fs-indexing-test-implementation.md"]}
+ :developmentPath "../../../Development/high/Aski-FS-Indexing"
+ :entries ["591912060143_answer_aski-fs-per-directory-indexing.md" "591912060150_answer_aski-fs-indexing-test-implementation.md"]}

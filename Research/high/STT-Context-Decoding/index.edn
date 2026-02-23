@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "STT-Context-Decoding"
- :developmentPath "Development/high/STT-Context-Decoding"
- :entries ["Research/high/STT-Context-Decoding/591912055942_answer_long-audio-note-extraction-setup.md" "Research/high/STT-Context-Decoding/591912055947_answer_stt-priority-escalation.md"]}
+ :developmentPath "../../../Development/high/STT-Context-Decoding"
+ :entries ["591912055942_answer_long-audio-note-extraction-setup.md" "591912055947_answer_stt-priority-escalation.md"]}

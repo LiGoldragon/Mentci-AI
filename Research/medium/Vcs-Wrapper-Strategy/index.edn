@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Vcs-Wrapper-Strategy"
- :developmentPath "Development/medium/Vcs-Wrapper-Strategy"
- :entries ["Research/medium/Vcs-Wrapper-Strategy/591912055558_answer_vcs-wrapper-strategy-init.md"]}
+ :developmentPath "../../../Development/medium/Vcs-Wrapper-Strategy"
+ :entries ["591912055558_answer_vcs-wrapper-strategy-init.md"]}

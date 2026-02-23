@@ -21,6 +21,21 @@ structural. Violations indicate category error, not style.
    prevents data racing and double ownership problems at the semantic layer,
    aligning with Rust's borrow checker.
 
+## Actor-First Concurrency
+
+All multi-step symbolic transformations, long-running orchestrations, and
+concurrent task executions must be implemented as supervised actors.
+
+1. **Canonical Framework:** Use the `ractor` actor framework for all supervised
+   flows. 
+2. **Symbolic Messaging:** Communication between actors must occur via typed
+   messages defined as Sema Objects.
+3. **Supervision Trees:** Any actor spawning a sub-task must supervise its
+   lifecycle, adhering to the "Russian Doll" recursion model.
+4. **State Sovereignty:** An actor's internal state is private and only
+   modifiable via its explicit message handlers. Shared-state via `Arc<Mutex<T>>`
+   is discouraged in favor of message-passing.
+
 ## Naming and Ontology
 
 *   `PascalCase` denotes objects (types and traits).

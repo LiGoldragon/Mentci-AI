@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Recover-Lost-Work-After-Rewrite"
- :developmentPath "Development/high/Recover-Lost-Work-After-Rewrite"
- :entries ["Research/high/Recover-Lost-Work-After-Rewrite/591912044849_answer_recover-lost-work-after-rewrite.md"]}
+ :developmentPath "../../../Development/high/Recover-Lost-Work-After-Rewrite"
+ :entries ["591912044849_answer_recover-lost-work-after-rewrite.md"]}

@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Mentci-Box-Migration"
- :developmentPath "Development/high/Mentci-Box-Migration"
- :entries ["Research/high/Mentci-Box-Migration/591912055322_answer_mentci-box-migration-init.md"]}
+ :developmentPath "../../../Development/high/Mentci-Box-Migration"
+ :entries ["591912055322_answer_mentci-box-migration-init.md"]}

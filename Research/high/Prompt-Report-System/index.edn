@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Prompt-Report-System"
- :developmentPath "Development/high/Prompt-Report-System"
- :entries ["Research/high/Prompt-Report-System/591912042315_answer_chronos-failure-fix-strategy.md" "Research/high/Prompt-Report-System/591912042315_answer_implement-chronos-resolver-in-answer-report.md" "Research/high/Prompt-Report-System/591912042315_answer_implement-interrupted-job-queue.md" "Research/high/Prompt-Report-System/591912042315_answer_interrupted-jobs-audit.md" "Research/high/Prompt-Report-System/591912042315_answer_strategy-review-intent-extraction-and-interrupted-job-recovery.md" "Research/high/Prompt-Report-System/591912044642_answer_prompt-report-system.md" "Research/high/Prompt-Report-System/591912050744_answer_fix-chronos.md"]}
+ :developmentPath "../../../Development/high/Prompt-Report-System"
+ :entries ["591912042315_answer_chronos-failure-fix-strategy.md" "591912042315_answer_implement-chronos-resolver-in-answer-report.md" "591912042315_answer_implement-interrupted-job-queue.md" "591912042315_answer_interrupted-jobs-audit.md" "591912042315_answer_strategy-review-intent-extraction-and-interrupted-job-recovery.md" "591912044642_answer_prompt-report-system.md" "591912050744_answer_fix-chronos.md"]}

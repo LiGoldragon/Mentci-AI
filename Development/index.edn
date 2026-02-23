@@ -1,9 +1,9 @@
 {:kind :index
  :title "Development"
  :entries [
-  "Development/high/<Subject>/"
-  "Development/medium/<Subject>/"
-  "Development/low/<Subject>/"
-  "Development/high/Repo-Intent-Realignment/PriorityTriage.md"
+  "high/<Subject>/"
+  "medium/<Subject>/"
+  "low/<Subject>/"
+  "high/Repo-Intent-Realignment/PriorityTriage.md"
  ]
- :sourceReadme "Development/README.md"}
+ :sourceReadme "README.md"}

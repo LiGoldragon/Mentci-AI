@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Actor-Based-Scripts-Migration"
- :developmentPath "Development/high/Actor-Based-Scripts-Migration"
- :entries ["Research/high/Actor-Based-Scripts-Migration/591912060130_answer_actor-library-selection-and-script-migration.md" "Research/high/Actor-Based-Scripts-Migration/591912060138_answer_actor-messaging-and-symbolic-flow.md"]}
+ :developmentPath "../../../Development/high/Actor-Based-Scripts-Migration"
+ :entries ["591912060130_answer_actor-library-selection-and-script-migration.md" "591912060138_answer_actor-messaging-and-symbolic-flow.md"]}

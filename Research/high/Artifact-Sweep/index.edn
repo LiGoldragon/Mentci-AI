@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Artifact-Sweep"
- :developmentPath "Development/high/Artifact-Sweep"
- :entries ["Research/high/Artifact-Sweep/591912052445_answer_research-script-surface-unneeded-features-and-hardwired-data.md"]}
+ :developmentPath "../../../Development/high/Artifact-Sweep"
+ :entries ["591912052445_answer_research-script-surface-unneeded-features-and-hardwired-data.md"]}

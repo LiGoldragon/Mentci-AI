@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Attractor"
- :developmentPath "Development/medium/Attractor"
- :entries ["Research/medium/Attractor/591912050847_answer_high-priority-goal1-task-path-drift.md" "Research/medium/Attractor/591912055544_answer_strongdm-input-realignment.md"]}
+ :developmentPath "../../../Development/medium/Attractor"
+ :entries ["591912050847_answer_high-priority-goal1-task-path-drift.md" "591912055544_answer_strongdm-input-realignment.md"]}

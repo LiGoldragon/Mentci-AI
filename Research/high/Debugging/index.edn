@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Debugging"
- :developmentPath "Development/high/Debugging"
- :entries ["Research/high/Debugging/591912050941_answer_backfill-missing-bug-sweep-exchange.md"]}
+ :developmentPath "../../../Development/high/Debugging"
+ :entries ["591912050941_answer_backfill-missing-bug-sweep-exchange.md"]}

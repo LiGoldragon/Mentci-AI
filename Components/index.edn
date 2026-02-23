@@ -1,38 +1,38 @@
 {:version 1
  :components
  [{:id "nix"
-   :path "Components/nix"
+   :path "nix"
    :interfaces ["nix.namespace"]
    :status :active}
   {:id "schema"
-   :path "Components/schema"
+   :path "schema"
    :interfaces ["schema.capnp" "schema.edn"]
    :status :active}
   {:id "scripts"
-   :path "Components/scripts"
+   :path "scripts"
    :interfaces ["bb.entrypoints"]
    :status :active}
   {:id "mentci-aid"
-   :path "Components/mentci-aid"
+   :path "mentci-aid"
    :interfaces ["rust.engine" "rust.daemon"]
    :status :active}
   {:id "chronos"
-   :path "Components/chronos"
+   :path "chronos"
    :interfaces ["rust.time.tool"]
    :status :active}
   {:id "tasks"
-   :path "Components/tasks"
+   :path "tasks"
    :interfaces ["task.checklists"]
    :status :active}
   {:id "tests"
-   :path "Components/tests"
+   :path "tests"
    :interfaces ["test.harness"]
    :status :active}
   {:id "tools"
-   :path "Components/tools"
+   :path "tools"
    :interfaces ["editor.integration" "formatting"]
    :status :active}
   {:id "workflows"
-   :path "Components/workflows"
+   :path "workflows"
    :interfaces ["workflow.definitions"]
    :status :active}]}

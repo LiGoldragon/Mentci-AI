@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Aski-Syntax-Research"
- :developmentPath "Development/high/Aski-Syntax-Research"
- :entries ["Research/high/Aski-Syntax-Research/591912055526_answer_aski-syntax-reader-strategy.md"]}
+ :developmentPath "../../../Development/high/Aski-Syntax-Research"
+ :entries ["591912055526_answer_aski-syntax-reader-strategy.md"]}

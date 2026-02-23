@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Core-Library-Symbiotic-Move"
- :developmentPath "Development/medium/Core-Library-Symbiotic-Move"
- :entries ["Research/medium/Core-Library-Symbiotic-Move/591912045525_answer_session-commit-gap-remediation.md"]}
+ :developmentPath "../../../Development/medium/Core-Library-Symbiotic-Move"
+ :entries ["591912045525_answer_session-commit-gap-remediation.md"]}

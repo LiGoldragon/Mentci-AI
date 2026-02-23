@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Universal-Program-Pack"
- :developmentPath "Development/low/Universal-Program-Pack"
- :entries ["Research/low/Universal-Program-Pack/591912052448_answer_rd-synthesis-universal-program-pack.md"]}
+ :developmentPath "../../../Development/low/Universal-Program-Pack"
+ :entries ["591912052448_answer_rd-synthesis-universal-program-pack.md"]}

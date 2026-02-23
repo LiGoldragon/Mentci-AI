@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Mentci-RFS"
- :developmentPath "Development/low/Mentci-RFS"
+ :developmentPath "../../../Development/low/Mentci-RFS"
  :entries []}

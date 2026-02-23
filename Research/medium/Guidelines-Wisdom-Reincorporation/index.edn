@@ -1,5 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Guidelines-Wisdom-Reincorporation"
- :developmentPath "Development/medium/Guidelines-Wisdom-Reincorporation"
- :entries ["Research/medium/Guidelines-Wisdom-Reincorporation/591912044701_answer_guidelines-wisdom-reincorporation.md" "Research/medium/Guidelines-Wisdom-Reincorporation/591912044710_answer_expand-guidelines-reincorporation.md" "Research/medium/Guidelines-Wisdom-Reincorporation/591912044718_answer_guideline-wisdom-expansion-subaspect.md"]}
+ :developmentPath "../../../Development/medium/Guidelines-Wisdom-Reincorporation"
+ :entries ["591912044701_answer_guidelines-wisdom-reincorporation.md" "591912044710_answer_expand-guidelines-reincorporation.md" "591912044718_answer_guideline-wisdom-expansion-subaspect.md"]}
