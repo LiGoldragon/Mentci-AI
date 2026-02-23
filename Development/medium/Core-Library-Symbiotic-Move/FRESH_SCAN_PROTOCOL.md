@@ -6,7 +6,7 @@ Ensure next-prompt implementation uses a fresh, trustworthy affected-path invent
 ## Anchor Data
 - Baseline migration change id: `ltkttsyqmozk`
 - Parent pre-migration change id: `xzlswptlmxkn`
-- Snapshot file: `development/Core-Library-Symbiotic-Move/FRESH_AFFECTED_PARTS.md`
+- Snapshot file: `Development/medium/Core-Library-Symbiotic-Move/FRESH_AFFECTED_PARTS.md`
 
 ## Procedure
 1. Read baseline change id from this protocol and snapshot.

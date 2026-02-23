@@ -6,7 +6,7 @@
 Reincorporate the semantic depth of the human-reviewed original guideline (`Sources/criomos/docs/GUIDELINES.md`) into current language-specific core guidelines without losing language-local clarity.
 
 Expansion subaspect:
-- `development/Guidelines-Wisdom-Reincorporation/EXPANSION.md`
+- `Development/medium/Guidelines-Wisdom-Reincorporation/EXPANSION.md`
 
 ## 2. Scope
 - `Core/SEMA_RUST_GUIDELINES.md`

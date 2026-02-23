@@ -16,6 +16,8 @@ If the change differs, rerun this inventory before implementation.
 
 ## Affected Paths (From `@-..@` diff)
 
+Historical note: entries below are recorded verbatim from the migration-era diff and may include legacy lowercase path segments (for example `development/...`) and pre-tier `Research/...` locations.
+
 affected_path_count: 60
 
 affected_paths:
