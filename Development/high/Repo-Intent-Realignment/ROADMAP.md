@@ -19,3 +19,8 @@
 1. Run full guard sweep and focused runtime checks.
 2. Update queue/index files and restart context snapshot.
 3. Freeze stabilized contracts in Core and remove temporary compatibility notes.
+
+## Phase 5: Section Sweep Program
+1. Execute `Development/high/Repo-Intent-Realignment/SECTION_SWEEP_PROGRAM.md`.
+2. Sweep repository sections in deterministic order with per-section research checkpoints.
+3. Complete global finalization criteria and close remaining drift classes.
