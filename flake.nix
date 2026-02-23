@@ -94,7 +94,6 @@
           mentciBox = namespace.mentci_box;
           mentciBoxDefault = namespace.mentci_box_default;
           execute = namespace.execute;
-          mentciClj = namespace.mentci_clj;
           attractor = namespace.attractor;
           gemini-cli = namespace.gemini_cli;
         };
