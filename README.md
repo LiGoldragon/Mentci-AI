@@ -27,7 +27,7 @@ To automate implementation details and liberate the human mind through autonomou
 - `Components/scripts/`: Babashka/Clojure orchestration and logging.
 - `Components/workflows/`: DOT files defining agent execution graphs.
 - `Outputs/Logs/`: Durable audit trails and milestone logs.
-- `Library/`: Secondary documentation (guides, reports).
+- `Library/`: Secondary documentation (architecture, specs, guides).
 
 ## Usage
 - `nix develop`: Enter the Level 5 Jail environment.

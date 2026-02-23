@@ -57,7 +57,7 @@ Agents updated")
 - **Behavior:** Acts as the "Sensory Input" for the agent.
 - **Ontology:** The Sources represent a hierarchical mapping of the project's semantic dependencies (Atom, Flake, and Untyped sources).
 - **Propagation:** Changes in Sources (via `jj git fetch` or snapshot updates) trigger **Commit-Based Edit Notifications**, which can initiate new agentic flows.
-- **Compatibility:** `Sources/` remains a transitional alias while migration is in progress.
+- **Compatibility:** `Inputs/` remains a transitional alias while migration is in progress.
 
 ### 2.2 Outputs (`Outputs/`)
 - **Mode:** Writable (Scoped to the current session).
@@ -107,7 +107,7 @@ The following EDN structure represents the authoritative symbolic map of the `So
     - Positional arguments define the type and attributes (e.g., `[:type :role]`).
 
 ## 4. Implementation Rules
-- Agents **must** respect the `RO` (Read-Only) status of `Sources/` (or transitional `Sources/` alias during migration).
+- Agents **must** respect the `RO` (Read-Only) status of `Sources/` (or transitional `Inputs/` alias during migration).
 - Every writable operation **must** result in an atomic `jj` commit.
 - Filesystem boundaries (directories) represent **Ontological Shifts** in data durability.
 

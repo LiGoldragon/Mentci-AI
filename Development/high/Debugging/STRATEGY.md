@@ -9,8 +9,8 @@ Provide a deterministic protocol for resolving system-wide failures identified d
 1.  **Isolation:** When a sweep fails, identify the specific component (Nix, Rust, Clojure).
 2.  **Reproduction:** Run the failing test command identified in the tool's `TESTING_CONTEXT.md` in isolation.
 3.  **Path Verification:** Check if the failure is due to recent structural changes (e.g., `scripts/` reorganization). Verify `load-file` and `PATH` exports.
-4.  **Schema Alignment:** Verify that inputs/outputs still match `schema/mentci_tools.capnp`.
-5.  **Log Analysis:** Consult `Logs/RELEASE_MILESTONES.md` to see what changed since the last successful sweep.
+4.  **Schema Alignment:** Verify that Sources/outputs still match `schema/mentci_tools.capnp`.
+5.  **Log Analysis:** Consult `Outputs/Logs/RELEASE_MILESTONES.md` to see what changed since the last successful sweep.
 
 ## 3. Tooling
 - `cargo test`: Authority for core daemon logic.
@@ -18,7 +18,7 @@ Provide a deterministic protocol for resolving system-wide failures identified d
 - `nix build .#<attr>`: Authority for reachability and environment purity.
 
 ## 4. Reporting
-Every debug session must culminate in an entry in `Logs/SYSTEM_SWEEP_REPORT.md` (even if it was a partial fix).
+Every debug session must culminate in an entry in `Outputs/Logs/SYSTEM_SWEEP_REPORT.md` (even if it was a partial fix).
 
 ## 5. Sweep Program (Backfilled + Active)
 Run this deterministic bug sweep for repository health checks:
@@ -38,12 +38,12 @@ Run this deterministic bug sweep for repository health checks:
 1. Root guard drift remains:
    - `bb Components/scripts/root_guard/main.clj` fails on lowercase top-level `outputs`.
 2. Historical path-text drift remains in some docs/strategies:
-   - `Sources/` references still appear where migration to `Sources` is transitional or incomplete.
+   - `Inputs/` references still appear where migration to `Sources` is transitional or incomplete.
 
 ## 7. Fix Workflow
 1. Fix highest-severity failures first (`root_guard`, `session_guard`, broken task paths).
 2. Commit each logical fix atomically.
 3. Re-run full sweep after each fix batch.
-4. Close prompt with session synthesis and a `Research/Debugging/` artifact.
+4. Close prompt with session synthesis and a `Research/high/Debugging/` artifact.
 
 *The Great Work continues.*

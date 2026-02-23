@@ -27,8 +27,8 @@ Automate strategy execution support while preserving durable, restartable contex
 - If an exchange lacks a visible commit/report artifact, backfill immediately via `Research/<priority>/<Subject>/` and corresponding strategy update.
 
 ## 4. Current Focus
-1. Keep development/research indexes current (`index.edn` entries).
-2. Reduce stale references during `Sources/` -> `Sources/` migration window.
+1. Keep Development/Research indexes current (`index.edn` entries).
+2. Reduce stale references during `Inputs/` -> `Sources/` migration window.
 3. Maintain release/session protocol reliability with `session_finalize` and `session_guard`.
 
 *The Great Work continues.*

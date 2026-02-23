@@ -55,7 +55,7 @@ These are the highest-order rules for all languages and scripts.
     *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (development scaffold or research topic).
     *   **Canonical Tool:** Use `bb Components/scripts/subject_unifier/main.clj --write` to enforce and repair bidirectional subject coverage.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
-*   **Assimilation of Sources:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Sources/` (transitional alias: `Sources/`). They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
+*   **Assimilation of Sources:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Sources/` (transitional alias: `Inputs/`). They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 *   **Language Authority Hierarchy:**
     1.  **Aski:** Evolved multi-domain Clojure. Takes precedence for specs and LLM-friendly logic.
     2.  **Rust:** Core implementation and heavy lifting.
@@ -87,9 +87,9 @@ Use `jj log` as the authoritative audit trail for work performed in the reposito
 *   **Script Typing:** All Clojure scripts must define Malli schemas for Sources/config and validate them.
 *   **Script Guard:** Run `bb Components/scripts/validate_scripts/main.clj` when adding or editing scripts. Python is forbidden under `Components/scripts/`.
 *   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_RUST_GUIDELINES.md`, and `Core/SEMA_NIX_GUIDELINES.md`.
-*   **Attractor Code Reference:** Implementation lives in `Sources/brynary-attractor/attractor` (or transitional `Sources/brynary-attractor/attractor`). The `Sources/attractor` folder is specs only.
+*   **Attractor Code Reference:** Implementation lives in `Sources/brynary-attractor/attractor` (or transitional `Inputs/brynary-attractor/attractor`). The `Sources/attractor` folder is specs only.
 *   **Attractor Backend Behavior:** `CliAgentBackend` spawns a subprocess with env merged from `process.env` and backend config. `SessionBackend` uses `unified-llm` `Client.fromEnv` (API keys via standard env vars).
-*   **Sources Directory Rule:** Do not edit anything under `Sources/` (or transitional `Sources/`). Treat it as read-only reference material.
+*   **Sources Directory Rule:** Do not edit anything under `Sources/` (or transitional `Inputs/`). Treat it as read-only reference material.
 *   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
 *   **Sema Object Style:** Strictly follow the ontology defined in `Components/schema/*.capnp`.
 *   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers (example: in `nix/` code, use `namespace`, not `nixns`).

@@ -18,11 +18,11 @@ Establish `Core/AGENTS.md` as the single canonical agent authority file and remo
 - Ensure root `AGENTS.md` points to `Core/AGENTS.md`.
 
 2. **Reference Audit**
-- Scan `Core/`, `tasks/`, `development/`, `docs/`, and root docs for:
+- Scan `Core/`, `Components/tasks/`, `Development/`, `Library/`, and root docs for:
 - stale AGENTS path
 - stale goals path (`docs/architecture/HIGH_LEVEL_GOALS.md`)
 - stale restart-context path variants
-- lowercase `inputs/` references that should now be `Sources/`
+- legacy `Inputs/` references that should now be `Sources/`
 - Create an edit matrix with file, line, old path, new path.
 
 3. **Path and SSOT Repairs**
@@ -32,7 +32,7 @@ Establish `Core/AGENTS.md` as the single canonical agent authority file and remo
 
 4. **Strategy-System Alignment**
 - Reconcile queue status with strategy file status and actual implementation state.
-- Ensure strategy docs reference current script paths (for example `scripts/<name>/main.clj`).
+- Ensure strategy docs reference current script paths (for example `Components/scripts/<name>/main.clj`).
 - Add missing active strategies to the queue where applicable.
 
 5. **Goal Execution Integrity**

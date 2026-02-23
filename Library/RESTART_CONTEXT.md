@@ -6,7 +6,7 @@
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Active Bookmark:** `dev`.
 *   **Current Programming Version:** `4462v1kd` (Ref: `Components/scripts/program_version/main.clj`).
-*   **Latest Release Tag:** `v0.12.3.58.4` (Ref: Git tag state).
+*   **Latest Release Tag:** `v0.12.4.55.26` (Ref: Git tag state).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (**mentci-aid**) designed for autonomous symbolic manipulation. It operates within a Pure Nix Jail environment and uses Jujutsu (`jj`) for version control.
@@ -32,36 +32,36 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Development Loop:** `Library/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `Library/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `Components/scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
-- **Source Substrate:** `Sources/` (transitional alias: `Sources/`) read-only store paths, managed via `flake.nix` and `Components/nix/jail.nix`.
-- **VCS Guardrail:** `Sources/` (and transitional `Sources/`) is gitignored as mounted runtime substrate; source updates are managed through flake/input refresh workflows, not direct Git tracking.
+- **Source Substrate:** `Sources/` (transitional alias: `Inputs/`) read-only store paths, managed via `flake.nix` and `Components/nix/jail.nix`.
+- **VCS Guardrail:** `Sources/` (and transitional `Inputs/`) is gitignored as mounted runtime substrate; source updates are managed through flake/input refresh workflows, not direct Git tracking.
 - **Audit Trail:** `jj log` (VCS), `Outputs/Logs/RELEASE_MILESTONES.md` (Human-readable history), `Outputs/Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Development/high/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
 
-## 3.1 Current Operational Snapshot (♓︎.5.23.59 | 5919 AM)
-- `dev` head: `6fd65997` (`intent: execute section-1 core cleanup sweep`)
+## 3.1 Current Operational Snapshot (♓︎.5.24.28 | 5919 AM)
+- `dev` head: `0233794` (`intent: execute section-5 development-medium cleanup sweep`)
 - `main` head: `0faae18a` (`session: release main from dev and record release action`)
-- Recent major session commits:
-  - `bd2d62b4`: renamed `Reports/` -> `Research/`, `Strategies/` -> `Development/`, and moved topic indexes to `index.edn`.
-  - `c7f4f967`: added section-by-section repository cleanup development program.
-- New sandbox execution path in `mentci-aid`:
-  - `mentci-ai sandbox -- <cmd ...>`
-  - `mentci-ai execute sandbox -- <cmd ...>` (alias)
-  - implementation location: `Components/mentci-aid/src/sandbox.rs`
-- Session protocol health:
-  - `session_guard`: passing.
+- Recent major commits:
+  - `0997858`: checkpointed and cleaned tree state after large migration/recovery batches.
+  - `45b63e5`: completed section-4 cleanup sweep for `Development/high/`.
+  - `0233794`: completed section-5 cleanup sweep for `Development/medium/`.
+- Current shipped component topology:
+  - `Components/mentci-aid/` and `Components/chronos/` are standalone Rust components.
+  - `execute` is available as `Components/mentci-aid/src/bin/execute.rs`.
+- Session/guard health (latest sweep):
   - `validate_scripts`: passing.
-  - `root_guard`: failing due lowercase top-level `outputs` directory.
-- New core extension mechanism:
-  - `Core/EXTENSION_INDEX_PROTOCOL.md`
-  - `Core/EXTENSION_INDEX_LOCATIONS.edn`
-  - `Components/scripts/extension_index/main.clj`
+  - `reference_guard`: passing.
+  - `subject_unifier`: passing (dry-run).
+  - `session_guard`: failing (`13` trailing `intent:` commits above latest `session:`).
+  - `root_guard`: failing on top-level drift (`outputs` directory and `result` file).
 
 ## 3.2 Open Risks / Next Checks
 1. Top-level FS drift:
-- Resolve `outputs` (lowercase) vs canonical `Outputs/`.
+- Resolve `outputs` (lowercase) and `result` top-level drift vs root guard contract.
 2. Namespace convergence:
-- Continue removing stale legacy wording (`report/strategy`) where it conflicts with canonical `Research/Development` naming.
+- Continue removing stale `Inputs` transitional references where they conflict with canonical `Sources` naming.
 3. Development queue hygiene:
 - Keep queue entries synchronized with active `Development/<priority>/<Subject>/` set.
+4. Session finalization hygiene:
+- Reconcile trailing `intent:` chains into protocol-compliant `session:` commits before release closure.
 
 ## 4. Operational Requirements
 - **Change Mandate:** Any modification to major components (Engine, Core Protocols, Input Mapping) **must** be reflected in an update to this file and a new entry in `Outputs/Logs/RELEASE_MILESTONES.md`.
