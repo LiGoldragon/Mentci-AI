@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "Components/mentci-aid",
+    "Components/chronos",
+    "Components/mentci-box",
+    "Components/mentci-box-lib",
+    "Components/mentci-fs",
+    "Components/aski-lib",
+    "Components/aski-cli",
+]
+resolver = "2"
