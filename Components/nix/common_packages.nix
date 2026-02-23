@@ -1,10 +1,5 @@
-{ pkgs, codex_cli_nix, system, scripts_dir, gemini_cli, gemini_tui, mentci_clj, mentci_vcs }:
+{ pkgs, codex_cli_nix, system, gemini_cli, gemini_tui, mentci_vcs }:
 
-let
-  mentci_jj = import ./mentci_jj.nix {
-    inherit pkgs scripts_dir;
-  };
-in
 [
   pkgs.babashka
   pkgs.clojure
@@ -24,12 +19,10 @@ in
   codex_cli_nix.packages.${system}.default
   gemini_cli
   gemini_tui
-  mentci_clj
   mentci_vcs
   (pkgs.writeShellScriptBin "mentci-commit" ''
-    ${pkgs.babashka}/bin/bb ${scripts_dir}/commit/main.clj --runtime "$(pwd)/workspace/.mentci/runtime.json" "$@"
+    mentci-vcs commit "$@"
   '')
-  mentci_jj
   (pkgs.writeShellScriptBin "mentci-bootstrap" ''
     ${pkgs.cargo}/bin/cargo run --quiet --manifest-path Components/mentci-aid/Cargo.toml --bin mentci-ai -- job/jails bootstrap "$@"
   '')

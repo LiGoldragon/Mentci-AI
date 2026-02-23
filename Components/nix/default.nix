@@ -5,7 +5,6 @@
 , inputs
 , attractor_src
 , attractor_docs_src
-, scripts_dir
 , repo_root
 }:
 
@@ -36,17 +35,10 @@ let
     src = attractor_src;
   };
 
-  mentci_clj = import ./mentci_clj.nix {
-    inherit pkgs;
-    inherit scripts_dir;
-  };
-
   common_packages = import ./common_packages.nix {
     inherit pkgs system;
     inherit codex_cli_nix;
-    inherit scripts_dir;
     inherit gemini_cli gemini_tui;
-    inherit mentci_clj;
     inherit mentci_vcs;
   };
 
@@ -74,6 +66,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor mentci_clj common_packages jail_sources gemini_cli gemini_tui dev_shell;
+  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

@@ -76,7 +76,6 @@
               codex_cli_nix = codex-cli-nix;
               attractor_src = attractorSrc;
               attractor_docs_src = attractorDocsSrc;
-              scripts_dir = ./Components/scripts;
               repo_root = ./.;
             };
 
