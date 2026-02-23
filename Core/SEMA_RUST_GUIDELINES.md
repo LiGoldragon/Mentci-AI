@@ -21,6 +21,12 @@ structural. Violations indicate category error, not style.
    prevents data racing and double ownership problems at the semantic layer,
    aligning with Rust's borrow checker.
 
+5. **Logic-Data Separation (Sidecar Pattern)**
+   Implementation files must not contain hardcoded paths, regexes, or numeric 
+   constants. All such data must be loaded from an external structured file
+   (Sidecar) or passed in via a typed message. Favor `capnp` and `edn` for
+   external data.
+
 ## Actor-First Concurrency
 
 All multi-step symbolic transformations, long-running orchestrations, and

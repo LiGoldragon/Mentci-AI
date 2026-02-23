@@ -182,13 +182,21 @@ High-level architectural context (framing, mission statements, global mandates) 
     *   **Adaptive Precision:** High-precision units (seconds, minutes) may be omitted if unknown or if the context only requires lower granularity (e.g., `♓︎ 1° | 5919 AM` for broad milestones). Truncation must always occur from right-to-left.
 *   **Comments:** Mandatory *only* when the "why" cannot be structural (e.g., specific timeouts, protocol quirks). Boilerplate is never documented.
 
-## 6. Ontology Resides in Data
+## 6. Ontology Resides in Data (Logic-Data Separation)
 
-**Type is an intrinsic property, not a procedural side effect.**
-The classification of an entity must be encoded within its data structure. Do not hardcode taxonomy into function calls or script logic. Define the universe of types in a schema, manifest, or data structure, and write generic logic that iterates over that truth.
+**Logic is universal; Truth is external.**
+The strict separation of "logic" (code) and "data" (variables, paths, regexes, configuration) is a core requirement for high-efficiency symbolic manipulation.
 
-*   **Forbidden:** `process_item(item, "TYPE_A")`
-*   **Required:** `manifest = { TYPE_A = [items...]; }; map(process, manifest)`
+*   **Externalization Rule:** All variables or data parts of any code must stay *out of the code* or logic part of the system.
+*   **Structured Data Input:** Logic components must always use a structured data input (Sema Objects).
+*   **Sidecar Defaults:** Default values must be kept in a structured data file alongside the code (Sidecar Pattern).
+*   **Format Hierarchy:**
+    1.  **Cap'n Proto (`capnp`)**: Preferred for schema-validated or binary state.
+    2.  **EDN**: Preferred for text-native, LLM-friendly logic.
+    3.  **JSON**: Permitted only as a tertiary fallback.
+
+*   **Forbidden:** `process_item(item, "TYPE_A")` // Hardcoded taxonomy
+*   **Required:** `manifest = { TYPE_A = [items...]; }; map(process, manifest)` // Data-driven
 
 ## 8. ECLIPTIC CHRONOGRAPHIC VERSIONING
 

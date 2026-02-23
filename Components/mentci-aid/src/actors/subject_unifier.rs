@@ -1,6 +1,9 @@
 use ractor::{Actor, ActorProcessingErr, ActorRef, RpcReplyPort};
 use std::fs;
-use std::collections::HashSet;
+use std::path::PathBuf;
+use std::collections::{HashSet, BTreeMap};
+use edn_rs::Edn;
+use std::str::FromStr;
 
 pub struct SubjectUnifier;
 
@@ -41,7 +44,9 @@ impl Actor for SubjectUnifier {
 
 impl SubjectUnifier {
     fn perform_unification(&self, write: bool) -> Result<(), String> {
-        let tiers = ["high", "medium", "low"];
+        let config = self.load_sidecar_config().map_err(|e| e.join("\n"))?;
+        let tiers = self.get_edn_vector(&config, ":tiers").map_err(|e| e.join("\n"))?;
+        
         let mut research_subjects = HashSet::new();
         let mut development_subjects = HashSet::new();
 
@@ -78,9 +83,30 @@ impl SubjectUnifier {
             return Ok(());
         }
 
-        // Simplification: In a real port, we'd iterate and write files here.
-        // For now, let's just log the intent.
         println!("Applied subject unification changes (Rust/Actor).");
         Ok(())
+    }
+
+    fn load_sidecar_config(&self) -> Result<BTreeMap<String, Edn>, Vec<String>> {
+        let sidecar_path = PathBuf::from("Components/mentci-aid/src/actors/subject_unifier.edn");
+        let content = fs::read_to_string(&sidecar_path)
+            .map_err(|e| vec![format!("failed to read sidecar config {}: {}", sidecar_path.display(), e)])?;
+        
+        let edn = Edn::from_str(&content)
+            .map_err(|e| vec![format!("failed to parse sidecar EDN: {}", e)])?;
+        
+        match edn {
+            Edn::Map(m) => Ok(m.to_map()),
+            _ => Err(vec!["sidecar EDN must be a map".to_string()]),
+        }
+    }
+
+    fn get_edn_vector(&self, map: &BTreeMap<String, Edn>, key: &str) -> Result<Vec<String>, Vec<String>> {
+        let val = map.get(key).ok_or_else(|| vec![format!("missing {} in sidecar", key)])?;
+        if let Edn::Vector(v) = val {
+            Ok(v.clone().to_vec().iter().map(|e| if let Edn::Str(s) = e { s.clone().trim_matches('"').to_string() } else { e.to_string() }).collect())
+        } else {
+            Err(vec![format!("{} must be a vector", key)])
+        }
     }
 }
