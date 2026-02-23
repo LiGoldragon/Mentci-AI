@@ -2,4 +2,4 @@
  :title "Research Topic"
  :subject "Project-Hardening"
  :developmentPath "Development/high/Project-Hardening"
- :entries ["Research/high/Project-Hardening/591912050217_answer_remove-python-scripts-and-exception.md" "Research/high/Project-Hardening/591912051624_answer_research-admin-jail-temp-home-mutable-worktree.md" "Research/high/Project-Hardening/591912051749_answer_add-jailed-admin-shell-workspace-copy.md" "Research/high/Project-Hardening/591912055110_answer_fix-nix-develop-and-root-guard.md" "Research/high/Project-Hardening/591912055103_answer_fix-missing-gemini-tui-nix-arg.md"]}
+ :entries ["Research/high/Project-Hardening/591912050217_answer_remove-python-scripts-and-exception.md" "Research/high/Project-Hardening/591912051624_answer_research-admin-jail-temp-home-mutable-worktree.md" "Research/high/Project-Hardening/591912051749_answer_add-jailed-admin-shell-workspace-copy.md" "Research/high/Project-Hardening/591912055103_answer_fix-missing-gemini-tui-nix-arg.md" "Research/high/Project-Hardening/591912055110_answer_fix-nix-develop-and-root-guard.md"]}
