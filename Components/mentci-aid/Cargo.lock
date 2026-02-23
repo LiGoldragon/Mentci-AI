@@ -425,6 +425,8 @@ name = "mentci-box-lib"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "capnp",
+ "capnpc",
  "serde",
  "tracing",
 ]

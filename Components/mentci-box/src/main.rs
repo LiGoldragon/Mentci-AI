@@ -1,5 +1,6 @@
 use anyhow::{Result, Context};
-use mentci_box_lib::{Sandbox, SandboxConfig};
+use mentci_box_lib::{Sandbox, BoxRequest};
+use std::path::PathBuf;
 
 fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
@@ -11,7 +12,9 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
-    let config = SandboxConfig::from_args(args).context("failed to parse sandbox arguments")?;
+    let request_path = PathBuf::from(&args[0]);
+    let request = BoxRequest::from_capnp(&request_path).context("failed to load box request from capnp")?;
+    let config = request.to_sandbox_config()?;
     let sandbox = Sandbox::from_config(config);
     
     sandbox.run()
@@ -20,14 +23,8 @@ fn main() -> Result<()> {
 fn print_help() {
     println!("mentci-box: Bootstrap and reliable sandbox executable for Mentci-AI.");
     println!("");
-    println!("Usage: mentci-box [options] -- <command> [args...]");
-    println!("  --workdir <path>      Working directory inside sandbox (default: cwd)");
-    println!("  --home <path>         HOME inside sandbox (default: /tmp/mentci-box-home-<pid>)");
-    println!("  --bind <src:dst>      Add writable bind mount");
-    println!("  --ro-bind <src:dst>   Add read-only bind mount");
-    println!("  --setenv <K=V>        Set environment variable inside sandbox");
-    println!("  --share-net           Keep host network namespace (default: isolated)");
+    println!("Usage: mentci-box <request.capnp>");
     println!("");
     println!("Example:");
-    println!("  mentci-box --workdir . -- /bin/ls -la");
+    println!("  mentci-box request.capnp");
 }
