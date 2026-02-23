@@ -7,7 +7,7 @@ A host repository mounts or vendors one root directory:
 ## Internal Shape
 - `ProgramPack/Core/`
 - `ProgramPack/programs/`
-- `ProgramPack/development/`
+- `ProgramPack/Development/`
 - `ProgramPack/templates/`
 - `ProgramPack/schemas/`
 
@@ -17,7 +17,7 @@ Each host repository declares one local extension root:
 
 Local shape:
 - `LocalPack/programs/`
-- `LocalPack/development/`
+- `LocalPack/Development/`
 - `LocalPack/templates/`
 
 ## Discovery Model
