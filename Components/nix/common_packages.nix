@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, scripts_dir, gemini_cli, mentci_clj, mentci_vcs }:
+{ pkgs, codex_cli_nix, system, scripts_dir, gemini_cli, gemini_tui, mentci_clj, mentci_vcs }:
 
 let
   mentci_jj = import ./mentci_jj.nix {
@@ -23,6 +23,7 @@ in
   pkgs.rsync
   codex_cli_nix.packages.${system}.default
   gemini_cli
+  gemini_tui
   mentci_clj
   mentci_vcs
   (pkgs.writeShellScriptBin "mentci-commit" ''
