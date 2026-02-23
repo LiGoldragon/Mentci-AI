@@ -167,7 +167,7 @@ impl BoxRequest {
     }
 
     pub fn to_sandbox_config(self) -> Result<SandboxConfig> {
-        let mut env_map = HashMap::new();
+        let env_map = HashMap::new();
         // Prepare logic here (fetch sources etc) - for now just skeleton
         
         Ok(SandboxConfig {

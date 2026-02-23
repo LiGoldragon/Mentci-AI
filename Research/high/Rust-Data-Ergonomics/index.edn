@@ -1,0 +1,5 @@
+{:kind :index
+ :title "Research Topic"
+ :subject "Rust-Data-Ergonomics"
+ :developmentPath "../../../Development/high/Rust-Data-Ergonomics"
+ :entries ["591912060634_answer_rust-edn-loading-status.md" "591912060634_answer_ergonomic-data-access-survey.md"]}

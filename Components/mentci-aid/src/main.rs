@@ -16,6 +16,8 @@ use tracing::{error, info};
 use mentci_aid::dot_loader::DotLoader;
 use mentci_aid::edn_loader::EdnLoader;
 use mentci_aid::attractor_validator::AttractorValidator;
+use mentci_aid::jail_bootstrap;
+use mentci_aid::sandbox;
 
 // --- Execution Environment ---
 
