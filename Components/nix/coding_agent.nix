@@ -7,7 +7,7 @@ pkgs.stdenv.mkDerivation {
 
   nativeBuildInputs = [ pkgs.bun ];
 
-  sourceRoot = "source/packages/coding-agent";
+  sourceRoot = "packages/coding-agent";
 
   # Don't try to build anything by default
   dontBuild = true;

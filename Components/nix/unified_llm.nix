@@ -7,7 +7,7 @@ pkgs.stdenv.mkDerivation {
 
   nativeBuildInputs = [ pkgs.bun ];
 
-  sourceRoot = "source/packages/unified-llm";
+  sourceRoot = "packages/unified-llm";
 
   dontBuild = true;
 
