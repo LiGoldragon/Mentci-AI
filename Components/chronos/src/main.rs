@@ -1,9 +1,13 @@
 use std::f64::consts::PI;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::path::PathBuf;
+use serde::{Serialize, Deserialize};
+use anyhow::{Context, Result};
+use chrono::{DateTime, Utc};
 
 const AM_VERSION_BASE: i32 = 5919;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 struct EclipticTime {
     year_am: i32,
     sign_ordinal: i32,
@@ -14,7 +18,7 @@ struct EclipticTime {
     sign_name: &'static str,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Precision {
     Sign,
     Degree,
@@ -37,16 +41,100 @@ enum Notation {
     Standard, // 0-based (standard for astrology)
 }
 
-fn main() {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct Calibration {
+    timestamp: u64,
+    offset_deg: f64,
+}
+
+fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().skip(1).collect();
+    
+    if args.contains(&"calibrate".to_string()) {
+        return run_calibration();
+    }
+
     let format = parse_format(&args).unwrap_or(OutputFormat::Unicode);
     let precision = parse_precision(&args).unwrap_or(Precision::Second);
     let notation = parse_notation(&args).unwrap_or(Notation::Ordinal);
 
     let now = parse_unix_time(&args).unwrap_or_else(SystemTime::now);
-    let ecliptic = solar_ecliptic_time(now, notation);
+    let ecliptic = solar_ecliptic_time(now, notation)?;
     let output = format_output(ecliptic, format, precision);
     println!("{output}");
+    Ok(())
+}
+
+fn run_calibration() -> Result<()> {
+    println!("Calibrating chronos against NASA JPL Horizons...");
+    
+    let now: DateTime<Utc> = Utc::now();
+    let start_time = now.format("%Y-%m-%d %H:%M").to_string();
+    let stop_time = (now + chrono::Duration::minutes(2)).format("%Y-%m-%d %H:%M").to_string();
+    
+    // JPL Horizons API for Earth Geocentric Solar Longitude (Quantity 31)
+    let url = format!(
+        "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND='10'&CENTER='500@399'&EPHEM_TYPE='OBSERVER'&QUANTITIES='31'&START_TIME='{}'&STOP_TIME='{}'&STEP_SIZE='1m'",
+        start_time, stop_time
+    );
+    
+    let response = reqwest::blocking::get(url)?
+        .json::<serde_json::Value>()?;
+    
+    let result_text = response["result"].as_str().context("failed to parse Horizons response")?;
+    
+    // Improved parser: look for $$SOE marker
+    let ephem_section = result_text.split("$$SOE")
+        .nth(1)
+        .context("could not find start of ephemeris data ($$SOE)")?
+        .split("$$EOE")
+        .next()
+        .context("could not find end of ephemeris data ($$EOE)")?;
+    
+    let first_line = ephem_section.trim().lines().next().context("ephemeris section is empty")?;
+    
+    // Line format: 2026-Feb-23 16:00     335.1234567 ...
+    // Split by whitespace and get the 3rd element (index 2)
+    let parts: Vec<&str> = first_line.split_whitespace().collect();
+    let long_str = parts.get(2).context("failed to locate longitude column")?;
+    
+    let jpl_long: f64 = long_str.parse()?;
+    let local_long = solar_longitude_deg_raw(SystemTime::now());
+    
+    let offset = normalize_signed(jpl_long - local_long);
+    
+    println!("JPL Horizons Longitude: {:.6}°", jpl_long);
+    println!("Local Calculated Longitude: {:.6}°", local_long);
+    println!("Calibration Offset: {:.6}° (~{:.1} arcseconds)", offset, offset * 3600.0);
+    
+    let cal = Calibration {
+        timestamp: Utc::now().timestamp() as u64,
+        offset_deg: offset,
+    };
+    
+    let cal_path = calibration_path();
+    std::fs::create_dir_all(cal_path.parent().unwrap())?;
+    let json = serde_json::to_string_pretty(&cal)?;
+    std::fs::write(&cal_path, json)?;
+    
+    println!("Calibration saved to: {}", cal_path.display());
+    Ok(())
+}
+
+fn calibration_path() -> PathBuf {
+    let mut path = std::env::temp_dir();
+    path.push("mentci-chronos-calibration.json");
+    path
+}
+
+fn get_calibration() -> f64 {
+    let path = calibration_path();
+    if let Ok(content) = std::fs::read_to_string(path) {
+        if let Ok(cal) = serde_json::from_str::<Calibration>(&content) {
+            return cal.offset_deg;
+        }
+    }
+    0.0
 }
 
 fn parse_format(args: &[String]) -> Option<OutputFormat> {
@@ -158,14 +246,15 @@ fn format_unicode_suffix(time: EclipticTime, precision: Precision) -> String {
     }
 }
 
-fn solar_ecliptic_time(now: SystemTime, notation: Notation) -> EclipticTime {
-    let true_long = solar_longitude_deg(now);
+fn solar_ecliptic_time(now: SystemTime, notation: Notation) -> Result<EclipticTime> {
+    let offset = get_calibration();
+    let true_long = normalize_degrees(solar_longitude_deg_raw(now) + offset);
     let (sign_index, degree, minute, second) = zodiac_ordinals(true_long, notation);
     let (symbol, name) = zodiac_symbol(sign_index);
 
     let year_am = gregorian_to_am_year(now);
 
-    EclipticTime {
+    Ok(EclipticTime {
         year_am,
         sign_ordinal: sign_index + 1,
         degree,
@@ -173,7 +262,7 @@ fn solar_ecliptic_time(now: SystemTime, notation: Notation) -> EclipticTime {
         second,
         sign_symbol: symbol,
         sign_name: name,
-    }
+    })
 }
 
 fn julian_day(time: SystemTime) -> f64 {
@@ -184,7 +273,7 @@ fn julian_day(time: SystemTime) -> f64 {
     2440587.5 + unix_seconds / 86400.0
 }
 
-fn solar_longitude_deg(time: SystemTime) -> f64 {
+fn solar_longitude_deg_raw(time: SystemTime) -> f64 {
     let jd = julian_day(time);
     let t = (jd - 2451545.0) / 36525.0;
 
@@ -297,7 +386,6 @@ fn gregorian_to_am_year(time: SystemTime) -> i32 {
     }
 }
 
-// Civil date conversion from days since 1970-01-01.
 fn civil_from_days(days: i64) -> (i32, u32, u32) {
     let z = days + 719468;
     let era = if z >= 0 { z } else { z - 146096 } / 146097;
@@ -317,7 +405,7 @@ fn vernal_equinox_utc(year: i32) -> SystemTime {
     let mut estimate = start;
 
     for _ in 0..3 {
-        let longitude = solar_longitude_deg(estimate);
+        let longitude = solar_longitude_deg_raw(estimate);
         let delta = normalize_signed(longitude);
         let days = -delta / 360.0 * 365.2422;
         estimate = add_seconds(estimate, days * 86_400.0);
