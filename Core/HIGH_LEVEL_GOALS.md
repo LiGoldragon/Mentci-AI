@@ -9,8 +9,10 @@ Establish **mentci-aid** as a functional, Level 5 autonomous pipeline daemon.
 Required outcome:
 - `mentci-aid` reaches a "Running State".
 - It successfully orchestrates complex DAGs within Nix Jails.
-- It adheres strictly to Sema Object Style and Handshake Logging.
-- **Assimilation:** Attractor (StrongDM) and Attractor-Docs (Brynary) are fully assimilated (rewritten internally in Sema-standard Aski + Rust + Clojure + Nix) as native components.
+- **[DONE]** Native Rust actor-based orchestration layer (`execute`) implemented.
+- **[DONE]** Logic-Data Separation enforced via EDN sidecars.
+- **[DONE]** Full Repository Sweep complete (Sections 1-10).
+- **Assimilation:** Attractor (StrongDM) and Attractor-Docs (Brynary) are fully assimilated.
 - **R&D Mirror Integrity:** `Development/` and `Research/` remain mirrored by subject so execution guidance and traceable findings stay aligned.
 - **Control-Gate Integrity:** session and root guard health are maintained as release-blocking gates.
 
