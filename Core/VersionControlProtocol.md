@@ -2,13 +2,14 @@
 
 This document is the source of truth for Jujutsu workflows, commit discipline, and push cadence. **Jujutsu (jj) is the mandatory primary interface for all VCS operations in this repository; Git exists solely as the underlying storage backend.**
 
-## 1. Core Rules
-1. All active development targets the `dev` bookmark.
-2. End-of-flow default is mandatory: every completed prompt session must end with a push to `dev` unless the user explicitly overrides the target.
-3. Commit every intent: one atomic modification per commit, no bundling.
-4. Atomic commit messages are minimal and must use only: `intent: <short description>`.
-5. Full prompt/context attribution is reserved for final session synthesis per `Core/ContextualSessionProtocol.md`.
-6. **Session completion gate:** a prompt is incomplete unless finalization follows the single-vs-multi sub-commit synthesis rules in `Core/ContextualSessionProtocol.md`.
+## 1. Core Rules (BOOMING MANDATE)
+1. **TARGET BOOKMARK:** All active development targets the `dev` bookmark.
+2. **END-OF-FLOW PUSH:** Every completed prompt session **MUST** end with a push to `dev` on the `origin` remote.
+3. **COMMIT EVERY INTENT:** One atomic modification per commit. No bundling.
+4. **NO DIRTY TREES:** Finishing a turn with uncommitted changes is a protocol violation.
+5. **ATOMIC MESSAGES:** Use `intent: <short description>` for all intermediate commits.
+6. **SESSION SYNTHESIS:** Full prompt/context attribution is reserved for final session synthesis per `Core/ContextualSessionProtocol.md`.
+7. **PUSH VERIFICATION:** Always verify that the push was successful and the bookmark is visible on the remote.
 6.1. Every `session:` commit description must include an explicit solar baseline line immediately after the title:
    - `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
    - canonical shape: `spaceSeparated [dotSeparated [ZodiaUnicode deg min sec], concatenated [Year \"AM\"]]`

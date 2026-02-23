@@ -79,9 +79,14 @@ Agents execute within a **Nix Jail**. All operations must be performed using the
 ### 1.1 Pre-Fetch
 To acquire external Sources (tarballs, git repos), use Nix-native prefetch tooling from the jail shell (for example `nix-prefetch-git` and flake input updates). Do not introduce Python fetch helpers.
 
-## 2. Audit Trail
+## 2. Audit Trail (MANDATORY AUTO-COMMIT)
 
-Use `jj log` as the authoritative audit trail for work performed in the repository.
+**EVERY PROMPT SESSION MUST END WITH A PUSH TO THE `dev` BOOKMARK.** 
+
+*   **Atomic Intent:** Every single modification MUST result in an `intent:` commit. Do not bundle independent changes.
+*   **Dirty Tree Rule:** Never finish a response with a dirty working copy. Use `jj commit` before finalizing.
+*   **Session Synthesis:** Use `bb Components/scripts/session_finalize/main.clj` at the end of every prompt to aggregate intents and **PUSH TO ORIGIN/DEV**.
+*   **Auditability:** Use `jj log` as the authoritative audit trail for work performed in the repository.
 
 ## 3. Structural Rules
 

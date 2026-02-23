@@ -27,6 +27,7 @@ The classification is aligned to `Development/high/Repo-Intent-Realignment/Strat
 | `Recover-Lost-Work-After-Rewrite` | `high` | Keep until recovery scope is fully closed. |
 | `STT-Context-Decoding` | `high` | Critical for guidance extraction from audio notes. |
 | `Aski-Sema-Lojix-Assimilation` | `high` | High-weight author-intent integration. |
+| `Clojure-To-Rust-Migration` | `high` | Migration of scripts to native Rust actors. |
 | `Scripts-Rust-Migration` | `high` | Keep until script-surface replacement parity is complete. |
 | `Prompt-Report-System` | `high` | Keep as reporting/session hygiene control subject. |
 | `Subject-Consolidation` | `medium` | Keep; apply only when duplicates are proven. |

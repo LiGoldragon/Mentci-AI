@@ -1,0 +1,5 @@
+{:kind :index
+ :title "Research Topic"
+ :subject "Clojure-To-Rust-Migration"
+ :developmentPath "../../../Development/high/Clojure-To-Rust-Migration"
+ :entries ["591912060350_answer_clojure-script-obsolescence-and-rust-migration.md"]}

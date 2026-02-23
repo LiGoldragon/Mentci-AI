@@ -293,11 +293,12 @@
         target-rev (resolve-target-rev-for this {:rev rev})]
     (describe-rev-for this {:rev target-rev :message message})
     (set-bookmark-for this {:bookmark bookmark :rev target-rev})
+    (println (str "Finalized session commit on rev " target-rev " and bookmark " bookmark "."))
     (when-not no-push?
+      (println (str "Pushing bookmark '" bookmark "' to remote '" remote "'..."))
       (push-bookmark-for this {:bookmark bookmark :remote remote})
-      (verify-push-for this {:bookmark bookmark :remote remote}))
-    (println (str "Finalized session commit on rev " target-rev " and bookmark " bookmark
-                  (if no-push? " (no push)." ".")))))
+      (verify-push-for this {:bookmark bookmark :remote remote})
+      (println (str "Successfully pushed and verified " bookmark " on " remote "."))))
 
 (def default-session-finalize (->DefaultSessionFinalize))
 
