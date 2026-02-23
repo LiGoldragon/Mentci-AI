@@ -9,17 +9,17 @@
 
 buildNpmPackage rec {
   pname = "gemini-cli";
-  version = "0.29.5";
+  version = "0.30.0-preview.3";
   nodejs = nodejs_22;
 
   src = fetchFromGitHub {
     owner = "google-gemini";
     repo = "gemini-cli";
     rev = "v${version}";
-    hash = "sha256-+gFSTq0CXMZa2OhP2gOuWa5WtteKW7Ys78lgnz7J72g=";
+    hash = "sha256-px3ksJZzPQLE5idW7W9egbFPS2so3bZhnMaUpQGouI4=";
   };
 
-  npmDepsHash = "sha256-RGiWtJkLFV1UfFahHPzxtzJIsPCseEwfSsPdLfBkavI=";
+  npmDepsHash = "sha256-+pvut1A8RP8dKp3tNAfzqTIu9YVLL8ZCZKtg44CsN0U=";
 
   nativeBuildInputs = [ pkg-config makeWrapper ];
   buildInputs = [ libsecret ];
