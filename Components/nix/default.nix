@@ -5,6 +5,7 @@
 , inputs
 , attractor_src
 , attractor_docs_src
+, pi_mono_src
 , repo_root
 }:
 
@@ -25,6 +26,16 @@ let
     inherit craneLib pkgs;
   };
 
+  coding_agent = import ./coding_agent.nix {
+    inherit pkgs;
+    src = pi_mono_src;
+  };
+
+  unified_llm = import ./unified_llm.nix {
+    inherit pkgs;
+    src = pi_mono_src;
+  };
+
   execute = pkgs.runCommand "mentci-execute" { } ''
     mkdir -p "$out/bin"
     ln -s "${mentci_ai}/bin/execute" "$out/bin/execute"
@@ -33,13 +44,15 @@ let
   attractor = import ./attractor.nix {
     inherit pkgs;
     src = attractor_src;
+    coding_agent = coding_agent;
+    unified_llm = unified_llm;
   };
 
   common_packages = import ./common_packages.nix {
     inherit pkgs system;
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
-    inherit mentci_vcs;
+    inherit mentci_vcs coding_agent unified_llm;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -66,6 +79,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell;
+  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell coding_agent unified_llm;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

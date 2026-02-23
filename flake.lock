@@ -1409,6 +1409,22 @@
         "type": "github"
       }
     },
+    "pi-mono": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771808226,
+        "narHash": "sha256-/PbVJtaQU6W9tylhvdmStrieeHUUu0yAPSNqhmjLaM0=",
+        "owner": "badlogic",
+        "repo": "pi-mono",
+        "rev": "380236a003ec7f0e69f54463b0f00b3118d78f3c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "badlogic",
+        "repo": "pi-mono",
+        "type": "github"
+      }
+    },
     "printf": {
       "flake": false,
       "locked": {
@@ -1510,6 +1526,7 @@
         "mkZolaWebsite": "mkZolaWebsite_2",
         "nixpkgs": "nixpkgs_6",
         "opencode": "opencode",
+        "pi-mono": "pi-mono",
         "seahawk": "seahawk_2",
         "sema": "sema",
         "skrips": "skrips_2",

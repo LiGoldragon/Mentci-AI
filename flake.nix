@@ -48,6 +48,11 @@
         };
         codex-cli-nix.url = "github:sadjow/codex-cli-nix";
 
+        pi-mono = {
+          url = "github:badlogic/pi-mono";
+          flake = false;
+        };
+
         # Research Sources
         leash = {
           url = "github:strongdm/leash";
@@ -76,6 +81,7 @@
               codex_cli_nix = codex-cli-nix;
               attractor_src = attractorSrc;
               attractor_docs_src = attractorDocsSrc;
+              pi_mono_src = inputs.pi-mono;
               repo_root = ./.;
             };
 
@@ -95,6 +101,8 @@
           mentciBoxDefault = namespace.mentci_box_default;
           execute = namespace.execute;
           attractor = namespace.attractor;
+          codingAgent = namespace.coding_agent;
+          unifiedLlm = namespace.unified_llm;
           gemini-cli = namespace.gemini_cli;
         };
 
