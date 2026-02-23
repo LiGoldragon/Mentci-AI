@@ -1,0 +1,14 @@
+(
+  worktreePath = ".",
+  homePath = "/tmp/mentci-box-test-home",
+  shareNetwork = false,
+  fetchSources = true,
+  prepareComponents = true,
+  binds = [],
+  roBinds = [],
+  user = "mentci-box",
+  command = ["sh", "Components/mentci-box/tests/internal_test.sh"],
+  env = [
+    (key = "EXPECTED_REMOTE", value = "git@github.com:LiGoldragon/Mentci-AI.git")
+  ]
+)

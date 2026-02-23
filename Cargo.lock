@@ -921,6 +921,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "mentci-box-lib",
+ "tempfile",
  "tracing",
  "tracing-subscriber",
 ]

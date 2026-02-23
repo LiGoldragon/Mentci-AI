@@ -26,6 +26,16 @@ struct MentciBoxRequest {
   # Binds
   binds @5 :List(BindMapping);
   roBinds @6 :List(BindMapping);
+
+  # New: Configuration
+  user @7 :Text = "mentci-box";
+  command @8 :List(Text);
+  env @9 :List(EnvVar);
+}
+
+struct EnvVar {
+  key @0 :Text;
+  value @1 :Text;
 }
 
 struct BindMapping {

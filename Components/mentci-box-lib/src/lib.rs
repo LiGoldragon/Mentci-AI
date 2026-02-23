@@ -45,7 +45,8 @@ impl Sandbox {
         command.stdin(Stdio::inherit());
         command.stdout(Stdio::inherit());
         command.stderr(Stdio::inherit());
-        command.args(self.to_bwrap_args()?);
+        let args = self.to_bwrap_args()?;
+        command.args(args);
         
         let status = command.status().context("failed to start bwrap")?;
         if status.success() {
@@ -80,8 +81,10 @@ impl Sandbox {
         }
 
         append_base_ro_binds(&mut args);
-        append_ro_bind(&mut args, &self.config.workdir, &self.config.workdir);
+        
+        // Mount workdir once as writable
         append_bind(&mut args, &self.config.workdir, &self.config.workdir);
+        
         args.push("--chdir".to_string());
         args.push(self.config.workdir.display().to_string());
 
@@ -91,21 +94,24 @@ impl Sandbox {
         args.push("HOME".to_string());
         args.push(self.config.home.display().to_string());
         
-        let user_value = std::env::var("USER").unwrap_or_else(|_| "mentci-box".to_string());
-        args.push("--setenv".to_string());
-        args.push("USER".to_string());
-        args.push(user_value);
-        
-        if let Ok(path) = std::env::var("PATH") {
-            args.push("--setenv".to_string());
-            args.push("PATH".to_string());
-            args.push(path);
-        }
-        
         for (key, value) in &self.config.env_map {
             args.push("--setenv".to_string());
             args.push(key.clone());
             args.push(value.clone());
+        }
+
+        if !self.config.env_map.contains_key("USER") {
+            args.push("--setenv".to_string());
+            args.push("USER".to_string());
+            args.push("mentci-box".to_string());
+        }
+        
+        if !self.config.env_map.contains_key("PATH") {
+            if let Ok(path) = std::env::var("PATH") {
+                args.push("--setenv".to_string());
+                args.push("PATH".to_string());
+                args.push(path);
+            }
         }
 
         for mapping in &self.config.ro_binds {
@@ -130,6 +136,9 @@ pub struct BoxRequest {
     pub prepare_components: bool,
     pub binds: Vec<BindMapping>,
     pub ro_binds: Vec<BindMapping>,
+    pub user: String,
+    pub command: Vec<String>,
+    pub env: HashMap<String, String>,
 }
 
 impl BoxRequest {
@@ -155,28 +164,47 @@ impl BoxRequest {
             });
         }
 
+        let mut command = Vec::new();
+        for c in request.get_command()? {
+            command.push(c?.to_str()?.to_string());
+        }
+
+        let mut env = HashMap::new();
+        for e in request.get_env()? {
+            env.insert(e.get_key()?.to_str()?.to_string(), e.get_value()?.to_str()?.to_string());
+        }
+
         Ok(Self {
-            worktree_path: PathBuf::from(request.get_worktree_path()?.to_str()?),
+            worktree_path: std::fs::canonicalize(PathBuf::from(request.get_worktree_path()?.to_str()?))?,
             home_path: PathBuf::from(request.get_home_path()?.to_str()?),
             share_network: request.get_share_network(),
             fetch_sources: request.get_fetch_sources(),
             prepare_components: request.get_prepare_components(),
             binds,
             ro_binds,
+            user: request.get_user()?.to_str()?.to_string(),
+            command,
+            env,
         })
     }
 
     pub fn to_sandbox_config(self) -> Result<SandboxConfig> {
-        let env_map = HashMap::new();
-        // Prepare logic here (fetch sources etc) - for now just skeleton
+        let mut env_map = self.env;
+        env_map.insert("USER".to_string(), self.user);
         
+        let command = if self.command.is_empty() {
+            vec!["/bin/sh".to_string()]
+        } else {
+            self.command
+        };
+
         Ok(SandboxConfig {
             workdir: self.worktree_path,
             home: self.home_path,
             share_network: self.share_network,
             binds: self.binds,
             ro_binds: self.ro_binds,
-            command: vec!["/bin/sh".to_string()],
+            command,
             env_map,
         })
     }

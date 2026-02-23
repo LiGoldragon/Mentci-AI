@@ -9,3 +9,6 @@ anyhow = "1.0"
 mentci-box-lib = { path = "../mentci-box-lib" }
 tracing = "0.1"
 tracing-subscriber = "0.3"
+
+[dev-dependencies]
+tempfile = "3.15"
