@@ -94,7 +94,7 @@ Actions:
 3. Keep `session_guard` as hard gate for prompt completion.
 
 Operational default:
-- Use `bb Components/scripts/session_finalize/main.clj ...` for session closure before completion.
+- Use `execute finalize ...` for session closure before completion.
 
 Completion criteria for this remediation:
 - `session_guard` passes at prompt completion.

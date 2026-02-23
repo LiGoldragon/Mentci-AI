@@ -32,9 +32,9 @@ Execute a deterministic full-repository sweep to remove dead links, abandoned id
 - Move historical-but-obsolete implementation notes into `Research/` artifacts.
 
 4. Validate section.
-- For script changes: `bb Components/scripts/validate_scripts/main.clj`
-- For cross-tree consistency: `bb Components/scripts/subject_unifier/main.clj`
-- For policy references: `bb Components/scripts/reference_guard/main.clj`
+- For script changes: `execute root-guard`
+- For cross-tree consistency: `execute unify`
+- For policy references: `execute link-guard`
 
 5. Emit section checkpoint research artifact.
 - One artifact per section sweep under `Research/high/Repo-Intent-Realignment/`.

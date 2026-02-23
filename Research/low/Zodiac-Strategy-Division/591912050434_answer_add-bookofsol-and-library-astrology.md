@@ -28,4 +28,4 @@ Both reference `Sources/bookofsol` as source and provide minimal symbolic orient
 
 ### Verification
 - Wiring references found in flake/jail/whitelist files.
-- `bb Components/scripts/root_guard/main.clj` passed.
+- `execute root-guard` passed.

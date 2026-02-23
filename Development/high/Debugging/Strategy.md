@@ -22,9 +22,9 @@ Every debug session must culminate in an entry in `Outputs/Logs/SYSTEM_SWEEP_Rep
 
 ## 5. Sweep Program (Backfilled + Active)
 Run this deterministic bug sweep for repository health checks:
-1. `bb Components/scripts/validate_scripts/main.clj`
-2. `bb Components/scripts/root_guard/main.clj`
-3. `bb Components/scripts/session_guard/main.clj`
+1. `execute root-guard`
+2. `execute root-guard`
+3. `execute session-guard`
 4. Script test batch:
    - `bb Components/scripts/tool_discoverer/test.clj`
    - `bb Components/scripts/interrupted_job_queue/test.clj`
@@ -36,7 +36,7 @@ Run this deterministic bug sweep for repository health checks:
 
 ## 6. Current Known Issues from Sweep
 1. Root guard drift remains:
-   - `bb Components/scripts/root_guard/main.clj` fails on lowercase top-level `outputs`.
+   - `execute root-guard` fails on lowercase top-level `outputs`.
 2. Historical path-text drift remains in some docs/strategies:
    - `Sources/` references still appear where migration to `Sources` is transitional or incomplete.
 

@@ -53,7 +53,7 @@ Agents updated")
 - Runtime metadata files may exist temporarily by protocol:
   - `.attrs.json`, `.opencode.edn`.
 - Enforcement tool:
-  - `bb Components/scripts/root_guard/main.clj`.
+  - `execute root-guard`.
 
 ### 2.1 Sources (`Sources/`)
 - **Mode:** Read-Only (Mount points to Nix Store or immutable snapshots).

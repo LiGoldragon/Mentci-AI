@@ -30,7 +30,7 @@ Changes:
 
 Validation:
 1. Coverage check confirmed all current strategy/report subjects are present in the matrix.
-2. `bb Components/scripts/validate_scripts/main.clj` passed.
+2. `execute root-guard` passed.
 
 ## Reporting Protocol Notes
 

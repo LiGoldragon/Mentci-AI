@@ -20,9 +20,9 @@ Automate strategy execution support while preserving durable, restartable contex
 2. Session context capture:
 - Treat `Library/RestartContext.md` as the primary session-resume snapshot and update it after major structural changes.
 3. Sweep protocol:
-- `bb Components/scripts/validate_scripts/main.clj`
-- `bb Components/scripts/session_guard/main.clj`
-- `bb Components/scripts/root_guard/main.clj`
+- `execute root-guard`
+- `execute session-guard`
+- `execute root-guard`
 4. Backfill protocol:
 - If an exchange lacks a visible commit/report artifact, backfill immediately via `Research/<priority>/<Subject>/` and corresponding strategy update.
 

@@ -118,7 +118,7 @@ Mentci-AI incorporates the Attractor standard for workflow orchestration. It doe
 
 *   **Contract Source:** `Core/ExtensionIndexProtocol.md`
 *   **Location Registry:** `Core/ExtensionIndexLocations.edn`
-*   **Resolver Tool:** `bb Components/scripts/extension_index/main.clj`
+*   **Resolver Tool:** `execute extension-index`
 *   **Rule:** Prefer adding capabilities by registering or updating index files in standard extension locations instead of editing multiple core authority files.
 *   **Operational Mode:** Missing extension indexes are non-fatal; extension loading remains optional.
 

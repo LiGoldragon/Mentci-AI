@@ -52,10 +52,10 @@ Changes:
 - `Library/specs/ASKI_FS_ROOT_CONTRACT.edn`
 
 Validation:
-1. `bb Components/scripts/validate_scripts/main.clj` passed.
-2. `bb Components/scripts/subject_unifier/main.clj` passed (26/26 parity, no missing indexes).
-3. `bb Components/scripts/reference_guard/main.clj` passed.
-4. `bb Components/scripts/root_guard/main.clj` still fails on pre-existing top-level drift: `outputs`, `result`.
+1. `execute root-guard` passed.
+2. `execute unify` passed (26/26 parity, no missing indexes).
+3. `execute link-guard` passed.
+4. `execute root-guard` still fails on pre-existing top-level drift: `outputs`, `result`.
 
 ## Reporting Protocol Notes
 

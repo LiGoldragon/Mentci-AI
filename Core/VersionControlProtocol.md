@@ -36,10 +36,10 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
    - If there is exactly one sub-commit for the prompt: prepend that commit description with the final `session:` message block (do not add a separate final commit).
    - If there are multiple sub-commits: duplicate the sub-commit branch, squash the duplicated branch into one final `session:` commit, and append the duplicated sub-branch change IDs in the final message.
 6.1 Preferred automation for finalization:
-   - Use `bb Components/scripts/session_finalize/main.clj` to synthesize a compliant `session:` message and safely target the finalized non-empty revision.
+   - Use `execute finalize` to synthesize a compliant `session:` message and safely target the finalized non-empty revision.
    - This prevents moving bookmarks onto empty working-copy commits.
-7. Before declaring the prompt complete, run `bb Components/scripts/session_guard/main.clj`; non-zero exit means session synthesis is missing or malformed.
-8. Run `bb Components/scripts/root_guard/main.clj`; non-zero exit means top-level FS contract drift.
+7. Before declaring the prompt complete, run `execute session-guard`; non-zero exit means session synthesis is missing or malformed.
+8. Run `execute root-guard`; non-zero exit means top-level FS contract drift.
 9. Advance and push once:
    - `jj bookmark set dev -r @- --allow-backwards`
    - `jj git push --bookmark dev`
@@ -56,7 +56,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
    - `## Original Prompt`
    - `## Agent Context`
    - `## Logical Changes`
-   This is enforced by `bb Components/scripts/session_guard/main.clj`.
+   This is enforced by `execute session-guard`.
 14.2. Session message timestamp format is mandatory:
    - commit/session text uses `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
    - release/version tags use cycle offset where `5919 AM -> 0`, `5920 AM -> 1`, etc.

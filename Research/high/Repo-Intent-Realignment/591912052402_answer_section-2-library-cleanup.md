@@ -30,8 +30,8 @@ Library files updated:
 - Kept process semantics unchanged.
 
 Validation:
-1. `bb Components/scripts/validate_scripts/main.clj` passed.
-2. `bb Components/scripts/reference_guard/main.clj` passed.
+1. `execute root-guard` passed.
+2. `execute link-guard` passed.
 
 ## Reporting Protocol Notes
 

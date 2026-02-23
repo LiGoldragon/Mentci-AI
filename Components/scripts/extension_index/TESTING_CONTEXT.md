@@ -5,9 +5,9 @@ Resolve optional extension index files from standard Core-defined locations.
 
 ## Commands
 - EDN output:
-  - `bb Components/scripts/extension_index/main.clj`
+  - `execute extension-index`
 - Plain output:
-  - `bb Components/scripts/extension_index/main.clj --plain`
+  - `execute extension-index --plain`
 
 ## Contract
 - Reads `Core/ExtensionIndexLocations.edn`.

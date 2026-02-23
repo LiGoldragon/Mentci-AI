@@ -31,7 +31,7 @@ Usage:
 
 Validation:
 - Script-local validator pass:
-  - `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/sources_mounter`
+  - `execute root-guard --scripts-dir Components/scripts/sources_mounter`
 - Mount run pass and symlink targets verified under `Sources/`.
 
 Caveat:

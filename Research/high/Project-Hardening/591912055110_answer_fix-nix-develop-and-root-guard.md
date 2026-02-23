@@ -15,5 +15,5 @@
 ## Verification
 
 1.  `nix develop --command true` now succeeds.
-2.  `bb Components/scripts/root_guard/main.clj` now passes.
-3.  `bb Components/scripts/session_guard/main.clj` identifies the need for session finalization.
+2.  `execute root-guard` now passes.
+3.  `execute session-guard` identifies the need for session finalization.

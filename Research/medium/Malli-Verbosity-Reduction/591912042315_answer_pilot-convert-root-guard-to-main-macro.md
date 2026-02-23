@@ -25,8 +25,8 @@ Bug fixed during pilot:
 - Fixed in `Components/scripts/lib/malli.clj` by emitting unqualified `-main` symbol.
 
 Tests run:
-- `bb Components/scripts/root_guard/main.clj` -> pass.
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/root_guard` -> pass.
+- `execute root-guard` -> pass.
+- `execute root-guard --scripts-dir Components/scripts/root_guard` -> pass.
 - Macro expansion check for `(main Input ...)` -> expands to `(defn* -main [:=> [:cat Input] :any] [input] ...)`.
 
 Strategy state updated:

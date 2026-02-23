@@ -30,8 +30,8 @@ Implemented:
 Validation:
 - `bb Components/scripts/interrupted_job_queue/test.clj` -> pass
 - `bb Components/scripts/interrupted_job_queue/main.clj` -> pass (dry-run output)
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/interrupted_job_queue` -> pass
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/lib` -> pass
+- `execute root-guard --scripts-dir Components/scripts/interrupted_job_queue` -> pass
+- `execute root-guard --scripts-dir Components/scripts/lib` -> pass
 
 ## Reporting Protocol Notes
 

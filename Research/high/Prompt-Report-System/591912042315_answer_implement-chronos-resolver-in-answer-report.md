@@ -29,8 +29,8 @@ Changes made:
    - `Components/scripts/answer_report/TestingContext.md` now documents resolver order and `--chronos-raw` usage.
 
 Validation:
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/answer_report` -> pass
-- `bb Components/scripts/answer_report/main.clj --prompt "Q" --answer "A" --subject Prompt-Report-System --title chronos-raw-smoke --chronos-raw "12.1.2.3 | 5919 AM"` -> pass
+- `execute root-guard --scripts-dir Components/scripts/answer_report` -> pass
+- `execute report --prompt "Q" --answer "A" --subject Prompt-Report-System --title chronos-raw-smoke --chronos-raw "12.1.2.3 | 5919 AM"` -> pass
 - Resolver-path run now fails gracefully with actionable diagnostics in this environment because:
   - `chronos` binary is absent on PATH, and
   - cargo fallback reaches `Components/Cargo.toml` but fails due existing `Components/build.rs` / Cap'n Proto schema compilation errors.

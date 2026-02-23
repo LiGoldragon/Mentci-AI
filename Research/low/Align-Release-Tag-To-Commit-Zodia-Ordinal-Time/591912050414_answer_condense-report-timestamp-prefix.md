@@ -22,8 +22,8 @@ Implemented:
 5. Updated chronography/report docs to specify the condensed timestamp prefix contract.
 
 Validation:
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/answer_report` -> pass
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/subject_unifier` -> pass
+- `execute root-guard --scripts-dir Components/scripts/answer_report` -> pass
+- `execute root-guard --scripts-dir Components/scripts/subject_unifier` -> pass
 - smoke generation produced a temporary condensed-filename report file and removed it after verification.
 
 ## Reporting Protocol Notes

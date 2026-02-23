@@ -27,5 +27,5 @@ Removed all Python source/bytecode files from the repository and removed policy 
 
 ### Verification
 - `rg --files -g '*.py' -g '*.pyc' -g '*.pyo'` returns no results.
-- `bb Components/scripts/validate_scripts/main.clj` still fails on pre-existing unrelated issue:
+- `execute root-guard` still fails on pre-existing unrelated issue:
   - `Missing defn* usage in Components/scripts/program_version/main.clj`.

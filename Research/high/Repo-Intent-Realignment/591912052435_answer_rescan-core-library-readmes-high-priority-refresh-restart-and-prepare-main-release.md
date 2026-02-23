@@ -39,10 +39,10 @@ Files updated:
 11. `Outputs/Logs/ReleaseMilestones.md`
 
 Validation status (pre-release check):
-1. `bb Components/scripts/validate_scripts/main.clj`: passing
-2. `bb Components/scripts/reference_guard/main.clj`: passing
-3. `bb Components/scripts/session_guard/main.clj`: failing (trailing `intent:` chain)
-4. `bb Components/scripts/root_guard/main.clj`: failing (`outputs` dir and `result` file top-level drift)
+1. `execute root-guard`: passing
+2. `execute link-guard`: passing
+3. `execute session-guard`: failing (trailing `intent:` chain)
+4. `execute root-guard`: failing (`outputs` dir and `result` file top-level drift)
 
 ## Reporting Protocol Notes
 

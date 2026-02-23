@@ -26,5 +26,5 @@ Implemented central component location flow using `Components/index.edn`.
 ### Validation
 - `bb Components/scripts/component_registry/main.clj` -> pass
 - `bb Components/scripts/component_registry/main.clj --id scripts` -> pass
-- `bb Components/scripts/root_guard/main.clj` -> pass
-- `bb Components/scripts/validate_scripts/main.clj` -> fails on pre-existing unrelated issue (`Components/scripts/program_version/main.clj` missing `defn*`).
+- `execute root-guard` -> pass
+- `execute root-guard` -> fails on pre-existing unrelated issue (`Components/scripts/program_version/main.clj` missing `defn*`).

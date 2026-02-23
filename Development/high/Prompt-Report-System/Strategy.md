@@ -88,7 +88,7 @@ Make `answer_report` Chronos resolution robust across repo layout changes and sh
    - `--chronos-raw` optional override for tests to bypass runtime Chronos execution.
 
 ### Acceptance Criteria
-1. `bb Components/scripts/answer_report/main.clj --prompt x --answer y --subject Prompt-Report-System --title smoke`
+1. `execute report --prompt x --answer y --subject Prompt-Report-System --title smoke`
    succeeds in default dev shell when either `chronos` binary or `Components/chronos/Cargo.toml` path is available.
 2. No behavior regression in filename/date extraction.
 3. Existing report format remains unchanged except improved error messaging.

@@ -24,9 +24,9 @@ Components files updated:
 - Replaced stale non-existent root entry `Sources.aski-fs` with canonical existing path `Components/workflows/mentci.aski-fs`.
 
 Validation:
-1. `bb Components/scripts/validate_scripts/main.clj` passed.
-2. `bb Components/scripts/subject_unifier/main.clj` passed.
-3. `bb Components/scripts/reference_guard/main.clj` passed.
+1. `execute root-guard` passed.
+2. `execute unify` passed.
+3. `execute link-guard` passed.
 
 ## Reporting Protocol Notes
 

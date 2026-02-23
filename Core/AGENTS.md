@@ -22,7 +22,7 @@ Enforcement requirements:
 *   **No-Edit Without Architecture Context:** Any change made without having processed these guidelines is a violation of the Enforcement Contract.
 *   **Programming Version Signature:** Every agent response **must** end with its current "Programming Version"—a content-addressed hash of the `Core/` directory. 
     *   Format: `programming: <version_hash>` (on its own line at the very end of the response).
-    *   Acquire via: `bb Components/scripts/program_version/main.clj get`.
+    *   Acquire via: `execute version`.
 *   **Solar Baseline Prefix:** Every prompt-handling response (including intermediary updates and final response) must begin with the current ordinal solar baseline line.
     *   Format: `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
     *   Canonical example: `solar: 5919.12.05.04.04`
@@ -54,7 +54,7 @@ These are the highest-order rules for all languages and scripts.
 *   **Development/Research Subject Unification:** Every subject in `Research/` must have a corresponding `Development/<priority>/<Subject>/` directory, and every development subject must have a corresponding topic directory `Research/<priority>/<Subject>/` with a topic index file `index.edn`.
     *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
     *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (development scaffold or research topic).
-    *   **Canonical Tool:** Use `bb Components/scripts/subject_unifier/main.clj --write` to enforce and repair bidirectional subject coverage.
+    *   **Canonical Tool:** Use `execute unify --write` to enforce and repair bidirectional subject coverage.
 *   **R&D Mirror Contract:** Repository R&D consists of the paired trees `Development/` and `Research/`. Topic names mirror across both trees: `Development/` carries executable guidance, `Research/` carries prompt-traceable findings.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
 *   **Assimilation of Sources:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Sources/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
@@ -85,14 +85,14 @@ To acquire external Sources (tarballs, git repos), use Nix-native prefetch tooli
 
 *   **Atomic Intent:** Every single modification MUST result in an `intent:` commit. Do not bundle independent changes.
 *   **Dirty Tree Rule:** Never finish a response with a dirty working copy. Use `jj commit` before finalizing.
-*   **Session Synthesis:** Use `bb Components/scripts/session_finalize/main.clj` at the end of every prompt to aggregate intents and **PUSH TO ORIGIN/DEV**.
+*   **Session Synthesis:** Use `execute finalize` at the end of every prompt to aggregate intents and **PUSH TO ORIGIN/DEV**.
 *   **Auditability:** Use `jj log` as the authoritative audit trail for work performed in the repository.
 
 ## 3. Structural Rules
 
 *   **Clojure (Babashka) Mandate:** All glue code and scripts must be written in Clojure (Babashka). No Bash logic beyond the one-line bb shim.
 *   **Script Typing:** All Clojure scripts must define Malli schemas for Sources/config and validate them.
-*   **Script Guard:** Run `bb Components/scripts/validate_scripts/main.clj` when adding or editing scripts. Python is forbidden under `Components/scripts/`.
+*   **Script Guard:** Run `execute root-guard` when adding or editing scripts. Python is forbidden under `Components/scripts/`.
 *   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_RUST_GUIDELINES.md`, and `Core/SEMA_NIX_GUIDELINES.md`.
 *   **Attractor Code Reference:** Implementation lives in `Sources/brynary-attractor/attractor`. The `Sources/attractor` folder is specs only.
 *   **Attractor Backend Behavior:** `CliAgentBackend` spawns a subprocess with env merged from `process.env` and backend config. `SessionBackend` uses `unified-llm` `Client.fromEnv` (API keys via standard env vars).

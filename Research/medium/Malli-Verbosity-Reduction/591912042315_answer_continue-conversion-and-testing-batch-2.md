@@ -37,17 +37,17 @@ Conversion pattern applied:
 - Keep behavior unchanged.
 
 Runtime checks:
-- `bb Components/scripts/session_guard/main.clj` -> pass
+- `execute session-guard` -> pass
 - `bb Components/scripts/component_registry/main.clj --id scripts` -> pass
-- `bb Components/scripts/reference_guard/main.clj` -> fails with existing reference-policy findings (same guard behavior class, not syntax regression)
+- `execute link-guard` -> fails with existing reference-policy findings (same guard behavior class, not syntax regression)
 - `bb Components/scripts/sources_mounter/main.clj` -> pass
 - `bb Components/scripts/interrupted_job_queue/main.clj` -> pass
-- `bb Components/scripts/subject_unifier/main.clj` -> pass (dry-run scan)
+- `execute unify` -> pass (dry-run scan)
 - `bb Components/scripts/aski_flow_dot/main.clj` -> usage exit without args (expected)
 - `bb Components/scripts/sources_remount/main.clj --help` -> pass
 - `bb Components/scripts/agent_launcher/main.clj --provider openai -- gopass --version` -> fails on missing local secret (environmental, not syntax)
-- `bb Components/scripts/answer_report/main.clj ...` -> fails when `chronos` binary is unavailable from repo root (environmental dependency)
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/validate_scripts` -> pass
+- `execute report ...` -> fails when `chronos` binary is unavailable from repo root (environmental dependency)
+- `execute root-guard --scripts-dir Components/scripts/validate_scripts` -> pass
 
 Validator checks (per converted script dirs):
 - `session_guard` -> pass

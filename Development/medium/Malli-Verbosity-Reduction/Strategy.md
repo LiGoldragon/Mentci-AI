@@ -227,7 +227,7 @@ Verification added:
 - Covers classifier method dispatch and queue build+dedup behavior.
 - Validated with:
   - `bb Components/scripts/interrupted_job_queue/test.clj`
-  - `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/interrupted_job_queue`
+  - `execute root-guard --scripts-dir Components/scripts/interrupted_job_queue`
 
 *The Great Work continues.*
 

@@ -16,7 +16,7 @@ reports on all those high priority issues
 High-priority issue report: Session protocol non-compliance.
 
 Finding:
-- `bb Components/scripts/session_guard/main.clj` fails because there are trailing `intent:` commits without a finalized `session:` synthesis commit.
+- `execute session-guard` fails because there are trailing `intent:` commits without a finalized `session:` synthesis commit.
 
 Impact:
 - Prompt-completion protocol is invalid.
@@ -28,7 +28,7 @@ Evidence:
 Proposed resolution:
 1. Run `Components/scripts/session_finalize/main.clj` to synthesize compliant session message sections.
 2. Ensure bookmark targets finalized non-empty revision (`@-` safeguard), not empty working copy.
-3. Re-run `bb Components/scripts/session_guard/main.clj` as completion gate.
+3. Re-run `execute session-guard` as completion gate.
 
 
 ## Reporting Protocol Notes

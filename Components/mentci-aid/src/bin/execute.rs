@@ -9,7 +9,7 @@ async fn main() -> anyhow::Result<()> {
     if args.is_empty() {
         println!("execute: actor-based symbolic orchestrator");
         println!("usage: execute <command> [args...]");
-        println!("commands: root-guard, link-guard, version, unify, finalize");
+        println!("commands: root-guard, link-guard, session-guard, version, unify, intent, report, finalize");
         return Ok(());
     }
 
@@ -71,6 +71,35 @@ async fn main() -> anyhow::Result<()> {
                 Ok(bookmark) => println!("{}", bookmark),
                 Err(e) => {
                     eprintln!("Intent initialization failed: {}", e);
+                    std::process::exit(1);
+                }
+            }
+        }
+        "report" => {
+            let mut prompt = String::new();
+            let mut answer = String::new();
+            let mut subject = String::new();
+            let mut title = String::new();
+            let mut kind = "answer".to_string();
+
+            let mut i = 1;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--prompt" => { i += 1; prompt = args.get(i).cloned().unwrap_or_default(); }
+                    "--answer" => { i += 1; answer = args.get(i).cloned().unwrap_or_default(); }
+                    "--subject" => { i += 1; subject = args.get(i).cloned().unwrap_or_default(); }
+                    "--title" => { i += 1; title = args.get(i).cloned().unwrap_or_default(); }
+                    "--kind" => { i += 1; kind = args.get(i).cloned().unwrap_or("answer".to_string()); }
+                    _ => {}
+                }
+                i += 1;
+            }
+
+            let res = ractor::call!(orchestrator, SymbolicMessage::EmitReport, prompt, answer, subject, title, kind)?;
+            match res {
+                Ok(path) => println!("Report emitted to: {}", path.display()),
+                Err(e) => {
+                    eprintln!("Report emission failed: {}", e);
                     std::process::exit(1);
                 }
             }

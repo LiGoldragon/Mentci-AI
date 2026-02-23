@@ -24,4 +24,4 @@ Moved Rust crate metadata from repository root into `Components/` and rewired bu
 
 ### Validation
 - `cargo metadata --manifest-path Components/Cargo.toml --no-deps` -> success.
-- `bb Components/scripts/root_guard/main.clj` -> pass.
+- `execute root-guard` -> pass.

@@ -42,7 +42,7 @@ Unify filesystem governance under Aski-FS so path semantics, root policy, and co
 - Update `Library/specs/AskiFsSpec.md` and `Library/RestartContext.md` to mark convergence complete.
 
 ## Validation Gates
-1. `bb Components/scripts/root_guard/main.clj` passes with contract-driven checks.
+1. `execute root-guard` passes with contract-driven checks.
 2. No unresolved `Inputs/` references in active code paths.
 3. Session guard and report generation remain functional after cutover.
 4. Top-level root inventory matches canonical enum + runtime exceptions only.

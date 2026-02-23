@@ -37,6 +37,6 @@ Implemented top-level FS minimization and enforcement.
   - `Core/agent-sources.edn`
 
 ### Validation
-- `bb Components/scripts/root_guard/main.clj` -> pass
+- `execute root-guard` -> pass
 - `bb Components/scripts/sources_remount/main.clj --help` -> pass
-- `bb Components/scripts/validate_scripts/main.clj` -> fails on pre-existing issue (`Components/scripts/program_version/main.clj` missing `defn*`)
+- `execute root-guard` -> fails on pre-existing issue (`Components/scripts/program_version/main.clj` missing `defn*`)

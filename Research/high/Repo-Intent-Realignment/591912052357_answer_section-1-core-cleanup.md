@@ -31,8 +31,8 @@ Core files updated:
 - Replaced `report artifact` wording with `research artifact` wording in completion rule.
 
 Validation:
-1. `bb Components/scripts/validate_scripts/main.clj` passed.
-2. `bb Components/scripts/reference_guard/main.clj` passed.
+1. `execute root-guard` passed.
+2. `execute link-guard` passed.
 
 ## Reporting Protocol Notes
 

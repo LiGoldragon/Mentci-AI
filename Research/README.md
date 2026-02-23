@@ -21,7 +21,7 @@ Use chronographic naming:
 
 Generated via:
 
-`bb Components/scripts/answer_report/main.clj`
+`execute report`
 
 
 ## Subject Topics

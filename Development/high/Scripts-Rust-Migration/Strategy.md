@@ -61,7 +61,7 @@ Migrate `Components/scripts/*` operational logic from Babashka/Clojure to Rust w
 3. Contract tests:
 - Required success and failure-path tests.
 4. Integration sweep:
-- `nix develop -c bb Components/scripts/validate_scripts/main.clj` stays green during dual-runtime phase.
+- `nix develop -c execute root-guard` stays green during dual-runtime phase.
 5. Operational drill:
 - For workflow-critical scripts, run end-to-end smoke command using repo-standard flows.
 6. Authority gate:

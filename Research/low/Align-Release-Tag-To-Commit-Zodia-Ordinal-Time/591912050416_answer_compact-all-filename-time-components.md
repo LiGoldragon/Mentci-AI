@@ -22,9 +22,9 @@ Implemented:
 
 Validation:
 - No remaining files under `Research/` or `Development/` match underscore date-time patterns.
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/subject_unifier` -> pass
-- `bb Components/scripts/root_guard/main.clj` -> pass
-- `bb Components/scripts/session_guard/main.clj` -> pass
+- `execute root-guard --scripts-dir Components/scripts/subject_unifier` -> pass
+- `execute root-guard` -> pass
+- `execute session-guard` -> pass
 
 ## Reporting Protocol Notes
 

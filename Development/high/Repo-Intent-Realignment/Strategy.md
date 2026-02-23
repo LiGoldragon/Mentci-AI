@@ -62,9 +62,9 @@ Classify each candidate artifact into exactly one bucket:
 1. Do not edit `Sources/`.
 2. Use atomic intent commits and report artifacts for each cleanup slice.
 3. Run sweep gates after each slice:
-- `bb Components/scripts/validate_scripts/main.clj`
-- `bb Components/scripts/root_guard/main.clj`
-- `bb Components/scripts/session_guard/main.clj`
+- `execute root-guard`
+- `execute root-guard`
+- `execute session-guard`
 
 ## 8. First Cleanup Slices
 1. Complete remaining legacy input naming cutover to `Sources` in active code paths and contracts.

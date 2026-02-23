@@ -34,7 +34,7 @@ Implemented components:
 Validation:
 - `bb Components/scripts/interrupted_job_queue/main.clj` (pass)
 - `bb Components/scripts/interrupted_job_queue/main.clj --write` (pass)
-- `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/interrupted_job_queue` (pass)
+- `execute root-guard --scripts-dir Components/scripts/interrupted_job_queue` (pass)
 - Full-tree script validation currently fails on a pre-existing issue: `Components/scripts/program_version/main.clj` missing `defn*` usage.
 
 ## Reporting Protocol Notes

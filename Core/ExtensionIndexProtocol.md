@@ -25,7 +25,7 @@ Only these locations are considered by default extension discovery.
 - Discovery returns ordered `found` paths and preserves contract order.
 
 ## Tooling
-- Resolver script: `bb Components/scripts/extension_index/main.clj`
+- Resolver script: `execute extension-index`
 - Output is EDN map with `:locations` and `:found`.
 
 ## Governance

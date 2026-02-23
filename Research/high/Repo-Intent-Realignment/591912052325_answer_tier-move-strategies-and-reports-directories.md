@@ -33,8 +33,8 @@ Changes applied:
 4. Updated subject index READMEs to point to tiered strategy/report paths.
 
 Validation:
-1. `bb Components/scripts/subject_unifier/main.clj` dry-run passed (`26` report subjects, `26` strategy subjects, no missing counterparts).
-2. `bb Components/scripts/validate_scripts/main.clj` passed.
+1. `execute unify` dry-run passed (`26` report subjects, `26` strategy subjects, no missing counterparts).
+2. `execute root-guard` passed.
 
 ## Reporting Protocol Notes
 

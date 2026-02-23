@@ -38,8 +38,6 @@ Constraints:
 - Do not include session context blocks in atomic commits.
 - Keep each atomic commit scoped to one logical change so parallel work remains legible.
 
-*Note: `Components/scripts/session_metadata/main.clj` may still be used to track prompt/context state, but that state is reserved for final synthesis output.*
-
 ## 4. Phase 3: Session Synthesis (Single vs Multi)
 When the session's work is complete and verified:
 1.  **Identify the Session Range:** Find all intent commits belonging to the prompt session (including parallel branches).
@@ -84,20 +82,17 @@ session: <Result Summary>
 
 `## Squashed Change IDs` is required in multi-sub-commit mode and omitted in single-sub-commit mode.
 
-## 5. Tooling Support
-Use `bb Components/scripts/session_metadata/main.clj` to manage prompt/context state during execution and to render final synthesis messages.
-
-## 6. Phase 4: Prompt Report Emission
+## 5. Phase 4: Prompt Report Emission
 After session synthesis, emit a prompt answer research artifact under `Research/`:
-1.  **Write Report Artifact:** Use `bb Components/scripts/answer_report/main.clj` with prompt and final answer content.
+1.  **Write Report Artifact:** Use `execute report` with prompt and final answer content.
 2.  **Classify Answer Kind:** Research artifact kind must be one of `answer`, `draft`, or `question`.
 3.  **Classify Change Scope:** Use `modified-files` when repository files changed for the prompt; use `no-files` for question-only or advisory responses.
 4.  **Persist Even Without Edits:** Report emission is mandatory even when the prompt produced no filesystem changes.
-5.  **Unify Subject Counterparts:** Ensure the research subject has a matching development subject and vice-versa via `bb Components/scripts/subject_unifier/main.clj --write`.
+5.  **Unify Subject Counterparts:** Ensure the research subject has a matching development subject and vice-versa via `execute unify --write`.
 
 Canonical command shape:
 ```
-bb Components/scripts/answer_report/main.clj \
+execute report \
   --prompt "<raw prompt>" \
   --answer "<final response>" \
   --kind <answer|draft|question> \
@@ -107,7 +102,7 @@ bb Components/scripts/answer_report/main.clj \
 
 *The Great Work continues.*
 
-## 7. Post-Synthesis Working Copy Hygiene
+## 6. Post-Synthesis Working Copy Hygiene
 After final session synthesis is complete (single or multi mode), push and verify the finalized session commit first. Only then create a fresh child working commit so the finalized session commit is left immutable and the tree stays clean for the next prompt.
 
 Verification gate before `jj new dev`:
@@ -122,7 +117,7 @@ Canonical command:
 jj new dev
 ```
 
-## 8. Completion Invariants
+## 7. Completion Invariants
 Prompt completion is valid only when all of the following hold:
 1. The prompt's finalized commit is a `session:` commit with full context sections (`## Original Prompt`, `## Agent Context`, `## Logical Changes`) in the pushed `dev` lineage.
 2. A research artifact exists for the prompt in `Research/<priority>/<Subject>/` (new research file or update under existing subject).

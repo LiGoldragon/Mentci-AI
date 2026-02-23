@@ -27,7 +27,7 @@ Fix:
 
 Validation:
 - Interactive smoke run completes without ClassCastException.
-- `nix develop -c bb Components/scripts/validate_scripts/main.clj` passes.
+- `nix develop -c execute root-guard` passes.
 
 
 ## Reporting Protocol Notes
