@@ -112,8 +112,14 @@ The following EDN structure represents the authoritative symbolic map of the `So
     - Positional arguments define the type and attributes (e.g., `[:type :role]`).
 
 ## 4. Implementation Rules
-- Agents **must** respect the `RO` (Read-Only) status of `Sources/` (or transitional `Inputs/` alias during migration).
+- Agents **must** respect the `RO` (Read-Only) status of `Sources/`.
 - Every writable operation **must** result in an atomic `jj` commit.
 - Filesystem boundaries (directories) represent **Ontological Shifts** in data durability.
+
+### 4.1 Localized Indexing Protocol (index.edn)
+- Subject and domain directories must contain an `index.edn`.
+- **Path Efficiency:** All paths listed in `index.edn` must be relative to the directory containing the index file.
+- **Portability:** This ensures that directories can be moved or tiered without breaking internal references.
+- **Authority:** The `mentci-fs` tool is the canonical resolver for localized indices.
 
 *The Great Work continues.*
