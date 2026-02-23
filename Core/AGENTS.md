@@ -52,7 +52,7 @@ These are the highest-order rules for all languages and scripts.
     *   **Context Reuse Rule:** If matching subject context exists, continue from it instead of starting a disconnected track.
 *   **Development/Research Subject Unification:** Every subject in `Research/` must have a corresponding `Development/<priority>/<Subject>/` directory, and every development subject must have a corresponding topic directory `Research/<priority>/<Subject>/` with a topic index file `index.edn`.
     *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
-    *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (strategy scaffold or report topic).
+    *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (development scaffold or research topic).
     *   **Canonical Tool:** Use `bb Components/scripts/subject_unifier/main.clj --write` to enforce and repair bidirectional subject coverage.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
 *   **Assimilation of Sources:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Sources/` (transitional alias: `Sources/`). They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
