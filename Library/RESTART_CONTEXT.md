@@ -5,7 +5,7 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Active Bookmark:** `dev`.
-*   **Current Programming Version:** `mdg07qlf` (Ref: `Components/scripts/program_version/main.clj`).
+*   **Current Programming Version:** `4462v1kd` (Ref: `Components/scripts/program_version/main.clj`).
 *   **Latest Release Tag:** `v0.12.3.58.4` (Ref: Git tag state).
 
 ## 1. Project Overview
@@ -27,8 +27,8 @@ These files define the agent's operating logic and must be loaded automatically:
 - **Orchestration:** `Components/scripts/launcher/` (Jail), `Components/scripts/commit/` (Shipping).
 - **Truth Layer:** `Components/schema/*.capnp` (Semantic types), `Core/` (Architectural mandates).
 - **FS Ontology:** `Library/specs/ASKI_FS_SPEC.md`. Status: **Operational / Canonical.**
-- **Strategy System:** `Development/<priority>/<Subject>/`. Status: **Operational.** Active subjects remain categorized by priority tier.
-- **Strategy Queue:** `Library/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
+- **Development System:** `Development/<priority>/<Subject>/`. Status: **Operational.** Active subjects remain categorized by priority tier.
+- **Development Queue:** `Library/STRATEGY_QUEUE.md`. Status: **Operational.** Prioritizing resiliency and efficiency.
 - **Development Loop:** `Library/STRATEGY_DEVELOPMENT.md`. Status: **Active.**
 - **Obsolescence Pipeline:** `Library/OBSOLESCENCE_PROTOCOL.md`. Status: **Active.** Tracking 4 files at Strike-2 (Restored). Using **Three-Strike Rule**.
 - **Orchestration Scripts:** `Components/scripts/<name>/`. Reorganized into autonomous directories with `TESTING_CONTEXT.md`. Nix-wrapped and reachable.
@@ -36,12 +36,12 @@ These files define the agent's operating logic and must be loaded automatically:
 - **VCS Guardrail:** `Sources/` (and transitional `Sources/`) is gitignored as mounted runtime substrate; source updates are managed through flake/input refresh workflows, not direct Git tracking.
 - **Audit Trail:** `jj log` (VCS), `Outputs/Logs/RELEASE_MILESTONES.md` (Human-readable history), `Outputs/Logs/ARTIFACT_SWEEP_REPORT.md` (Instruction-artifact tracking), `Development/high/Artifact-Sweep/ARTIFACT_ANALYSIS.md` (Obsolete file analysis).
 
-## 3.1 Current Operational Snapshot (♓︎.5.9.42 | 5919 AM)
-- `dev` head: `727426e3` (`session: backfill missing bug sweep exchange with report and strategy`)
+## 3.1 Current Operational Snapshot (♓︎.5.23.59 | 5919 AM)
+- `dev` head: `6fd65997` (`intent: execute section-1 core cleanup sweep`)
 - `main` head: `0faae18a` (`session: release main from dev and record release action`)
 - Recent major session commits:
-  - `0828f303`: core self-contained extension-index strategy implementation.
-  - `040e5e75`: high-priority remediation batch (protocol/path/authority sync).
+  - `bd2d62b4`: renamed `Reports/` -> `Research/`, `Strategies/` -> `Development/`, and moved topic indexes to `index.edn`.
+  - `c7f4f967`: added section-by-section repository cleanup development program.
 - New sandbox execution path in `mentci-aid`:
   - `mentci-ai sandbox -- <cmd ...>`
   - `mentci-ai execute sandbox -- <cmd ...>` (alias)
@@ -58,9 +58,9 @@ These files define the agent's operating logic and must be loaded automatically:
 ## 3.2 Open Risks / Next Checks
 1. Top-level FS drift:
 - Resolve `outputs` (lowercase) vs canonical `Outputs/`.
-2. Source naming migration window:
-- Continue `Sources/` -> `Sources/` textual/operational convergence while compatibility alias is active.
-3. Strategy queue hygiene:
+2. Namespace convergence:
+- Continue removing stale legacy wording (`report/strategy`) where it conflicts with canonical `Research/Development` naming.
+3. Development queue hygiene:
 - Keep queue entries synchronized with active `Development/<priority>/<Subject>/` set.
 
 ## 4. Operational Requirements
