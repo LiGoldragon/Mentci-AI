@@ -20,7 +20,7 @@ Sweep result:
 3. One strategy document still carried obsolete root vocabulary and malformed `Inputs`/`Sources` migration text; corrected to current canonical model.
 
 Development/high files updated:
-1. `Development/high/Debugging/STRATEGY.md`
+1. `Development/high/Debugging/Strategy.md`
 - Updated static marker and path-drift scan commands to target `Development` and `Research` instead of removed `Strategies`.
 - Restored intended legacy migration grep to include `Inputs/` and `Sources/`.
 

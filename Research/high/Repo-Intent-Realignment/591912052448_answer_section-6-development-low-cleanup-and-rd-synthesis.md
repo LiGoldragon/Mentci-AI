@@ -20,7 +20,7 @@ Sweep result:
 3. Added requested R&D summary for one low-priority subject (`Universal-Program-Pack`) in `Research/low/`.
 
 Edits applied:
-1. `Development/low/Universal-Program-Pack/ARCHITECTURE.md`
+1. `Development/low/Universal-Program-Pack/ArchitectureMap.md`
 - Corrected lowercase path contracts:
   - `ProgramPack/development/` -> `ProgramPack/Development/`
   - `LocalPack/development/` -> `LocalPack/Development/`

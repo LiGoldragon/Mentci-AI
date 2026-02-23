@@ -20,7 +20,7 @@ Removed all Python source/bytecode files from the repository and removed policy 
 - `Core/AGENTS.md`
   - removed Python prefetch orchestrator requirement/command.
   - updated script guard rule: Python forbidden under `Components/scripts/` with no exceptions.
-- `Library/guides/TRANSITION_PYTHON_TO_CLOJURE.md`
+- `Library/guides/TransitionPythonToClojure.md`
   - removed “only exception” wording.
 - `Components/workflows/mentci.aski-fs`
   - removed `prefetch_orchestrator.py` inventory entry.

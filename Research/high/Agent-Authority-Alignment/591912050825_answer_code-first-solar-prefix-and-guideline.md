@@ -14,7 +14,7 @@ develop a guideline to favor adding functionality directly in code when possible
 
 ## Agent Answer
 
-Implemented code-first fix: added `Components/scripts/solar_prefix/main.clj` to print `solar: ...` and one trailing blank line, with command fallback and missing-binary handling. Added `Components/scripts/solar_prefix/TESTING_CONTEXT.md`. Reverted the AGENTS-only layout tweak and added a non-AGENTS architectural guideline in `Core/ARCHITECTURAL_GUIDELINES.md` (`0.8 CODE-FIRST GOVERNANCE`) to prefer enforceable code paths over growing instruction payloads for repeated behavior.
+Implemented code-first fix: added `Components/scripts/solar_prefix/main.clj` to print `solar: ...` and one trailing blank line, with command fallback and missing-binary handling. Added `Components/scripts/solar_prefix/TestingContext.md`. Reverted the AGENTS-only layout tweak and added a non-AGENTS architectural guideline in `Core/ARCHITECTURAL_GUIDELINES.md` (`0.8 CODE-FIRST GOVERNANCE`) to prefer enforceable code paths over growing instruction payloads for repeated behavior.
 
 
 ## Reporting Protocol Notes

@@ -20,12 +20,12 @@ Sweep result:
 3. Obsolete/stale context and terminology were reduced in Library governance docs.
 
 Library files updated:
-1. `Library/RESTART_CONTEXT.md`
+1. `Library/RestartContext.md`
 - Updated stale operational snapshot values (programming version, dev head, recent major commits).
 - Renamed queue/system wording to Development/Research terminology.
 - Replaced obsolete source-migration note with current namespace-convergence risk note.
 
-2. `Library/STRATEGY_DEVELOPMENT.md`
+2. `Library/StrategyDevelopment.md`
 - Renamed and normalized wording from strategy/report-centric phrasing to development-subject phrasing.
 - Kept process semantics unchanged.
 

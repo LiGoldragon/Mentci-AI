@@ -14,7 +14,7 @@ in malli strategy, rename defn1 to fn and defmethod1 to impl
 
 Applied the naming change in Malli strategy artifacts:
 
-1. `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+1. `Development/Malli-Verbosity-Reduction/Strategy.md`
 - Replaced all `defn1` references/usages with `fn`.
 - Replaced `defmethod1` references/usages with `impl`.
 - Updated implementation-plan bullets and code examples accordingly.

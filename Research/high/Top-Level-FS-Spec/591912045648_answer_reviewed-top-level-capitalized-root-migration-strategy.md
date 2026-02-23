@@ -13,7 +13,7 @@ review strategy to migrate all the top level directory to their new Capitalized 
 
 ## Agent Answer
 
-Reviewed and revised `development/Top-Level-FS-Spec/STRATEGY.md`.
+Reviewed and revised `development/Top-Level-FS-Spec/Strategy.md`.
 
 What was added:
 - Current-state audit of canonical enum roots vs actual repository roots.

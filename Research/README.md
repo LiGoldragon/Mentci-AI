@@ -30,7 +30,7 @@ Each topic must have a corresponding `Development/<priority>/<Subject>/` directo
 
 ## Priority Governance
 Subject importance is maintained centrally in:
-- `Development/high/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
+- `Development/high/Repo-Intent-Realignment/PriorityTriage.md`
 
 Use that matrix to decide whether new report entries should:
 - stay in the current subject,

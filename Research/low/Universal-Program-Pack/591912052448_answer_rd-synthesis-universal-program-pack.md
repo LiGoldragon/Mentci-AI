@@ -13,10 +13,10 @@ implement the next stage of intent re-alignment - summarize some of the R&D data
 ## Agent Answer
 
 R&D synthesis for `Universal-Program-Pack` based on:
-1. `Development/low/Universal-Program-Pack/MISSION.md`
-2. `Development/low/Universal-Program-Pack/ARCHITECTURE.md`
-3. `Development/low/Universal-Program-Pack/ROADMAP.md`
-4. `Development/low/Universal-Program-Pack/STRATEGY.md`
+1. `Development/low/Universal-Program-Pack/Mission.md`
+2. `Development/low/Universal-Program-Pack/ArchitectureMap.md`
+3. `Development/low/Universal-Program-Pack/Roadmap.md`
+4. `Development/low/Universal-Program-Pack/Strategy.md`
 
 ### Intent Summary
 1. Extract reusable orchestration/protocol assets from Mentci into a portable pack.

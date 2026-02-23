@@ -25,7 +25,7 @@ Implemented:
    - `Components/scripts/interrupted_job_queue/test.clj`
    - Covers protocol method results and queue build/dedup behavior.
 4. Updated testing context:
-   - `Components/scripts/interrupted_job_queue/TESTING_CONTEXT.md`
+   - `Components/scripts/interrupted_job_queue/TestingContext.md`
 
 Validation:
 - `bb Components/scripts/interrupted_job_queue/test.clj` -> pass

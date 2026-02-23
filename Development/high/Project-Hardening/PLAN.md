@@ -8,7 +8,7 @@ Achieve full structural and testing coverage for all scripts and tools in the Me
 ## 2. Reorganization: Script Autonomy
 Move every script in `scripts/` to its own directory:
 - `scripts/<name>/main.clj`
-- `scripts/<name>/TESTING_CONTEXT.md`
+- `scripts/<name>/TestingContext.md`
 - `scripts/<name>/schema.capnp`
 - `scripts/<name>/test.clj` (or equivalent)
 
@@ -16,7 +16,7 @@ Move every script in `scripts/` to its own directory:
 Define Cap'n Proto schemas for every tool's input and output objects. This hardens the " Russian Doll" data passing model.
 
 ## 4. Testing Context
-Every tool must have a `TESTING_CONTEXT.md` defining:
+Every tool must have a `TestingContext.md` defining:
 - **Coverage State:** Current unit/integration test status.
 - **Verification Commands:** How to run the tests.
 - **Mocking Strategy:** How external dependencies (like `jj` or `nix`) are handled during tests.
@@ -25,6 +25,6 @@ Every tool must have a `TESTING_CONTEXT.md` defining:
 0.  **Phase 0 (Environment Sustainability)**: Stabilize `nix develop` and `root_guard` to ensure a consistent execution environment. (Completed: ♓︎.5.50.48 5919AM).
 1.  **Phase 1 (Structural)**: Reorganize `scripts/`.
 2.  **Phase 2 (Semantic)**: Write `.capnp` specs.
-3.  **Phase 3 (Quality)**: Implement missing tests and `TESTING_CONTEXT.md`.
+3.  **Phase 3 (Quality)**: Implement missing tests and `TestingContext.md`.
 
 *The Great Work continues.*

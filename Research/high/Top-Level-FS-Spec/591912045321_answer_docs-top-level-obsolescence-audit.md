@@ -13,7 +13,7 @@ create a report on the possible obsolescence of docs/ and $(pwd)/ top level dire
 ## Agent Answer
 
 Findings:
-- `docs/` remains useful as secondary/auxiliary documentation, but parts are stale as active authority sources (e.g., references to `docs/architecture/VERSION_CONTROL.md`, `docs/guides/RESTART_CONTEXT.md`, and legacy SEMA doc paths).
+- `docs/` remains useful as secondary/auxiliary documentation, but parts are stale as active authority sources (e.g., references to `docs/architecture/VersionControlProtocol.md`, `docs/guides/RestartContext.md`, and legacy SEMA doc paths).
 - Multiple references in active files still point to superseded docs locations, so `docs/` is partially obsolete in authority role, not fully obsolete as a directory.
 - Top-level `$(pwd)/` directory appears to be an accidental artifact directory and has no recognized canonical role in the root taxonomy.
 

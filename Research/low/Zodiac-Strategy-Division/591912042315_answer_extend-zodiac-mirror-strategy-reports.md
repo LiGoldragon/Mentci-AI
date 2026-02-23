@@ -15,7 +15,7 @@ extend zodiac-category strategy for strategy to reports - the two mirror each ot
 Extended the zodiac strategy so `Development/` and `Research/` are explicitly mirrored by category and subject.
 
 Changes made:
-1. `Development/Zodiac-Strategy-Division/STRATEGY.md`
+1. `Development/Zodiac-Strategy-Division/Strategy.md`
 - Upgraded scope from strategy-only to bilateral strategy/report mirror.
 - Replaced optional report-zodiac note with mandatory mirror invariant.
 - Expanded migration plan to move both trees and update tooling.

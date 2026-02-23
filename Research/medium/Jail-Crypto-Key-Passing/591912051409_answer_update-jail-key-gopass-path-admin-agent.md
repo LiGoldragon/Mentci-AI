@@ -17,8 +17,8 @@ Updated the jail key-passing strategy to use the exact deterministic gopass entr
 - `mentci-ai/admin-agent`
 
 Changes applied:
-- `Development/Jail-Crypto-Key-Passing/STRATEGY.md`
-- `Development/Jail-Crypto-Key-Passing/ARCHITECTURE.md`
+- `Development/Jail-Crypto-Key-Passing/Strategy.md`
+- `Development/Jail-Crypto-Key-Passing/ArchitectureMap.md`
 - `Research/Jail-Crypto-Key-Passing/591912051405_answer_strategy-jail-crypto-key-passing-ed25519.md`
 
 The strategy now treats `mentci-ai/admin-agent` as the canonical private-key secret path.

@@ -22,10 +22,10 @@ affected_path_count: 60
 
 affected_paths:
 - `AGENTS.md`
-- `Logs/ARTIFACT_SWEEP_REPORT.md`
-- `Logs/OBSOLESCENCE_STRIKES.edn`
+- `Logs/ARTIFACT_SWEEP_Report.md`
+- `Logs/ObsolescenceStrikes.edn`
 - `Logs/RECOMMIT_BREAK_AUDIT.md`
-- `Logs/RELEASE_MILESTONES.md`
+- `Logs/ReleaseMilestones.md`
 - `Logs/RESEARCH_ANALYSIS.md`
 - `README.md`
 - `Research/Core-Library-Symbiotic-Move/index.edn`
@@ -39,48 +39,48 @@ affected_paths:
 - `scripts/program_version/main.clj`
 - `scripts/reference_guard/main.clj`
 - `development/Agent-Authority-Alignment/INTEGRATION.md`
-- `development/Agent-Authority-Alignment/STRATEGY.md`
+- `development/Agent-Authority-Alignment/Strategy.md`
 - `development/Artifact-Sweep/ARTIFACT_ANALYSIS.md`
 - `development/Artifact-Sweep/PHASE_2_RECOMMIT_RECOVERY.md`
-- `development/Artifact-Sweep/STRATEGY.md`
+- `development/Artifact-Sweep/Strategy.md`
 - `development/Artifact-Sweep/src/sweep.clj`
-- `development/Commit-Protocol-Merge-Fanin/STRATEGY.md`
-- `development/Top-Level-FS-Spec/STRATEGY.md`
+- `development/Commit-Protocol-Merge-Fanin/Strategy.md`
+- `development/Top-Level-FS-Spec/Strategy.md`
 - `development/Top-Level-FS-Spec/SURVEY.md`
 - `development/Core-Library-Symbiotic-Move/FRESH_AFFECTED_PARTS.md`
 - `development/Core-Library-Symbiotic-Move/FRESH_SCAN_PROTOCOL.md`
 - `development/Core-Library-Symbiotic-Move/MOVES.md`
-- `development/Core-Library-Symbiotic-Move/REPORT.md`
+- `development/Core-Library-Symbiotic-Move/Report.md`
 - `development/Core-Library-Symbiotic-Move/STALE_INTEL_SCAN.md`
-- `development/Core-Library-Symbiotic-Move/STRATEGY.md`
-- `development/Top-Level-FS-Spec/STRATEGY.md`
+- `development/Core-Library-Symbiotic-Move/Strategy.md`
+- `development/Top-Level-FS-Spec/Strategy.md`
 - `development/Top-Level-FS-Spec/SURVEY.md`
 - `development/Guidelines-Wisdom-Reincorporation/EXPANSION.md`
 - `development/Guidelines-Wisdom-Reincorporation/RESEARCH.md`
-- `development/Guidelines-Wisdom-Reincorporation/STRATEGY.md`
-- `development/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/STRATEGY.md`
-- `development/Commit-Protocol-Merge-Fanin/STRATEGY.md`
-- `development/Top-Level-FS-Spec/STRATEGY.md`
-- `development/Universal-Program-Pack/ARCHITECTURE.md`
-- `development/Universal-Program-Pack/ROADMAP.md`
-- `development/Universal-Program-Pack/STRATEGY.md`
+- `development/Guidelines-Wisdom-Reincorporation/Strategy.md`
+- `development/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/Strategy.md`
+- `development/Commit-Protocol-Merge-Fanin/Strategy.md`
+- `development/Top-Level-FS-Spec/Strategy.md`
+- `development/Universal-Program-Pack/ArchitectureMap.md`
+- `development/Universal-Program-Pack/Roadmap.md`
+- `development/Universal-Program-Pack/Strategy.md`
 - `workflows/stt_context_terms.edn`
 - `{core => Core}/AGENTS.md`
 - `{core => Core}/ARCHITECTURAL_GUIDELINES.md`
-- `{core => Core}/ASKI_FS_SPEC.md`
-- `{core => Core}/ASKI_POSITIONING.md`
-- `{core => Core}/CONTEXTUAL_SESSION_PROTOCOL.md`
+- `{core => Core}/AskiFsSpec.md`
+- `{core => Core}/AskiPositioning.md`
+- `{core => Core}/ContextualSessionProtocol.md`
 - `{core => Core}/HIGH_LEVEL_GOALS.md`
-- `{core => Core}/MENTCI_AID.md`
+- `{core => Core}/MentciAidProtocol.md`
 - `{core => Core}/SEMA_CLOJURE_GUIDELINES.md`
 - `{core => Core}/SEMA_NIX_GUIDELINES.md`
 - `{core => Core}/SEMA_RUST_GUIDELINES.md`
-- `{core => Core}/VERSION_CONTROL.md`
-- `{core => Library}/INTENT_DISCOVERY.md`
-- `{core/programs => Library}/OBSOLESCENCE_PROTOCOL.md`
-- `{core/programs => Library}/RESTART_CONTEXT.md`
-- `{core/programs => Library}/STRATEGY_DEVELOPMENT.md`
-- `{core/programs => Library}/STRATEGY_QUEUE.md`
+- `{core => Core}/VersionControlProtocol.md`
+- `{core => Library}/IntentDiscovery.md`
+- `{core/programs => Library}/ObsolescenceProtocol.md`
+- `{core/programs => Library}/RestartContext.md`
+- `{core/programs => Library}/StrategyDevelopment.md`
+- `{core/programs => Library}/StrategyQueue.md`
 
 ## Search Index Hints
 - Global `Core/` + `Library/` reference hits: 156

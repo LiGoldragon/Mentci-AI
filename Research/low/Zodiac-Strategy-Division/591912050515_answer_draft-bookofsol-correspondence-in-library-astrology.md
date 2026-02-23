@@ -16,10 +16,10 @@ Drafted an expanded correspondence in `Library/astrology` and documented current
 
 Implemented:
 1. Added draft file:
-   - `Library/astrology/BOOKOFSOL_DRAFT_CORRESPONDENCE.md`
+   - `Library/astrology/BOOKOFSOL_DRAFT_Correspondence.md`
    - Contains zodiac crosswalk, risk/corrective mapping, planetary modifiers, and agent-use protocol.
 2. Updated minimal correspondence note:
-   - `Library/astrology/CORRESPONDENCE.md`
+   - `Library/astrology/Correspondence.md`
    - Added provisional/source-sync note.
 3. Updated astrology index:
    - `Library/astrology/README.md`

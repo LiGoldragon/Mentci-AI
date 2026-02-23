@@ -21,14 +21,14 @@ Implemented components:
 - Deduplicates prompts and emits a queue table.
 - Supports dry run and `--write` mode.
 
-2. `Components/scripts/interrupted_job_queue/TESTING_CONTEXT.md`
+2. `Components/scripts/interrupted_job_queue/TestingContext.md`
 - Adds quick command checks and expected behavior.
 
-3. `Research/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md`
+3. `Research/Prompt-Report-System/InterruptedJobQueue.md`
 - Initial queue generated from interruption audit source.
 - Contains 78 recovered queued jobs with acceptance criteria.
 
-4. `Development/Prompt-Report-System/STRATEGY.md`
+4. `Development/Prompt-Report-System/Strategy.md`
 - Updated with implementation status and artifact pointers.
 
 Validation:

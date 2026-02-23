@@ -15,8 +15,8 @@ Complete Artifact-Sweep hardening by removing recommit-level artifacts from the 
 ## 3. Sources (Current State)
 - `Logs/RECOMMIT_BREAK_AUDIT.md`
 - `jj log -r 'conflicts()'`
-- `Library/STRATEGY_QUEUE.md`
-- `Core/VERSION_CONTROL.md`
+- `Library/StrategyQueue.md`
+- `Core/VersionControlProtocol.md`
 
 ## 4. Execution Plan
 ### A. Publish Baseline
@@ -48,7 +48,7 @@ Complete Artifact-Sweep hardening by removing recommit-level artifacts from the 
 ## 5. Deliverables
 - `Logs/RECOMMIT_HEAD_ALLOWLIST.edn`
 - `Logs/RECOMMIT_RECOVERY_EXECUTION.md`
-- Updated `Library/STRATEGY_QUEUE.md` reflecting reconciled strategy set
+- Updated `Library/StrategyQueue.md` reflecting reconciled strategy set
 - Optional guard script: `scripts/recommit_guard/main.clj`
 
 ## 6. Acceptance Criteria

@@ -1,7 +1,7 @@
 {:deps
  [{:when {:touch "Core/AGENTS.md"}
    :read [{:path "Core/ARCHITECTURAL_GUIDELINES.md" :section "0.5 ADMIN DEVELOPER MODE (SYSTEM ORCHESTRATION)"}
-          {:path "Core/VERSION_CONTROL.md" :section "Auto-Commit"}]}
+          {:path "Core/VersionControlProtocol.md" :section "Auto-Commit"}]}
   {:when {:touch "Core/ARCHITECTURAL_GUIDELINES.md"}
    :read [{:path "Core/SEMA_CLOJURE_GUIDELINES.md" :section "Primary Rules"}
           {:path "Core/SEMA_RUST_GUIDELINES.md" :section "Primary Rules"}
@@ -12,20 +12,20 @@
    :read [{:path "Core/ARCHITECTURAL_GUIDELINES.md" :section "Sema Object Style (Rust)"}]}
   {:when {:touch "Core/SEMA_NIX_GUIDELINES.md"}
    :read [{:path "Core/ARCHITECTURAL_GUIDELINES.md" :section "Sema Object Style (Nix)"}]}
-  {:when {:touch "Library/specs/WORKFLOW_STANDARD.md"}
-   :read [{:path "Library/specs/ATTRACTOR_DOT_REFERENCE.md" :section "DOT DSL Subset"}]}
-  {:when {:touch "Library/specs/ATTRACTOR_DOT_REFERENCE.md"}
+  {:when {:touch "Library/specs/WorkflowStandard.md"}
+   :read [{:path "Library/specs/AttractorDotReference.md" :section "DOT DSL Subset"}]}
+  {:when {:touch "Library/specs/AttractorDotReference.md"}
    :read [{:path "Sources/attractor/attractor-spec.md" :section "DOT DSL Schema"}]}
-  {:when {:touch "Library/RESTART_CONTEXT.md"}
+  {:when {:touch "Library/RestartContext.md"}
    :read [{:path "Core/AGENTS.md" :section "Core Sema Object Principles (Primary)"}]}
   {:when {:touch "Components/scripts/launcher/main.clj"}
    :read [{:path "Components/scripts/lib/types.clj" :section "JailConfig"}]}
   {:when {:touch "Components/scripts/agent_launcher/main.clj"}
    :read [{:path "Components/scripts/lib/malli.clj" :section "defn*"}
-          {:path "Library/guides/MIGRATION_GEMINI_TO_OPENCODE.md" :section "Agent Launcher Secrets (gopass)"}]}
+          {:path "Library/guides/MigrationGeminiToOpencode.md" :section "Agent Launcher Secrets (gopass)"}]}
   {:when {:touch "Components/scripts/validate_scripts/main.clj"}
    :read [{:path "Core/AGENTS.md" :section "Script Guard"}]}
   {:when {:touch "Components/mentci-aid/src/main.rs"}
-   :read [{:path "Library/specs/WORKFLOW_STANDARD.md" :section "Standard Workflow Patterns"}]}
+   :read [{:path "Library/specs/WorkflowStandard.md" :section "Standard Workflow Patterns"}]}
   {:when {:touch "Components/workflows/mentci.aski-fs"}
-   :read [{:path "Library/specs/ASKI_FS_DSL.md" :section "Core Constructs"}]}]}
+   :read [{:path "Library/specs/AskiFsDsl.md" :section "Core Constructs"}]}]}

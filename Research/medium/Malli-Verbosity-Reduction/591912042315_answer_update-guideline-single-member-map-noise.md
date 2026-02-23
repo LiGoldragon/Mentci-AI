@@ -20,7 +20,7 @@ Updated:
 - Revised object definition guidance: avoid single-member maps for unary payloads unless additional named fields are semantically required.
 - Updated examples to demonstrate unary scalar object schemas (`:string`) instead of `[:map [:raw :string]]` where appropriate.
 
-2. `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+2. `Development/Malli-Verbosity-Reduction/Strategy.md`
 - Added goal/scope language for reducing redundant unary map wrappers.
 - Updated schema-sugar target to include scalar-first unary declarations.
 - Added plan items for optional `defscalar` alias and unary-map lint guard.

@@ -186,7 +186,7 @@
   [this input]
   (loop [remaining (:args input)
          opts {:source "Research/high/Prompt-Report-System/591912042315_answer_interrupted-jobs-audit.md"
-               :output "Research/high/Prompt-Report-System/INTERRUPTED_JOB_QUEUE.md"
+               :output "Research/high/Prompt-Report-System/InterruptedJobQueue.md"
                :write? false}]
     (if (empty? remaining)
       opts

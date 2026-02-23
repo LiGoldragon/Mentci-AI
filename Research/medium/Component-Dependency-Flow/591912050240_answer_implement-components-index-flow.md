@@ -13,7 +13,7 @@ Implemented central component location flow using `Components/index.edn`.
 ### Added
 - `Components/index.edn` as canonical component index.
 - `Components/scripts/component_registry/main.clj` (validate/resolve/emit registry).
-- `Components/scripts/component_registry/TESTING_CONTEXT.md`.
+- `Components/scripts/component_registry/TestingContext.md`.
 
 ### Integrated
 - `Components/scripts/lib/types.clj`: `JailConfig` now accepts optional `:componentIndexPath` and `:componentRegistryPath`.

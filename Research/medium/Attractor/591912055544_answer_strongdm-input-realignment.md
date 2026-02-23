@@ -23,7 +23,7 @@ Align the project's StrongDM dependencies with current "Level 5 agentic coding" 
     *   Added `leash`.
 *   **`Components/nix/jail.nix`**:
     *   Updated `sourceManifest` to include `leash` and remove `comply`/`cxdb`.
-*   **`Library/specs/ASKI_FS_SPEC.md`**:
+*   **`Library/specs/AskiFsSpec.md`**:
     *   Updated symbolic mapping to include `leash`.
 *   **`flake.lock`**:
     *   Refreshed lock file to reflect input changes.

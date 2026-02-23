@@ -19,7 +19,7 @@ Root cause captured:
 - `answer_report` runs `cargo run --bin chronos` from repo root.
 - Repo root no longer has `Cargo.toml`; active manifest is `Components/Cargo.toml`.
 
-Strategy added to `Development/Prompt-Report-System/STRATEGY.md`:
+Strategy added to `Development/Prompt-Report-System/Strategy.md`:
 1. Introduce Chronos command resolver in `answer_report`.
 2. Use fallback order:
    - direct `chronos` binary on `PATH`

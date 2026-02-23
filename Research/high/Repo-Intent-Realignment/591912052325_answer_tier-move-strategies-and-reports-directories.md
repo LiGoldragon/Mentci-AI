@@ -8,7 +8,7 @@
 
 ## Prompt
 
-move all Development/ and Research/ directory into a high, medium, or low directory (all three will be created in both Research/ and Development/ for this purpose) using Development/Repo-Intent-Realignment/PRIORITY_TRIAGE.md
+move all Development/ and Research/ directory into a high, medium, or low directory (all three will be created in both Research/ and Development/ for this purpose) using Development/Repo-Intent-Realignment/PriorityTriage.md
 
 ## Agent Answer
 
@@ -24,8 +24,8 @@ Changes applied:
 - All 26 subject directories under `Research/` were moved.
 
 3. Updated operational docs and scripts to reflect tiered paths:
-- `Core/AGENTS.md`, `Core/CONTEXTUAL_SESSION_PROTOCOL.md`, `Core/VERSION_CONTROL.md`
-- `Library/RESTART_CONTEXT.md`, `Library/STRATEGY_DEVELOPMENT.md`, `Library/STRATEGY_QUEUE.md`
+- `Core/AGENTS.md`, `Core/ContextualSessionProtocol.md`, `Core/VersionControlProtocol.md`
+- `Library/RestartContext.md`, `Library/StrategyDevelopment.md`, `Library/StrategyQueue.md`
 - `Research/index.edn`, new `Development/index.edn`
 - `Components/scripts/subject_unifier/main.clj` + testing context (tier-aware scanning/writing)
 - `Components/scripts/interrupted_job_queue/main.clj` + testing context (new default report paths)

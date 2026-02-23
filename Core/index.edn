@@ -1,0 +1,18 @@
+{:kind :index
+ :title "Core Authority Index"
+ :description "Defines the durability and review requirements for core repository files."
+ :supremeLaw
+ {:files ["Core/ARCHITECTURAL_GUIDELINES.md"
+          "Core/HIGH_LEVEL_GOALS.md"
+          "Core/AGENTS.md"
+          "Core/SEMA_RUST_GUIDELINES.md"
+          "Core/SEMA_CLOJURE_GUIDELINES.md"
+          "Core/SEMA_NIX_GUIDELINES.md"]
+  :requirements [:all-caps :fully-human-review-data]}
+ :stableContract
+ {:files ["Core/VersionControlProtocol.md"
+          "Core/ContextualSessionProtocol.md"
+          "Core/ExtensionIndexProtocol.md"
+          "Core/ExtensionIndexLocations.edn"
+          "Core/MentciAidProtocol.md"]
+  :requirements [:pascal-case :agent-refinable]}}

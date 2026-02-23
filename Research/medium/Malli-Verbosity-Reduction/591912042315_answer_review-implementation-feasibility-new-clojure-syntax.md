@@ -48,7 +48,7 @@ The strategy direction is implementable, but one currently specified syntax choi
 
 ## Files Updated in Review
 
-- `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+- `Development/Malli-Verbosity-Reduction/Strategy.md`
 
 ## Reporting Protocol Notes
 

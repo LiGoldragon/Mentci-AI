@@ -13,7 +13,7 @@ note: Components is meant to hold subtrees that are part of mentci-ai but with t
 
 ## Agent Answer
 
-Integrated this as an explicit rule in `development/Top-Level-FS-Spec/STRATEGY.md`.
+Integrated this as an explicit rule in `development/Top-Level-FS-Spec/Strategy.md`.
 
 Updated points:
 - `Components` semantics now explicitly require VC-independent subtrees/repositories for Mentci-owned sub-components.

@@ -40,7 +40,7 @@
 
 (impl DefaultExtensionIndex ExtensionIndexOps load-location-config-for [:=> [:cat :any] LocationConfig]
   [this]
-  (let [path "Core/EXTENSION_INDEX_LOCATIONS.edn"
+  (let [path "Core/ExtensionIndexLocations.edn"
         f (io/file path)]
     (when-not (.exists f)
       (fail-for this {:message (str "Missing extension index location contract: " path)}))

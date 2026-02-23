@@ -5,17 +5,17 @@
 
 ## 1. Artifact Deconstruction
 
-### 1.1 `ARCHITECTURE.md` (Root)
+### 1.1 `ArchitectureMap.md` (Root)
 - **Original Purpose:** A high-level entry point for humans to understand the system layers.
-- **Obsolecence Factor:** Superseded by `Core/ARCHITECTURAL_GUIDELINES.md` (Authoritative rules) and `Library/RESTART_CONTEXT.md` (Operational map). Its existence in the root creates a "Dual Truth" conflict.
+- **Obsolecence Factor:** Superseded by `Core/ARCHITECTURAL_GUIDELINES.md` (Authoritative rules) and `Library/RestartContext.md` (Operational map). Its existence in the root creates a "Dual Truth" conflict.
 
 ### 1.2 `Work.md` (Root)
 - **Original Purpose:** An early session log and todo list for the developer.
-- **Obsolecence Factor:** Superseded by `Outputs/Logs/RELEASE_MILESTONES.md` and the `jj log`. Tracking work in a mutable markdown file in the root is a "vibe-coding" pattern that bypasses the formal audit trail.
+- **Obsolecence Factor:** Superseded by `Outputs/Logs/ReleaseMilestones.md` and the `jj log`. Tracking work in a mutable markdown file in the root is a "vibe-coding" pattern that bypasses the formal audit trail.
 
 ### 1.3 `docs/architecture/JjAutomation.md`
 - **Original Purpose:** Defining the JJ workflow.
-- **Obsolecence Factor:** Explicitly superseded by `Core/VERSION_CONTROL.md`. It is a "Dead Specification" that remains in the filesystem only due to lack of a purge task.
+- **Obsolecence Factor:** Explicitly superseded by `Core/VersionControlProtocol.md`. It is a "Dead Specification" that remains in the filesystem only due to lack of a purge task.
 
 ## 2. Why these look obsolete
 These files are **Scaffolding Artifacts**. They were necessary during the "Brainstorming" phase but became obsolete once the project's **Core Programming** (the `Core/` directory) was hardened. They look obsolete because they lack the rigorous "Sema" metadata and "Aski" framing of the new standard, and they often point to outdated file paths.

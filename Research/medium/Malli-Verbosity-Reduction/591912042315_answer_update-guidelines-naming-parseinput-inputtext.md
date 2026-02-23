@@ -21,7 +21,7 @@ Updated files:
 - Disallowed type-redundant names (`InputText`, `UserString`) when schema already encodes type.
 - Replaced examples with domain-noun forms (`Source`, `Lines`, `GreetingRequest`, `GreetingResponse`, `ConfigSource`).
 
-2. `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+2. `Development/Malli-Verbosity-Reduction/Strategy.md`
 - Added naming preservation target for syntax-change work.
 - Replaced `ParseInput` examples with domain-noun examples.
 - Added plan item to enforce compile-time failure for flow/redundant object names.

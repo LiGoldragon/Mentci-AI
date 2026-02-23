@@ -19,7 +19,7 @@ Findings:
 - After direct Git rewrite operations, JJ reconciliation via `jj git import` is required before bookmark/push workflows.
 
 Revisions applied to previous change:
-- Updated `development/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/STRATEGY.md` with a JJ-vs-Git capability matrix and explicit Git-unavoidable exceptions.
+- Updated `development/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/Strategy.md` with a JJ-vs-Git capability matrix and explicit Git-unavoidable exceptions.
 - Updated `development/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/PLAYBOOK.md` with JJ-first execution policy, Git-exception boundaries, and post-rewrite `jj git import` + JJ-first publish sequence.
 
 

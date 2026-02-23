@@ -16,16 +16,16 @@ review conversion of subjects to zodiac-based categories, report
 - Expected by strategy: `Development/<Zodiac-Category>/<Subject>/` and `Research/<Zodiac-Category>/<Subject>/`.
 - Actual: flat subject directories directly under `Development/` and `Research/`.
 - Evidence:
-  - `Development/Zodiac-Strategy-Division/STRATEGY.md`
+  - `Development/Zodiac-Strategy-Division/Strategy.md`
   - `Development/` root listing (no zodiac category dirs)
   - `Research/` root listing (no zodiac category dirs)
 
 2. High: Canonical correspondence spec referenced by strategy is missing.
-- Strategy requires `Library/specs/STRATEGY_ZODIAC_CORRESPONDENCE.md`.
+- Strategy requires `Library/specs/STRATEGY_ZODIAC_Correspondence.md`.
 - File is absent, so mapping truth is not materialized.
 - Evidence:
-  - `Development/Zodiac-Strategy-Division/STRATEGY.md`
-  - missing file: `Library/specs/STRATEGY_ZODIAC_CORRESPONDENCE.md`
+  - `Development/Zodiac-Strategy-Division/Strategy.md`
+  - missing file: `Library/specs/STRATEGY_ZODIAC_Correspondence.md`
 
 3. High: Core tooling is still hardcoded to flat subject topology.
 - `subject_unifier` reads/writes `Development/<Subject>` and `Research/<Subject>` directly.
@@ -38,9 +38,9 @@ review conversion of subjects to zodiac-based categories, report
 - This creates policy conflict against the zodiac container strategy.
 - Evidence:
   - `Core/AGENTS.md`
-  - `Core/CONTEXTUAL_SESSION_PROTOCOL.md`
-  - `Library/RESTART_CONTEXT.md`
-  - `Library/STRATEGY_DEVELOPMENT.md`
+  - `Core/ContextualSessionProtocol.md`
+  - `Library/RestartContext.md`
+  - `Library/StrategyDevelopment.md`
 
 5. Medium: Mirror invariant is only partial under current structure.
 - Subject counterpart symmetry exists at flat level, but zodiac-bilateral lookup is not available.
@@ -55,7 +55,7 @@ Current conversion status: **Not started structurally** (strategy drafted, imple
 
 ## Suggested Next Execution Slice
 
-1. Create `Library/specs/STRATEGY_ZODIAC_CORRESPONDENCE.md` as mapping authority.
+1. Create `Library/specs/STRATEGY_ZODIAC_Correspondence.md` as mapping authority.
 2. Update `subject_unifier` to support nested `(<zodiac-category>/<subject>)` paths.
 3. Migrate one pilot pair (strategy + report) to validate path tooling and mirror checks.
 4. Update core references from flat `<Subject>` wording to category-aware wording.

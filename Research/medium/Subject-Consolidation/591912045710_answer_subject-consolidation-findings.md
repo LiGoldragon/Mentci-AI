@@ -26,4 +26,4 @@ The following aliases were identified as candidates for consolidation into canon
 
 ### Next Steps
 1. Execute the `PLAYBOOK.md` actions for the first batch of merges.
-2. Update `Library/STRATEGY_QUEUE.md` to reflect canonical names.
+2. Update `Library/StrategyQueue.md` to reflect canonical names.

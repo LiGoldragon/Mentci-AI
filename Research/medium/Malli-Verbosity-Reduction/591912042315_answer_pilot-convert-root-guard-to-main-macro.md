@@ -30,7 +30,7 @@ Tests run:
 - Macro expansion check for `(main Input ...)` -> expands to `(defn* -main [:=> [:cat Input] :any] [input] ...)`.
 
 Strategy state updated:
-- `Development/Malli-Verbosity-Reduction/STRATEGY.md` now records pilot execution on `root_guard`.
+- `Development/Malli-Verbosity-Reduction/Strategy.md` now records pilot execution on `root_guard`.
 
 ## Reporting Protocol Notes
 

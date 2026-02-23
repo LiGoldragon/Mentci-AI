@@ -54,7 +54,7 @@ For each section:
 4. emit one checkpoint artifact in `Research/high/Repo-Intent-Realignment/`.
 
 ### Phase 5: Intent Lock and Release
-1. Refresh `Library/RESTART_CONTEXT.md` after Phase 4 closure.
+1. Refresh `Library/RestartContext.md` after Phase 4 closure.
 2. Run full gate pack (`validate_scripts`, `reference_guard`, `subject_unifier`, `session_guard`, `root_guard`).
 3. Tag and release only from guard-green state.
 

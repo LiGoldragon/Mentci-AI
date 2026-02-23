@@ -39,7 +39,7 @@ Unify filesystem governance under Aski-FS so path semantics, root policy, and co
 ### Phase 5: Cutover and Lock
 - Remove legacy translator after reference sweep is zero.
 - Enforce `Sources/*`-only path policy in root/session guards.
-- Update `Library/specs/ASKI_FS_SPEC.md` and `Library/RESTART_CONTEXT.md` to mark convergence complete.
+- Update `Library/specs/AskiFsSpec.md` and `Library/RestartContext.md` to mark convergence complete.
 
 ## Validation Gates
 1. `bb Components/scripts/root_guard/main.clj` passes with contract-driven checks.

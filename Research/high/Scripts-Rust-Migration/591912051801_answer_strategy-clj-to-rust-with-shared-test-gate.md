@@ -9,9 +9,9 @@ Strengthened the migration strategy to enforce a strict authority gate:
 - Clojure remains the default implementation until Rust passes the same shared test corpus for each script.
 
 ## Updated Strategy Artifacts
-1. `Development/Scripts-Rust-Migration/STRATEGY.md`
-2. `Development/Scripts-Rust-Migration/ROADMAP.md`
-3. `Development/Scripts-Rust-Migration/REPORT.md`
+1. `Development/Scripts-Rust-Migration/Strategy.md`
+2. `Development/Scripts-Rust-Migration/Roadmap.md`
+3. `Development/Scripts-Rust-Migration/Report.md`
 
 ## Core Policy
 1. Keep one shared parity test corpus per script.

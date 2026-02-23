@@ -8,22 +8,22 @@
 Core authority set:
 - `AGENTS.md`
 - `ARCHITECTURAL_GUIDELINES.md`
-- `ASKI_FS_SPEC.md`
-- `ASKI_POSITIONING.md`
-- `CONTEXTUAL_SESSION_PROTOCOL.md`
+- `AskiFsSpec.md`
+- `AskiPositioning.md`
+- `ContextualSessionProtocol.md`
 - `HIGH_LEVEL_GOALS.md`
-- `MENTCI_AID.md`
+- `MentciAidProtocol.md`
 - `SEMA_CLOJURE_GUIDELINES.md`
 - `SEMA_NIX_GUIDELINES.md`
 - `SEMA_RUST_GUIDELINES.md`
-- `VERSION_CONTROL.md`
+- `VersionControlProtocol.md`
 
 Library program set:
-- `RESTART_CONTEXT.md`
-- `STRATEGY_QUEUE.md`
-- `STRATEGY_DEVELOPMENT.md`
-- `OBSOLESCENCE_PROTOCOL.md`
-- `INTENT_DISCOVERY.md`
+- `RestartContext.md`
+- `StrategyQueue.md`
+- `StrategyDevelopment.md`
+- `ObsolescenceProtocol.md`
+- `IntentDiscovery.md`
 
 ## Findings
 - Symbiotic split is coherent: constitutional rules are in `Core/`, operational loops/programs are in `Library/`.

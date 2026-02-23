@@ -20,7 +20,7 @@ To automate implementation details and liberate the human mind through autonomou
 
 ## Structure
 - `Core/`: Authoritative architectural mandates and protocols.
-  - `Library/RESTART_CONTEXT.md`: The primary overview and state-resumption map.
+  - `Library/RestartContext.md`: The primary overview and state-resumption map.
 - `Components/schema/`: The semantic truth (Cap'n Proto).
 - `Components/nix/jail.nix`: The isolated dev environment definition.
 - `Components/mentci-aid/src/main.rs`: The Rust daemon implementation (**mentci-aid**).

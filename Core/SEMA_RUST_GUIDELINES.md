@@ -16,6 +16,11 @@ structural. Violations indicate category error, not style.
 3. **Schema Is Sema**
    Transmissible objects are defined in Sema schemas. Wire encodings are incidental.
 
+4. **Single Owner (Actor Model)**
+   Every object has a single owner concept (inspired by Erlang/actor model). This
+   prevents data racing and double ownership problems at the semantic layer,
+   aligning with Rust's borrow checker.
+
 ## Naming and Ontology
 
 *   `PascalCase` denotes objects (types and traits).

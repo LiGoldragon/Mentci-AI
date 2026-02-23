@@ -22,7 +22,7 @@ Added a dedicated admin-shell workflow that creates/reuses a mutable Mentci work
   - `targetBookmark=jailCommit`
 
 3. Added script testing context:
-- `Components/scripts/admin_shell/TESTING_CONTEXT.md`
+- `Components/scripts/admin_shell/TestingContext.md`
 
 4. Added top-level command in dev shell package set:
 - `Components/nix/common_packages.nix` now exports `mentci-admin-shell`.

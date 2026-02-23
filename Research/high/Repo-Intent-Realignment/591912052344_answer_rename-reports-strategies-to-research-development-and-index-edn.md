@@ -43,12 +43,12 @@ Changes:
 
 5. Updated core/library references to new names and index format:
 - `Core/AGENTS.md`
-- `Core/CONTEXTUAL_SESSION_PROTOCOL.md`
-- `Core/VERSION_CONTROL.md`
-- `Library/RESTART_CONTEXT.md`
-- `Library/STRATEGY_DEVELOPMENT.md`
-- `Library/STRATEGY_QUEUE.md`
-- `Library/specs/ASKI_FS_SPEC.md`
+- `Core/ContextualSessionProtocol.md`
+- `Core/VersionControlProtocol.md`
+- `Library/RestartContext.md`
+- `Library/StrategyDevelopment.md`
+- `Library/StrategyQueue.md`
+- `Library/specs/AskiFsSpec.md`
 - `Library/specs/ASKI_FS_ROOT_CONTRACT.edn`
 
 Validation:

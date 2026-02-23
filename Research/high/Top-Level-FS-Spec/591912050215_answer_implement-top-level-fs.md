@@ -11,22 +11,22 @@ implement top level fs
 Implemented top-level FS minimization and enforcement.
 
 ### Structural moves
-- `ARCHITECTURE.md` -> `Library/architecture/ARCHITECTURE.md`
-- `BUGS.md` -> `Library/research/BUGS.md`
-- `Work.md` -> `Library/research/WORK_CONTEXT.md`
+- `ArchitectureMap.md` -> `Library/architecture/ArchitectureMap.md`
+- `Bugs.md` -> `Library/research/Bugs.md`
+- `Work.md` -> `Library/research/WorkContext.md`
 - `agent-sources.edn` -> `Core/agent-sources.edn`
 - `jj-project-config.toml` -> `Core/jj-project-config.example.toml`
 
 ### Top-level enforcement
 - Added root contract checker:
   - `Components/scripts/root_guard/main.clj`
-  - `Components/scripts/root_guard/TESTING_CONTEXT.md`
+  - `Components/scripts/root_guard/TestingContext.md`
 - Added local runtime config ignore:
   - `/.mentci/` in `.gitignore`
 - Updated protocol to require root guard run:
-  - `Core/VERSION_CONTROL.md`
+  - `Core/VersionControlProtocol.md`
 - Updated FS spec with root-file allowlist and guard reference:
-  - `Library/specs/ASKI_FS_SPEC.md`
+  - `Library/specs/AskiFsSpec.md`
 
 ### Runtime/config rewiring
 - Nix wiring updated to current component paths and local JJ config location:

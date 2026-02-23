@@ -15,9 +15,9 @@ all of Sources/ and inputs_backup/ shouldnt be in the history (all the directori
 Created strategy package to remove Sources/ and inputs_backup/ from full VCS history.
 
 Artifacts:
-- development/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/STRATEGY.md
+- development/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/Strategy.md
 - development/Workspace-Pwd-History-Purge-And-Jj-Config-Migration/PLAYBOOK.md
-- Library/STRATEGY_QUEUE.md (queue + status registration)
+- Library/StrategyQueue.md (queue + status registration)
 
 Strategy highlights:
 - full-history rewrite with git filter-repo removing Sources and inputs_backup recursively

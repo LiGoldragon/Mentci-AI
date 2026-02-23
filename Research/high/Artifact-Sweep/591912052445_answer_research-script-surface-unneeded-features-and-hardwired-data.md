@@ -30,7 +30,7 @@ Primary conclusion:
 
 2. `Components/scripts/session_metadata/main.clj`
 - Issue: overlapping session-state workflow duplicates `session_finalize` responsibilities and writes local mutable file `.mentci/session_state.json`.
-- Evidence: `Core/CONTEXTUAL_SESSION_PROTOCOL.md` marks it as optional, while `session_finalize` + `session_guard` are authoritative closure tools.
+- Evidence: `Core/ContextualSessionProtocol.md` marks it as optional, while `session_finalize` + `session_guard` are authoritative closure tools.
 - Impact: dual protocol surfaces increase session inconsistency risk.
 - Action: mark as legacy/optional explicitly and stop treating as primary flow.
 

@@ -23,8 +23,8 @@ Impact:
 - Guard behavior and migration execution can diverge.
 
 Evidence:
-- `Development/Top-Level-FS-Spec/STRATEGY.md` uses `Sources` canonical root model.
-- `Library/specs/ASKI_FS_SPEC.md`, `Core/ARCHITECTURAL_GUIDELINES.md`, and `Library/RESTART_CONTEXT.md` still anchor on `Sources` terminology.
+- `Development/Top-Level-FS-Spec/Strategy.md` uses `Sources` canonical root model.
+- `Library/specs/AskiFsSpec.md`, `Core/ARCHITECTURAL_GUIDELINES.md`, and `Library/RestartContext.md` still anchor on `Sources` terminology.
 
 Proposed resolution:
 1. Perform one coordinated authority update pass in core docs.

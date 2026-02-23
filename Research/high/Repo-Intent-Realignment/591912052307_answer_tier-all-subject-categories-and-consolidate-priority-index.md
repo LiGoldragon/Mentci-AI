@@ -16,16 +16,16 @@ Implemented repository-wide subject triage and consolidated category governance.
 
 Changes:
 1. Added canonical priority matrix covering every current subject category under both `Development/` and `Research/`:
-- `Development/high/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
+- `Development/high/Repo-Intent-Realignment/PriorityTriage.md`
 - Classified each subject as `high`, `medium`, or `low`.
 - Added consolidation notes for redundant tracking ownership.
 
 2. Consolidated queue governance to one source:
-- Updated `Library/STRATEGY_QUEUE.md` to reference the canonical matrix.
+- Updated `Library/StrategyQueue.md` to reference the canonical matrix.
 - Replaced stale ranked partial list with tier-based governance and active high-priority execution order.
 
 3. Aligned report governance with the same canonical matrix:
-- Updated `Research/index.edn` to reference `Development/high/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`.
+- Updated `Research/index.edn` to reference `Development/high/Repo-Intent-Realignment/PriorityTriage.md`.
 - Corrected path casing (`Development/<priority>/<Subject>`).
 
 Validation:

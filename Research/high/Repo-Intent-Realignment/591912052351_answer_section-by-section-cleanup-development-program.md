@@ -20,7 +20,7 @@ Changes:
 - Includes section order, per-section procedure, classification model (`retain/integrate/archive/remove`), validation gates, and done criteria.
 
 2. Extended roadmap with execution phase:
-- `Development/high/Repo-Intent-Realignment/ROADMAP.md`
+- `Development/high/Repo-Intent-Realignment/Roadmap.md`
 - Added `Phase 5: Section Sweep Program` to make the cleanup loop part of the canonical roadmap.
 
 Outcome:

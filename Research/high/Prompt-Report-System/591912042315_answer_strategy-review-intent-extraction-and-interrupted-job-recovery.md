@@ -12,7 +12,7 @@ review a strategy to extract the intent and fix unfinished interrupted jobs
 
 ## Agent Answer
 
-Reviewed and upgraded `Development/Prompt-Report-System/STRATEGY.md` from a placeholder to an executable recovery strategy.
+Reviewed and upgraded `Development/Prompt-Report-System/Strategy.md` from a placeholder to an executable recovery strategy.
 
 What was added:
 1. Explicit objective for interrupted-job recovery.

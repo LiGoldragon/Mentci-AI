@@ -39,9 +39,9 @@ Temporary migration note:
 - `Sources/` may exist only as a short-lived compatibility alias while references are rewritten to `Sources/`.
 
 Current implementation notes:
-- `ARCHITECTURE.md` moved to `Library/architecture/ARCHITECTURE.md`.
-- `Work.md` moved to `Library/research/WORK_CONTEXT.md`.
-- `BUGS.md` moved to `Library/research/BUGS.md`.
+- `ArchitectureMap.md` moved to `Library/architecture/ArchitectureMap.md`.
+- `Work.md` moved to `Library/research/WorkContext.md`.
+- `Bugs.md` moved to `Library/research/Bugs.md`.
 - `agent-sources.edn` moved to `Core/agent-sources.edn`.
 - `jj-project-config.toml` replaced by local ignored `.mentci/jj-project-config.toml` and tracked template `Core/jj-project-config.example.toml`.
 
@@ -60,7 +60,7 @@ Current implementation notes:
 - Classify each path as `domain`, `runtime`, `required-file`, `conditional-file`, or `violation`.
 
 2. Freeze root allowlist
-- Add root allowlist to `Library/specs/ASKI_FS_SPEC.md` and guard scripts.
+- Add root allowlist to `Library/specs/AskiFsSpec.md` and guard scripts.
 - Encode exception set (`.git`, `.jj`, `.direnv`, `target`).
 
 3. Move violations
@@ -70,7 +70,7 @@ Current implementation notes:
 
 4. Prune conditionals
 - For each conditional top-level file, either:
-  - keep at root with explicit rationale in `Library/specs/ASKI_FS_SPEC.md`, or
+  - keep at root with explicit rationale in `Library/specs/AskiFsSpec.md`, or
   - relocate and leave a short deprecation stub only if needed for compatibility.
 
 5. Enforce
@@ -96,5 +96,5 @@ Root check fails if:
 ## Acceptance Criteria
 - Root tree contains only 7 typed domain directories + runtime exceptions + allowlisted root files.
 - `rg` finds no active legacy root links in `Core/`, `Library/`, `Components/`.
-- Root guard is enforced and documented in `Core/VERSION_CONTROL.md` and/or `Core/ARCHITECTURAL_GUIDELINES.md`.
+- Root guard is enforced and documented in `Core/VersionControlProtocol.md` and/or `Core/ARCHITECTURAL_GUIDELINES.md`.
 - New sessions cannot reintroduce root sprawl without a failing check.

@@ -8,7 +8,7 @@
 
 ## Prompt
 
-rescan core, main libraries and all readmes and high-priority items, fix inconsistencies, update Library/RESTART_CONTEXT.md and push a new tag on main
+rescan core, main libraries and all readmes and high-priority items, fix inconsistencies, update Library/RestartContext.md and push a new tag on main
 
 ## Agent Answer
 
@@ -22,21 +22,21 @@ Implemented fixes:
 1. Corrected broken transitional alias wording from `Sources` self-aliasing to explicit `Inputs` -> `Sources` migration notes in core authority/spec docs.
 2. Normalized high-priority strategy references to canonical paths (`Outputs/Logs/...`, `Development/...`, `Components/tasks/...`, `Research/high/...`).
 3. Updated stale README pathing (`Research/README.md` now points to `Components/scripts/answer_report/main.clj`).
-4. Refreshed `Library/RESTART_CONTEXT.md` metadata and operational snapshot (heads, guard status, open risks).
-5. Added a new milestone entry in `Outputs/Logs/RELEASE_MILESTONES.md` for this sweep.
+4. Refreshed `Library/RestartContext.md` metadata and operational snapshot (heads, guard status, open risks).
+5. Added a new milestone entry in `Outputs/Logs/ReleaseMilestones.md` for this sweep.
 
 Files updated:
 1. `Core/AGENTS.md`
 2. `Core/ARCHITECTURAL_GUIDELINES.md`
-3. `Library/specs/ASKI_FS_SPEC.md`
-4. `Development/high/Debugging/STRATEGY.md`
-5. `Development/high/Strategy-Development/STRATEGY.md`
-6. `Development/high/Agent-Authority-Alignment/STRATEGY.md`
+3. `Library/specs/AskiFsSpec.md`
+4. `Development/high/Debugging/Strategy.md`
+5. `Development/high/Strategy-Development/Strategy.md`
+6. `Development/high/Agent-Authority-Alignment/Strategy.md`
 7. `Development/high/Artifact-Sweep/ARTIFACT_ANALYSIS.md`
 8. `README.md`
 9. `Research/README.md`
-10. `Library/RESTART_CONTEXT.md`
-11. `Outputs/Logs/RELEASE_MILESTONES.md`
+10. `Library/RestartContext.md`
+11. `Outputs/Logs/ReleaseMilestones.md`
 
 Validation status (pre-release check):
 1. `bb Components/scripts/validate_scripts/main.clj`: passing

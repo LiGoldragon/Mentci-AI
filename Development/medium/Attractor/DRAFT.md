@@ -28,7 +28,7 @@ We will define the formal structure of a Workflow in `Components/schema/mentci.c
 *   `Context`: The state passed between nodes.
 
 ### B. The Standard (Guidelines)
-We adapt `Sources/attractor/attractor-spec.md` (transitional alias: `Sources/attractor/attractor-spec.md`) into `Library/specs/WORKFLOW_STANDARD.md`. This document serves as the "RFC" for how to write valid Mentci workflows that incorporate Attractor.
+We adapt `Sources/attractor/attractor-spec.md` (transitional alias: `Sources/attractor/attractor-spec.md`) into `Library/specs/WorkflowStandard.md`. This document serves as the "RFC" for how to write valid Mentci workflows that incorporate Attractor.
 
 **Key Concepts:**
 *   **Declarative vs. Imperative:** Define *what* to do, not just *how*.

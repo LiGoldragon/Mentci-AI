@@ -29,12 +29,12 @@ The proposed tiering logic:
 
 ### 5. Candidates for `PascalCase` (Stable Contracts)
 *   All `SEMA_*_GUIDELINES.md` -> `SemaRustGuidelines.md`, etc.
-*   `VERSION_CONTROL.md` -> `VersionControl Protocol.md`
-*   `ASKI_POSITIONING.md` -> `AskiPositioning.md`
-*   `CHRONOGRAPHY.md` -> `ChronographySpec.md`
+*   `VersionControlProtocol.md` -> `VersionControl Protocol.md`
+*   `AskiPositioning.md` -> `AskiPositioning.md`
+*   `ChronographySpec.md` -> `ChronographySpec.md`
 
 ## 6. Execution Strategy
 1.  Formally define the new tiering in `Core/ARCHITECTURAL_GUIDELINES.md`.
 2.  Rename files to match their new durability tier.
-3.  Update all cross-references in `Core/AGENTS.md`, `Library/RESTART_CONTEXT.md`, and other core files.
+3.  Update all cross-references in `Core/AGENTS.md`, `Library/RestartContext.md`, and other core files.
 4.  Run `root_guard` and `reference_guard` to ensure integrity.

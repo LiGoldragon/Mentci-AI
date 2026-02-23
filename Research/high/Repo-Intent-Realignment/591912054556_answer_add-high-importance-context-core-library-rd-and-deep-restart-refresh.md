@@ -8,7 +8,7 @@
 
 ## Prompt
 
-look at Core, Library and R&D (make a note that R&D points to Research/ and Development/, which mirror each other's topics), and add in there any high-importance context you have, and do a deep Library/RESTART_CONTEXT.md update, then push a tagged version to main
+look at Core, Library and R&D (make a note that R&D points to Research/ and Development/, which mirror each other's topics), and add in there any high-importance context you have, and do a deep Library/RestartContext.md update, then push a tagged version to main
 
 ## Agent Answer
 
@@ -24,12 +24,12 @@ Implemented a coordinated high-importance context update across Core, Library, a
   - Session/root guard health as release-blocking control gates.
 
 ### Library updates
-1. `Library/RESTART_CONTEXT.md` (deep refresh)
+1. `Library/RestartContext.md` (deep refresh)
 - Rewrote snapshot with current control-plane state, sweep progress, guard health, high-priority risks, and immediate execution order.
 - Added explicit R&D topology contract section.
 - Added script-surface realignment focus from current Artifact-Sweep research.
 
-2. `Library/STRATEGY_QUEUE.md`
+2. `Library/StrategyQueue.md`
 - Added current execution context section:
   - section sweep progress (completed through section 6),
   - remaining sections,
@@ -43,7 +43,7 @@ Implemented a coordinated high-importance context update across Core, Library, a
 - Added explicit mirror note describing Research vs Development role split and counterpart expectations.
 
 ### Release log update
-1. `Outputs/Logs/RELEASE_MILESTONES.md`
+1. `Outputs/Logs/ReleaseMilestones.md`
 - Added this session milestone entry for the cross-surface high-importance context and restart refresh.
 
 ## Reporting Protocol Notes

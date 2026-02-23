@@ -20,10 +20,10 @@ Applied format:
 - example: `♓︎.5.4.47 5919AM`
 
 Updated files:
-1. `Core/CONTEXTUAL_SESSION_PROTOCOL.md`
-2. `Core/VERSION_CONTROL.md`
-3. `Library/architecture/CHRONOGRAPHY.md`
-4. `Development/Align-Release-Tag-To-Commit-Zodia-Ordinal-Time/STRATEGY.md`
+1. `Core/ContextualSessionProtocol.md`
+2. `Core/VersionControlProtocol.md`
+3. `Library/architecture/ChronographySpec.md`
+4. `Development/Align-Release-Tag-To-Commit-Zodia-Ordinal-Time/Strategy.md`
 
 Resumption verification:
 - Re-checked protocol files after interruption.

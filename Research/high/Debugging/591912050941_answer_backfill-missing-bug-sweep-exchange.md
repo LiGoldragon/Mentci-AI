@@ -23,7 +23,7 @@ Sweep summary:
 5. Static/path scans showed remaining drift markers and mixed `Sources/` vs `Sources/` references in docs/strategy files.
 
 Strategy implemented:
-- Updated `Development/Debugging/STRATEGY.md` with a deterministic sweep program, known-issues section, and fix workflow for iterative validation and closure.
+- Updated `Development/Debugging/Strategy.md` with a deterministic sweep program, known-issues section, and fix workflow for iterative validation and closure.
 
 
 ## Reporting Protocol Notes

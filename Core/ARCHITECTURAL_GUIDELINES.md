@@ -1,6 +1,6 @@
 # Mentci-AI High-Level Architectural Guidelines
 
-*   **Reproducibility:** The `Sources/` directory (transitional alias: `Inputs/`) contains read-only symlinks to all project dependencies and ecosystem sources, managed by `Components/scripts/launcher/main.clj`.
+*   **Reproducibility:** The `Sources/` directory contains read-only symlinks to all project dependencies and ecosystem sources, managed by `Components/scripts/launcher/main.clj`.
 *   **Purity:** Respect the `RO Indicator`. In pure mode, Sources are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
 
 ## 0.0. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
@@ -13,7 +13,7 @@
 4.  **Nix (Low-Level Utility):** The substrate of reproducibility. Only used for its specific usefulness. Should be **phased out** as early as possible or hidden behind low-level Aski interfaces (see **Lojix**, the Aski-Nix subsystem).
 
 **Assimilation of Sources:**
-- **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `Sources/` (transitional alias: `Inputs/`).
+- **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `Sources/`.
 - They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
 - Their logic must be ported to the higher-authority languages (Aski/Rust) to fully integrate with the Mentci-AI ecosystem.
 
@@ -35,7 +35,7 @@
 *   **Authority:** Li Goldragon is the highest authority (Top Admin).
 *   **Shipping Protocol (Jail):** Isolated agents in a Jail environment must use the `mentci-commit` tool to ship changes. This tool synchronizes a writable implementation workspace back to the project root and performs a `jj` commit to the target bookmark specified in `MENTCI_COMMIT_TARGET`.
 *   **Usage:** `mentci-commit "intent: <message>"`
-*   **Operational Steps:** See `Core/VERSION_CONTROL.md`.
+*   **Operational Steps:** See `Core/VersionControlProtocol.md`.
 
 ## 0.3. TOOL STACK TRANSPARENCY
 
@@ -60,7 +60,7 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 **The authoritative audit trail is the Jujutsu history.**
 
 *   **Auditability:** Use `jj log` for provenance and review.
-*   **Intent Discovery:** Use `jj log` frequency analysis to determine the "True Weight" of goals and maintain alignment with the project's evolution (see `Library/INTENT_DISCOVERY.md`).
+*   **Intent Discovery:** Use `jj log` frequency analysis to determine the "True Weight" of goals and maintain alignment with the project's evolution (see `Library/IntentDiscovery.md`).
 
 ## 0.5. ADMIN DEVELOPER MODE (SYSTEM ORCHESTRATION)
 
@@ -74,7 +74,7 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 
 **Processes orchestrate sub-processes in a fractal hierarchy.**
 
-*   **Master Process:** The top-level `mentci-ai` process is self-hosted. It mounts `Sources/` (or transitional `Inputs/`) and configures its environment exactly like a jailed process but operates with full **Admin Developer Mode** privileges.
+*   **Master Process:** The top-level `mentci-ai` process is self-hosted. It mounts `Sources/` and configures its environment exactly like a jailed process but operates with full **Admin Developer Mode** privileges.
 *   **Sub-Flow Isolation:** Sub-processes are spawned as isolated sub-flows, typically within strict Nix Jails.
 *   **State Separation:** Sub-flows must operate on **unique, internal Jujutsu bookmarks**. They do not commit directly to the parent's bookmark until finalization.
 *   **Supervision:** Parent processes supervise the lifecycle, sources, and outputs of their child sub-flows.
@@ -116,8 +116,8 @@ Mentci-AI incorporates the Attractor standard for workflow orchestration. It doe
 
 **Core must remain stable and universal; extension points are optional index files in fixed locations.**
 
-*   **Contract Source:** `Core/EXTENSION_INDEX_PROTOCOL.md`
-*   **Location Registry:** `Core/EXTENSION_INDEX_LOCATIONS.edn`
+*   **Contract Source:** `Core/ExtensionIndexProtocol.md`
+*   **Location Registry:** `Core/ExtensionIndexLocations.edn`
 *   **Resolver Tool:** `bb Components/scripts/extension_index/main.clj`
 *   **Rule:** Prefer adding capabilities by registering or updating index files in standard extension locations instead of editing multiple core authority files.
 *   **Operational Mode:** Missing extension indexes are non-fatal; extension loading remains optional.
@@ -128,7 +128,7 @@ Mentci-AI incorporates the Attractor standard for workflow orchestration. It doe
 Meaning is distributed across repository names, directory paths, module names, and type definitions. Meaning must appear exactly once at the highest valid layer. Repetition across layers (e.g., `UserObject`, `Manager`) is forbidden.
 
 **Contextual Sovereignty:**
-High-level architectural context (framing, mission statements, global mandates) must reside exclusively in `Core/` and `RESTART_CONTEXT.md`. Replicating this context into individual child files as "headers" is forbidden. Child files must contain only implementation-specific logic, inheriting the global context from the hierarchy.
+High-level architectural context (framing, mission statements, global mandates) must reside exclusively in `Core/` and `RestartContext.md`. Replicating this context into individual child files as "headers" is forbidden. Child files must contain only implementation-specific logic, inheriting the global context from the hierarchy.
 
 ## 2. Capitalization-Based Durability Rules (Filesystem)
 
@@ -136,11 +136,11 @@ High-level architectural context (framing, mission statements, global mandates) 
 
 | Tier | Casing | Meaning | Rules |
 | :--- | :--- | :--- | :--- |
-| **Immutable Law** | `ALL_CAPS` | Non-negotiable constraints. | Never edited. Never contradicted. Loaded first. |
-| **Stable Contract** | `PascalCase` | Durable structure/intent. | Edited only by mandate. Extension permitted if meaning is preserved. |
-| **Mutable Implementation** | `lowercase` | Operational detail. | Freely editable/refactorable to satisfy higher tiers. |
+| **Supreme Law** | `ALL_CAPS` | Immutable constraints. | **Fully Human Review Data.** Never edited by agents. Loaded first. |
+| **Stable Contract** | `PascalCase` | Durable structure/intent. | Agent-refinable to satisfy Supreme Law. Edited only by mandate. |
+| **Mutable Implementation** | `lowercase` | Operational detail. | Freely editable/refactorable by agents. |
 
-*   **Conflict Resolution:** `ALL_CAPS` > `PascalCase` > `lowercase`.
+*   **Conflict Resolution:** `Supreme Law` > `Stable Contract` > `Implementation`.
 *   **Composition:** A single `ALL_CAPS` segment makes the entire path immutable.
 
 ## 3. Sema Object Style (Rust)
@@ -194,7 +194,7 @@ The classification of an entity must be encoded within its data structure. Do no
 
 **All versions and dates must adhere to the True Solar Ordinal-Zodiac system.**
 
-See **`CHRONOGRAPHY.md`** for the complete technical specification of the 1-based ordinal system.
+See **`Library/architecture/ChronographySpec.md`** for the complete technical specification of the 1-based ordinal system.
 
 *   **Year System:** Anno Mundi (AM). (Current Year: 5919 AM).
 *   **Version Format:** `Cycle.Sign.Degree.Minute.Second`

@@ -7,7 +7,7 @@
 
 **Mentci-AI** incorporates the **Attractor Workflow Standard** as its "Algorithm of Thought". The focus is on standard adoption and alignment, not reimplementing Attractor.
 
-The Attractor spec is re-documented as the **Mentci Workflow Standard** (`Library/specs/WORKFLOW_STANDARD.md`) for incorporation. A reference DOT parser and basic traversal logic exists in Rust, but Mentci-AI is not an Attractor reimplementation.
+The Attractor spec is re-documented as the **Mentci Workflow Standard** (`Library/specs/WorkflowStandard.md`) for incorporation. A reference DOT parser and basic traversal logic exists in Rust, but Mentci-AI is not an Attractor reimplementation.
 
 ---
 
@@ -15,7 +15,7 @@ The Attractor spec is re-documented as the **Mentci Workflow Standard** (`Librar
 
 | Feature | Attractor Specification | Mentci-AI Current State | Status |
 | :--- | :--- | :--- | :--- |
-| **Pipeline Definition** | **DOT Graph Syntax.** | **Standardized.** See `Library/specs/WORKFLOW_STANDARD.md`. Parser implemented in `Components/mentci-aid/src/dot_loader.rs`. | ✅ **Adopted** |
+| **Pipeline Definition** | **DOT Graph Syntax.** | **Standardized.** See `Library/specs/WorkflowStandard.md`. Parser implemented in `Components/mentci-aid/src/dot_loader.rs`. | ✅ **Adopted** |
 | **State Management** | **Checkpoint & Resume.** | **Basic Implementation.** `CheckpointManager` in `Components/mentci-aid/src/main.rs` saves JSON snapshots. | ⚠️ **Partial** |
 | **Routing Logic** | **Edge-Based Routing.** | **Implemented.** Engine supports conditional and label-based routing. | ✅ **Done** |
 | **Configuration** | **Model Stylesheets.** | Not yet implemented. | ⏳ **Backlog** |

@@ -14,7 +14,7 @@ I need a mounter that works in admin mode (outside jail)
 
 Implemented a standalone admin-side inputs mounter:
 - `Components/scripts/sources_mounter/main.clj`
-- `Components/scripts/sources_mounter/TESTING_CONTEXT.md`
+- `Components/scripts/sources_mounter/TestingContext.md`
 
 What it does:
 1. Reads `jailConfig.sourceManifest` from an attrs JSON (default `.attrs.json`).

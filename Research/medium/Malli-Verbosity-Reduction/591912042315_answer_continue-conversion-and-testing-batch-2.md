@@ -63,7 +63,7 @@ Validator checks (per converted script dirs):
 - `sources_remount` -> fails due existing local `test.clj` helper not using `defn*` (pre-existing validator coupling)
 
 Strategy updated:
-- `Development/Malli-Verbosity-Reduction/STRATEGY.md` now records this continued conversion batch.
+- `Development/Malli-Verbosity-Reduction/Strategy.md` now records this continued conversion batch.
 
 ## Reporting Protocol Notes
 

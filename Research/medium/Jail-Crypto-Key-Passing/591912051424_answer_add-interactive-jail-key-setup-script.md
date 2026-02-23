@@ -15,7 +15,7 @@ create a script to do the key setup, with user input prompt for variables
 
 Implemented interactive key setup script:
 - `Components/scripts/jail_key_setup/main.clj`
-- `Components/scripts/jail_key_setup/TESTING_CONTEXT.md`
+- `Components/scripts/jail_key_setup/TestingContext.md`
 
 What it does:
 - Prompts for setup variables (key path, key comment, private/public gopass entries).

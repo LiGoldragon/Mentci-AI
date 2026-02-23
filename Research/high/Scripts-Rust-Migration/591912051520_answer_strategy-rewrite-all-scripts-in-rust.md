@@ -8,9 +8,9 @@
 Defined a full migration strategy to port all `Components/scripts/*` entrypoints from Babashka/Clojure to Rust using a staged, low-risk rollout.
 
 ## Produced Strategy Artifacts
-1. `Development/Scripts-Rust-Migration/STRATEGY.md`
-2. `Development/Scripts-Rust-Migration/ROADMAP.md`
-3. `Development/Scripts-Rust-Migration/REPORT.md`
+1. `Development/Scripts-Rust-Migration/Strategy.md`
+2. `Development/Scripts-Rust-Migration/Roadmap.md`
+3. `Development/Scripts-Rust-Migration/Report.md`
 
 ## Core Plan
 1. Preserve operational continuity using a dual-runtime compatibility period.

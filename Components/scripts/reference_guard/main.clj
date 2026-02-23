@@ -70,12 +70,12 @@
       []
       (vec
        (remove nil?
-               [(when (re-find #"Library/architecture/AGENTS\.md" content)
+               [(when (re-find #"(?i)Library/architecture/AGENTS\.md" content)
                   (str path-lc ": forbidden reference to Library/architecture/AGENTS.md (use Core/AGENTS.md)"))
-                (when (re-find #"Library/architecture/HIGH_LEVEL_GOALS\.md" content)
+                (when (re-find #"(?i)Library/architecture/HIGH_LEVEL_GOALS\.md" content)
                   (str path-lc ": forbidden reference to Library/architecture/HIGH_LEVEL_GOALS.md (use Core/HIGH_LEVEL_GOALS.md)"))
-                (when (re-find #"Library/guides/RESTART_CONTEXT\.md" content)
-                  (str path-lc ": forbidden reference to Library/guides/RESTART_CONTEXT.md (use Library/RESTART_CONTEXT.md)"))
+                (when (re-find #"(?i)Library/guides/RestartContext\.md" content)
+                  (str path-lc ": forbidden reference to Library/guides/RestartContext.md (use Library/RestartContext.md)"))
                 (when (or (re-find #"`inputs/(?!outputs\b)[^`\n]+`" content)
                           (re-find #"\"inputs/(?!outputs\b)[^\"\n]+\"" content))
                   (str path-lc ": lowercase inputs/ path detected"))])))))
@@ -90,7 +90,7 @@
                         "Components"
                         "Research"
                         "Development"]
-                :allowlist #{"Development/high/Agent-Authority-Alignment/STRATEGY.md"
+                :allowlist #{"Development/high/Agent-Authority-Alignment/Strategy.md"
                              "Development/high/Agent-Authority-Alignment/INTEGRATION.md"
                              "Components/scripts/reference_guard/main.clj"}}
         files (mapcat #(collect-files-for default-reference-guard {:root %}) (:roots config))

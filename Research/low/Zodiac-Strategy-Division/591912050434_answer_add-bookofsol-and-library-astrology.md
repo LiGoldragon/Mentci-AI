@@ -22,7 +22,7 @@ Implemented minimal astrology reference layer and wired `bookofsol` as an input 
 
 ### Library references
 - `Library/astrology/README.md`
-- `Library/astrology/CORRESPONDENCE.md`
+- `Library/astrology/Correspondence.md`
 
 Both reference `Sources/bookofsol` as source and provide minimal symbolic orientation.
 

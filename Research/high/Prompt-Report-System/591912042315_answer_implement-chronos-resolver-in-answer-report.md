@@ -26,7 +26,7 @@ Changes made:
    - If all attempts fail, output now includes each attempted command plus exit/stderr/stdout.
 5. Kept chronography parse contract unchanged (`sign.degree.minute.second | year AM`).
 6. Updated test context:
-   - `Components/scripts/answer_report/TESTING_CONTEXT.md` now documents resolver order and `--chronos-raw` usage.
+   - `Components/scripts/answer_report/TestingContext.md` now documents resolver order and `--chronos-raw` usage.
 
 Validation:
 - `bb Components/scripts/validate_scripts/main.clj --scripts-dir Components/scripts/answer_report` -> pass

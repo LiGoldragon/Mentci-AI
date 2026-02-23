@@ -23,11 +23,11 @@ Core files updated:
 1. `Core/AGENTS.md`
 - Replaced remaining `strategy/report` counterpart wording with `development/research` wording.
 
-2. `Core/CONTEXTUAL_SESSION_PROTOCOL.md`
+2. `Core/ContextualSessionProtocol.md`
 - Replaced remaining strategy/report phrasing with development/research phrasing.
 - Kept process semantics unchanged.
 
-3. `Core/VERSION_CONTROL.md`
+3. `Core/VersionControlProtocol.md`
 - Replaced `report artifact` wording with `research artifact` wording in completion rule.
 
 Validation:

@@ -9,7 +9,7 @@ strategy to put all strategies in a division of 12 categories which mirror the z
 
 ## Outcome
 Created a full strategy package for zodiac-based strategy taxonomy:
-- `Development/Zodiac-Strategy-Division/STRATEGY.md`
+- `Development/Zodiac-Strategy-Division/Strategy.md`
 - `Development/Zodiac-Strategy-Division/SYMBOLIC_CORRESPONDENCE_SPEC.md`
 
 Includes:

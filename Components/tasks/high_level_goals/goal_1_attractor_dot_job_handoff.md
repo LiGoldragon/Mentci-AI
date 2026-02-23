@@ -53,7 +53,7 @@ Make the first real Attractor call using a versioned DOT artifact and verify det
 - [x] Close out with provenance.
 - [x] Commit all run artifacts and any workflow/doc updates atomically.
 - [x] Commit message references Goal 1 and pipeline id.
-- [x] Add a short run summary to `Library/RESTART_CONTEXT.md` (date, commit id, artifact paths).
+- [x] Add a short run summary to `Library/RestartContext.md` (date, commit id, artifact paths).
 
 ## Run Record
 

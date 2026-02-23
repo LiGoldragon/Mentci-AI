@@ -19,7 +19,7 @@ Updated files:
 - Added dedicated `main` macro section.
 - Documented concise and explicit-schema entrypoint forms.
 
-2. `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+2. `Development/Malli-Verbosity-Reduction/Strategy.md`
 - Added `main` to scope and syntax targets.
 - Replaced stale `fn`-placeholder planning in entrypoint section with implemented `main` flow.
 - Updated feasibility/classification to mark `main` as implemented and keep `fn` collision warning.

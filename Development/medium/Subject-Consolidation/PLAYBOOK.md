@@ -37,7 +37,7 @@ ls -1 Reports
 ```bash
 bb scripts/subject_unifier/main.clj --write
 ```
-3. Queue paths in `Library/STRATEGY_QUEUE.md` are canonical.
+3. Queue paths in `Library/StrategyQueue.md` are canonical.
 
 ## 5. Guard
 1. Add alias-to-canonical mapping support in subject generation paths.

@@ -20,10 +20,10 @@ Sweep result:
 3. One migration snapshot file contained legacy paths by design; it is now explicitly marked historical to prevent misclassification as active guidance drift.
 
 Development/medium files updated:
-1. `Development/medium/Guidelines-Wisdom-Reincorporation/STRATEGY.md`
+1. `Development/medium/Guidelines-Wisdom-Reincorporation/Strategy.md`
 - Corrected expansion path to canonical `Development/medium/...`.
 
-2. `Development/medium/Subject-Consolidation/STRATEGY.md`
+2. `Development/medium/Subject-Consolidation/Strategy.md`
 - Corrected active root reference from `development/` to `Development/`.
 
 3. `Development/medium/Core-Library-Symbiotic-Move/FRESH_SCAN_PROTOCOL.md`

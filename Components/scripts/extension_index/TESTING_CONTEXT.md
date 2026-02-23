@@ -10,6 +10,6 @@ Resolve optional extension index files from standard Core-defined locations.
   - `bb Components/scripts/extension_index/main.clj --plain`
 
 ## Contract
-- Reads `Core/EXTENSION_INDEX_LOCATIONS.edn`.
+- Reads `Core/ExtensionIndexLocations.edn`.
 - Missing optional index files are non-fatal.
 - Output preserves location order and lists only existing files under `:found`.

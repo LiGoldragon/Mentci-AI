@@ -37,7 +37,7 @@ Validation:
 
 Docs synced:
 - `Core/SEMA_CLOJURE_GUIDELINES.md`
-- `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+- `Development/Malli-Verbosity-Reduction/Strategy.md`
 
 ## Reporting Protocol Notes
 

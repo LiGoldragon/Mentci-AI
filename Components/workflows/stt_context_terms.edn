@@ -16,8 +16,8 @@
                   "Reports"
                   "VoicePrompts"]
  :path-terms ["Core/AGENTS.md"
-              "Core/VERSION_CONTROL.md"
-              "Core/CONTEXTUAL_SESSION_PROTOCOL.md"
+              "Core/VersionControlProtocol.md"
+              "Core/ContextualSessionProtocol.md"
               "Core/HIGH_LEVEL_GOALS.md"
               "Core/ARCHITECTURAL_GUIDELINES.md"]
  :user-terms []

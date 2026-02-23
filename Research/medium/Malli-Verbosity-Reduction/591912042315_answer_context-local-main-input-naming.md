@@ -25,7 +25,7 @@ Updates made:
   - in `main.clj`, prefer `Input` over `MainInput`.
 - Updated all `main` macro examples accordingly.
 
-2. `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+2. `Development/Malli-Verbosity-Reduction/Strategy.md`
 - Replaced entrypoint examples from `MainInput` to `Input`.
 - Added planning item for context-local entrypoint naming guard to flag redundant names like `MainInput` in `main.clj`.
 

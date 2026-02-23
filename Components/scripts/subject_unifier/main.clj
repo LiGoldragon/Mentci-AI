@@ -272,8 +272,8 @@
   [this input]
   (let [_ this
         {:keys [subject strategyPath topicPath exists?]} input
-        strategy-file (str strategyPath "/STRATEGY.md")
-        report-link-file (str strategyPath "/REPORT.md")]
+        strategy-file (str strategyPath "/Strategy.md")
+        report-link-file (str strategyPath "/Report.md")]
     (when-not exists?
       (io/make-parents strategy-file)
       (spit strategy-file

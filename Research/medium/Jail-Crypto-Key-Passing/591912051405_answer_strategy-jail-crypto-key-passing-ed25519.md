@@ -16,9 +16,9 @@ strategize a crypto-key passing mechanism for the jail which uses gopass to outp
 Created a dedicated strategy package for deterministic jail key passing with gopass and single-key Ed25519 usage for both SSH transport and commit signing.
 
 Added:
-- `Development/Jail-Crypto-Key-Passing/STRATEGY.md`
-- `Development/Jail-Crypto-Key-Passing/ARCHITECTURE.md`
-- `Development/Jail-Crypto-Key-Passing/ROADMAP.md`
+- `Development/Jail-Crypto-Key-Passing/Strategy.md`
+- `Development/Jail-Crypto-Key-Passing/ArchitectureMap.md`
+- `Development/Jail-Crypto-Key-Passing/Roadmap.md`
 - `Research/Jail-Crypto-Key-Passing/index.edn`
 
 Core design choices:

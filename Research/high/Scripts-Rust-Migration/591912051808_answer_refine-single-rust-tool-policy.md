@@ -10,9 +10,9 @@ Standalone Rust binaries are now an explicit exception path only for independent
 Primary consolidated tool name is `execute`.
 
 ## Updated Strategy Artifacts
-1. `Development/Scripts-Rust-Migration/STRATEGY.md`
-2. `Development/Scripts-Rust-Migration/ROADMAP.md`
-3. `Development/Scripts-Rust-Migration/REPORT.md`
+1. `Development/Scripts-Rust-Migration/Strategy.md`
+2. `Development/Scripts-Rust-Migration/Roadmap.md`
+3. `Development/Scripts-Rust-Migration/Report.md`
 
 ## Policy Delta
 1. One primary Rust tool is the default rewrite target for current Clojure scripts.

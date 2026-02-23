@@ -8,12 +8,12 @@
 
 ## Prompt
 
-save as much of your current context to the filesystem in Library/RESTART_CONTEXT.md (which should be auto-loaded from Core/) and in strategies and reports
+save as much of your current context to the filesystem in Library/RestartContext.md (which should be auto-loaded from Core/) and in strategies and reports
 
 
 ## Agent Answer
 
-Persisted current operational context into `Library/RESTART_CONTEXT.md` with updated programming version, live bookmark heads, recent session commit map, guard status, extension-index mechanism, and open-risk checklist. Updated strategy context and process in `Development/Strategy-Development/STRATEGY.md`. Repaired report topic indexes for both `Research/Strategy-Development/index.edn` and `Research/Debugging/index.edn` so existing report artifacts are indexed and discoverable.
+Persisted current operational context into `Library/RestartContext.md` with updated programming version, live bookmark heads, recent session commit map, guard status, extension-index mechanism, and open-risk checklist. Updated strategy context and process in `Development/Strategy-Development/Strategy.md`. Repaired report topic indexes for both `Research/Strategy-Development/index.edn` and `Research/Debugging/index.edn` so existing report artifacts are indexed and discoverable.
 
 
 ## Reporting Protocol Notes

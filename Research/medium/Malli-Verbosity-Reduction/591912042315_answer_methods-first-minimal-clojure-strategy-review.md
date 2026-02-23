@@ -20,7 +20,7 @@ Implemented mirror alignment in two places:
 - Added protocol/record example showing domain behavior as methods.
 - Added Rust-to-Clojure mapping (trait/impl -> protocol + record/extend-type).
 
-2. `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+2. `Development/Malli-Verbosity-Reduction/Strategy.md`
 - Added methods-first as a hard preservation target.
 - Added review section clarifying that `defobj`/`defn1` must not encourage free-function drift.
 - Added plan step for optional method-centric sugar path (`defmethod1`) and method-domain pilot requirement.

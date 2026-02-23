@@ -12,4 +12,4 @@ Development subjects are tiered by importance:
 - `Development/` captures executable plans and implementation guidance; `Research/` captures prompt-answer traceability and findings.
 
 Canonical subject-to-tier mapping:
-- `Development/high/Repo-Intent-Realignment/PRIORITY_TRIAGE.md`
+- `Development/high/Repo-Intent-Realignment/PriorityTriage.md`

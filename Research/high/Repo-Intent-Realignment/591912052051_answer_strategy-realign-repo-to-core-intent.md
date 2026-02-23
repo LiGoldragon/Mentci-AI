@@ -8,9 +8,9 @@
 Created a dedicated realignment strategy package anchored on Core authority files and prompt-history failure modes. The strategy focuses on removing superseded artifacts safely while preserving validated work.
 
 ## Added
-1. `Development/Repo-Intent-Realignment/STRATEGY.md`
-2. `Development/Repo-Intent-Realignment/ROADMAP.md`
-3. `Development/Repo-Intent-Realignment/REPORT.md`
+1. `Development/Repo-Intent-Realignment/Strategy.md`
+2. `Development/Repo-Intent-Realignment/Roadmap.md`
+3. `Development/Repo-Intent-Realignment/Report.md`
 4. `Research/Repo-Intent-Realignment/index.edn`
 
 ## Core Approach

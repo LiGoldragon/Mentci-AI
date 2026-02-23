@@ -31,7 +31,7 @@ Behavior now:
 
 Also updated docs:
 - `Core/SEMA_CLOJURE_GUIDELINES.md`
-- `Development/Malli-Verbosity-Reduction/STRATEGY.md`
+- `Development/Malli-Verbosity-Reduction/Strategy.md`
 
 Validation:
 - Macro expansion verified with Babashka + Malli deps for lite-map input form.
