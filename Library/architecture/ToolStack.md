@@ -10,6 +10,12 @@
 - **Usage:** Defines the reproducible development shell and project Sources via `flake.nix` and `Components/nix/jail.nix`.
 
 ## Agentic Interface & Orchestration
+### pi (Primary Operator Interface)
+- **Role:** Main interactive agent interface.
+- **Default:** TypeScript implementation (`codingAgent` package).
+- **Rationale:** Current stability is higher than the Rust variant in repository testing.
+- **Fallback/Experimental:** Rust variant remains available (`piAgentRust`) for targeted validation.
+
 ### Jujutsu (jj)
 - **Role:** Version control and workspace management.
 - **Usage:** Provides the `jj` command for atomic changes and multi-workspace isolation.

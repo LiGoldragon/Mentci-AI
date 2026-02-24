@@ -2,6 +2,14 @@
 
 This file maintains the durable record of session milestones and goal outcomes since the last major release tag.
 
+## session: define mentci-launch strategy and elevate capnp init-envelope purity
+♓︎6°60'56" | 5919 AM
+
+- **Launch Strategy Track:** Added new high-priority subject `Mentci-Launch` with strategy and roadmap for systemd-managed dedicated terminal launches of `mentci-box` (default terminal `foot`).
+- **Schema Contract Extension:** Added `MentciLaunchRequest` and related enums in `Components/schema/mentci.capnp` as launch-init authority object.
+- **Core Purity Elevation:** Elevated Cap'n Proto init-envelope mandate in architecture and per-language SEMA guidelines (Rust/Clojure/Nix) to block env-scattered domain state.
+- **Library Spec + Interface Documentation:** Added `Library/specs/MentciLaunchSpec.md` and documented TypeScript `pi` as current default operator interface.
+
 ## session: control-plane convergence slice for execute packaging and guard alignment
 ♓︎6°59'55" | 5919 AM
 

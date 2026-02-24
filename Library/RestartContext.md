@@ -39,6 +39,8 @@ R&D is the mirrored two-tree model:
   - `Library/specs/SemaBinarySpec.md`: SEMA binary format.
   - `Library/specs/LojixSyntaxSpec.md`: `lojix` syntax rules (extended EDN).
   - `Library/architecture/MentciBoxIsolation.md`: Mentci Box isolation protocol.
+  - `Library/specs/MentciLaunchSpec.md`: systemd + terminal launch contract for Mentci-Box.
+- **Primary Operator Interface:** TypeScript `pi` (`codingAgent`) is default; Rust `pi` remains non-default validation lane.
 
 ## 5. Current Operational Snapshot (♓︎.6.59.55 | 5919 AM)
 - `dev` lineage now includes control-plane convergence hardening for exported `execute` packaging, interface alignment, and shared schema authority.
@@ -63,11 +65,13 @@ Interpretation:
 ## 7. High-Importance Active Risks
 1. **Control-plane divergence risk:** `main` and `dev` are both advancing; convergence protocol (`dev` -> finalized session -> release) needs consistent enforcement.
 2. **Component Maturity:** `mentci-fs` and `aski-lib` are in early prototype stages.
+3. **Launch Path Gap:** dedicated `mentci-launch` component is still strategy-phase and not yet available for systemd terminalized box testing.
 
 ## 8. Immediate Priorities (Execution Order)
-1. Stabilize `mentci-box` V1 for robust bootstrap.
-2. Mature `mentci-fs` for concise filesystem comprehension.
-3. Implement `actor-first` logic for remaining orchestration tasks.
+1. Implement `mentci-launch` strategy track (systemd + `foot` terminal path for dedicated Mentci-Box sessions).
+2. Stabilize `mentci-box` V1 for robust bootstrap.
+3. Mature `mentci-fs` for concise filesystem comprehension.
+4. Implement `actor-first` logic for remaining orchestration tasks.
 
 ## 9. Script-Surface Realignment Focus
 1. **REPLACED:** legacy Clojure scripts entirely removed in favor of `execute` subcommands (Rust/Actor).

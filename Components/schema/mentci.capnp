@@ -136,6 +136,36 @@ struct JailBootstrapRequest {
   policyPath @6 :Text;
 }
 
+struct MentciLaunchRequest {
+  # Semantic state for terminal/service launch is fully contained here.
+  runId @0 :Text;
+  boxRequestCapnpPath @1 :Text;
+  workingDirectory @2 :Text;
+  launchMode @3 :MentciLaunchMode = terminal;
+  systemdTarget @4 :MentciLaunchSystemdTarget = userScope;
+  terminalProgram @5 :Text = "foot";
+  terminalArgs @6 :List(Text);
+  serviceUnitName @7 :Text;
+  environment @8 :List(Entry);
+  agentInterface @9 :MentciAgentInterface = piTypescript;
+  testProfile @10 :Text;
+}
+
+enum MentciLaunchMode {
+  terminal @0;
+  service @1;
+}
+
+enum MentciLaunchSystemdTarget {
+  userScope @0;
+  userService @1;
+}
+
+enum MentciAgentInterface {
+  piTypescript @0;
+  piRust @1;
+}
+
 struct NixFlake {
   description @0 :Text;
   inputs @1 :List(FlakeInputEntry);

@@ -27,6 +27,10 @@ structural. Violations indicate category error, not style.
    (Sidecar) or passed in via a typed message. Favor `capnp` and `edn` for
    external data.
 
+6. **Init Envelope Purity (Very High Importance)**
+   Runtime launch and initialization configuration must arrive as one Cap'n Proto
+   init message object. Environment variables are not used as domain-state inputs.
+
 ## Actor-First Concurrency
 
 All multi-step symbolic transformations, long-running orchestrations, and

@@ -22,6 +22,11 @@ structural. Violations indicate category error, not style.
    environment variables is forbidden when a structured data channel exists. 
    Tools must ingest the resulting `.attrs.json` file.
 
+5. **Init Envelope Purity (Very High Importance)**
+   Nix launch surfaces must materialize one Cap'n Proto init request envelope (or
+   lossless generated equivalent) as the domain-state handoff object. Environment
+   variables are process-layer plumbing, not configuration truth.
+
 ## Naming and Ontology
 
 *   `camelCase` denotes functions, relations, flow.

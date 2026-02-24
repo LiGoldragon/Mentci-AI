@@ -23,6 +23,7 @@ The classification is aligned to `Development/high/Repo-Intent-Realignment/Strat
 | `Commit-Protocol-Merge-Fanin` | `high` | Keep as session/commit protocol authority subject. |
 | `Debugging` | `high` | Keep as deterministic defect-sweep subject. |
 | `Project-Hardening` | `high` | Keep as structural hardening subject. |
+| `Mentci-Launch` | `high` | Keep as dedicated systemd terminal launch and interactive box-test enablement subject. |
 | `Workspace-Pwd-History-Purge-And-Jj-Config-Migration` | `high` | Keep as history/runtime-boundary hardening subject. |
 | `Recover-Lost-Work-After-Rewrite` | `high` | Keep until recovery scope is fully closed. |
 | `STT-Context-Decoding` | `high` | Critical for guidance extraction from audio notes. |
@@ -59,10 +60,11 @@ The classification is aligned to `Development/high/Repo-Intent-Realignment/Strat
 5. `Commit-Protocol-Merge-Fanin`
 6. `Artifact-Sweep`
 7. `Project-Hardening`
-8. `Scripts-Rust-Migration`
-9. `Workspace-Pwd-History-Purge-And-Jj-Config-Migration`
-10. `Debugging`
-11. `Prompt-Report-System`
-12. `Recover-Lost-Work-After-Rewrite`
-13. `STT-Context-Decoding`
-14. `Aski-Sema-Lojix-Assimilation`
+8. `Mentci-Launch`
+9. `Scripts-Rust-Migration`
+10. `Workspace-Pwd-History-Purge-And-Jj-Config-Migration`
+11. `Debugging`
+12. `Prompt-Report-System`
+13. `Recover-Lost-Work-After-Rewrite`
+14. `STT-Context-Decoding`
+15. `Aski-Sema-Lojix-Assimilation`

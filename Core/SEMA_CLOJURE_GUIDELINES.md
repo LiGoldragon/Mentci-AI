@@ -29,6 +29,10 @@ Representations should be as small as possible while preserving object meaning a
    Object schema names must not encode flow (`ParseInput`, `BuildOutput`) or redundant
    type words (`InputText`, `UserString`) when schema shape already declares type.
 
+6. **Init Envelope Purity (Very High Importance)**
+   Runtime launch/init configuration is ingested from one Cap'n Proto init message
+   object (or generated equivalent object), not assembled from ad-hoc env vars.
+
 ## Clojure Object Model
 
 ### Object Definition

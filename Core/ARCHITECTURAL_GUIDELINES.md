@@ -51,9 +51,20 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 
 **Operational state must be passed via data files, not process environment variables.**
 
-*   **Required:** Use structured files (Cap'n Proto or JSON) for runtime state exchange between launcher, daemon, and commit tooling.
+*   **Required:** Use structured files for runtime state exchange between launcher, daemon, and commit tooling.
+*   **Preferred wire authority:** Cap'n Proto is the primary transport for initialization and launch envelopes. JSON is fallback-only when a Cap'n Proto envelope is not yet defined.
 *   **Forbidden:** Ad-hoc routing state through env vars when a data-file channel exists.
 *   **Rationale:** Data files are auditable, reproducible, and schema-validated.
+
+## 0.3.2. CAPNP INIT ENVELOPE MANDATE (VERY HIGH IMPORTANCE)
+
+**All runtime initialization data must be present in one Cap'n Proto init request object.**
+
+*   **Scope:** Applies across Rust, Clojure, and Nix integration boundaries.
+*   **Required:** Launchers and services (including terminal launch paths) ingest their runtime configuration from a single Cap'n Proto init message.
+*   **Forbidden:** Splitting configuration semantics between init message and ad-hoc environment variables.
+*   **Allowed env surface:** OS/runtime process concerns only (for example PATH, HOME, locale), not domain configuration.
+*   **Security objective:** Prevent data pollution of the logical machine by keeping intent/state in schema-validated objects.
 
 ## 0.4. AUDIT TRAIL
 

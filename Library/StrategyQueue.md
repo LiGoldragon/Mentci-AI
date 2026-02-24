@@ -27,11 +27,12 @@ Tier definitions:
 5. `Commit-Protocol-Merge-Fanin`
 6. `Artifact-Sweep`
 7. `Project-Hardening`
-8. `Scripts-Rust-Migration`
-9. `Workspace-Pwd-History-Purge-And-Jj-Config-Migration`
-10. `Debugging`
-11. `Prompt-Report-System`
-12. `Recover-Lost-Work-After-Rewrite`
+8. `Mentci-Launch`
+9. `Scripts-Rust-Migration`
+10. `Workspace-Pwd-History-Purge-And-Jj-Config-Migration`
+11. `Debugging`
+12. `Prompt-Report-System`
+13. `Recover-Lost-Work-After-Rewrite`
 
 ## 4. Current Execution Context
 1. Deterministic section sweep is in progress and currently completed through section `6` (`Development/low`).
