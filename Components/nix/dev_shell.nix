@@ -1,4 +1,4 @@
-{ pkgs, common_packages, jail, repo_root }:
+{ pkgs, common_packages, jail, repo_root, pi }:
 
 pkgs.mkShell {
   name = "mentci-ai-dev";
@@ -16,10 +16,27 @@ pkgs.mkShell {
     GH_PROMPT_DISABLED = "1";
     TERM = "dumb";
     PAGER = "cat";
+
+    # Default Antigravity version for the pi agent
+    PI_AI_ANTIGRAVITY_VERSION = "1.23.0";
   };
 
   shellHook = ''
     export MENTCI_REPO_ROOT="$(pwd)"
     export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
+
+    # Ensure stable pi-source symlink for Nix tokenization fix
+    # This prevents absolute Nix store paths (hashes) from leaking into the LLM system prompt
+    mkdir -p ~/.pi
+    export PI_SOURCE_STABLE_LINK="$HOME/.pi/pi-source"
+    if [ ! -L "$PI_SOURCE_STABLE_LINK" ] || [ "$(readlink -f "$PI_SOURCE_STABLE_LINK")" != "${pi}/lib/node_modules/pi" ]; then
+      ln -sfn "${pi}/lib/node_modules/pi" "$PI_SOURCE_STABLE_LINK"
+    fi
+    export PI_PACKAGE_DIR="$PI_SOURCE_STABLE_LINK"
+
+    # Sync pi extensions for Level 5 agent UI
+    if [ -f "Components/tools/pi-sync-extensions.bb" ]; then
+      ${pkgs.babashka}/bin/bb Components/tools/pi-sync-extensions.bb
+    fi
   '';
 }

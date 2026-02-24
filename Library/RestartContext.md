@@ -40,7 +40,7 @@ R&D is the mirrored two-tree model:
   - `Library/specs/LojixSyntaxSpec.md`: `lojix` syntax rules (extended EDN).
   - `Library/architecture/MentciBoxIsolation.md`: Mentci Box isolation protocol.
   - `Library/specs/MentciLaunchSpec.md`: systemd + terminal launch contract for Mentci-Box.
-- **Primary Operator Interface:** TypeScript `pi` (`codingAgent`) is default; Rust `pi` remains non-default validation lane.
+- **Primary Operator Interface:** TypeScript `pi` (`pi`) is default; Rust `pi` remains non-default validation lane.
 
 ## 5. Current Operational Snapshot (♓︎.7.1.7 | 5919 AM)
 - `dev` lineage now includes control-plane convergence hardening plus initial `mentci-launch` component implementation and test coverage.

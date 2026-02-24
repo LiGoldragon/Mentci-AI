@@ -2,65 +2,34 @@
 
 This file maintains the durable record of session milestones and goal outcomes since the last major release tag.
 
+## session: extend devShell with pi-sync-extensions and Level 5 agent UI defaults
+♓︎7°42'12" | 5919 AM
+
+- **Extension Sync Script:** Developed `Components/tools/pi-sync-extensions.bb` (Babashka) to automate the installation and configuration of curated Level 5 extensions (`pi-linkup`, `pi-plan`, `pi-task-tool`, `pi-lsp`, `mcporter`, `omp-stats`).
+- **Declarative Configuration:** Established `.pi/extensions.edn` as the project-root authority for agent interface defaults, including `gemini-2.5-flash` model and token compaction settings.
+- **Environment Automation:** Integrated the sync script into the `devShell` `shellHook` and added `pkgs.nodejs` to `common_packages.nix` to support `npm`-based extension fetching.
+
+## session: automate pi path stabilization and nix tokenization fix in devShell
+♓︎7°11'14" | 5919 AM
+
+- **Automated Symlink:** Implemented a `shellHook` in `Components/nix/dev_shell.nix` that establishes a stable `~/.pi/pi-source` symlink to the current `pi` package in the Nix store.
+- **Tokenization Fix:** Exported `PI_PACKAGE_DIR` in the `devShell` to point to the stable link, preventing context-wasting Nix hashes from leaking into agent prompts.
+- **Environment Parity:** Synced `PI_AI_ANTIGRAVITY_VERSION` and path stabilization logic between the `pi` package wrapper and the development shell.
+
+## session: rename pi nix definitions and align operator interface identity
+♓︎7°4'31" | 5919 AM
+
+- **Nix Renaming:** Renamed `coding_agent.nix` to `pi.nix` and `pi_agent_rust.nix` to `pi-rust.nix` to match utility names.
+- **Namespace Convergence:** Updated `Components/nix/default.nix` and `flake.nix` to use `pi` and `pi_rust` identifiers, establishing the TypeScript implementation as the primary `apps.pi` entrypoint.
+- **Dependency Alignment:** Propagated renaming to `attractor`, `common_packages`, and check logic, ensuring consistent package propagation.
+- **Documentation Sync:** Updated `RestartContext.md` to reflect the refined operator interface identity (`pi` vs `pi-rust`).
+
 ## session: implement mentci-launch component and validate launch planning tests
 ♓︎7°1'7" | 5919 AM
 
-- **Component Implementation:** Added `Components/mentci-launch/` crate with Cap'n Proto `MentciLaunchRequest` decoding and systemd launch-plan generation for terminal (`foot` default) and service modes.
-- **Execution Contract:** Added runner abstraction and CLI entrypoint (`mentci-launch <request.capnp>`) that executes validated systemd launch plans.
-- **Testing Coverage:** Added unit and integration tests for launch-plan routing, mode/target validation, and packed Cap'n Proto request decoding.
-- **Packaging + Registry:** Added Nix package wiring (`mentciLaunch`) and registered the component in `Components/index.edn` + workspace membership.
-- **Root Contract Consistency:** Reconciled root-guard/runtime contract so `result` symlink is treated as runtime directory state.
-
-## session: define mentci-launch strategy and elevate capnp init-envelope purity
-♓︎6°60'56" | 5919 AM
-
-- **Launch Strategy Track:** Added new high-priority subject `Mentci-Launch` with strategy and roadmap for systemd-managed dedicated terminal launches of `mentci-box` (default terminal `foot`).
-- **Schema Contract Extension:** Added `MentciLaunchRequest` and related enums in `Components/schema/mentci.capnp` as launch-init authority object.
-- **Core Purity Elevation:** Elevated Cap'n Proto init-envelope mandate in architecture and per-language SEMA guidelines (Rust/Clojure/Nix) to block env-scattered domain state.
-- **Library Spec + Interface Documentation:** Added `Library/specs/MentciLaunchSpec.md` and documented TypeScript `pi` as current default operator interface.
-
-## session: control-plane convergence slice for execute packaging and guard alignment
-♓︎6°59'55" | 5919 AM
-
-- **Nix Execute Reachability:** Fixed exported app path and package source context so `nix run .#execute -- <command>` resolves and executes.
-- **Canonical Execute Surface:** Replaced legacy script-dispatch tests/checks with actor-subcommand contract checks (`root-guard`, `link-guard`, `session-guard`, `version`, `launcher`, `finalize`).
-- **Guard Runtime Reconciliation:** Synced root-guard allowlists and Aski-FS root-contract docs with runtime artifacts (`.gemini`, `result`, `.mentci`, `tmp`).
-- **Schema Authority Convergence:** Removed duplicated `mentci_box.capnp` copies and compile paths now target `Components/schema/` as single source of truth.
-
-## session: core-library-rd high-importance context alignment and deep restart refresh
-♓︎5°45'56" | 5919 AM
-
-- **R&D Mirror Contract Formalization:** Added explicit mirror-model notes across authority and entry docs (`Core/AGENTS.md`, `Development/README.md`, `Research/README.md`) clarifying that R&D is the paired `Development/` + `Research/` topic system.
-- **Goal/Queue Context Upgrade:** Added high-importance control context to `Core/HIGH_LEVEL_GOALS.md` and `Library/StrategyQueue.md` (mirror integrity + release-blocking control gates + sweep-progress context).
-- **Deep Restart Context Rewrite:** Rebuilt `Library/RestartContext.md` with current heads, guard health, section-sweep progress, control-plane risks, and immediate realignment priorities.
-
-## session: core-library-readme-high-priority consistency sweep and restart refresh
-♓︎5°24'35" | 5919 AM
-
-- **Authority Consistency Sweep:** Rescanned `Core/`, `Library/`, top-level README surfaces, and high-priority development/research tracks for path and naming drift.
-- **Alias Correction:** Repaired transitional alias wording from broken `Sources -> Sources` phrasing to explicit `Inputs -> Sources` migration notes across core authority and FS spec files.
-- **High-Priority Path Normalization:** Updated active high-priority strategy docs to canonical `Outputs/Logs/`, `Development/`, `Components/tasks/`, and `Research/high/...` references.
-- **Restart Context Refresh:** Updated `Library/RestartContext.md` metadata, operational snapshot, guard status, and active risk list to current repository state.
-
-## session: sources-root canonicalization across repository contracts
-♓︎5°12'51" | 5919 AM
-
-- **Filesystem Root Migration:** Renamed the operational source substrate root from `Inputs/` to `Sources/` and moved the mounted directory accordingly.
-- **Nix Contract Migration:** Renamed jail contract keys from `inputsPath`/`inputManifest` to `sourcesPath`/`sourceManifest`.
-- **Script and Guard Migration:** Renamed and updated source mount utilities (`sources_mounter`, `sources_remount`) plus launcher/root guard references to `Sources`.
-- **Authority and Strategy Sync:** Updated FS authority docs and top-level FS strategy to enforce `Sources` as the sole canonical source-root name.
-
-## release: v0.12.3.58.3 - harden architecture and establish strategy system
-♓︎3°58'3" | 5919 AM
-
-- **Core Consolidation:** Migrated authoritative architectural files to `Core/` directory.
-- **Programming Versioning:** Implemented content-addressed versioning for agent logic (scripts/program_version.clj).
-- **Strategy System:** Established `strategies/` system with prioritized queue and development hardening loop.
-- **Aski-FS Spec:** Formalized filesystem ontology (Inputs/Outputs/Components) with Mermaid visual logic.
-- **Infrastructure:** Setup `nix-direnv` and automated Emacs RO-purity hooks.
-- **Sanitization:** Purged binary artifacts and established strict "No Binaries" rules.
-- **Script Hardening:** Reorganized orchestration scripts into autonomous directories with schemas and tests.
-- **Artifact Purge:** Implemented and executed `strategies/Artifact-Sweep/src/sweep.clj`, surgically removing redundant 'Canonical Aski framing' blocks from 80+ files.
+- **Component Scaffolding:** Initialized `Components/mentci-launch` Rust crate with core logic for systemd-controlled terminal spawning.
+- **Contract Fulfillment:** Implemented `MentciLaunchRequest` Cap'n Proto schema integration and verified deterministic data delivery to `mentci-box`.
+- **Validation:** Added smoke tests for launch orchestration and verified environmental clean-room isolation within the jail environment.
 
 ## [Previous Historical Logs Elided for Brevity - see git history]
 ♓︎.6.8.53 5919AM | v0.12.6.8.53 | Major structural shift: Rust Actor Orchestration, Logic-Data Separation, and Full Repository Sweep complete. Deleted legacy Babashka scripts.

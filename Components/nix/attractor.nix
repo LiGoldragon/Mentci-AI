@@ -1,4 +1,4 @@
-{ pkgs, src, coding_agent, unified_llm }:
+{ pkgs, src, pi, unified_llm }:
 
 pkgs.stdenv.mkDerivation {
   pname = "attractor";
@@ -11,7 +11,7 @@ pkgs.stdenv.mkDerivation {
     runHook preCheck
     export HOME="$TMPDIR"
     mkdir -p attractor/node_modules
-    ln -s ${coding_agent} attractor/node_modules/coding-agent
+    ln -s ${pi} attractor/node_modules/coding-agent
     ln -s ${unified_llm} attractor/node_modules/unified-llm
     cd attractor
     bun test $(find tests -name '*.test.ts' ! -path 'tests/integration/cross-feature-parity.test.ts' | sort)

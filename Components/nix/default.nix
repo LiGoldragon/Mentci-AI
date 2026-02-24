@@ -33,7 +33,7 @@ let
     inherit craneLib pkgs;
   };
 
-  coding_agent = import ./coding_agent.nix {
+  pi = import ./pi.nix {
     inherit pkgs;
     src = pi_mono_src;
   };
@@ -43,7 +43,12 @@ let
     src = pi_mono_src;
   };
 
-  pi_agent_rust = import ./pi_agent_rust.nix {
+  pi_dev = import ./pi-dev.nix {
+    inherit pkgs;
+    src = pi_mono_src;
+  };
+
+  pi_rust = import ./pi-rust.nix {
     inherit pkgs;
     src = pi_agent_rust_src;
     rust_toolchain = rust_toolchain;
@@ -58,12 +63,12 @@ let
   attractor = import ./attractor.nix {
     inherit pkgs;
     src = attractor_src;
-    coding_agent = coding_agent;
+    pi = pi;
     unified_llm = unified_llm;
   };
 
-  coding_agent_check = import ./coding_agent_check.nix {
-    inherit pkgs coding_agent;
+  pi_check = import ./pi_check.nix {
+    inherit pkgs pi;
   };
 
   components_index_check = import ./components_index_check.nix {
@@ -75,7 +80,7 @@ let
     inherit rust_toolchain rust_analyzer;
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
-    inherit mentci_vcs coding_agent unified_llm pi_agent_rust execute;
+    inherit mentci_vcs pi unified_llm pi_rust execute;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -95,6 +100,7 @@ let
       inherit pkgs jail;
       inherit common_packages;
       inherit repo_root;
+      inherit pi;
     };
 
   execute_check = import ./execute_check.nix {
@@ -102,6 +108,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell coding_agent coding_agent_check components_index_check unified_llm pi_agent_rust;
+  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_check components_index_check unified_llm pi_rust;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

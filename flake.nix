@@ -115,9 +115,10 @@
           mentciLaunch = namespace.mentci_launch;
           execute = namespace.execute;
           attractor = namespace.attractor;
-          codingAgent = namespace.coding_agent;
+          pi = namespace.pi;
+          piDev = namespace.pi_dev;
           unifiedLlm = namespace.unified_llm;
-          piAgentRust = namespace.pi_agent_rust;
+          piRust = namespace.pi_rust;
           gemini-cli = namespace.gemini_cli;
         };
 
@@ -125,9 +126,10 @@
           attractor = namespace.attractor;
           componentsIndex = namespace.components_index_check;
           execute = namespace.execute_check;
-          piAgentRust = namespace.pi_agent_rust;
-          codingAgent = namespace.coding_agent;
-          codingAgentSmoke = namespace.coding_agent_check;
+          piRust = namespace.pi_rust;
+          pi = namespace.pi;
+          piDev = namespace.pi_dev;
+          piSmoke = namespace.pi_check;
           unifiedLlm = namespace.unified_llm;
         };
 
@@ -143,7 +145,15 @@
           exePath = "/bin/mentci-launch";
         };
         apps.pi = flake-utils.lib.mkApp {
-          drv = namespace.pi_agent_rust;
+          drv = namespace.pi;
+          exePath = "/bin/pi";
+        };
+        apps.pi-dev = flake-utils.lib.mkApp {
+          drv = namespace.pi_dev;
+          exePath = "/bin/pi";
+        };
+        apps.pi-rust = flake-utils.lib.mkApp {
+          drv = namespace.pi_rust;
           exePath = "/bin/pi";
         };
 

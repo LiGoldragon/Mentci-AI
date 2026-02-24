@@ -12,7 +12,7 @@ Design and deliver a dedicated `mentci-launch` component that starts `mentci-box
 2. Default interactive terminal is `foot`.
 3. Launch data must be read exclusively from `MentciLaunchRequest`.
 4. Environment-variable domain configuration is forbidden when the init message carries the value.
-5. Primary agent front-end defaults to TypeScript `pi` (`codingAgent`) until Rust parity is proven.
+5. Primary agent front-end defaults to TypeScript `pi` (`pi`) until Rust parity is proven.
 
 ## 3. Data Purity Rule (Very High Importance)
 1. `mentci-launch` accepts exactly one launch-init object.

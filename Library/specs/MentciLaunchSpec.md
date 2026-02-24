@@ -43,4 +43,4 @@ Required semantics:
 3. reproducible terminal/service launch paths through systemd.
 
 ## 6. Agent Interface Default
-Current default operator interface is `pi` TypeScript (`codingAgent` package). The Rust `pi` variant remains available but non-default until parity and stability are proven by test evidence.
+Current default operator interface is `pi` TypeScript (`pi` package). The Rust `pi` variant remains available but non-default until parity and stability are proven by test evidence.

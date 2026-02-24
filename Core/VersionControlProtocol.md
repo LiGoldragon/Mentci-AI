@@ -35,6 +35,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 6. Session synthesis:
    - If there is exactly one sub-commit for the prompt: prepend that commit description with the final `session:` message block (do not add a separate final commit).
    - If there are multiple sub-commits: duplicate the sub-commit branch, squash the duplicated branch into one final `session:` commit, and append the duplicated sub-branch change IDs in the final message.
+   - **Synthetic Context Recovery:** If original prompt, context, or logical changes are unrecoverable (e.g., during history rewrite), synthesize them based on the diff and mark them explicitly as `[SYNTHETIC]`.
 6.1 Preferred automation for finalization:
    - Use `execute finalize` to synthesize a compliant `session:` message and safely target the finalized non-empty revision.
    - This prevents moving bookmarks onto empty working-copy commits.
@@ -91,15 +92,7 @@ This uses `MENTCI_WORKSPACE`, `MENTCI_REPO_ROOT`, and `MENTCI_COMMIT_TARGET` to 
 ## 6. History Inspection
 Use `mentci-jj log` to prefer `--no-signing` and avoid GPG failures.
 
-## 7. Large Files and Binary Artifacts
-**Committing large binary files (> 1MiB) or build artifacts is strictly forbidden.**
-
-- **Safety Gate:** The Mentci Engine (`jj`) is configured to refuse snapshots of files exceeding size limits. Agents must **not** attempt to bypass this by increasing `snapshot.max-new-file-size` unless directed by the Top Admin.
-- **VCS Integrity:** If a binary file accidentally enters the history, it must be immediately purged using `jj abandon` or history rewriting before pushing to `main`.
-- **Reference safety:** Any purge/rewrite plan that uses `jj abandon` must first verify it will not invalidate references recorded in retained `session:` commit metadata.
-- **Proactive Ignoring:** New binary formats, compressed archives (`.tgz`, `.zip`), and directory-local artifacts should be added to `.gitignore` as soon as they are identified.
-
-## 8. Related References
+## 7. Related References
 - Conceptual model: `Library/architecture/JailCommitProtocol.md`
 - Tooling overview: `Library/architecture/ToolStack.md`
 - Release protocol: `Library/architecture/ReleaseProtocol.md`

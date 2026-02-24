@@ -50,7 +50,9 @@ pkgs.buildNpmPackage {
 
     makeWrapper ${pkgs.nodejs}/bin/node $out/bin/pi \
       --add-flags "$out/lib/node_modules/pi/dist/cli.js" \
-      --set NODE_PATH "$out/lib/node_modules/pi/node_modules"
+      --set NODE_PATH "$out/lib/node_modules/pi/node_modules" \
+      --set-default PI_PACKAGE_DIR "$out/lib/node_modules/pi" \
+      --set-default PI_AI_ANTIGRAVITY_VERSION "1.23.0"
     runHook postInstall
   '';
 }
