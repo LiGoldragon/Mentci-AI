@@ -5,8 +5,8 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Primary Working Bookmark:** `dev`.
-*   **Current Programming Version:** `t44l2ttr` (Ref: `execute version`).
-*   **Latest Release Tag:** `v0.12.6.8.53` (current milestone).
+*   **Current Programming Version:** `kp0tz2tm` (Ref: `execute version`).
+*   **Latest Release Tag:** `v0.12.7.3.31` (current milestone).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository now operates with a native Rust actor-based orchestration layer (`execute`) and strict Logic-Data separation.
