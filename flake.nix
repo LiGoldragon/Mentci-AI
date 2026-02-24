@@ -135,6 +135,7 @@
         };
         apps.execute = flake-utils.lib.mkApp {
           drv = namespace.execute;
+          exePath = "/bin/execute";
         };
         apps.pi = flake-utils.lib.mkApp {
           drv = namespace.pi_agent_rust;

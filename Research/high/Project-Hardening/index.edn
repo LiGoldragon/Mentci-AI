@@ -2,4 +2,4 @@
  :title "Research Topic"
  :subject "Project-Hardening"
  :developmentPath "../../../Development/high/Project-Hardening"
- :entries ["591912050217_answer_remove-python-scripts-and-exception.md" "591912051624_answer_research-admin-jail-temp-home-mutable-worktree.md" "591912051749_answer_add-jailed-admin-shell-workspace-copy.md" "591912055103_answer_fix-missing-gemini-tui-nix-arg.md" "591912055110_answer_fix-nix-develop-and-root-guard.md"]}
+ :entries ["591912050217_answer_remove-python-scripts-and-exception.md" "591912051624_answer_research-admin-jail-temp-home-mutable-worktree.md" "591912051749_answer_add-jailed-admin-shell-workspace-copy.md" "591912055103_answer_fix-missing-gemini-tui-nix-arg.md" "591912055110_answer_fix-nix-develop-and-root-guard.md" "591912065955_answer_control-plane-convergence-slice.md"]}

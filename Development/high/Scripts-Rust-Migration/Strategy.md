@@ -5,6 +5,15 @@
 ## 1. Goal
 Migrate `execute*` operational logic from Babashka/Clojure to Rust without interrupting current jail/bootstrap workflows.
 
+## 1.1 Current Control-Plane Truth
+- Canonical `execute` interface is actor-subcommand based:
+  - `root-guard`, `link-guard`, `session-guard`, `version`, `unify`, `intent`, `report`, `launcher`, `finalize`
+- Legacy script-dispatch interface is retired:
+  - `execute list`
+  - `MENTCI_SCRIPTS_DIR`
+  - `MENTCI_BB_BIN`
+- Nix checks and integration tests must target the actor-subcommand surface only.
+
 ## 2. Scope
 - In scope:
   - All script entrypoints under `execute`.
@@ -12,7 +21,7 @@ Migrate `execute*` operational logic from Babashka/Clojure to Rust without inter
   - Script validation and execution wiring in Nix/runtime launch paths.
 - Out of scope:
   - Rewriting `Sources/` code.
-  - Non-script Rust components already in `Components/src/`.
+  - Non-script Rust components already under `Components/`.
 
 ## 3. Non-Negotiable Constraints
 1. No big-bang rewrite.

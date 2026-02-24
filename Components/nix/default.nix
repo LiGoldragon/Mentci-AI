@@ -71,7 +71,7 @@ let
     inherit rust_toolchain rust_analyzer;
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
-    inherit mentci_vcs coding_agent unified_llm pi_agent_rust;
+    inherit mentci_vcs coding_agent unified_llm pi_agent_rust execute;
   };
 
   jail_sources = import ./jail_sources.nix {

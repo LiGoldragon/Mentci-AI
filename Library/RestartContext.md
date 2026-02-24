@@ -5,7 +5,7 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Primary Working Bookmark:** `dev`.
-*   **Current Programming Version:** `0m4mw90t` (Ref: `execute version`).
+*   **Current Programming Version:** `t44l2ttr` (Ref: `execute version`).
 *   **Latest Release Tag:** `v0.12.6.8.53` (current milestone).
 
 ## 1. Project Overview
@@ -40,12 +40,13 @@ R&D is the mirrored two-tree model:
   - `Library/specs/LojixSyntaxSpec.md`: `lojix` syntax rules (extended EDN).
   - `Library/architecture/MentciBoxIsolation.md`: Mentci Box isolation protocol.
 
-## 5. Current Operational Snapshot (♓︎.6.8.53 | 5919 AM)
-- `dev` head: `d6f3b96` (`session: report on reliability alignment with author intent`)
+## 5. Current Operational Snapshot (♓︎.6.59.55 | 5919 AM)
+- `dev` lineage now includes control-plane convergence hardening for exported `execute` packaging, interface alignment, and shared schema authority.
 
 Section sweep progress:
 - **Status:** **COMPLETED** (Full Repository Sweep 1-10).
 - **Outcome:** All core and library documentation synchronized with refined authority tiers.
+- **Convergence Slice:** `nix run .#execute` command path restored, execute test/check surfaces realigned to actor subcommands, and `mentci_box.capnp` authority centralized in `Components/schema/`.
 
 ## 6. Guard Health Snapshot
 Latest observed gate outcomes:

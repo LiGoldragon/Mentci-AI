@@ -1,11 +1,14 @@
 {:version 1
  :canonicalRoots [Sources Components Outputs Research Development Core Library]
- :runtimeRoots [".git" ".jj" ".direnv" "target"]
+ :runtimeRoots [".git" ".jj" ".direnv" "target" ".mentci" ".gemini" "tmp"]
  :requiredTopLevelFiles ["flake.nix"
                          "flake.lock"
                          ".gitignore"
                          ".envrc"
-                         "AGENTS.md"]
- :conditionalTopLevelFiles ["README.md" ".attrs.json" ".opencode.edn"]
+                         "AGENTS.md"
+                         "README.md"
+                         "Cargo.toml"
+                         "Cargo.lock"]
+ :conditionalTopLevelFiles [".attrs.json" ".opencode.edn" "result"]
  :compatibilityAliases
  {Sources Sources}}

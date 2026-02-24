@@ -2,6 +2,14 @@
 
 This file maintains the durable record of session milestones and goal outcomes since the last major release tag.
 
+## session: control-plane convergence slice for execute packaging and guard alignment
+♓︎6°59'55" | 5919 AM
+
+- **Nix Execute Reachability:** Fixed exported app path and package source context so `nix run .#execute -- <command>` resolves and executes.
+- **Canonical Execute Surface:** Replaced legacy script-dispatch tests/checks with actor-subcommand contract checks (`root-guard`, `link-guard`, `session-guard`, `version`, `launcher`, `finalize`).
+- **Guard Runtime Reconciliation:** Synced root-guard allowlists and Aski-FS root-contract docs with runtime artifacts (`.gemini`, `result`, `.mentci`, `tmp`).
+- **Schema Authority Convergence:** Removed duplicated `mentci_box.capnp` copies and compile paths now target `Components/schema/` as single source of truth.
+
 ## session: core-library-rd high-importance context alignment and deep restart refresh
 ♓︎5°45'56" | 5919 AM
 

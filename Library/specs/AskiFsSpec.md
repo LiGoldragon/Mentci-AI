@@ -47,11 +47,11 @@ Agents updated")
 
 ### 2.0.1 Root File Allowlist
 - Top-level files are restricted to design-required build/runtime entry files:
-  - `flake.nix`, `flake.lock`, `Components/nix/jail.nix`, `.gitignore`, `.envrc`, `AGENTS.md`, `README.md`.
-- Core authority files:
-  - `Core/index.edn`.
+  - `flake.nix`, `flake.lock`, `.gitignore`, `.envrc`, `AGENTS.md`, `README.md`, `Cargo.toml`, `Cargo.lock`.
 - Runtime metadata files may exist temporarily by protocol:
-  - `.attrs.json`, `.opencode.edn`.
+  - `.attrs.json`, `.opencode.edn`, `result` (Nix build symlink).
+- Runtime directories may exist by protocol:
+  - `.git`, `.jj`, `.direnv`, `target`, `.mentci`, `.gemini`, `tmp`.
 - Enforcement tool:
   - `execute root-guard`.
 

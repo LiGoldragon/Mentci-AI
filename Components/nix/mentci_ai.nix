@@ -4,7 +4,8 @@ let
   commonArgs = {
     pname = "mentci-ai";
     version = "0.1.0";
-    src = ../mentci-aid;
+    src = ../..;
+    cargoExtraArgs = "--manifest-path Components/mentci-aid/Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
     doCheck = false;
   };
