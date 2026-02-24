@@ -16,3 +16,4 @@ inputs_backup/
 # Outputs are runtime/session artifacts and must not be versioned.
 Outputs/
 /.mentci/
+/.gemini/
