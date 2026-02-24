@@ -123,6 +123,9 @@
         checks = {
           attractor = namespace.attractor;
           execute = namespace.execute_check;
+          piAgentRust = namespace.pi_agent_rust;
+          codingAgent = namespace.coding_agent;
+          unifiedLlm = namespace.unified_llm;
         };
 
         apps.default = flake-utils.lib.mkApp {

@@ -1,4 +1,4 @@
-{ pkgs, src, rust_toolchain }:
+{ pkgs, src, rust_toolchain, pi_mono_src }:
 
 let
   rustPlatform = pkgs.makeRustPlatform {
@@ -14,5 +14,12 @@ rustPlatform.buildRustPackage {
   cargoLock = {
     lockFile = "${src}/Cargo.lock";
   };
+
+  postPatch = ''
+    mkdir -p legacy_pi_mono_code/pi-mono/packages/ai/src
+    cp ${pi_mono_src}/packages/ai/src/models.generated.ts \
+      legacy_pi_mono_code/pi-mono/packages/ai/src/models.generated.ts
+  '';
+
   doCheck = false;
 }

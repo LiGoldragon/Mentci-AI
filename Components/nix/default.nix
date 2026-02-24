@@ -43,6 +43,7 @@ let
     inherit pkgs;
     src = pi_agent_rust_src;
     rust_toolchain = rust_toolchain;
+    pi_mono_src = pi_mono_src;
   };
 
   execute = pkgs.runCommand "mentci-execute" { } ''
