@@ -1,6 +1,38 @@
 {:version 1
  :components
- [{:id "nix"
+ [{:id "aski-cli"
+   :path "aski-cli"
+   :interfaces ["rust.aski.cli"]
+   :status :experimental}
+  {:id "aski-lib"
+   :path "aski-lib"
+   :interfaces ["rust.aski.lib"]
+   :status :experimental}
+  {:id "chronos"
+   :path "chronos"
+   :interfaces ["rust.time.tool"]
+   :status :active}
+  {:id "mentci-aid"
+   :path "mentci-aid"
+   :interfaces ["rust.engine" "rust.daemon" "execute.orchestrator"]
+   :status :active}
+  {:id "mentci-box"
+   :path "mentci-box"
+   :interfaces ["rust.jail.cli"]
+   :status :experimental}
+  {:id "mentci-box-lib"
+   :path "mentci-box-lib"
+   :interfaces ["rust.jail.lib"]
+   :status :experimental}
+  {:id "mentci-fs"
+   :path "mentci-fs"
+   :interfaces ["rust.fs.index"]
+   :status :experimental}
+  {:id "mentci-vcs"
+   :path "mentci-vcs"
+   :interfaces ["rust.vcs.wrapper"]
+   :status :active}
+  {:id "nix"
    :path "nix"
    :interfaces ["nix.namespace"]
    :status :active}
@@ -8,21 +40,9 @@
    :path "schema"
    :interfaces ["schema.capnp" "schema.edn"]
    :status :active}
-  {:id "mentci-aid"
-   :path "mentci-aid"
-   :interfaces ["rust.engine" "rust.daemon"]
-   :status :active}
-  {:id "chronos"
-   :path "chronos"
-   :interfaces ["rust.time.tool"]
-   :status :active}
   {:id "tasks"
    :path "tasks"
    :interfaces ["task.checklists"]
-   :status :active}
-  {:id "tests"
-   :path "tests"
-   :interfaces ["test.harness"]
    :status :active}
   {:id "tools"
    :path "tools"

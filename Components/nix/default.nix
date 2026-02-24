@@ -58,6 +58,14 @@ let
     unified_llm = unified_llm;
   };
 
+  coding_agent_check = import ./coding_agent_check.nix {
+    inherit pkgs coding_agent;
+  };
+
+  components_index_check = import ./components_index_check.nix {
+    inherit pkgs repo_root;
+  };
+
   common_packages = import ./common_packages.nix {
     inherit pkgs system;
     inherit rust_toolchain rust_analyzer;
@@ -90,6 +98,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell coding_agent unified_llm pi_agent_rust;
+  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell coding_agent coding_agent_check components_index_check unified_llm pi_agent_rust;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

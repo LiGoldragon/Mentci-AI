@@ -122,9 +122,11 @@
 
         checks = {
           attractor = namespace.attractor;
+          componentsIndex = namespace.components_index_check;
           execute = namespace.execute_check;
           piAgentRust = namespace.pi_agent_rust;
           codingAgent = namespace.coding_agent;
+          codingAgentSmoke = namespace.coding_agent_check;
           unifiedLlm = namespace.unified_llm;
         };
 
