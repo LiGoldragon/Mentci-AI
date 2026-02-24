@@ -37,8 +37,9 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
    - If there are multiple sub-commits: duplicate the sub-commit branch, squash the duplicated branch into one final `session:` commit, and append the duplicated sub-branch change IDs in the final message.
    - **Synthetic Context Recovery:** If original prompt, context, or logical changes are unrecoverable (e.g., during history rewrite), synthesize them based on the diff and mark them explicitly as `[SYNTHETIC]`.
 6.1 Preferred automation for finalization:
-   - Use `execute finalize` to synthesize a compliant `session:` message and safely target the finalized non-empty revision.
-   - This prevents moving bookmarks onto empty working-copy commits.
+   - Create a structured file at `.mentci/session.json` containing the following schema: `{"summary": "title...", "prompt": "Original prompt...", "context": "Agent context...", "changes": ["change 1", "change 2"]}`
+   - Use `execute finalize` to read this file, synthesize a compliant `session:` message, and safely target the finalized non-empty revision.
+   - This prevents moving bookmarks onto empty working-copy commits and guarantees data under subtitles is not missing.
 7. Before declaring the prompt complete, run `execute session-guard`; non-zero exit means session synthesis is missing or malformed.
 8. Run `execute root-guard`; non-zero exit means top-level FS contract drift.
 9. Advance and push once:
