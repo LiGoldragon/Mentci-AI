@@ -7,14 +7,14 @@
 
 **The architecture prioritizes languages by their semantic capacity.**
 
-1.  **Aski (Evolved Multi-Domain Clojure):** The highest authority. Defines specs, workflows, and LLM-friendly logic. Takes over superior capacity for symbolic manipulation.
+1.  **Aski (Clojure-inspired Syntax):** The highest authority. Defines specs, workflows, and LLM-friendly logic. Takes over superior capacity for symbolic manipulation.
 2.  **Rust (Core Implementation):** The engine of durability. Handles high-performance execution and type safety.
-3.  **Clojure (Prototyping & Glue):** The agile layer. Used for small tools and rapid iteration before hardening into Rust or Aski.
+3.  **Clojure (Inspiration Only):** Clojure is no longer used for writing code. It serves as an inspiration, especially its syntax, for the future Aski language. All legacy Clojure code is slated for migration to sema-style Rust + Cap'n Proto.
 4.  **Nix (Low-Level Utility):** The substrate of reproducibility. Only used for its specific usefulness. Should be **phased out** as early as possible or hidden behind low-level Aski interfaces (see **Lojix**, the Aski-Nix subsystem).
 
 **Assimilation of Sources:**
 - **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `Sources/`.
-- They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
+- They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Nix—rather than merely consumed as external dependencies.
 - Their logic must be ported to the higher-authority languages (Aski/Rust) to fully integrate with the Mentci-AI ecosystem.
 
 ## 0.1. RUST ACTOR MANDATE (ORCHESTRATION)
@@ -23,7 +23,7 @@
 
 *   **Actor-First:** Use the `ractor` framework for all supervised task execution.
 *   **Minimal Shim:** The *only* permissible shim is the call to the `execute` orchestrator within the Nix Jail `shellHook`.
-*   **Clojure Role:** Clojure (Babashka) is reserved for **agile prototyping** and experimental tools. Once a tool stabilizes, it must be hardened into a Rust actor.
+*   **Clojure Role:** Clojure is not to be used for writing code. Legacy Clojure tools must be rewritten as Rust actors (sema-style rust+capnp-spec).
 
 ## 0.2. SOURCE CONTROL PROTOCOL (JJ & PUSH)
 

@@ -1,0 +1,2 @@
+{:subject "Clojure-Deprecation"
+ :topic "Lowering the importance of Clojure and migrating to Rust+Capnp-Spec"}

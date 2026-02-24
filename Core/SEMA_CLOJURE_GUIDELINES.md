@@ -1,5 +1,7 @@
 # Sema Object Style — Clojure + Malli
 
+**DEPRECATION NOTICE**: Clojure is no longer used for writing code in the Mentci-AI project. All new orchestration and tooling must be written in Rust (actor model) + Cap'n Proto. This file remains strictly for maintaining legacy Clojure scripts until their migration. Clojure's primary role in this project is as an inspiration (specifically its syntax) for the future Aski language.
+
 This document defines the mandatory Sema object rules for Clojure and its extensions
 (Malli, Babashka). The rules are structural. Violations indicate category error, not style.
 

@@ -46,6 +46,6 @@
 - **Usage:** Defines the semantic truth of atoms and daemon interfaces in `Components/schema/`.
 
 ## Scripting & Glue
-### Clojure (Babashka)
-- **Role:** The "Mandatory Glue" for project orchestration.
-- **Usage:** Used for launchers and build scripts to manage complex logic without shell scripts.
+### Clojure (Legacy)
+- **Role:** Legacy glue language. Do not write new code in Clojure.
+- **Usage:** Maintain existing launchers/scripts until they are migrated to Rust+capnp-spec actors. Clojure's syntax serves as an inspiration for the Aski language.

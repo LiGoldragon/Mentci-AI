@@ -57,11 +57,11 @@ These are the highest-order rules for all languages and scripts.
     *   **Canonical Tool:** Use `execute unify --write` to enforce and repair bidirectional subject coverage.
 *   **R&D Mirror Contract:** Repository R&D consists of the paired trees `Development/` and `Research/`. Topic names mirror across both trees: `Development/` carries executable guidance, `Research/` carries prompt-traceable findings.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
-*   **Assimilation of Sources:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Sources/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Clojure + Nix—rather than merely consumed as external dependencies.
+*   **Assimilation of Sources:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Sources/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Nix—rather than merely consumed as external dependencies.
 *   **Language Authority Hierarchy:**
-    1.  **Aski:** Evolved multi-domain Clojure. Takes precedence for specs and LLM-friendly logic.
+    1.  **Aski:** Evolved Clojure-inspired syntax. Takes precedence for specs and LLM-friendly logic.
     2.  **Rust:** Core implementation and heavy lifting.
-    3.  **Clojure:** Fast prototyping for small tools and orchestration glue.
+    3.  **Clojure:** Legacy only. Do not use for writing code. Its syntax serves as inspiration for Aski.
     4.  **Nix:** Low-level utility only. Should be phased out or hidden behind Aski (see Lojix).
 *   **Single Object In/Out:** All boundary-crossing values are Sema objects. Every function accepts exactly one explicit object argument and returns exactly one object. When multiple Sources/outputs are required, define an input/output object.
 *   **Everything Is an Object:** Reusable behavior belongs to named objects or traits. Free functions exist only as orchestration shells.
@@ -90,8 +90,7 @@ To acquire external Sources (tarballs, git repos), use Nix-native prefetch tooli
 
 ## 3. Structural Rules
 
-*   **Clojure (Babashka) Mandate:** All glue code and scripts must be written in Clojure (Babashka). No Bash logic beyond the one-line bb shim.
-*   **Script Typing:** All Clojure scripts must define Malli schemas for Sources/config and validate them.
+*   **Legacy Clojure Migration:** All legacy glue code and scripts in Clojure must be rewritten to sema-style rust+capnp-spec. No new Clojure code is to be written.
 *   **Script Guard:** Run `execute root-guard` when adding or editing scripts. Python is forbidden under `execute`.
 *   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_RUST_GUIDELINES.md`, and `Core/SEMA_NIX_GUIDELINES.md`.
 *   **Attractor Code Reference:** Implementation lives in `Sources/brynary-attractor/attractor`. The `Sources/attractor` folder is specs only.

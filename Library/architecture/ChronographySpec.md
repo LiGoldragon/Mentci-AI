@@ -80,7 +80,7 @@ Examples:
 - `cargo run --bin chronos -- --format numeric --precision minute`
 
 ## 8. Implementation
-Current implementations in `flake.nix` use a static placeholder. The transition to Level 4/5 requires a native Rust/Clojure solar coordinate calculator to provide dynamic, real-time chronography.
+Current implementations in `flake.nix` use a static placeholder. The transition to Level 4/5 requires a native Rust solar coordinate calculator to provide dynamic, real-time chronography.
 
 ---
 *The Great Work is grounded in True Time.*
