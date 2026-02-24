@@ -1,0 +1,19 @@
+[package]
+name = "mentci-launch"
+version = "0.1.0"
+edition = "2021"
+description = "Systemd terminal/service launcher for Mentci-Box using a Cap'n Proto init envelope."
+
+[[bin]]
+name = "mentci-launch"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0"
+capnp = "0.19"
+
+[build-dependencies]
+capnpc = "0.19"
+
+[dev-dependencies]
+tempfile = "3.15"

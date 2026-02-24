@@ -7,5 +7,6 @@ members = [
     "Components/mentci-fs",
     "Components/aski-lib",
     "Components/aski-cli",
+    "Components/mentci-launch",
 ]
 resolver = "2"

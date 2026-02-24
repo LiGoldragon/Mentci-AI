@@ -25,6 +25,10 @@ let
     inherit mentci_box;
   };
 
+  mentci_launch = import ./mentci_launch.nix {
+    inherit craneLib pkgs repo_root;
+  };
+
   mentci_vcs = import ./mentci_vcs.nix {
     inherit craneLib pkgs;
   };
@@ -98,6 +102,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell coding_agent coding_agent_check components_index_check unified_llm pi_agent_rust;
+  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell coding_agent coding_agent_check components_index_check unified_llm pi_agent_rust;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

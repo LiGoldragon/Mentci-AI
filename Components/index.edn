@@ -28,6 +28,10 @@
    :path "mentci-fs"
    :interfaces ["rust.fs.index"]
    :status :experimental}
+  {:id "mentci-launch"
+   :path "mentci-launch"
+   :interfaces ["rust.launch.systemd" "rust.launch.terminal"]
+   :status :experimental}
   {:id "mentci-vcs"
    :path "mentci-vcs"
    :interfaces ["rust.vcs.wrapper"]

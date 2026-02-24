@@ -1,6 +1,6 @@
 {:version 1
  :canonicalRoots [Sources Components Outputs Research Development Core Library]
- :runtimeRoots [".git" ".jj" ".direnv" "target" ".mentci" ".gemini" "tmp"]
+ :runtimeRoots [".git" ".jj" ".direnv" "target" ".mentci" ".gemini" "tmp" "result"]
  :requiredTopLevelFiles ["flake.nix"
                          "flake.lock"
                          ".gitignore"
@@ -9,6 +9,6 @@
                          "README.md"
                          "Cargo.toml"
                          "Cargo.lock"]
- :conditionalTopLevelFiles [".attrs.json" ".opencode.edn" "result"]
+ :conditionalTopLevelFiles [".attrs.json" ".opencode.edn"]
  :compatibilityAliases
  {Sources Sources}}

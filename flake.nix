@@ -112,6 +112,7 @@
           mentciAi = namespace.mentci_ai;
           mentciBox = namespace.mentci_box;
           mentciBoxDefault = namespace.mentci_box_default;
+          mentciLaunch = namespace.mentci_launch;
           execute = namespace.execute;
           attractor = namespace.attractor;
           codingAgent = namespace.coding_agent;
@@ -136,6 +137,10 @@
         apps.execute = flake-utils.lib.mkApp {
           drv = namespace.execute;
           exePath = "/bin/execute";
+        };
+        apps.mentci-launch = flake-utils.lib.mkApp {
+          drv = namespace.mentci_launch;
+          exePath = "/bin/mentci-launch";
         };
         apps.pi = flake-utils.lib.mkApp {
           drv = namespace.pi_agent_rust;

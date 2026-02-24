@@ -2,6 +2,15 @@
 
 This file maintains the durable record of session milestones and goal outcomes since the last major release tag.
 
+## session: implement mentci-launch component and validate launch planning tests
+♓︎7°1'7" | 5919 AM
+
+- **Component Implementation:** Added `Components/mentci-launch/` crate with Cap'n Proto `MentciLaunchRequest` decoding and systemd launch-plan generation for terminal (`foot` default) and service modes.
+- **Execution Contract:** Added runner abstraction and CLI entrypoint (`mentci-launch <request.capnp>`) that executes validated systemd launch plans.
+- **Testing Coverage:** Added unit and integration tests for launch-plan routing, mode/target validation, and packed Cap'n Proto request decoding.
+- **Packaging + Registry:** Added Nix package wiring (`mentciLaunch`) and registered the component in `Components/index.edn` + workspace membership.
+- **Root Contract Consistency:** Reconciled root-guard/runtime contract so `result` symlink is treated as runtime directory state.
+
 ## session: define mentci-launch strategy and elevate capnp init-envelope purity
 ♓︎6°60'56" | 5919 AM
 

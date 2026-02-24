@@ -31,7 +31,7 @@ R&D is the mirrored two-tree model:
 
 ## 4. Component Status Map
 - **Engine (`mentci-aid`):** `Components/mentci-aid/src/main.rs`. Status: **Experimental / not in running state**.
-- **Rust componentization:** `Components/mentci-aid/`, `Components/chronos/`, `Components/mentci-box/`, and `Components/mentci-fs/` are standalone crates.
+- **Rust componentization:** `Components/mentci-aid/`, `Components/chronos/`, `Components/mentci-box/`, `Components/mentci-fs/`, and `Components/mentci-launch/` are standalone crates.
 - **Symbolic Orchestrator:** `execute` lives at `Components/mentci-aid/src/bin/execute.rs` and uses `ractor` actors.
 - **Filesystem ontology authority:** `Library/specs/AskiFsSpec.md`.
 - **Source substrate:** `Sources/` mounted read-only via jail tooling.
@@ -42,13 +42,14 @@ R&D is the mirrored two-tree model:
   - `Library/specs/MentciLaunchSpec.md`: systemd + terminal launch contract for Mentci-Box.
 - **Primary Operator Interface:** TypeScript `pi` (`codingAgent`) is default; Rust `pi` remains non-default validation lane.
 
-## 5. Current Operational Snapshot (♓︎.6.59.55 | 5919 AM)
-- `dev` lineage now includes control-plane convergence hardening for exported `execute` packaging, interface alignment, and shared schema authority.
+## 5. Current Operational Snapshot (♓︎.7.1.7 | 5919 AM)
+- `dev` lineage now includes control-plane convergence hardening plus initial `mentci-launch` component implementation and test coverage.
 
 Section sweep progress:
 - **Status:** **COMPLETED** (Full Repository Sweep 1-10).
 - **Outcome:** All core and library documentation synchronized with refined authority tiers.
 - **Convergence Slice:** `nix run .#execute` command path restored, execute test/check surfaces realigned to actor subcommands, and `mentci_box.capnp` authority centralized in `Components/schema/`.
+- **Launch Slice:** `mentci-launch` crate added with Cap'n Proto request decoding, systemd launch-plan synthesis (terminal/service), and dedicated tests.
 
 ## 6. Guard Health Snapshot
 Latest observed gate outcomes:
@@ -65,10 +66,10 @@ Interpretation:
 ## 7. High-Importance Active Risks
 1. **Control-plane divergence risk:** `main` and `dev` are both advancing; convergence protocol (`dev` -> finalized session -> release) needs consistent enforcement.
 2. **Component Maturity:** `mentci-fs` and `aski-lib` are in early prototype stages.
-3. **Launch Path Gap:** dedicated `mentci-launch` component is still strategy-phase and not yet available for systemd terminalized box testing.
+3. **Launch Integration Gap:** `mentci-launch` is implemented as a standalone crate but not yet wired into `execute` command routing and policy guards.
 
 ## 8. Immediate Priorities (Execution Order)
-1. Implement `mentci-launch` strategy track (systemd + `foot` terminal path for dedicated Mentci-Box sessions).
+1. Integrate `mentci-launch` into `execute` command routing and finalize service/terminal policy checks.
 2. Stabilize `mentci-box` V1 for robust bootstrap.
 3. Mature `mentci-fs` for concise filesystem comprehension.
 4. Implement `actor-first` logic for remaining orchestration tasks.

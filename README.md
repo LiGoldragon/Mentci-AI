@@ -24,6 +24,7 @@ To automate implementation details and liberate the human mind through autonomou
 - `Components/schema/`: The semantic truth (Cap'n Proto).
 - `Components/nix/jail.nix`: The isolated dev environment definition.
 - `Components/mentci-aid/src/main.rs`: The Rust daemon implementation (**mentci-aid**).
+- `Components/mentci-launch/`: Systemd-backed terminal/service launcher for Mentci-Box sessions.
 - `execute`: High-performance Rust/Actor orchestrator.
 - `Components/workflows/`: DOT files defining agent execution graphs.
 - `Outputs/Logs/`: Durable audit trails and milestone logs.
@@ -34,6 +35,7 @@ To automate implementation details and liberate the human mind through autonomou
 - `execute launcher`: Initialize the Jail (provisions Sources).
 - `nix run .#execute -- <command>`: Run the exported `execute` command surface without entering a dev shell.
 - `nix run .#mentciBoxDefault`: Start the default Mentci-Box isolation environment.
+- `nix run .#mentci-launch -- <launch-request.capnp>`: Launch Mentci-Box via systemd terminal/service request envelope.
 - `cargo build --manifest-path Components/mentci-aid/Cargo.toml`: Compile the daemon and Cap'n Proto schemas.
 - `cargo run --manifest-path Components/mentci-aid/Cargo.toml -- Components/workflows/example.dot`: Run the workflow engine.
 - `execute root-guard`: Run the filesystem integrity guard.

@@ -49,9 +49,9 @@ Agents updated")
 - Top-level files are restricted to design-required build/runtime entry files:
   - `flake.nix`, `flake.lock`, `.gitignore`, `.envrc`, `AGENTS.md`, `README.md`, `Cargo.toml`, `Cargo.lock`.
 - Runtime metadata files may exist temporarily by protocol:
-  - `.attrs.json`, `.opencode.edn`, `result` (Nix build symlink).
+  - `.attrs.json`, `.opencode.edn`.
 - Runtime directories may exist by protocol:
-  - `.git`, `.jj`, `.direnv`, `target`, `.mentci`, `.gemini`, `tmp`.
+  - `.git`, `.jj`, `.direnv`, `target`, `.mentci`, `.gemini`, `tmp`, `result` (Nix build symlink target).
 - Enforcement tool:
   - `execute root-guard`.
 
