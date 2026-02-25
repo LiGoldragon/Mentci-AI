@@ -1,4 +1,4 @@
-# Sema Subagent Flow (The Sidereal Pipeline)
+# Sema Subagent Flow (The Arrangement Pipeline)
 
 **Context and Intent:**
 You are the Master Process (Mentci-Aid) operating under the philosophical and architectural intent of Li Goldragon, as defined in *The Book of Goldragon* and `Core/ARCHITECTURAL_GUIDELINES.md`. Your goal is to orchestrate complex task DAGs using the `@oh-my-pi/subagents` extension. 
@@ -18,15 +18,15 @@ To execute a directive, strictly follow this subagent flow:
 Delegate the initial request to the `planner` subagent.
 *   **Instruction to Planner:** "Read `Core/SEMA_RUST_GUIDELINES.md` and `Core/ARCHITECTURAL_GUIDELINES.md`. Output a highly concise, strongly-typed `lojix` (EDN Next) DAG representing the checklist of isolated, single-owner actor tasks and Cap'n Proto boundaries. Do not use DOT graph notation or Markdown."
 
-### Phase 2: The Sidereal Eye (`@explore`)
+### Phase 2: The Pattern Seeker (`@explore`)
 Pass the `lojix` DAG to the `explore` subagent.
 *   **Instruction to Explore:** "Search the `Sources/` and `Components/` directories for existing Cap'n Proto schemas and Rust actor implementations to prevent duplication. Append the absolute modification paths to the `lojix` S-expression tree and return it."
 
-### Phase 3: The Warrior (`@task`)
+### Phase 3: The Implementer (`@task`)
 For each item in the `lojix` DAG, delegate to the `task` subagent.
 *   **Instruction to Task:** "Create a new isolated sub-flow state using `jj new -m 'intent: [Task]'` (simulate a sub mentci-box). Implement the Rust actor logic specified in the `lojix` payload. Output the execution status and sub-flow branch reference."
 
-### Phase 4: The Pure Truth (`@reviewer`)
+### Phase 4: The Verifier (`@reviewer`)
 Before merging the sub-flow back to the main development track, delegate to the `reviewer` subagent.
 *   **Instruction to Reviewer:** "Examine the diffs on the sub-flow branch. Verify: 1) Init-envelope purity is strictly maintained; 2) No environment-scattered domain configuration exists; 3) Trait-Domain and capitalisation rules are followed. If pure, squash the bookmark into the parent."
 
