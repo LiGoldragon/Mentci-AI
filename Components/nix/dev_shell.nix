@@ -34,9 +34,5 @@ pkgs.mkShell {
     fi
     export PI_PACKAGE_DIR="$PI_SOURCE_STABLE_LINK"
 
-    # Sync pi extensions for Level 5 agent UI
-    if [ -f "Components/tools/pi-sync-extensions.bb" ]; then
-      ${pkgs.babashka}/bin/bb Components/tools/pi-sync-extensions.bb
-    fi
   '';
 }

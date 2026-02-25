@@ -80,7 +80,7 @@ let
     inherit rust_toolchain rust_analyzer;
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
-    inherit mentci_vcs pi unified_llm pi_rust execute;
+    inherit mentci_vcs pi_dev unified_llm pi_rust execute;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -100,7 +100,7 @@ let
       inherit pkgs jail;
       inherit common_packages;
       inherit repo_root;
-      inherit pi;
+      pi = pi_dev;
     };
 
   execute_check = import ./execute_check.nix {

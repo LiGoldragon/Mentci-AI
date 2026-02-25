@@ -1,0 +1,11 @@
+{
+  "packages" : [ "npm:@aliou/pi-linkup", "npm:@juanibiapina/pi-plan", "npm:@oh-my-pi/subagents", "npm:@oh-my-pi/lsp", "npm:mcporter", "npm:@oh-my-pi/omp-stats" ],
+  "theme" : "dark",
+  "defaultProvider" : "google-gemini-cli",
+  "defaultModel" : "gemini-2.5-flash",
+  "compaction" : {
+    "enabled" : true,
+    "reserveTokens" : 16384,
+    "keepRecentTokens" : 20000
+  }
+}
