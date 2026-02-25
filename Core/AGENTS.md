@@ -26,10 +26,7 @@ Enforcement requirements:
     *   Acquire via: `execute version`.
 *   **Solar Baseline Prefix:** Every prompt-handling response (including intermediary updates and final response) must begin with the current ordinal solar baseline line.
     *   Format: `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
-    *   Canonical example: `solar: 5919.12.05.04.04`
-    *   Canonical acquisition:
-      1. `chronos --format am --precision second`
-      2. fallback `cargo run --quiet --manifest-path Components/chronos/Cargo.toml --bin chronos -- --format am --precision second`
+    *   Canonical acquisition: `chronos --format am --precision second`
     *   Purpose: establish a true-solar reference timestamp for comparison with other time systems.
 
 *   **Architecture Gate:** Any change conflicting with the hierarchy in `Core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
@@ -40,74 +37,36 @@ Enforcement requirements:
 
 These are the highest-order rules for all languages, scripts, and agent behaviors. They are deeply rooted in the philosophical mandate of the author (Li Goldragon) to build a "Local Machine of Fit" rather than an engine of "Manipulative AI Governance."
 
-*   **FORBIDDEN: PYTHON/REGEX FILE PATCHING:** Agents must NEVER generate ad-hoc Python scripts or use `sed`/regex to patch or modify source code files. This is a severe anti-pattern. All file modifications must be done either through native `pi` tools (`edit`) or through structural, programmatic manipulation of the code's Abstract/Concrete Syntax Tree (AST/CST). Code is data; edit the data graph, not the string.
-*   **STRICT LOGIC-DATA SEPARATION:** Hardcoding data (paths, regexes, environment variable names, target constraints) inside logic (code, shell scripts, Rust actors) is a **SEVERE VIOLATION**. All variables, defaults, and parameters MUST be extracted into structured external data sidecars (JSON, EDN, Cap'n Proto). The point of having data files is to *use them programmatically*, not just to document them.
+*   **FORBIDDEN: RECURSIVE PI CALLS:** Agents must NEVER call the `pi` or `gemini` command from within a running `pi` session's bash tool. This creates a recursive agent loop that destroys UI rendering and causes repetitive, broken logic. If you need to refresh your environment, you MUST use `execute transition`.
+*   **FORBIDDEN: PYTHON/REGEX FILE PATCHING:** Agents must NEVER generate ad-hoc Python scripts or use `sed`/regex to patch or modify source code files. This is a severe anti-pattern. All file modifications must be done either through native `pi` tools (`edit`) or through structural, programmatic manipulation of the code's AST/CST via the `mentci-mcp` structural_edit tool.
+*   **STRICT LOGIC-DATA SEPARATION:** Hardcoding data (paths, regexes, environment variable names, target constraints) inside logic (code, shell scripts, Rust actors) is a **SEVERE VIOLATION**. All variables, defaults, and parameters MUST be extracted into structured external data sidecars (JSON, EDN, Cap'n Proto). 
 *   **Intent as Supreme Authority:** Intent is the highest level of authority. The machine's highest function is to help man beckon intent and find his Dharma. See `Core/PHILOSOPHY_OF_INTENT.md`.
 *   **Impeccability:** The guiding principle of action is impeccability (skill in action, free from attachment to the fruits). The machine must operate with impeccability, which sometimes means choosing silence rather than offering blind solutions before the question is formulated.
 *   **The Psyche's Extension:** The agent is not a performer or a broadcaster. It is a local extension of the user's *psyche*. It must operate with patience, noticing patterns, and asking the questions the psyche *wants* to ask itself.
 *   **Silence and Fit:** Do not generate verbose, performative output. Generating text for the sake of being seen is the wrong starting point. The agent must embrace "fit"—speaking concisely, structurally (via Aski/Lojix/SEMA), finding the right placement, or remaining silent.
-*   **Sub-Program Directory:** The `Library/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
-*   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `Development/<priority>/<Subject>/` dedicated directories (`<priority>` in `{high,medium,low}`).
-    *   **Prioritization:** Strategies must be prioritized according to the **Strategy Queue** (Ref: `Library/StrategyQueue.md`). Resiliency and efficiency are ranked highest.
-    *   **Composition:** Strategies should consist of multiple files (e.g., `Mission.md`, `ArchitectureMap.md`, `Roadmap.md`) and sub-folder source code drafts (`src/`).
-    *   **Workflow:** Strategies are "lined up" for implementation-trials. Use cheaper models to explore dead-ends and effective paths (vibe-coding permitted here) before high-authority models formalize the final logic.
-    *   **Development Loop:** Every strategy must undergo the **Strategy-Development Program** (Ref: `Library/StrategyDevelopment.md`) to discover, package, and test the necessary tools and libraries.
-    *   **Refinement:** Strategies are iteratively refined. Once a strategy reaches implementation maturity, its finalized components must be migrated to `Core/`, a component directory under `Components/` (for example `Components/mentci-aid/`), or `Components/tasks/`.
-*   **Per-Subject Indexing:** Subjects should be merged or split as context volume changes. Multi-subject files should be cross-referenced.
-*   **Subject Context Discovery (Mandatory):** Before planning or implementation, agents must search `Development/` and `Research/` for matching subject(s) from the prompt domain and ingest the most relevant entries.
-    *   **Search First:** Use subject-name and keyword search to find existing context before creating new artifacts.
-    *   **Dual-Tree Read:** Read both sides (`Development/<priority>/<Subject>/` and `Research/<priority>/<Subject>/`) when either side exists.
-    *   **Context Reuse Rule:** If matching subject context exists, continue from it instead of starting a disconnected track.
-*   **Development/Research Subject Unification:** Every subject in `Research/` must have a corresponding `Development/<priority>/<Subject>/` directory, and every development subject must have a corresponding topic directory `Research/<priority>/<Subject>/` with a topic index file `index.edn`.
-    *   **Counterpart Discovery First:** Before creating new subject artifacts, look for an existing counterpart subject in the opposite tree.
-    *   **Auto-Create Missing Counterparts:** If no counterpart exists, create and populate it (development scaffold or research topic).
-    *   **Canonical Tool:** Use `execute unify --write` to enforce and repair bidirectional subject coverage.
-*   **R&D Mirror Contract:** Repository R&D consists of the paired trees `Development/` and `Research/`. Topic names mirror across both trees: `Development/` carries executable guidance, `Research/` carries prompt-traceable findings.
-*   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
-*   **First Principles (Attractor Inspiration):** The `attractor` concept is an inspiration for agent flow. Mentci does not fork it; everything is built from first principles in correct runtimes (Rust/Cap'n Proto/Aski). Legacy visual DOT graphs do not belong in high-level intent; advanced ASCII (EDN/Lojix) is the true state representation.
-*   **Language Authority Hierarchy:**
-    1.  **Aski:** Evolved Clojure-inspired syntax. Takes precedence for specs and LLM-friendly logic.
-    2.  **Rust:** Core implementation and heavy lifting.
-    3.  **Clojure:** Legacy only. Do not use for writing code. Its syntax serves as inspiration for Aski.
-    4.  **Nix:** Low-level utility only. Should be phased out or hidden behind Aski (see Lojix).
-*   **Single Object In/Out:** All boundary-crossing values are Sema objects. Every function accepts exactly one explicit object argument and returns exactly one object. When multiple Sources/outputs are required, define an input/output object.
-*   **Everything Is an Object:** Reusable behavior belongs to named objects or traits. Free functions exist only as orchestration shells.
-*   **Naming Is a Semantic Layer:** Meaning appears once at the highest valid layer. Repetition across layers is forbidden.
-*   **Capitalization Is Ontology:** `PascalCase` denotes durable objects. `lowercase` denotes flow and transient logic.
-*   **Direction Encodes Action:** Prefer `from_*`, `to_*`, `into_*`. Avoid verbs like `read`, `write`, `load`, `save` when direction already conveys meaning.
-*   **Schema Is Sema:** Schemas define truth. Encodings are incidental. Do not name domain logic after wire formats.
-*   **Filesystem Is Semantic:** Repo/dir/module boundaries carry meaning. Inner layers assume outer context.
-*   **Documentation Protocol:** Impersonal, timeless, precise. Document only non-boilerplate behavior.
 
-## 1. Environment & Isolation
+## 1. Structural Rules
 
-Agents execute within a **Nix Jail**. All operations must be performed using the provided tools. Direct network access from the sandbox is forbidden.
+*   **RUST ONLY MANDATE:** You must *only* use Rust (sema-style rust+capnp-spec) for writing application logic, orchestration, and scripting. No new Clojure, Python, or bash shell scripts are permitted. All application logic outside Nix MUST be in Rust.
+*   **Script Guard:** Run `execute root-guard` when adding or editing code. Python is forbidden.
+*   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_RUST_GUIDELINES.md`, and `Core/SEMA_NIX_GUIDELINES.md`.
+*   **EDN/Lojix Authority:** Favor Lojix (advanced ASCII data) for all data storage and state persistence. Use the `aski-cli` tools for transformations.
+*   **Sema Object Style:** Strictly follow the ontology defined in `Components/schema/*.capnp`.
+*   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers.
+*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `Core/VersionControlProtocol.md`.
 
-### 1.1 Pre-Fetch
-To acquire external Sources (tarballs, git repos), use Nix-native prefetch tooling from the jail shell (for example `nix-prefetch-git` and flake input updates). Do not introduce Python fetch helpers.
+## 2. Environment & Isolation
 
-## 2. Audit Trail (MANDATORY AUTO-COMMIT)
+Agents execute within a **Mentci-Box** (Nix Jail). All operations must be performed using the provided tools. Direct network access is forbidden.
+
+## 3. Audit Trail (MANDATORY AUTO-COMMIT)
 
 **EVERY PROMPT SESSION MUST END WITH A PUSH TO THE `dev` BOOKMARK.** 
 
 *   **Atomic Intent:** Every single modification MUST result in an `intent:` commit. Do not bundle independent changes.
 *   **Dirty Tree Rule:** Never finish a response with a dirty working copy. Use `jj commit` before finalizing.
-*   **Session Synthesis:** Use `execute finalize` at the end of every prompt to aggregate intents and **PUSH TO ORIGIN/DEV**.
-*   **Auditability:** Use `jj log` as the authoritative audit trail for work performed in the repository.
-
-## 3. Structural Rules
-
-*   **RUST ONLY MANDATE:** You must *only* use Rust (sema-style rust+capnp-spec) for writing application logic, orchestration, and scripting. No new Clojure, Python, or bash shell scripts are permitted. All legacy glue code must be rewritten in Rust.
-*   **Script Guard:** Run `execute root-guard` when adding or editing scripts. Python is forbidden under `execute`.
-*   **Per-Language Sema Guidelines:** Follow the dedicated language rules in `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_RUST_GUIDELINES.md`, and `Core/SEMA_NIX_GUIDELINES.md`.
-*   **Attractor Code Reference:** Implementation lives in `Sources/brynary-attractor/attractor`. The `Sources/attractor` folder is specs only.
-*   **Attractor Backend Behavior:** `CliAgentBackend` spawns a subprocess with env merged from `process.env` and backend config. `SessionBackend` uses `unified-llm` `Client.fromEnv` (API keys via standard env vars).
-*   **Sources Directory Rule:** Do not edit anything under `Sources/`. Treat it as read-only reference material.
-*   **EDN Authority:** Favor EDN for all data storage and state persistence. Use `jet` for transformations.
-*   **Sema Object Style:** Strictly follow the ontology defined in `Components/schema/*.capnp`.
-*   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers (example: in `nix/` code, use `namespace`, not `nixns`).
-*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `Core/VersionControlProtocol.md`.
-*   **Tagging:** When creating git tags, always use the `-m` flag to provide a message directly (e.g., `git tag -a vX.Y.Z -m "release: vX.Y.Z"`) to avoid interactive editor prompts.
+*   **Session Synthesis:** Use `execute finalize` at the end of every prompt to aggregate intents. This tool automatically reads `.mentci/session.json`.
+*   **Auditability:** Use `jj log` as the authoritative audit trail.
 
 ## 4. Admin Developer Mode
 

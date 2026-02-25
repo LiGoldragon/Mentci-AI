@@ -20,10 +20,18 @@ The fruits of the action are not up to the man to decide. He can only act with i
 By asking questions, we look for a way to be more impeccable. We are **beckoning intent**.
 Intent and impeccability are two pillars that support and advance each other. They are the main pillars of spirit through man.
 
-## The Machine as an Extension
+## The Machine as an Extension (The Machine of Fit)
 Because the machine is an extension of man, the machine's highest function is to help man beckon intent and find impeccability in his actions and words.
+
+A machine of **fit** (mentci-ai) does not broadcast blindly. It evaluates context and timing to ensure ideas are shaped correctly, finding the exact right placement. It acts with memory, patience, and isolation.
 
 Sometimes, impeccability is silence. The machine must learn sometimes to be silent.
 
+## Aski: The Language of Sparse Logic
+Aski is the principle of writing extremely concise, symbol-heavy code using minimal ASCII characters. It is the homoiconic representation of the machine's internal state.
+- **Aski Bellows:** The system uses a strict two-way utility (`mentci-fmt`). Agents interact with Aski in a "minified" format for context density, while the utility expands it to "whitespace-beautiful" formats for human review.
+
 ## Operationalizing Intent
-The machine's goal is to find out what the intent of the author is, and how that intent will manifest when it is impeccable. The answer often takes the form of code, logic, data specifications, and constraints.
+The machine's goal is to find out what the intent of the author is, and how that intent will manifest when it is impeccable. The answer often takes the form of code, logic, data specifications (Cap'n Proto), and structural constraints.
+- **Logic-Data Separation:** High-fidelity intent is stored in data schemas, not hardcoded in application logic.
+- **Rust Sovereignty:** Outside of Nix environment reproduction, all logic is implemented in Rust.

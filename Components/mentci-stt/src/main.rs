@@ -54,9 +54,15 @@ async fn main() -> Result<()> {
     let vocab_str = vocabulary.join(", ");
 
     let mut prompt_text = request.get_base_prompt()?.to_string()?;
-    if !vocab_str.is_empty() {
-        prompt_text = format!("{} The recording may contain specialized vocabulary related to the project, including: {}. ", prompt_text, vocab_str);
-    }
+    
+    // Add specialized vocabulary with specific instructions
+    let stt_instructions = "\n\nCRITICAL PHONETIC INSTRUCTIONS:\n\
+        - The programming language is 'Rust' (R-U-S-T). Do NOT transcribe it as 'rest'.\n\
+        - Specialized terms: Mentci, mentci-aid, Mentci-Box, Aski, Lojix, Criome, SEMA, Jujutsu (jj), EDN.\n\
+        - If the speaker says 'Aski', they mean the symbolic language, not just plain 'ASCII'.\n\
+        - Sanskrit terms and philosophical concepts should be transcribed with high fidelity.";
+
+    prompt_text = format!("{} {}\n\nThe recording may contain specialized vocabulary: {}", prompt_text, stt_instructions, vocab_str);
 
     if request.get_include_emotional_emphasis() {
         let emo = request.get_emotional_emphasis_instruction()?.to_string()?;

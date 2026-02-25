@@ -4,6 +4,7 @@ use std::path::PathBuf;
 
 pub trait VCS {
     fn commit(&self, message: &str) -> Result<()>;
+    fn new_with_message(&self, message: &str) -> Result<()>;
     fn status(&self) -> Result<String>;
     fn diff(&self) -> Result<String>;
 }
@@ -43,6 +44,20 @@ impl VCS for Jujutsu {
 
         if !status.success() {
             anyhow::bail!("jj commit failed with exit code: {:?}", status.code());
+        }
+        Ok(())
+    }
+
+    fn new_with_message(&self, message: &str) -> Result<()> {
+        let status = self.base_command()
+            .arg("new")
+            .arg("-m")
+            .arg(message)
+            .status()
+            .context("Failed to execute jj new")?;
+
+        if !status.success() {
+            anyhow::bail!("jj new failed with exit code: {:?}", status.code());
         }
         Ok(())
     }
