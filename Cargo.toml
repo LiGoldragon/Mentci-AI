@@ -8,7 +8,8 @@ members = [
     "Components/mentci-launch",
     "Components/mentci-box-lib",
     "Components/mentci-stt",
-    "Components/mentci-user"
+    "Components/mentci-user",
+    "Components/mentci-mcp"
 ]
 
 [profile.release]

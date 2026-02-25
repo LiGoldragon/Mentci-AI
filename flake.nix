@@ -116,6 +116,7 @@
           execute = namespace.execute; chronos = namespace.chronos;
           mentciStt = namespace.mentci_stt;
           mentciUser = namespace.mentci_user;
+          mentciMcp = namespace.mentci_mcp;
           attractor = namespace.attractor;
           pi = namespace.pi;
           piDev = namespace.pi_dev;
@@ -150,6 +151,10 @@
         apps.mentci-stt = flake-utils.lib.mkApp {
           drv = namespace.mentci_stt;
           exePath = "/bin/mentci-stt";
+        };
+        apps.mentci-mcp = flake-utils.lib.mkApp {
+          drv = namespace.mentci_mcp;
+          exePath = "/bin/mentci-mcp";
         };
         apps.pi = flake-utils.lib.mkApp {
           drv = namespace.pi;

@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, mentci_vcs, pi_dev, unified_llm, pi_rust, execute, chronos, mentci_stt, mentci_user }:
+{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, mentci_vcs, pi_dev, unified_llm, pi_rust, execute, chronos, mentci_stt, mentci_user, mentci_mcp }:
 
 [
   pkgs.babashka
@@ -23,6 +23,7 @@
   chronos
   mentci_stt
   mentci_user
+  mentci_mcp
   pi_dev
   pkgs.nodejs
   unified_llm
