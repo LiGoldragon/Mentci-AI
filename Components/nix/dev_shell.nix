@@ -25,6 +25,13 @@ pkgs.mkShell {
     export MENTCI_REPO_ROOT="$(pwd)"
     export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
 
+    # Initialize user-specific extension secrets (Logic-Data Separation)
+    # The shellHook knows NO data. It relies purely on the mentci-user Rust binary
+    # to read the .mentci/user.json data sidecar and construct the environment exports.
+    if command -v mentci-user >/dev/null 2>&1; then
+      eval "$(mentci-user export-env 2>/dev/null)"
+    fi
+
     # Ensure stable pi-source symlink for Nix tokenization fix
     # This prevents absolute Nix store paths (hashes) from leaking into the LLM system prompt
     mkdir -p ~/.pi
@@ -33,12 +40,5 @@ pkgs.mkShell {
       ln -sfn "${pi}/lib/node_modules/pi" "$PI_SOURCE_STABLE_LINK"
     fi
     export PI_PACKAGE_DIR="$PI_SOURCE_STABLE_LINK"
-
-    # Initialize user-specific extension secrets (Logic-Data Separation)
-    # The shellHook knows NO data. It relies purely on the mentci-user Rust binary
-    # to read the .mentci/user.json data sidecar and construct the environment exports.
-    if command -v mentci-user >/dev/null 2>&1; then
-      eval "$(mentci-user export-env 2>/dev/null)"
-    fi
   '';
 }
