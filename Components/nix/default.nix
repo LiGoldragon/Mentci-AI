@@ -17,6 +17,10 @@ let
     inherit craneLib pkgs;
   };
 
+  chronos = import ./chronos.nix {
+    inherit craneLib pkgs;
+  };
+
   mentci_box = import ./mentci_box.nix {
     inherit craneLib pkgs repo_root;
   };
@@ -80,7 +84,7 @@ let
     inherit rust_toolchain rust_analyzer;
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
-    inherit mentci_vcs pi_dev unified_llm pi_rust execute;
+    inherit mentci_vcs pi_dev unified_llm pi_rust execute chronos;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -108,6 +112,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_check components_index_check unified_llm pi_rust;
+  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute chronos execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_check components_index_check unified_llm pi_rust;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

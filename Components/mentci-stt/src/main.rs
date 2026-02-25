@@ -73,6 +73,36 @@ Return ONLY the high-fidelity transcription.";
         let result: serde_json::Value = response.json().await?;
         if let Some(text) = result["candidates"][0]["content"]["parts"][0]["text"].as_str() {
             println!("{}", text);
+            
+            // Call chronos to get timestamp
+            let chronos_output = std::process::Command::new("chronos")
+                .args(&["--format", "am", "--precision", "second"])
+                .output()
+                .context("Failed to execute chronos command. Make sure it is in PATH.");
+                
+            match chronos_output {
+                Ok(output) if output.status.success() => {
+                    let solar_date = String::from_utf8_lossy(&output.stdout).trim().replace(" ", "_").replace(":", "-");
+                    let transcript_dir = std::path::Path::new(".voice-recordings/transcripts");
+                    if let Err(e) = fs::create_dir_all(transcript_dir) {
+                        eprintln!("Failed to create transcript directory: {}", e);
+                    } else {
+                        let filename = format!("{}.md", solar_date);
+                        let filepath = transcript_dir.join(filename);
+                        if let Err(e) = fs::write(&filepath, text) {
+                            eprintln!("Failed to write transcript file: {}", e);
+                        } else {
+                            println!("\n[Transcript saved to {:?}]", filepath);
+                        }
+                    }
+                }
+                Ok(output) => {
+                    eprintln!("chronos failed: {}", String::from_utf8_lossy(&output.stderr));
+                }
+                Err(e) => {
+                    eprintln!("Error calling chronos: {}", e);
+                }
+            }
         } else {
             eprintln!("Failed to parse response format:\n{:#?}", result);
         }

@@ -113,7 +113,7 @@
           mentciBox = namespace.mentci_box;
           mentciBoxDefault = namespace.mentci_box_default;
           mentciLaunch = namespace.mentci_launch;
-          execute = namespace.execute;
+          execute = namespace.execute; chronos = namespace.chronos;
           attractor = namespace.attractor;
           pi = namespace.pi;
           piDev = namespace.pi_dev;
@@ -136,7 +136,7 @@
         apps.default = flake-utils.lib.mkApp {
           drv = namespace.mentci_ai;
         };
-        apps.execute = flake-utils.lib.mkApp {
+        apps.chronos = flake-utils.lib.mkApp { drv = namespace.chronos; exePath = "/bin/chronos"; }; apps.execute = flake-utils.lib.mkApp {
           drv = namespace.execute;
           exePath = "/bin/execute";
         };
