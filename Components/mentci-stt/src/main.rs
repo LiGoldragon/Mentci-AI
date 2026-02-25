@@ -1,3 +1,8 @@
+
+pub mod schema;
+pub use schema::{atom_filesystem_capnp, mentci_capnp};
+use schema::mentci_capnp::stt_request;
+use std::io::Read;
 use structopt::StructOpt;
 use std::env;
 use std::fs;
@@ -10,7 +15,10 @@ use serde_json::json;
 #[structopt(name = "mentci-stt", about = "Mentci-AI Speech-to-Text via Gemini")]
 struct Opt {
     #[structopt(short, long, parse(from_os_str))]
-    file: std::path::PathBuf,
+    file: Option<std::path::PathBuf>,
+    
+    #[structopt(short, long, parse(from_os_str))]
+    capnp: Option<std::path::PathBuf>,
 }
 
 #[tokio::main]
@@ -20,30 +28,67 @@ async fn main() -> Result<()> {
     let api_key = env::var("GEMINI_API_KEY")
         .context("GEMINI_API_KEY environment variable is not set")?;
 
-    let audio_data = fs::read(&opt.file)
-        .with_context(|| format!("Failed to read audio file: {:?}", opt.file))?;
+    let mut audio_path;
+    let mut model_name = "gemini-2.5-flash".to_string();
+    let mut vocabulary = vec![];
+
+    if let Some(capnp_path) = opt.capnp {
+        let mut file = fs::File::open(&capnp_path)?;
+        let mut buffer = Vec::new();
+        file.read_to_end(&mut buffer)?;
+        
+        let mut slice = &buffer[..];
+        let message_reader = capnp::serialize_packed::read_message(&mut slice, capnp::message::ReaderOptions::new())?;
+        let request = message_reader.get_root::<stt_request::Reader>()?;
+        
+        audio_path = std::path::PathBuf::from(request.get_audio_path()?.to_string()?);
+        model_name = request.get_model()?.to_string()?;
+        
+        for word in request.get_vocabulary()? {
+            vocabulary.push(word?.to_string()?);
+        }
+    } else if let Some(file_path) = opt.file {
+        audio_path = file_path;
+        vocabulary = vec![
+            "Mentci".to_string(),
+            "mentci-aid".to_string(),
+            "Mentci-Box".to_string(),
+            "Aski".to_string(),
+            "Lojix".to_string(),
+            "Criome".to_string(),
+            "SEMA".to_string(),
+            "Rust".to_string(),
+            "Clojure".to_string(),
+            "Nix".to_string(),
+            "Jujutsu (jj)".to_string(),
+            "EDN".to_string(),
+        ];
+    } else {
+        anyhow::bail!("Must provide either --file <audio_path> or --capnp <request_path>");
+    }
+
+    let audio_data = fs::read(&audio_path)
+        .with_context(|| format!("Failed to read audio file: {:?}", audio_path))?;
 
     let encoded_audio = base64::engine::general_purpose::STANDARD.encode(audio_data);
 
     let client = Client::new();
     let url = format!(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={}",
-        api_key
+        "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent?key={}",
+        model_name, api_key
     );
 
-    let prompt_text = "You are an expert transcriber and linguist working on the Mentci-AI project (created by Li Goldragon). \
+    let vocab_str = vocabulary.join(", ");
+    let prompt_text = format!(
+        "You are an expert transcriber and linguist working on the Mentci-AI project (created by Li Goldragon). \
 Please transcribe the following audio recording with extremely high fidelity. \
-The recording may contain specialized vocabulary related to the project, including: \
-- Mentci, mentci-aid, Mentci-Box \
-- Aski (a highly concise ASCII-based representation language) \
-- Lojix (an EDN-based Aski dialect) \
-- Criome (the broader ecosystem/operating system) \
-- SEMA (the binary object format, Cap'n Proto) \
-- Rust, Clojure, Nix, Jujutsu (jj), EDN \
+The recording may contain specialized vocabulary related to the project, including: {} \
 \
 Furthermore, it is critical that you pick up on emotional emphasis. If the speaker places heavy emphasis, passion, urgency, or hesitation on certain words or phrases, indicate that in the transcription using markdown (e.g., *italics* for light emphasis, **bold** for strong emphasis, [pauses] or [sighs] where appropriate). \
 \
-Return ONLY the high-fidelity transcription.";
+Return ONLY the high-fidelity transcription.",
+        vocab_str
+    );
 
     let payload = json!({
         "contents": [
@@ -78,7 +123,7 @@ Return ONLY the high-fidelity transcription.";
             let chronos_output = std::process::Command::new("chronos")
                 .args(&["--format", "am", "--precision", "second"])
                 .output()
-                .context("Failed to execute chronos command. Make sure it is in PATH.");
+                .map_err(|e| anyhow::anyhow!("Failed to execute chronos: {}", e));
                 
             match chronos_output {
                 Ok(output) if output.status.success() => {

@@ -255,3 +255,14 @@ struct ToolDefinition {
   provider @3 :Text;   # e.g., "openai", "anthropic", "deepseek"
   nativeSchema @4 :Text; # Provider-specific raw schema definition
 }
+
+struct SttRequest {
+  audioPath @0 :Text;
+  vocabulary @1 :List(Text);
+  model @2 :Text = "gemini-2.5-flash";
+}
+
+struct SttResponse {
+  transcription @0 :Text;
+  timestamp @1 :Text;
+}
