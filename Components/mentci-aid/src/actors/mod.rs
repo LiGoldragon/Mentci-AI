@@ -37,6 +37,7 @@ pub enum SymbolicMessage {
         String, // remote
         String, // rev
         bool,   // no_push
+        String, // model
         RpcReplyPort<Result<(), String>>,
     ),
 }
@@ -104,9 +105,9 @@ impl Actor for Orchestrator {
                 let res = ractor::call!(actor, report_actor::ReportMessage::Emit, prompt, answer, subject, title, kind)?;
                 reply.send(res)?;
             }
-            SymbolicMessage::FinalizeSession(summary, prompt, context, changes, bookmark, remote, rev, no_push, reply) => {
+            SymbolicMessage::FinalizeSession(summary, prompt, context, changes, bookmark, remote, rev, no_push, model, reply) => {
                 let (actor, _handle) = Actor::spawn(None, session_actor::SessionActor, ()).await?;
-                let res = ractor::call!(actor, session_actor::SessionMessage::Finalize, summary, prompt, context, changes, bookmark, remote, rev, no_push)?;
+                let res = ractor::call!(actor, session_actor::SessionMessage::Finalize, summary, prompt, context, changes, bookmark, remote, rev, no_push, model)?;
                 reply.send(res)?;
             }
         }

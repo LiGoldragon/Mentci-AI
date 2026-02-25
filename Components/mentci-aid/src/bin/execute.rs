@@ -120,12 +120,14 @@ async fn main() -> anyhow::Result<()> {
             let mut remote = "origin".to_string();
             let mut rev = "@".to_string();
             let mut no_push = false;
+            let mut model = String::new();
 
             if let Ok(content) = std::fs::read_to_string(".mentci/session.json") {
                 if let Ok(data) = serde_json::from_str::<serde_json::Value>(&content) {
                     if let Some(s) = data.get("summary").and_then(|v| v.as_str()) { summary = s.to_string(); }
                     if let Some(s) = data.get("prompt").and_then(|v| v.as_str()) { prompt = s.to_string(); }
                     if let Some(s) = data.get("context").and_then(|v| v.as_str()) { context = s.to_string(); }
+                    if let Some(s) = data.get("model").and_then(|v| v.as_str()) { model = s.to_string(); }
                     if let Some(c) = data.get("changes").and_then(|v| v.as_array()) {
                         changes = c.iter().filter_map(|v| v.as_str().map(|s| s.to_string())).collect();
                     }
@@ -143,12 +145,13 @@ async fn main() -> anyhow::Result<()> {
                     "--remote" => { i += 1; remote = args.get(i).cloned().unwrap_or("origin".to_string()); }
                     "--rev" => { i += 1; rev = args.get(i).cloned().unwrap_or("@".to_string()); }
                     "--no-push" => { no_push = true; }
+                    "--model" => { i += 1; model = args.get(i).cloned().unwrap_or_default(); }
                     _ => {}
                 }
                 i += 1;
             }
 
-            let res = ractor::call!(orchestrator, SymbolicMessage::FinalizeSession, summary, prompt, context, changes, bookmark, remote, rev, no_push)?;
+            let res = ractor::call!(orchestrator, SymbolicMessage::FinalizeSession, summary, prompt, context, changes, bookmark, remote, rev, no_push, model)?;
             if let Err(e) = res {
                 eprintln!("Finalization failed: {}", e);
                 std::process::exit(1);

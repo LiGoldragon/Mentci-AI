@@ -14,6 +14,7 @@ pub enum SessionMessage {
         String, // remote
         String, // rev
         bool,   // no_push
+        String, // model
         RpcReplyPort<Result<(), String>>,
     ),
 }
@@ -39,8 +40,8 @@ impl Actor for SessionActor {
         _state: &mut Self::State,
     ) -> Result<(), ActorProcessingErr> {
         match message {
-            SessionMessage::Finalize(summary, prompt, context, changes, bookmark, remote, rev, no_push, reply) => {
-                let res = self.perform_finalize(summary, prompt, context, changes, bookmark, remote, rev, no_push);
+            SessionMessage::Finalize(summary, prompt, context, changes, bookmark, remote, rev, no_push, model, reply) => {
+                let res = self.perform_finalize(summary, prompt, context, changes, bookmark, remote, rev, no_push, model);
                 reply.send(res)?;
             }
         }
@@ -49,9 +50,9 @@ impl Actor for SessionActor {
 }
 
 impl SessionActor {
-    fn perform_finalize(&self, summary: String, prompt: String, context: String, changes: Vec<String>, bookmark: String, remote: String, rev: String, no_push: bool) -> Result<(), String> {
+    fn perform_finalize(&self, summary: String, prompt: String, context: String, changes: Vec<String>, bookmark: String, remote: String, rev: String, no_push: bool, model: String) -> Result<(), String> {
         let solar_line = self.get_solar_line()?;
-        let message = self.build_message(&summary, &solar_line, &prompt, &context, &changes);
+        let message = self.build_message(&summary, &solar_line, &prompt, &context, &changes, &model);
         
         let target_rev = self.resolve_rev(&rev)?;
         
@@ -93,8 +94,8 @@ impl SessionActor {
         Ok(format!("solar: {}", raw))
     }
 
-    fn build_message(&self, summary: &str, solar: &str, prompt: &str, context: &str, changes: &[String]) -> String {
-        let mut msg = format!("session: {}\n{}\n\n", summary, solar);
+    fn build_message(&self, summary: &str, solar: &str, prompt: &str, context: &str, changes: &[String], model: &str) -> String {
+        let mut msg = format!("session: {}\n{}\nmodel: {}\n\n", summary, solar, if model.is_empty() { "unknown" } else { model });
         msg.push_str("## Original Prompt\n");
         msg.push_str(prompt);
         msg.push_str("\n\n## Agent Context\n");
