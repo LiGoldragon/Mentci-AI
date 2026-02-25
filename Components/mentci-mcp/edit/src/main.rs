@@ -30,6 +30,7 @@ struct Args {
 #[derive(Copy, Clone, Debug, ValueEnum)]
 enum DiffStyle {
     Auto,
+    Pi,
     Delta,
     Unified,
     None,
@@ -58,10 +59,11 @@ fn unified_diff(before: &str, after: &str, file: &str) -> String {
 fn render_delta(unified: &str) -> Option<String> {
     let mut child = Command::new("delta")
         .arg("--paging=never")
-        .arg("--syntax-theme=none")
         .arg("--line-numbers")
-        .arg("--side-by-side")
-        .arg("--color-only")
+        .arg("--true-color=always")
+        .arg("--24-bit-color=always")
+        .arg("--side-by-side=false")
+        .arg("--keep-plus-minus-markers")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
@@ -79,6 +81,39 @@ fn render_delta(unified: &str) -> Option<String> {
         return None;
     }
     Some(String::from_utf8_lossy(&output.stdout).to_string())
+}
+
+fn render_pi_diff(before: &str, after: &str, file: &str) -> String {
+    use similar::ChangeTag;
+
+    let diff = similar::TextDiff::from_lines(before, after);
+    let mut out = String::new();
+    out.push_str(&format!("--- a/{file}\n+++ b/{file}\n"));
+
+    for group in diff.grouped_ops(3) {
+        for op in group {
+            for change in diff.iter_changes(&op) {
+                match change.tag() {
+                    ChangeTag::Equal => {
+                        out.push(' ');
+                        out.push_str(change.value());
+                    }
+                    ChangeTag::Delete => {
+                        out.push_str("\x1b[31m-");
+                        out.push_str(change.value());
+                        out.push_str("\x1b[0m");
+                    }
+                    ChangeTag::Insert => {
+                        out.push_str("\x1b[32m+");
+                        out.push_str(change.value());
+                        out.push_str("\x1b[0m");
+                    }
+                }
+            }
+        }
+    }
+
+    out
 }
 
 fn main() -> anyhow::Result<()> {
@@ -118,18 +153,21 @@ fn main() -> anyhow::Result<()> {
         DiffStyle::Unified => {
             println!("{}", unified);
         }
+        DiffStyle::Pi => {
+            println!("{}", render_pi_diff(&src, &new_src, &args.file.display().to_string()));
+        }
         DiffStyle::Delta => {
             if let Some(delta) = render_delta(&unified) {
                 println!("{}", delta);
             } else {
-                println!("{}", unified);
+                println!("{}", render_pi_diff(&src, &new_src, &args.file.display().to_string()));
             }
         }
         DiffStyle::Auto => {
             if let Some(delta) = render_delta(&unified) {
                 println!("{}", delta);
             } else {
-                println!("{}", unified);
+                println!("{}", render_pi_diff(&src, &new_src, &args.file.display().to_string()));
             }
         }
     }

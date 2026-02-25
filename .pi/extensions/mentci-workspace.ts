@@ -22,7 +22,7 @@ export default function (pi: ExtensionAPI) {
             try {
                 const workspaceRoot = process.cwd();
                 const bin = path.join(workspaceRoot, "target", "release", "mentci-mcp-edit");
-                const cmd = `"${bin}" --lang "${args.lang}" --pattern "${args.pattern.replace(/"/g, '\\"')}" --replace "${args.replace.replace(/"/g, '\\"')}" "${args.file}"`;
+                const cmd = `"${bin}" --lang "${args.lang}" --pattern "${args.pattern.replace(/"/g, '\\"')}" --replace "${args.replace.replace(/"/g, '\\"')}" --diff pi "${args.file}"`;
                 const output = execSync(cmd, { cwd: workspaceRoot, encoding: "utf-8" });
                 
                 try {
