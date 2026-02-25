@@ -86,29 +86,80 @@ fn render_delta(unified: &str) -> Option<String> {
 fn render_pi_diff(before: &str, after: &str, file: &str) -> String {
     use similar::ChangeTag;
 
+    fn inline_pair(old_line: &str, new_line: &str) -> (String, String) {
+        let old_clean = old_line.strip_suffix('\n').unwrap_or(old_line);
+        let new_clean = new_line.strip_suffix('\n').unwrap_or(new_line);
+
+        let char_diff = similar::TextDiff::from_chars(old_clean, new_clean);
+        let mut old_out = String::new();
+        let mut new_out = String::new();
+
+        for change in char_diff.iter_all_changes() {
+            match change.tag() {
+                ChangeTag::Equal => {
+                    old_out.push_str(change.value());
+                    new_out.push_str(change.value());
+                }
+                ChangeTag::Delete => {
+                    old_out.push_str("\x1b[31m");
+                    old_out.push_str(change.value());
+                    old_out.push_str("\x1b[0m");
+                }
+                ChangeTag::Insert => {
+                    new_out.push_str("\x1b[32m");
+                    new_out.push_str(change.value());
+                    new_out.push_str("\x1b[0m");
+                }
+            }
+        }
+
+        (old_out, new_out)
+    }
+
     let diff = similar::TextDiff::from_lines(before, after);
     let mut out = String::new();
     out.push_str(&format!("--- a/{file}\n+++ b/{file}\n"));
 
     for group in diff.grouped_ops(3) {
         for op in group {
-            for change in diff.iter_changes(&op) {
-                match change.tag() {
+            let changes: Vec<_> = diff.iter_changes(&op).collect();
+            let mut i = 0;
+            while i < changes.len() {
+                let current = changes[i];
+                if current.tag() == ChangeTag::Delete
+                    && i + 1 < changes.len()
+                    && changes[i + 1].tag() == ChangeTag::Insert
+                {
+                    let (old_inline, new_inline) = inline_pair(current.value(), changes[i + 1].value());
+                    out.push_str("-");
+                    out.push_str(&old_inline);
+                    out.push('\n');
+                    out.push_str("+");
+                    out.push_str(&new_inline);
+                    out.push('\n');
+                    i += 2;
+                    continue;
+                }
+
+                match current.tag() {
                     ChangeTag::Equal => {
                         out.push(' ');
-                        out.push_str(change.value());
+                        out.push_str(current.value());
                     }
                     ChangeTag::Delete => {
-                        out.push_str("\x1b[31m-");
-                        out.push_str(change.value());
-                        out.push_str("\x1b[0m");
+                        out.push('-');
+                        out.push_str("\x1b[31m");
+                        out.push_str(current.value().strip_suffix('\n').unwrap_or(current.value()));
+                        out.push_str("\x1b[0m\n");
                     }
                     ChangeTag::Insert => {
-                        out.push_str("\x1b[32m+");
-                        out.push_str(change.value());
-                        out.push_str("\x1b[0m");
+                        out.push('+');
+                        out.push_str("\x1b[32m");
+                        out.push_str(current.value().strip_suffix('\n').unwrap_or(current.value()));
+                        out.push_str("\x1b[0m\n");
                     }
                 }
+                i += 1;
             }
         }
     }
