@@ -59,7 +59,7 @@ These are the highest-order rules for all languages, scripts, and agent behavior
     *   **Canonical Tool:** Use `execute unify --write` to enforce and repair bidirectional subject coverage.
 *   **R&D Mirror Contract:** Repository R&D consists of the paired trees `Development/` and `Research/`. Topic names mirror across both trees: `Development/` carries executable guidance, `Research/` carries prompt-traceable findings.
 *   **mentci-aid Identification:** The core execution engine is **mentci-aid** (Daemon + Aid). Agents should recognize this as the primary pipeline supervisor. **Note: mentci-aid is currently NOT in a running state.**
-*   **Assimilation of Sources:** `attractor` (StrongDM) and `attractor-docs` (Brynary) are critical building blocks located in `Sources/`. They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Nix—rather than merely consumed as external dependencies.
+*   **First Principles (Attractor Inspiration):** The `attractor` concept is an inspiration for agent flow. Mentci does not fork it; everything is built from first principles in correct runtimes (Rust/Cap'n Proto/Aski). Legacy visual DOT graphs do not belong in high-level intent; advanced ASCII (EDN/Lojix) is the true state representation.
 *   **Language Authority Hierarchy:**
     1.  **Aski:** Evolved Clojure-inspired syntax. Takes precedence for specs and LLM-friendly logic.
     2.  **Rust:** Core implementation and heavy lifting.

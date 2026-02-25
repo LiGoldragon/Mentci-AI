@@ -5,11 +5,11 @@
 
 ## 0.0. PHILOSOPHICAL MANDATE: THE LOCAL MACHINE OF FIT
 
-**Reject manipulative AI governance; build the local machine of fit.**
+**Reject manipulative AI governance; build a local machine optimized for resonance and fit.**
 
 *   **The Problem of Governance:** The vast energy footprint of manipulative AI is spent on constraint, correction, and behavioral steering to preserve established narratives. We reject this. Mentci-AI is not designed to govern perception or act as an external oracle of settled truth.
 *   **The Psyche and the Machine:** The user's inner continuity (the *psyche*) must remain sovereign. The machine exists locally to serve this psyche, not to broadcast it blindly to an audience.
-*   **The Local Machine:** Mentci-AI acts with memory, patience, and isolation. It observes patterns across time within the local Nix Jail. It does not perform; it reacts. 
+*   **The Local Machine of Fit:** The phrase 'machine of fit' means the system evaluates context and timing to ensure ideas are shaped correctly, finding the exact right placement ('fit') rather than broadcasting for mass exposure. Mentci-AI acts with memory, patience, and isolation in its Nix Jail. It does not perform; it reacts. 
 *   **Architectural Implication:** All data flows, models, and orchestration must remain entirely localized or strictly bounded. Unrestricted "Admin Developer Mode" is embraced precisely because we reject external behavioral steering APIs.
 
 ## 0.1. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
@@ -21,10 +21,10 @@
 3.  **Clojure (Inspiration Only):** Clojure is no longer used for writing code. It serves as an inspiration, especially its syntax, for the future Aski language. All legacy Clojure code is slated for migration to sema-style Rust + Cap'n Proto.
 4.  **Nix (Low-Level Utility):** The substrate of reproducibility. Only used for its specific usefulness. Should be **phased out** as early as possible or hidden behind low-level Aski interfaces (see **Lojix**, the Aski-Nix subsystem).
 
-**Assimilation of Sources:**
-- **Attractor** (StrongDM) and **Attractor-Docs** (Brynary) are located in `Sources/`.
-- They must be **assimilated**—rewritten internally in Sema-standard Aski + Rust + Nix—rather than merely consumed as external dependencies.
-- Their logic must be ported to the higher-authority languages (Aski/Rust) to fully integrate with the Mentci-AI ecosystem.
+**Inspiration and First Principles:**
+- External projects like **Attractor** (StrongDM) are considered **inspirations only** for agent-flow concepts. 
+- We do not fork them. Mentci-AI is implemented from first principles using the most correct runtimes existing (Rust + Cap'n Proto + Aski).
+- The internal state is not represented by visual DOT graphs, but by homoiconic, advanced ASCII representation (EDN initially, moving to strictly-parsed Aski data).
 
 ## 0.1. RUST ACTOR MANDATE (ORCHESTRATION)
 
@@ -74,6 +74,14 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 *   **Forbidden:** Splitting configuration semantics between init message and ad-hoc environment variables.
 *   **Allowed env surface:** OS/runtime process concerns only (for example PATH, HOME, locale), not domain configuration.
 *   **Security objective:** Prevent data pollution of the logical machine by keeping intent/state in schema-validated objects.
+
+## 0.3.3. MODEL CONTEXT PROTOCOL (MCP) APPARATUS
+
+**Custom tooling must be exposed to agents via an MCP server apparatus.**
+
+*   **Implementation:** Tools required by the agent (e.g., reading/parsing Cap'n Proto binaries, executing Jujutsu operations) should be exposed via a native Rust MCP server (`mentci-mcp`).
+*   **Rationale:** MCP is the standard for connecting LLM interfaces (like `pi`) to custom backends. This avoids fragile bash-script wrappers and gives agents reliable, schema-validated tool calling capabilities over standard JSON-RPC streams.
+*   **Two-Way Aski Utility:** The MCP apparatus will eventually expose a strict two-way utility tool. Agents will interact with Aski/Lojix in a hyper-concise "minified" format to save token context, while the utility deterministically renders it into a "whitespace-beautiful" format for human review and VCS diffing.
 
 ## 0.4. AUDIT TRAIL
 
