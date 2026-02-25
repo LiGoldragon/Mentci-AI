@@ -111,7 +111,9 @@ async fn main() -> Result<()> {
             match chronos_output {
                 Ok(output) if output.status.success() => {
                     let solar_date = String::from_utf8_lossy(&output.stdout).trim().replace(" ", "_").replace(":", "-");
-                    let transcript_dir = std::path::Path::new(".voice-recordings/transcripts");
+                    let transcript_dir_value = request.get_transcript_dir()?.to_string()?;
+                                        let transcript_dir_path = std::path::PathBuf::from(transcript_dir_value);
+                                        let transcript_dir = transcript_dir_path.as_path();
                     if let Err(e) = fs::create_dir_all(transcript_dir) {
                         eprintln!("Failed to create transcript directory: {}", e);
                     } else {
