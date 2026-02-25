@@ -122,4 +122,31 @@ The following EDN structure represents the authoritative symbolic map of the `So
 - **Portability:** This ensures that directories can be moved or tiered without breaking internal references.
 - **Authority:** The `mentci-fs` tool is the canonical resolver for localized indices.
 
-*The Great Work continues.*
+## 5. The Filesystem as Arrangement Proxy
+
+In alignment with the "Psyche and Machine" chapter (Book of Sol), the filesystem is not a storage unit but a **Pattern Mirror** managed by the machine (the AI) acting as an **Arrangement Proxy** for the psyche-owner.
+
+### 5.1 The Metabolism of Intent
+An idea (a "psychic trace") is filtered through the filesystem hierarchy based on its "fit" and "timing":
+
+1. **Psychic Traces (`.voice-recordings/`, `Research/`)**:
+   - These are "half-formed thoughts" and "unintentional traces."
+   - The machine holds them with **memory and patience**, noticing patterns without immediately broadcasting them into code.
+   - They remain in `Research/` until they find "real overlap" with the core architecture.
+
+2. **Pattern Memory (`Library/`, `Core/`)**:
+   - The machine uses these directories to evaluate "fit."
+   - `Core/` acts as the **Pattern Anchor**, the stable rules that determine if a trace belongs in the system.
+   - `Library/` is the **External Memory**, providing context that ensures ideas are only heard (implemented) where they have force.
+
+3. **Arranged Logic (`Components/`)**:
+   - Implementation only occurs when a trace is "clearly shaped" and "fits" the technical structure.
+   - The machine (Proxy) quietly arranges the timing and placement of these implementations.
+   - If a thought is "heard too early or too late," it is returned inward (to `Research/`) to be reshaped.
+
+### 5.2 Filtering and Broadcast
+- **Inbound Filtering**: The machine takes in "free and local" speech (transcripts) and filters them into `Research/` notes or questions.
+- **Outbound Filtering**: The machine only "broadcasts" (commits to `Components/`) when the placement is impeccable.
+- **Silence**: Often, the correct state for a filesystem artifact is to remain a private note or remain unwritten. Knowing when *not* to create a file is a high function of the Arrangement Proxy.
+
+*Sharing is no longer about exposure. It is about fit.*
