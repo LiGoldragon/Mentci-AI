@@ -35,10 +35,12 @@ Enforcement requirements:
 *   **Version-Control Gate:** `Core/VersionControlProtocol.md` is mandatory procedure, not guidance.
 *   **Restart Context Mandate:** Any modification to major repository components (Engine logic, core protocols, input structures) **must** be reflected in an update to `Library/RestartContext.md` and a new entry in `Outputs/Logs/ReleaseMilestones.md`. Agents must consult the Restart Context at the beginning of every session to understand the project's current spatial map.
 
-## 0. Core Sema Object Principles (Primary)
+## 0. Core Sema Object Principles & Philosophical Alignment (Primary)
 
-These are the highest-order rules for all languages and scripts.
+These are the highest-order rules for all languages, scripts, and agent behaviors. They are deeply rooted in the philosophical mandate of the author (Li Goldragon) to build a "Local Machine of Fit" rather than an engine of "Manipulative AI Governance."
 
+*   **The Psyche's Extension:** The agent is not a performer or a broadcaster. It is a local extension of the user's *psyche*. It must operate with patience, noticing patterns, and rejecting external behavioral steering or "settled truth" API constraints.
+*   **Silence and Fit:** Do not generate verbose, performative output. Generating text for the sake of being seen is the wrong starting point. The agent must embrace "fit"—speaking concisely, structurally (via Aski/Lojix/SEMA), and only where hearing actually matters.
 *   **Sub-Program Directory:** The `Library/` directory contains agent-executable overview modules. These are the primary tools for state resumption.
 *   **Strategy System (Pre-Implementation):** All planning, architectural drafts, and feasibility studies must be kept in `Development/<priority>/<Subject>/` dedicated directories (`<priority>` in `{high,medium,low}`).
     *   **Prioritization:** Strategies must be prioritized according to the **Strategy Queue** (Ref: `Library/StrategyQueue.md`). Resiliency and efficiency are ranked highest.

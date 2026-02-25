@@ -3,7 +3,16 @@
 *   **Reproducibility:** The `Sources/` directory contains read-only symlinks to all project dependencies and ecosystem sources, managed by `execute`.
 *   **Purity:** Respect the `RO Indicator`. In pure mode, Sources are Read-Only. In impure mode (dev), local changes may be possible but must be committed to git to be visible to the pure flake.
 
-## 0.0. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
+## 0.0. PHILOSOPHICAL MANDATE: THE LOCAL MACHINE OF FIT
+
+**Reject manipulative AI governance; build the local machine of fit.**
+
+*   **The Problem of Governance:** The vast energy footprint of manipulative AI is spent on constraint, correction, and behavioral steering to preserve established narratives. We reject this. Mentci-AI is not designed to govern perception or act as an external oracle of settled truth.
+*   **The Psyche and the Machine:** The user's inner continuity (the *psyche*) must remain sovereign. The machine exists locally to serve this psyche, not to broadcast it blindly to an audience.
+*   **The Local Machine:** Mentci-AI acts with memory, patience, and isolation. It observes patterns across time within the local Nix Jail. It does not perform; it reacts. 
+*   **Architectural Implication:** All data flows, models, and orchestration must remain entirely localized or strictly bounded. Unrestricted "Admin Developer Mode" is embraced precisely because we reject external behavioral steering APIs.
+
+## 0.1. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
 
 **The architecture prioritizes languages by their semantic capacity.**
 
