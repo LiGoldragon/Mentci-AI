@@ -1,7 +1,8 @@
 use ast_grep_language::{LanguageExt, SupportLang};
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use std::fs;
 use std::path::PathBuf;
+use std::process::{Command, Stdio};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -18,8 +19,20 @@ struct Args {
     #[arg(short, long)]
     replace: String,
 
+    /// Diff output style
+    #[arg(long, value_enum, default_value_t = DiffStyle::Auto)]
+    diff: DiffStyle,
+
     /// Path to the file to modify
     file: PathBuf,
+}
+
+#[derive(Copy, Clone, Debug, ValueEnum)]
+enum DiffStyle {
+    Auto,
+    Delta,
+    Unified,
+    None,
 }
 
 fn parse_lang(lang: &str) -> Option<SupportLang> {
@@ -34,35 +47,92 @@ fn parse_lang(lang: &str) -> Option<SupportLang> {
     }
 }
 
+fn unified_diff(before: &str, after: &str, file: &str) -> String {
+    let diff = similar::TextDiff::from_lines(before, after);
+    diff.unified_diff()
+        .context_radius(3)
+        .header(&format!("a/{file}"), &format!("b/{file}"))
+        .to_string()
+}
+
+fn render_delta(unified: &str) -> Option<String> {
+    let mut child = Command::new("delta")
+        .arg("--paging=never")
+        .arg("--syntax-theme=none")
+        .arg("--line-numbers")
+        .arg("--side-by-side")
+        .arg("--color-only")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+        .ok()?;
+
+    if let Some(mut stdin) = child.stdin.take() {
+        use std::io::Write;
+        if stdin.write_all(unified.as_bytes()).is_err() {
+            return None;
+        }
+    }
+
+    let output = child.wait_with_output().ok()?;
+    if !output.status.success() {
+        return None;
+    }
+    Some(String::from_utf8_lossy(&output.stdout).to_string())
+}
+
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    
-    let lang = parse_lang(&args.lang).ok_or_else(|| anyhow::anyhow!("Unsupported language: {}", args.lang))?;
+
+    let lang = parse_lang(&args.lang)
+        .ok_or_else(|| anyhow::anyhow!("Unsupported language: {}", args.lang))?;
     let src = fs::read_to_string(&args.file)?;
-    
+
     let ast = lang.ast_grep(&src);
     let root = ast.root();
-    
+
     let mut edits = root.replace_all(&*args.pattern, &*args.replace);
-    
+
     if edits.is_empty() {
         println!("No matches found for pattern.");
         return Ok(());
     }
-    
+
     edits.sort_by(|a, b| b.position.cmp(&a.position));
-    
-    let mut bytes = src.into_bytes();
+
+    let mut bytes = src.clone().into_bytes();
     for edit in edits {
         let pos = edit.position;
         let len = edit.deleted_length;
-        bytes.splice(pos..pos+len, edit.inserted_text);
+        bytes.splice(pos..pos + len, edit.inserted_text);
     }
-    
+
     let new_src = String::from_utf8(bytes)?;
-    fs::write(&args.file, new_src)?;
-    
-    println!("Successfully applied edits to {}", args.file.display());
-    
+    fs::write(&args.file, &new_src)?;
+
+    let unified = unified_diff(&src, &new_src, &args.file.display().to_string());
+    match args.diff {
+        DiffStyle::None => {
+            println!("Successfully applied edits to {}", args.file.display());
+        }
+        DiffStyle::Unified => {
+            println!("{}", unified);
+        }
+        DiffStyle::Delta => {
+            if let Some(delta) = render_delta(&unified) {
+                println!("{}", delta);
+            } else {
+                println!("{}", unified);
+            }
+        }
+        DiffStyle::Auto => {
+            if let Some(delta) = render_delta(&unified) {
+                println!("{}", delta);
+            } else {
+                println!("{}", unified);
+            }
+        }
+    }
+
     Ok(())
 }

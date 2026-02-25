@@ -8,3 +8,4 @@ anyhow = "1.0.102"
 ast-grep-core = "0.41.0"
 ast-grep-language = "0.41.0"
 clap = { version = "4.5.60", features = ["derive"] }
+similar = "2.7.0"
