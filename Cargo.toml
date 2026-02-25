@@ -9,8 +9,10 @@ members = [
     "Components/mentci-box-lib",
     "Components/mentci-stt",
     "Components/mentci-user",
-    "Components/mentci-mcp"
-]
+    "Components/mentci-mcp/core",
+    "Components/mentci-mcp/jj",
+    "Components/mentci-mcp/capnp"
+, "Components/mentci-mcp/edit"]
 
 [profile.release]
 lto = true
