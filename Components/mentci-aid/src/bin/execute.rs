@@ -9,7 +9,7 @@ async fn main() -> anyhow::Result<()> {
     if args.is_empty() {
         println!("execute: actor-based symbolic orchestrator");
         println!("usage: execute <command> [args...]");
-        println!("commands: root-guard, link-guard, session-guard, version, unify, intent, report, finalize");
+        println!("commands: root-guard, link-guard, session-guard, version, unify, intent, report, finalize, transition");
         return Ok(());
     }
 
@@ -108,6 +108,13 @@ async fn main() -> anyhow::Result<()> {
             let res = ractor::call!(orchestrator, SymbolicMessage::LaunchJail)?;
             if let Err(e) = res {
                 eprintln!("Launch failed: {}", e);
+                std::process::exit(1);
+            }
+        }
+        "transition" => {
+            let res = ractor::call!(orchestrator, SymbolicMessage::TransitionSession)?;
+            if let Err(e) = res {
+                eprintln!("Transition failed: {}", e);
                 std::process::exit(1);
             }
         }

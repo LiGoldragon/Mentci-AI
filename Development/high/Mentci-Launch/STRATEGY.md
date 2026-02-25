@@ -14,6 +14,12 @@ Design and deliver a dedicated `mentci-launch` component that starts `mentci-box
 4. Environment-variable domain configuration is forbidden when the init message carries the value.
 5. Primary agent front-end defaults to TypeScript `pi` (`pi`) until Rust parity is proven.
 
+## 2.1. Test-Driven Transition
+A specialized `execute transition` command exists to refresh the developer environment.
+1.  **Mandatory Checks:** Transition only occurs if `root-guard`, `link-guard`, and `session-guard` pass.
+2.  **Terminal Spawning:** The transition uses `mentci-launch` to spawn a new `foot` terminal session via `systemd --user`.
+3.  **UI Integrity:** This model avoids terminal multiplexing/recursion glitches by opening a fresh, OS-managed window.
+
 ## 3. Data Purity Rule (Very High Importance)
 1. `mentci-launch` accepts exactly one launch-init object.
 2. The launch-init object points to a Cap'n Proto Mentci-Box request object.
@@ -22,26 +28,23 @@ Design and deliver a dedicated `mentci-launch` component that starts `mentci-box
 
 ## 4. Architecture Shape
 1. **Schema authority:** `Components/schema/mentci.capnp` (`MentciLaunchRequest`).
-2. **Component:** `Components/mentci-launch/` (planned).
+2. **Component:** `Components/mentci-launch/` (implemented).
 3. **Execution modes:**
    - `terminal`: invoke terminal process command via systemd user scope.
    - `service`: install/launch user service unit with init envelope path.
 4. **Delegation:** launcher always delegates sandbox execution to `mentci-box`.
 
 ## 5. Integration Points
-1. `mentci-aid execute` adds a launch subcommand that forwards Cap'n Proto request path.
+1. `mentci-aid execute` adds `transition` and `launcher` subcommands.
 2. Nix package exports:
-   - `mentciLaunch` (future package),
-   - optional app alias for launch testing.
-3. Test harness links:
-   - future interactive TUI test profile for agent-driven session checks.
+   - `mentciLaunch` (package),
+   - `execute` subcommands for launch orchestration.
 
 ## 6. Acceptance Criteria
 1. `mentci-launch` can open `mentci-box` in a new `foot` terminal using systemd user scope.
 2. Service-mode launch path is reproducible and auditable.
 3. All launch semantics originate in `MentciLaunchRequest`.
 4. No launch-domain behavior requires ad-hoc env vars.
-5. Documentation states TypeScript `pi` as default operator interface for this phase.
 
 ## 7. Risks
 1. Terminal availability drift (`foot` absent).
