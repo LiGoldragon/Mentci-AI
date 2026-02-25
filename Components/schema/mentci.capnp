@@ -256,38 +256,28 @@ struct ToolDefinition {
   nativeSchema @4 :Text; # Provider-specific raw schema definition
 }
 
-# --- Data Digging (Mentci-Dig) ---
-
-struct DigRequest {
-  targets @0 :List(Text);
-  strategy @1 :DigStrategy;
-  query @2 :Text;
-  filters @3 :List(Entry);
+struct SttRequest {
+  audioPath @0 :Text;
+  vocabulary @1 :List(Text);
+  
+  # Provider Configuration
+  providerUrl @2 :Text;
+  apiKeySecretName @3 :Text;
+  model @4 :Text;
+  
+  # Prompt Configuration
+  basePrompt @5 :Text;
+  includeEmotionalEmphasis @6 :Bool;
+  emotionalEmphasisInstruction @7 :Text;
+  
+  # Audio Configuration
+  mimeType @8 :Text;
+  criticalPhoneticInstructions @9 :Text;
+  transcriptDir @10 :Text;
+  vocabularyPreambleTemplate @11 :Text;
 }
 
-enum DigStrategy {
-  jsonPath @0;
-  astPattern @1;
-  regex @2;
-  ednPath @3;
-}
-
-struct DigResponse {
-  matches @0 :List(DigMatch);
-  metadata @1 :DigMetadata;
-}
-
-struct DigMatch {
-  file @0 :Text;
-  line @1 :UInt32;
-  byteOffset @2 :UInt64;
-  content @3 :Text;       # The raw extracted string
-  structuredData @4 :Text; # JSON/EDN representation if applicable
-}
-
-struct DigMetadata {
-  executionTimeMs @0 :UInt64;
-  filesScanned @1 :UInt32;
-  filesSkipped @2 :UInt32;
-  errors @3 :List(Text);
+struct SttResponse {
+  transcription @0 :Text;
+  timestamp @1 :Text;
 }

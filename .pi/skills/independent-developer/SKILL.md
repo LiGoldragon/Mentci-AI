@@ -28,9 +28,15 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 ### 3. DVCS Rigor (Jujutsu)
 - **Fractal Repository Protocol:** Treat every component as a future standalone `jj` repository. Inter-component interaction must happen only through schema-validated channels.
 - **Intent-Bookmark Schema:** Use the machine-parsable bookmark schema: `UidHash__TypeIntent__Subflow` (e.g., `f5919__fractalize__mentci-user`).
+- **Stable Interaction Mandate (Change IDs vs. Commit IDs):** Always prioritize **Change IDs** for manipulating revisions. In Jujutsu, a **Change ID** is a durable, long-lived identifier for a piece of work (intent), whereas a **Commit ID** (hash) is a volatile snapshot of the content. 
+    - *Stability:* Change IDs persist through rebases, amends, and rewrites. Commit IDs change on every modification.
+    - *Agent Utility:* By using Change IDs, agents ensure their operations (rebase, squash, describe) target the correct logical unit of work even if the underlying hash has drifted.
 - **Atomic Intent:** Use `intent:` commits for every logical change.
-- **Session Finalization:** End every turn with a `session:` commit. Always verify local/remote bookmark alignment for both `dev` and any specialized `research` branches before completion.
+- **Session Finalization:** End every turn with a `session:` commit. Always verify local/remote bookmark alignment for both `dev` and any specialized bookmarks used in the current workspace (e.g., `research`) before completion. **You MUST push the active bookmark(s) being worked on in the current session to origin whenever changes are made.**
+- **Git Backend Sync:** When working in colocated repositories, ensure the local Git backend is synchronized with the `jj` state by running `jj git export`. Verification is only complete when the local bookmark, the `@git` ref, and the `@origin` remote are all aligned at the same commit ID.
 - **Rebase Mandate:** When working across branches, always rebase research work onto the advanced `dev` baseline to maintain a clean linear history.
+- **Lineage Integrity:** Before rebasing, audit the branch for parallel anonymous heads (e.g., `mqn`). You are strictly forbidden from orphaning valid work. Use `jj rebase -r 'all_heads_in_lineage'` logic to ensure the entire intent history is preserved.
+- **Clean Next Commit:** Immediately after a successful push and verification, the agent MUST run `jj new <bookmark>` to prepare a clean working commit for the next turn. This ensures no intent-leakage across prompt boundaries.
 
 ### 4. Implementation Flow
 1. **Research & Verify:** Use Linkup to validate assumptions.

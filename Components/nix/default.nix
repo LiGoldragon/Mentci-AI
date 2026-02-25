@@ -130,8 +130,12 @@ let
   execute_check = import ./execute_check.nix {
     inherit pkgs mentci_ai;
   };
+
+  vtcode_check = import ./vtcode_check.nix {
+    inherit pkgs vtcode mentci_user repo_root;
+  };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_check components_index_check unified_llm pi_rust vtcode;
+  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_check components_index_check unified_llm pi_rust vtcode vtcode_check;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

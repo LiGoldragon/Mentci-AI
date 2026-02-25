@@ -1,0 +1,30 @@
+;; reserved words, like this one, each have specific interpretation rules
+;; module is a three-form oblect (keyword(module) ModuleName Options)
+module simple
+       {:other-option whatever
+        :require (stuff blah)}
+
+;; The parser knows that a first-capitalized top-level symbol
+;; here means it is a type definition with definition following, and is
+;; therefore a two-form objects (Name Declaration)
+
+;; Capitalized symbol followed by {} map -> Struct
+User { :field-value-x "foo"
+       :field-value-y "bar"}
+
+;; Capitalized symbol followed by [] containing variants -> Enum
+Species [;; Container-type variant, with contained type
+          FirstVariant (U32)
+          ;; Simple-type variant
+          SecondVariant]
+
+;; Capitalized symbol followed by () -> tuple newtype
+Age (U16)
+
+impl FromStr for Age
+{ :from_str [ (type-signature TODO)
+            (function-body TODO) ]
+
+
+  :try_from_str [ (type-signature TODO)
+                (function-body TODO) ]}

@@ -174,6 +174,7 @@
           pi = namespace.pi;
           piDev = namespace.pi_dev;
           piSmoke = namespace.pi_check;
+          vtcodeSmoke = namespace.vtcode_check;
           unifiedLlm = namespace.unified_llm;
         };
 

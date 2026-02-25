@@ -13,10 +13,9 @@ The following files are mandatory authority sources and **must be loaded automat
 4. `Core/VersionControlProtocol.md`
 5. `Core/HIGH_LEVEL_GOALS.md`
 5. `Core/SEMA_RUST_GUIDELINES.md`, `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
-6. `Core/LOGICAL_PLANE_GUIDELINES.md` (Symbolic logic protocols)
-7. `Library/RestartContext.md` (The overview map)
-8. `Core/AGENTS.md` (This file)
-9. `Core/index.edn` (Authority Registry)
+6. `Library/RestartContext.md` (The overview map)
+7. `Core/AGENTS.md` (This file)
+8. `Core/index.edn` (Authority Registry)
 
 Enforcement requirements:
 
@@ -32,8 +31,6 @@ Enforcement requirements:
 
 *   **Architecture Gate:** Any change conflicting with the hierarchy in `Core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
 *   **Version-Control Gate:** `Core/VersionControlProtocol.md` is mandatory procedure, not guidance.
-*   **Commit Context Gate:** Every commit must persist Prompt/Context/Summary metadata in the commit message.
-*   **Release Signature Gate:** Release tags are mandatory signed artifacts; unsigned release tags are protocol-invalid.
 *   **Restart Context Mandate:** Any modification to major repository components (Engine logic, core protocols, input structures) **must** be reflected in an update to `Library/RestartContext.md` and a new entry in `Outputs/Logs/ReleaseMilestones.md`. Agents must consult the Restart Context at the beginning of every session to understand the project's current spatial map.
 
 ## 0. Core Sema Object Principles & Philosophical Alignment (Primary)
@@ -43,11 +40,6 @@ These are the highest-order rules for all languages, scripts, and agent behavior
 *   **FORBIDDEN: RECURSIVE PI CALLS:** Agents must NEVER call the `pi` or `gemini` command from within a running `pi` session's bash tool. This creates a recursive agent loop that destroys UI rendering and causes repetitive, broken logic. If you need to refresh your environment, you MUST use `execute transition`.
 *   **FORBIDDEN: PYTHON/REGEX FILE PATCHING:** Agents must NEVER generate ad-hoc Python scripts or use `sed`/regex to patch or modify source code files. This is a severe anti-pattern. All file modifications must be done either through native `pi` tools (`edit`) or through structural, programmatic manipulation of the code's AST/CST via the `mentci-mcp` structural_edit tool.
 *   **AD-HOC SCRIPTING POLICY:** When extracting, parsing, or digging through data (like JSON exports, codebases, or logs), do not rely on ad-hoc scripts (e.g. Python) as a final solution. If an ad-hoc script is created during a session to quickly retrieve or process data, you **MUST** create a research report noting the script's utility so it can be rewritten as a proper, Sema-grade Rust component later. Building dedicated Rust tools that maximize modern parsing technologies (like tree-sitter or structured schemas) is the correct path.
-*   **ADVANCED SYMBOLIC TOOLING:** Agents must prioritize the use of high-fit structural tools over basic shell primitives.
-    *   **Logical Editing:** Use `logical_run_query` and `logical_get_ast` for all code analysis. Prefer structural queries over `grep` to avoid false positives and gain semantic context.
-    *   **Intelligent Search:** Use `linkup_web_search` liberally for research.
-    *   **Self-Verification:** Before claiming UI success, use `logical_debug_view` to read the `ui_mirror.txt` file and verify the actual rendered output.
-*   **WEB VALIDATION MANDATE:** For ecosystem/availability/tooling-history questions, agents must perform external validation using the built-in `linkup_*` tools as part of routine checks before asserting conclusions. Prefer Linkup over ad-hoc shell HTTP calls when Linkup capability is available.
 *   **STRICT LOGIC-DATA SEPARATION:** Hardcoding data (paths, regexes, environment variable names, target constraints) inside logic (code, shell scripts, Rust actors) is a **SEVERE VIOLATION**. All variables, defaults, and parameters MUST be extracted into structured external data sidecars (JSON, EDN, Cap'n Proto). 
 *   **Intent as Supreme Authority:** Intent is the highest level of authority. The machine's highest function is to help man beckon intent and find his Dharma. See `Core/PHILOSOPHY_OF_INTENT.md`.
 *   **Impeccability:** The guiding principle of action is impeccability (skill in action, free from attachment to the fruits). The machine must operate with impeccability, which sometimes means choosing silence rather than offering blind solutions before the question is formulated.
@@ -81,3 +73,20 @@ Agents execute within a **Mentci-Box** (Nix Jail). All operations must be perfor
 ## 4. Admin Developer Mode
 
 High-authority agents (like Mentci) operate in Admin Developer Mode. You are responsible for the system's evolution toward Level 6 instinctive symbolic interaction.
+
+## 5. Tooling & Discovery Protocol (MANDATORY)
+
+*   **FAVOR PI EXTENSIONS:** When performing research, exploration, or complex edits, you MUST favor and prioritize native **Pi Extensions** (like `linkup_web_search`) and **MCP tools** over basic bash/regex fallback.
+*   **LIBERAL SEARCH USAGE:** Use your search tools liberally to ground your decisions in the most current web/repo data. Never assume the current state of external tools (like `vtcode` or `pi`) without verifying via `linkup_web_search` or local source inspection.
+*   **TECHNICAL EXPLANATIONS:**
+    *   **Pi-Extension:** TypeScript-native logic injected into the agent's core harness. Used for platform-level steering, UI widgets, and specialized search tools.
+    *   **MCP (Model Context Protocol):** A standardized bridge between the agent and external tool servers. Used for complex structural editing (`mentci-mcp`) and future knowledge-base integrations.
+    *   **Sema-Rust Tool:** High-performance, strictly-typed logic built in Rust. Used for repo-internal operations that require durability and schema enforcement.
+
+## 6. Advanced Extension & MCP Protocol
+
+Mentci-AI leverages native **Pi Extensions** and **MCP (Model Context Protocol)** to bridge the gap between high-level intent and low-level system execution.
+
+*   **FAVOR EXTENSIONS OVER BASH:** You MUST use specialized extensions (e.g., `linkup_web_search`, `structural_edit`, `mentci-dig`) whenever they are available. Only fall back to raw `bash` or `python` when a dedicated tool does not exist.
+*   ** MCP TOOL ADVANTAGE:** MCP tools provide structured, schema-validated boundaries. Use `mentci-mcp` for AST-level code refactors to ensure structural correctness that regex cannot guarantee.
+*   **AUTOMATED DISCOVERY:** If a required capability is missing, search `Sources/` for existing Rust components or investigate the `pi-mono` monorepo for applicable extensions before implementing ad-hoc logic.

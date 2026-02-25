@@ -1,0 +1,104 @@
+;; Aski schema DSL (EDN-shaped, not EDN-compatible).
+;;
+;; Design goal: maximum meaning per character via ultra-specific declarations,
+;; while remaining delimiter-driven for a lossless CST and transactional editing.
+;;
+;; Core sugars used here:
+;; - (def ...) defines a type.
+;; - (newtype Name UnderlyingType) is a first-class form (no verbose wrappers).
+;; - (record Name { field: Type ... }) is a record literal with field typing.
+;; - (tuple Name [T1 T2 ...]) declares a tuple-struct (positional fields).
+;; - (enum Name
+;;     (UnitVariant)
+;;     (NewtypeVariant T)
+;;     (TupleVariant [T1 T2])
+;;     (StructVariant {k: T ...})
+;;   ) declares all enum variant shapes.
+;; - (? T) is Option<T>.
+;; - (result Ok Err) is Result<Ok, Err>.
+;; - (vec T), (set T), (map K V), (array N T) are canonical containers.
+;; - Primitive numeric widths are atomic symbols: i8 i16 i32 i64 i128 isize u8 u16 u32 u64 u128 usize f32 f64.
+;; - Names use kebab-case to maximize readability and intention density in text.
+;;
+;; A transactional engine can address nodes by path and emit minimal rope patches, while
+;; the semantic layer answers “expected type at node” and validates edits incrementally.
+
+(aski/v1
+
+  (newtype user-id uuid)
+  (newtype blob bytes)
+  (newtype (wrapped T) T)
+
+  (record unit-struct {})
+
+  (tuple pair [i32 i32])
+
+  (enum error-code
+    (not-found)
+    (permission-denied)
+    (invalid string))
+
+  ;; Canonical enum envelope is fixed by schema: {variant, data}.
+  ;; The declaration is still compact; the runtime knows the envelope rule globally.
+  (enum shape
+    (unit)
+    (circle {r: f64})
+    (rect [f64 f64])
+    (named string))
+
+  (enum message
+    (ping)
+    (text string)
+    (batch (vec message))
+    (kv (map string string)))
+
+  (record status
+    { ok: bool
+      code: (? u32)
+      note: (? string) })
+
+  ;; Coverage record that forces the full Serde-compatible surface area.
+  (record all-types
+    { bool-value: bool
+      char-value: char
+      string-value: string
+
+      i8-value: i8
+      i16-value: i16
+      i32-value: i32
+      i64-value: i64
+      i128-value: i128
+      isize-value: isize
+
+      u8-value: u8
+      u16-value: u16
+      u32-value: u32
+      u64-value: u64
+      u128-value: u128
+      usize-value: usize
+
+      f32-value: f32
+      f64-value: f64
+
+      maybe-i64-value: (? i64)
+      outcome-string-or-error-code: (result string error-code)
+
+      string-vector: (vec string)
+      mixed-tuple: [i32 string bool]          ;; sugar: bare vector in type position means tuple type
+      u16-array-len-3: (array 3 u16)
+
+      string-set: (set string)
+      string-to-u32-map: (map string u32)
+      user-id-to-i64-map: (map user-id i64)
+
+      user-id: user-id
+      blob-bytes: blob
+      wrapped-pair: (wrapped pair)
+
+      shape: shape
+      message: message
+      status: status
+
+      unit-value: unit
+      unit-struct-value: unit-struct } )
+)

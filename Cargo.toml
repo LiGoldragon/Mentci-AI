@@ -17,8 +17,9 @@ members = [
     "Components/mentci-policy-engine",
     "Components/mentci-mcp-gateway",
     "Components/aski-lib",
-    "Components/aski-cli"
-, "Components/samskara"]
+    "Components/aski-cli",
+    "Components/samskara"
+]
 
 [profile.release]
 lto = true
