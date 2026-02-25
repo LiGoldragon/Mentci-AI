@@ -1039,11 +1039,23 @@ dependencies = [
  "capnp",
  "capnpc",
  "mentci-box-lib",
+ "mentci-user",
  "reqwest 0.12.28",
  "serde",
  "serde_json",
  "structopt",
  "tokio",
+]
+
+[[package]]
+name = "mentci-user"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "capnp",
+ "capnpc",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

@@ -25,8 +25,12 @@ struct Opt {
 async fn main() -> Result<()> {
     let opt = Opt::from_args();
 
-    let api_key = env::var("GEMINI_API_KEY")
-        .context("GEMINI_API_KEY environment variable is not set")?;
+    let api_key = if let Ok(key) = env::var("GEMINI_API_KEY") {
+        key
+    } else {
+        mentci_user::get_secret("GEMINI_API_KEY")?
+            .context("GEMINI_API_KEY not set and not found in mentci-user config")?
+    };
 
     let mut audio_path;
     let mut model_name = "gemini-2.5-flash".to_string();
