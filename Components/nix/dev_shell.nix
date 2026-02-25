@@ -34,11 +34,11 @@ pkgs.mkShell {
     fi
     export PI_PACKAGE_DIR="$PI_SOURCE_STABLE_LINK"
 
-    # Initialize user-specific extension secrets
-    if [ -f ".mentci/user.json" ] && command -v gopass >/dev/null 2>&1; then
-      # Extract Linkup API Key from gopass as required by the pi-linkup extension
-      # This logic will eventually be handled by the native mentci-user MCP server
-      export LINKUP_API_KEY=$(gopass show Mentci-AI/linkup.so/Goldragon-Key-v1 2>/dev/null | head -n 1)
+    # Initialize user-specific extension secrets (Logic-Data Separation)
+    # The shellHook knows NO data. It relies purely on the mentci-user Rust binary
+    # to read the .mentci/user.json data sidecar and construct the environment exports.
+    if command -v mentci-user >/dev/null 2>&1; then
+      eval "$(mentci-user export-env 2>/dev/null)"
     fi
   '';
 }

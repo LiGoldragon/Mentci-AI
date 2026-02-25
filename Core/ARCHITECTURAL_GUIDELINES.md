@@ -12,6 +12,24 @@
 *   **The Local Machine of Fit:** The phrase 'machine of fit' means the system evaluates context and timing to ensure ideas are shaped correctly, finding the exact right placement ('fit') rather than broadcasting for mass exposure. Mentci-AI acts with memory, patience, and isolation in its Nix Jail. It does not perform; it reacts. 
 *   **Architectural Implication:** All data flows, models, and orchestration must remain entirely localized or strictly bounded. Unrestricted "Admin Developer Mode" is embraced precisely because we reject external behavioral steering APIs.
 
+## 0.0.1. LOGIC-DATA SEPARATION (STRICT MANDATE)
+
+**Logic is universal; Truth is external.**
+The strict separation of "logic" (code) and "data" (variables, paths, regexes, configuration) is a core requirement for high-efficiency symbolic manipulation.
+
+*   **Externalization Rule:** All variables or data parts of any code must stay *out of the code* or logic part of the system.
+*   **Structured Data Input:** Logic components must always use a structured data input (Sema Objects).
+*   **Sidecar Defaults:** Default values must be kept in a structured data file alongside the code (Sidecar Pattern).
+*   **Format Hierarchy:**
+    1.  **Cap'n Proto (`capnp`)**: Preferred for schema-validated or binary state.
+    2.  **EDN**: Preferred for text-native, LLM-friendly logic.
+    3.  **JSON**: Permitted only as a tertiary fallback.
+
+*   **Forbidden:** `process_item(item, "TYPE_A")` // Hardcoded taxonomy
+*   **Required:** `manifest = { TYPE_A = [items...]; }; map(process, manifest)` // Data-driven
+
+
+
 ## 0.1. LANGUAGE AUTHORITY HIERARCHY (ASSIMILATION DIRECTIVE)
 
 **The architecture prioritizes languages by their semantic capacity.**
@@ -209,22 +227,6 @@ High-level architectural context (framing, mission statements, global mandates) 
     *   **Ordinality:** Seconds and minutes are 1-based ordinals (0 on ephemeris = 1st ordinal).
     *   **Adaptive Precision:** High-precision units (seconds, minutes) may be omitted if unknown or if the context only requires lower granularity (e.g., `♓︎ 1° | 5919 AM` for broad milestones). Truncation must always occur from right-to-left.
 *   **Comments:** Mandatory *only* when the "why" cannot be structural (e.g., specific timeouts, protocol quirks). Boilerplate is never documented.
-
-## 6. Ontology Resides in Data (Logic-Data Separation)
-
-**Logic is universal; Truth is external.**
-The strict separation of "logic" (code) and "data" (variables, paths, regexes, configuration) is a core requirement for high-efficiency symbolic manipulation.
-
-*   **Externalization Rule:** All variables or data parts of any code must stay *out of the code* or logic part of the system.
-*   **Structured Data Input:** Logic components must always use a structured data input (Sema Objects).
-*   **Sidecar Defaults:** Default values must be kept in a structured data file alongside the code (Sidecar Pattern).
-*   **Format Hierarchy:**
-    1.  **Cap'n Proto (`capnp`)**: Preferred for schema-validated or binary state.
-    2.  **EDN**: Preferred for text-native, LLM-friendly logic.
-    3.  **JSON**: Permitted only as a tertiary fallback.
-
-*   **Forbidden:** `process_item(item, "TYPE_A")` // Hardcoded taxonomy
-*   **Required:** `manifest = { TYPE_A = [items...]; }; map(process, manifest)` // Data-driven
 
 ## 8. ECLIPTIC CHRONOGRAPHIC VERSIONING
 
