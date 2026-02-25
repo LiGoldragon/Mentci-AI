@@ -272,7 +272,8 @@ struct SttRequest {
   
   # Audio Configuration
   mimeType @8 :Text;
-  criticalPhoneticInstructions @9 :Text;
+    criticalPhoneticInstructions @9 :Text;
+    transcriptDir @10 :Text;
 }
 
 struct SttResponse {

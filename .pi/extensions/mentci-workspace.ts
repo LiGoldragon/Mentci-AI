@@ -27,9 +27,10 @@ export default function (pi: ExtensionAPI) {
                 
                 try {
                     execSync(`jj commit -m "intent: structurally edit ${args.file}"`, { cwd: workspaceRoot, stdio: 'ignore' });
-                    pi.ui.notify({ message: `Auto-committed structural edit to ${args.file}`, type: "success" });
+                    // pi.ui.notify is deprecated/not available here on newer pi versions.
+                    console.log(`Auto-committed structural edit to ${args.file}`);
                 } catch (e) {
-                    pi.ui.notify({ message: `Failed to auto-commit: ${e}`, type: "error" });
+                    console.error(`Failed to auto-commit: ${e}`);
                 }
 
                 return {
@@ -48,7 +49,6 @@ export default function (pi: ExtensionAPI) {
             const workspaceRoot = process.cwd();
             const chronos = execSync(`chronos --format am --precision second`, { cwd: workspaceRoot, encoding: "utf-8" }).trim();
             const jjStatus = execSync(`jj status --no-pager`, { cwd: workspaceRoot, encoding: "utf-8" }).trim();
-            pi.ui.notify({ message: `[Mentci] Solar: ${chronos}`, type: "info" });
             console.log(`\n--- Pre-Hook Injected State ---\nTime: ${chronos}\n${jjStatus}\n-------------------------------`);
         } catch (e) {}
     });
@@ -58,11 +58,11 @@ export default function (pi: ExtensionAPI) {
         const args = ctx?.args || {};
         const file = args.file || args.path;
         if ((toolName === "write" || toolName === "edit" || toolName === "structural_edit") && file && file.endsWith(".rs")) {
-            pi.ui.notify({ message: `[Arrangement Proxy] Analyzing ${file} for Cap'n Proto dependency...`, type: "warning" });
+            console.log(`[Arrangement Proxy] Analyzing ${file} for Cap'n Proto dependency...`);
             try {
                 const schemaExists = execSync(`find Components/ -name "*.capnp" | wc -l`, { encoding: "utf-8" }).trim();
                 if (parseInt(schemaExists) === 0) {
-                    pi.ui.notify({ message: `[Violation Risk] Writing Rust logic before defining Cap'n Proto Schema!`, type: "error" });
+                    console.warn(`[Violation Risk] Writing Rust logic before defining Cap'n Proto Schema!`);
                 }
             } catch (e) {}
         }
