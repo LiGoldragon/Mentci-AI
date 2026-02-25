@@ -34,10 +34,10 @@ pkgs.mkShell {
     fi
     export PI_PACKAGE_DIR="$PI_SOURCE_STABLE_LINK"
 
-    # Load user secrets if mentci-user is available
-    if command -v mentci-stt >/dev/null 2>&1; then
-      # This is a temporary shim until the full MCP apparatus handles this
-      # We extract keys for standard tools that expect env vars
+    # Initialize user-specific extension secrets
+    if [ -f ".mentci/user.json" ] && command -v gopass >/dev/null 2>&1; then
+      # Extract Linkup API Key from gopass as required by the pi-linkup extension
+      # This logic will eventually be handled by the native mentci-user MCP server
       export LINKUP_API_KEY=$(gopass show Mentci-AI/linkup.so/Goldragon-Key-v1 2>/dev/null | head -n 1)
     fi
   '';
