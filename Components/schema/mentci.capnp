@@ -259,7 +259,19 @@ struct ToolDefinition {
 struct SttRequest {
   audioPath @0 :Text;
   vocabulary @1 :List(Text);
-  model @2 :Text = "gemini-2.5-flash";
+  
+  # Provider Configuration
+  providerUrl @2 :Text;
+  apiKeySecretName @3 :Text;
+  model @4 :Text;
+  
+  # Prompt Configuration
+  basePrompt @5 :Text;
+  includeEmotionalEmphasis @6 :Bool;
+  emotionalEmphasisInstruction @7 :Text;
+  
+  # Audio Configuration
+  mimeType @8 :Text;
 }
 
 struct SttResponse {

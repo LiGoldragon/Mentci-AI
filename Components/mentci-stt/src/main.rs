@@ -4,7 +4,6 @@ pub use schema::{atom_filesystem_capnp, mentci_capnp};
 use schema::mentci_capnp::stt_request;
 use std::io::Read;
 use structopt::StructOpt;
-use std::env;
 use std::fs;
 use base64::Engine;
 use anyhow::{Context, Result};
@@ -12,64 +11,59 @@ use reqwest::Client;
 use serde_json::json;
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "mentci-stt", about = "Mentci-AI Speech-to-Text via Gemini")]
+#[structopt(name = "mentci-stt", about = "Mentci-AI Speech-to-Text via Cap'n Proto Config")]
 struct Opt {
     #[structopt(short, long, parse(from_os_str))]
-    file: Option<std::path::PathBuf>,
+    audio: Option<std::path::PathBuf>,
     
     #[structopt(short, long, parse(from_os_str))]
-    capnp: Option<std::path::PathBuf>,
+    capnp: std::path::PathBuf,
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
     let opt = Opt::from_args();
 
-    let api_key = if let Ok(key) = env::var("GEMINI_API_KEY") {
-        key
+    let mut file = fs::File::open(&opt.capnp)
+        .with_context(|| format!("Failed to open config: {:?}", opt.capnp))?;
+    let mut buffer = Vec::new();
+    file.read_to_end(&mut buffer)?;
+    
+    let mut slice = &buffer[..];
+    let message_reader = capnp::serialize_packed::read_message(&mut slice, capnp::message::ReaderOptions::new())?;
+    let request = message_reader.get_root::<stt_request::Reader>()?;
+    
+    let audio_path = if let Some(a) = opt.audio {
+        a
     } else {
-        mentci_user::get_secret("GEMINI_API_KEY")?
-            .context("GEMINI_API_KEY not set and not found in mentci-user config")?
+        std::path::PathBuf::from(request.get_audio_path()?.to_string()?)
     };
 
-    let mut audio_path;
-    let mut model_name = "gemini-2.5-flash".to_string();
-    let mut vocabulary = vec![];
+    let secret_name = request.get_api_key_secret_name()?.to_string()?;
+    let api_key = mentci_user::get_secret(&secret_name)?
+        .context(format!("Secret {} not found in mentci-user config or env", secret_name))?;
 
-    if let Some(capnp_path) = opt.capnp {
-        let mut file = fs::File::open(&capnp_path)?;
-        let mut buffer = Vec::new();
-        file.read_to_end(&mut buffer)?;
-        
-        let mut slice = &buffer[..];
-        let message_reader = capnp::serialize_packed::read_message(&mut slice, capnp::message::ReaderOptions::new())?;
-        let request = message_reader.get_root::<stt_request::Reader>()?;
-        
-        audio_path = std::path::PathBuf::from(request.get_audio_path()?.to_string()?);
-        model_name = request.get_model()?.to_string()?;
-        
-        for word in request.get_vocabulary()? {
-            vocabulary.push(word?.to_string()?);
-        }
-    } else if let Some(file_path) = opt.file {
-        audio_path = file_path;
-        vocabulary = vec![
-            "Mentci".to_string(),
-            "mentci-aid".to_string(),
-            "Mentci-Box".to_string(),
-            "Aski".to_string(),
-            "Lojix".to_string(),
-            "Criome".to_string(),
-            "SEMA".to_string(),
-            "Rust".to_string(),
-            "Clojure".to_string(),
-            "Nix".to_string(),
-            "Jujutsu (jj)".to_string(),
-            "EDN".to_string(),
-        ];
-    } else {
-        anyhow::bail!("Must provide either --file <audio_path> or --capnp <request_path>");
+    let model_name = request.get_model()?.to_string()?;
+    let provider_url = request.get_provider_url()?.to_string()?;
+    let url = format!("{}/{}:generateContent?key={}", provider_url, model_name, api_key);
+
+    let mut vocabulary = vec![];
+    for word in request.get_vocabulary()? {
+        vocabulary.push(word?.to_string()?);
     }
+    let vocab_str = vocabulary.join(", ");
+
+    let mut prompt_text = request.get_base_prompt()?.to_string()?;
+    if !vocab_str.is_empty() {
+        prompt_text = format!("{} The recording may contain specialized vocabulary related to the project, including: {}. ", prompt_text, vocab_str);
+    }
+
+    if request.get_include_emotional_emphasis() {
+        let emo = request.get_emotional_emphasis_instruction()?.to_string()?;
+        prompt_text = format!("{} {}", prompt_text, emo);
+    }
+
+    let mime_type = request.get_mime_type()?.to_string()?;
 
     let audio_data = fs::read(&audio_path)
         .with_context(|| format!("Failed to read audio file: {:?}", audio_path))?;
@@ -77,23 +71,6 @@ async fn main() -> Result<()> {
     let encoded_audio = base64::engine::general_purpose::STANDARD.encode(audio_data);
 
     let client = Client::new();
-    let url = format!(
-        "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent?key={}",
-        model_name, api_key
-    );
-
-    let vocab_str = vocabulary.join(", ");
-    let prompt_text = format!(
-        "You are an expert transcriber and linguist working on the Mentci-AI project (created by Li Goldragon). \
-Please transcribe the following audio recording with extremely high fidelity. \
-The recording may contain specialized vocabulary related to the project, including: {} \
-\
-Furthermore, it is critical that you pick up on emotional emphasis. If the speaker places heavy emphasis, passion, urgency, or hesitation on certain words or phrases, indicate that in the transcription using markdown (e.g., *italics* for light emphasis, **bold** for strong emphasis, [pauses] or [sighs] where appropriate). \
-\
-Return ONLY the high-fidelity transcription.",
-        vocab_str
-    );
-
     let payload = json!({
         "contents": [
             {
@@ -101,7 +78,7 @@ Return ONLY the high-fidelity transcription.",
                     { "text": prompt_text },
                     {
                         "inline_data": {
-                            "mime_type": "audio/ogg; codecs=opus",
+                            "mime_type": mime_type,
                             "data": encoded_audio
                         }
                     }
@@ -116,7 +93,7 @@ Return ONLY the high-fidelity transcription.",
         .json(&payload)
         .send()
         .await
-        .context("Failed to send request to Gemini API")?;
+        .context("Failed to send request to API")?;
 
     if response.status().is_success() {
         let result: serde_json::Value = response.json().await?;
@@ -141,7 +118,7 @@ Return ONLY the high-fidelity transcription.",
                         if let Err(e) = fs::write(&filepath, text) {
                             eprintln!("Failed to write transcript file: {}", e);
                         } else {
-                            println!("\n[Transcript saved to {:?}]", filepath);
+                            eprintln!("\n[Transcript saved to {:?}]", filepath);
                         }
                     }
                 }
