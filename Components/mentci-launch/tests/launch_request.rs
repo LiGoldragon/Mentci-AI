@@ -14,7 +14,7 @@ fn write_request(path: &Path) {
         root.set_working_directory("/tmp/mentci-launch");
         root.set_launch_mode(mentci_capnp::MentciLaunchMode::Terminal);
         root.set_systemd_target(mentci_capnp::MentciLaunchSystemdTarget::UserScope);
-        root.set_terminal_program("foot");
+        root.set_terminal_program("alacritty");
         root.set_service_unit_name("");
         root.set_agent_interface(mentci_capnp::MentciAgentInterface::PiTypescript);
         root.set_test_profile("interactive");
