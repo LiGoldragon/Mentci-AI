@@ -36,3 +36,21 @@ Required outcome:
 - All orchestration, transcription, and tooling logic is implemented in native Rust.
 - The `gemini` API is integrated via a native Rust client (or direct HTTP calls in Rust), not Python wrappers.
 - The repository enforces a strict binary split: Nix for environment reproduction, Rust for all logic.
+
+## Goal 3: Structural Code Editing Pipeline
+
+Eliminate ad-hoc Python/regex file patching by agents.
+
+Required outcome:
+- Develop programmatic tools (`mentci-mcp`) that utilize Abstract Syntax Trees (AST) or Concrete Syntax Trees (CST) to edit code natively.
+- Agents perform structural edits on Rust, EDN, and Cap'n Proto files rather than brittle text replacements.
+- Pi is equipped with extensions or tools to leverage these capabilities.
+
+## Goal 4: Core Logic-Data Separation Policy Enforcement
+
+Eradicate all configuration data from logic files.
+
+Required outcome:
+- No hardcoded API keys, model names (e.g., "Gemini 2.5 Flash"), endpoints, or prompt text in Rust code.
+- All such data is abstracted into Cap'n Proto specifications.
+- Rust code is strictly generated from these Cap'n Proto schemas.
