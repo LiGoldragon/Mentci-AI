@@ -56,11 +56,7 @@ async fn main() -> Result<()> {
     let mut prompt_text = request.get_base_prompt()?.to_string()?;
     
     // Add specialized vocabulary with specific instructions
-    let stt_instructions = "\n\nCRITICAL PHONETIC INSTRUCTIONS:\n\
-        - The programming language is 'Rust' (R-U-S-T). Do NOT transcribe it as 'rest'.\n\
-        - Specialized terms: Mentci, mentci-aid, Mentci-Box, Aski, Lojix, Criome, SEMA, Jujutsu (jj), EDN.\n\
-        - If the speaker says 'Aski', they mean the symbolic language, not just plain 'ASCII'.\n\
-        - Sanskrit terms and philosophical concepts should be transcribed with high fidelity.";
+    let stt_instructions = request.get_critical_phonetic_instructions()?.to_string()?;
 
     prompt_text = format!("{} {}\n\nThe recording may contain specialized vocabulary: {}", prompt_text, stt_instructions, vocab_str);
 
