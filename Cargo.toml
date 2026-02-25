@@ -1,12 +1,16 @@
 [workspace]
+resolver = "2"
 members = [
     "Components/mentci-aid",
     "Components/chronos",
-    "Components/mentci-box",
-    "Components/mentci-box-lib",
     "Components/mentci-fs",
-    "Components/aski-lib",
-    "Components/aski-cli",
+    "Components/mentci-box",
     "Components/mentci-launch",
+    "Components/mentci-box-lib",
+    "Components/mentci-stt"
 ]
-resolver = "2"
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"

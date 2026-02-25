@@ -32,7 +32,7 @@
 
 *   **Actor-First:** Use the `ractor` framework for all supervised task execution.
 *   **Minimal Shim:** The *only* permissible shim is the call to the `execute` orchestrator within the Nix Jail `shellHook`.
-*   **Clojure Role:** Clojure is not to be used for writing code. Legacy Clojure tools must be rewritten as Rust actors (sema-style rust+capnp-spec).
+*   **Rust Only Mandate:** You must *only* use Rust for writing application logic, orchestration, and scripting outside of the Nix domain. No Python, Clojure, or ad-hoc shell scripts. Legacy tools must be rewritten as Rust actors (sema-style rust+capnp-spec).
 
 ## 0.2. SOURCE CONTROL PROTOCOL (JJ & PUSH)
 

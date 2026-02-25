@@ -27,3 +27,12 @@ Required outcome:
 - The legacy concept of DOT graph visualization is removed from the execution path.
 - A custom Rust parser with advanced reader logic is implemented to natively read and write Aski state.
 - A strict two-way utility is established: agents read/write "minified" Aski, which is deterministically expanded to "whitespace-beautiful" formats for human readability and VCS diffs.
+
+## Goal 2: Rust-Only Scripting Standard
+
+Eliminate all Python, Clojure, and ad-hoc shell scripts from the repository.
+
+Required outcome:
+- All orchestration, transcription, and tooling logic is implemented in native Rust.
+- The `gemini` API is integrated via a native Rust client (or direct HTTP calls in Rust), not Python wrappers.
+- The repository enforces a strict binary split: Nix for environment reproduction, Rust for all logic.
