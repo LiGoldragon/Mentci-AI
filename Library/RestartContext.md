@@ -42,14 +42,13 @@ R&D is the mirrored two-tree model:
   - `Library/specs/MentciLaunchSpec.md`: systemd + terminal launch contract for Mentci-Box.
 - **Primary Operator Interface:** TypeScript `pi` (`pi`) is default; Rust `pi` remains non-default validation lane.
 
-## 5. Current Operational Snapshot (♓︎.7.1.7 | 5919 AM)
-- `dev` lineage now includes control-plane convergence hardening plus initial `mentci-launch` component implementation and test coverage.
-
-Section sweep progress:
-- **Status:** **COMPLETED** (Full Repository Sweep 1-10).
-- **Outcome:** All core and library documentation synchronized with refined authority tiers.
-- **Convergence Slice:** `nix run .#execute` command path restored, execute test/check surfaces realigned to actor subcommands, and `mentci_box.capnp` authority centralized in `Components/schema/`.
-- **Launch Slice:** `mentci-launch` crate added with Cap'n Proto request decoding, systemd launch-plan synthesis (terminal/service), and dedicated tests.
+## 5. Current Operational Snapshot (♓︎.8.5.0 | 5919 AM)
+- `dev` lineage now enforces the **Rust-Only Mandate**, officially deprecating Python, Clojure, and ad-hoc shell patching.
+- **Philosophical Alignment:** The "Local Machine of Fit" mandate is deeply codified (`Core/PHILOSOPHY_OF_INTENT.md`), explicitly rejecting manipulative AI governance and enforcing localized, patient agent execution.
+- **Environment Refresh:** Recursive `pi` calls are strictly forbidden. The `execute transition` command (via systemd/foot) is now the only valid method for refreshing the shell environment without destroying UI integrity.
+- **Data-Logic Separation:** Hardcoding API keys or configuration strings in logic is a Severe Violation. `mentci-user` now dynamically fetches secrets via `gopass`.
+- **Programmatic Refactoring:** We have deprecated regex/string file patching. We are moving to AST/CST lossless transformations via the new `mentci-mcp` (Model Context Protocol) Rust server using `ast-grep` and `tree-sitter`.
+- **Agent Tooling Integration:** The `pi` agent has been upgraded to version `0.55.0` with integrated skills (STT voice transcription, Nix path shorteners) and `.mentci/user.json` automated loading.
 
 ## 6. Guard Health Snapshot
 Latest observed gate outcomes:

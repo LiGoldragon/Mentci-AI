@@ -2,6 +2,17 @@
 
 This file maintains the durable record of session milestones and goal outcomes since the last major release tag.
 
+## release: v0.12.8.5.55 - codify intent, deprecate legacy patching, and establish mcp/ast programmatic refactoring
+♓︎8°5'55" | 5919 AM
+
+- **Philosophical Alignment:** Authored `Core/PHILOSOPHY_OF_INTENT.md` and updated `ARCHITECTURAL_GUIDELINES.md` to establish the "Local Machine of Fit", rejecting manipulative AI governance and enforcing local, patient execution.
+- **Rust-Only Mandate:** Eliminated Python and legacy Clojure scripting allowances. All agentic execution, utilities, and integrations must be built in Rust + Cap'n Proto.
+- **AST/CST Refactoring:** Forbidden LLM regex/string patching. Scaffolded `Components/mentci-mcp`, a native Rust Model Context Protocol server exposing `ast-grep` and `tree-sitter` for flawless, lossless concrete syntax tree manipulations.
+- **Agent Workflow Safety:** Forbidden recursive `pi` shell calls that break TUI rendering. Implemented `execute transition` which safely spawns a new `foot` terminal via `systemd --user` for environment refreshes.
+- **Logic-Data Purity:** Elevated strict logic-data separation rules. Implemented `mentci-user` to dynamically resolve `gopass` secrets (like Linkup API keys) via `.mentci/user.json` sidecars instead of hardcoded shell exports.
+- **High-Fidelity Transcription:** Built `mentci-stt` in Rust to transcribe Opus voice notes using Gemini, explicitly prompting for Mentci jargon (Aski, Lojix, SEMA) and automatically dating transcripts via `chronos`.
+- **Environment Updates:** Upgraded `pi` agent to 0.55.0, mitigated the Nix Tokenization Problem via path-shortening skills, and formalized the multi-socket Mentci-Box daemon topology in the high-level goals.
+
 ## session: extend devShell with pi-sync-extensions and Level 5 agent UI defaults
 ♓︎7°42'12" | 5919 AM
 
