@@ -5,8 +5,8 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Primary Working Bookmark:** `dev`.
-*   **Current Programming Version:** `kp0tz2tm` (Ref: `execute version`).
-*   **Latest Release Tag:** `v0.12.7.3.31` (current milestone).
+*   **Current Programming Version:** `(will be updated by commit hook or manually)`
+*   **Latest Release Tag:** `v0.12.8.57.3` (current milestone).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository now operates with a native Rust actor-based orchestration layer (`execute`) and strict Logic-Data separation.
@@ -42,13 +42,13 @@ R&D is the mirrored two-tree model:
   - `Library/specs/MentciLaunchSpec.md`: systemd + terminal launch contract for Mentci-Box.
 - **Primary Operator Interface:** TypeScript `pi` (`pi`) is default; Rust `pi` remains non-default validation lane.
 
-## 5. Current Operational Snapshot (♓︎.8.5.0 | 5919 AM)
-- `dev` lineage now enforces the **Rust-Only Mandate**, officially deprecating Python, Clojure, and ad-hoc shell patching.
-- **Philosophical Alignment:** The "Local Machine of Fit" mandate is deeply codified (`Core/PHILOSOPHY_OF_INTENT.md`), explicitly rejecting manipulative AI governance and enforcing localized, patient agent execution.
-- **Environment Refresh:** Recursive `pi` calls are strictly forbidden. The `execute transition` command (via systemd/foot) is now the only valid method for refreshing the shell environment without destroying UI integrity.
-- **Data-Logic Separation:** Hardcoding API keys or configuration strings in logic is a Severe Violation. `mentci-user` now dynamically fetches secrets via `gopass`.
-- **Programmatic Refactoring:** We have deprecated regex/string file patching. We are moving to AST/CST lossless transformations via the new `mentci-mcp` (Model Context Protocol) Rust server using `ast-grep` and `tree-sitter`.
-- **Agent Tooling Integration:** The `pi` agent has been upgraded to version `0.55.0` with integrated skills (STT voice transcription, Nix path shorteners) and `.mentci/user.json` automated loading.
+## 5. Current Operational Snapshot (♓︎.8.57.3 | 5919 AM)
+- `dev` lineage continues to enforce the **Rust-Only Mandate**, officially deprecating Python, Clojure, and ad-hoc shell patching. Ad-hoc extraction scripts must now be explicitly marked for rewriting into Sema-grade components like `mentci-dig`.
+- **UI Abstraction Standardization:** All User Interfaces (Pi, VTCode, Gemini) strictly separate Logic and Data. Secrets (`GEMINI_API_KEY`, etc.) are injected purely via `mentci-user export-env`, never via local `.env` files.
+- **VTCode Integration:** The Rust-native semantic terminal coding agent `vtcode` is integrated into the `nix develop` environment via the `mentci-vtcode` wrapper, ready for trial alongside `pi`.
+- **Philosophical Alignment:** The "Local Machine of Fit" mandate is deeply codified (`Core/PHILOSOPHY_OF_INTENT.md`), explicitly rejecting manipulative AI governance and enforcing local, patient agent execution.
+- **Data-Logic Separation:** Hardcoding API keys or configuration strings in logic is a Severe Violation. `mentci-user` dynamically fetches secrets via `gopass`.
+- **Programmatic Refactoring:** Regex/string file patching is forbidden. We are moving to AST/CST lossless transformations via the `mentci-mcp` Rust server and the newly scaffolded `mentci-dig` component.
 
 ## 6. Guard Health Snapshot
 Latest observed gate outcomes:

@@ -1,3 +1,13 @@
+## release: v0.12.8.57.3 - vtcode integration, ui abstraction, and sema lineage mining
+♓︎8°57'3" | 5919 AM
+
+- **VTCode Integration:** Built `vinhnx/vtcode` via Nix, configured its `.vtcode/vtcode.toml` for safe local policies, and established `mentci-vtcode` to inject API keys via `mentci-user export-env`.
+- **UI Abstraction Protocol:** Formally documented in `Library/documentation/UserInterfaceDocumentation.md` that all agent UIs must consume API keys structurally, strictly forbidding local `.env` usage.
+- **Workflow Interruption Fix:** Globally disabled the `pi-superpowers-plus` extension to prevent unwanted interruptions and TUI conflicts during high-focus sessions.
+- **Sema Lineage Crystallization:** Mined ChatGPT exports to extract high-weight architectural guidance, clarifying the evolution of Sajban into Sema Object Style, Aski, Lojix, and Criome state domains.
+- **Ad-Hoc Script Deprecation:** Bootstrapped the `mentci-dig` Rust component to structurally extract AST/JSON/EDN data, replacing disposable Python data-mining scripts.
+- **Commit History Hygiene:** Enforced atomic intent-scoping by dropping empty/stray commits and rewriting malformed release descriptions in the `dev` branch.
+
 # Mentci-AI: Release Milestones and Goal Logs
 
 This file maintains the durable record of session milestones and goal outcomes since the last major release tag.
