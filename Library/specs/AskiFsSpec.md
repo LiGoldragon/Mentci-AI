@@ -96,6 +96,7 @@ The following EDN structure represents the authoritative symbolic map of the `So
    attractor  [:untyped]
    attractor-docs [:untyped]
    opencode   [:untyped]
+   superpowers [:untyped]
    leash      [:untyped]}})
 ```
 

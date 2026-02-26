@@ -1,5 +1,6 @@
 use ast_grep_language::{LanguageExt, SupportLang};
 use clap::{Parser, ValueEnum};
+use regex::Regex;
 use std::fs;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
@@ -7,7 +8,7 @@ use std::process::{Command, Stdio};
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    /// Language of the target file (rust, javascript, typescript, python, nix, bash)
+    /// Language of the target file (rust, javascript, typescript, python, nix, bash, capnp)
     #[arg(short, long)]
     lang: String,
 
@@ -36,14 +37,106 @@ enum DiffStyle {
     None,
 }
 
-fn parse_lang(lang: &str) -> Option<SupportLang> {
+#[derive(Clone)]
+enum AppLang {
+    Ast(SupportLang),
+    Capnp,
+}
+
+#[derive(Debug, Clone)]
+struct CapnpFieldDecl {
+    name: String,
+    ordinal: String,
+    ty: String,
+    default_value: Option<String>,
+}
+
+fn normalize_ws(input: &str) -> String {
+    input.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+
+fn parse_capnp_field_decl(line: &str) -> Option<CapnpFieldDecl> {
+    let re = Regex::new(
+        r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*@([0-9]+)\s*:\s*([^;=]+?)(?:\s*=\s*([^;]+))?\s*;\s*$",
+    )
+    .ok()?;
+    let caps = re.captures(line)?;
+
+    let name = caps.get(1)?.as_str().to_string();
+    let ordinal = caps.get(2)?.as_str().to_string();
+    let ty = normalize_ws(caps.get(3)?.as_str());
+    let default_value = caps.get(4).map(|m| normalize_ws(m.as_str()));
+
+    Some(CapnpFieldDecl {
+        name,
+        ordinal,
+        ty,
+        default_value,
+    })
+}
+
+fn capnp_field_equals(a: &CapnpFieldDecl, b: &CapnpFieldDecl) -> bool {
+    a.name == b.name && a.ordinal == b.ordinal && a.ty == b.ty && a.default_value == b.default_value
+}
+
+fn apply_capnp_replace(source: &str, pattern: &str, replace: &str) -> anyhow::Result<String> {
+    let pattern_decl = parse_capnp_field_decl(pattern).ok_or_else(|| {
+        anyhow::anyhow!(
+            "capnp structural_edit currently supports field declarations only (e.g. 'foo @1 :Text;')"
+        )
+    })?;
+
+    let replacement_trimmed = replace.trim_end();
+    if !replacement_trimmed.ends_with(';') {
+        return Err(anyhow::anyhow!(
+            "capnp replacement must end with ';' for field declarations"
+        ));
+    }
+
+    let mut replaced = false;
+    let mut out_lines = Vec::new();
+
+    for line in source.lines() {
+        if !replaced {
+            if let Some(line_decl) = parse_capnp_field_decl(line) {
+                if capnp_field_equals(&line_decl, &pattern_decl) {
+                    let indent = line.chars().take_while(|c| c.is_whitespace()).collect::<String>();
+                    let replacement_line = if replace.chars().next().is_some_and(|c| c.is_whitespace()) {
+                        replacement_trimmed.to_string()
+                    } else {
+                        format!("{}{}", indent, replacement_trimmed)
+                    };
+                    out_lines.push(replacement_line);
+                    replaced = true;
+                    continue;
+                }
+            }
+        }
+        out_lines.push(line.to_string());
+    }
+
+    if !replaced {
+        return Err(anyhow::anyhow!(
+            "No matches found for capnp field pattern. Use exact semantic field declaration (name, ordinal, type, default)."
+        ));
+    }
+
+    let mut result = out_lines.join("\n");
+    if source.ends_with('\n') {
+        result.push('\n');
+    }
+    Ok(result)
+}
+
+fn parse_lang(lang: &str) -> Option<AppLang> {
     match lang.to_lowercase().as_str() {
-        "rust" | "rs" => Some(SupportLang::Rust),
-        "javascript" | "js" => Some(SupportLang::JavaScript),
-        "typescript" | "ts" => Some(SupportLang::TypeScript),
-        "python" | "py" => Some(SupportLang::Python),
-        "nix" => Some(SupportLang::Nix),
-        "bash" | "sh" => Some(SupportLang::Bash),
+        "rust" | "rs" => Some(AppLang::Ast(SupportLang::Rust)),
+        "javascript" | "js" => Some(AppLang::Ast(SupportLang::JavaScript)),
+        "typescript" | "ts" => Some(AppLang::Ast(SupportLang::TypeScript)),
+        "python" | "py" => Some(AppLang::Ast(SupportLang::Python)),
+        "nix" => Some(AppLang::Ast(SupportLang::Nix)),
+        "bash" | "sh" => Some(AppLang::Ast(SupportLang::Bash)),
+        "capnp" => Some(AppLang::Capnp),
         _ => None,
     }
 }
@@ -83,7 +176,7 @@ fn render_delta(unified: &str) -> Option<String> {
     Some(String::from_utf8_lossy(&output.stdout).to_string())
 }
 
-fn render_pi_diff(before: &str, after: &str, file: &str) -> String {
+fn render_pi_diff(before: &str, after: &str) -> String {
     use similar::ChangeTag;
 
     fn inline_pair(old_line: &str, new_line: &str) -> (String, String) {
@@ -118,7 +211,6 @@ fn render_pi_diff(before: &str, after: &str, file: &str) -> String {
 
     let diff = similar::TextDiff::from_lines(before, after);
     let mut out = String::new();
-    out.push_str(&format!("--- a/{file}\n+++ b/{file}\n"));
 
     for group in diff.grouped_ops(3) {
         for op in group {
@@ -131,10 +223,10 @@ fn render_pi_diff(before: &str, after: &str, file: &str) -> String {
                     && changes[i + 1].tag() == ChangeTag::Insert
                 {
                     let (old_inline, new_inline) = inline_pair(current.value(), changes[i + 1].value());
-                    out.push_str("-");
+                    out.push('-');
                     out.push_str(&old_inline);
                     out.push('\n');
-                    out.push_str("+");
+                    out.push('+');
                     out.push_str(&new_inline);
                     out.push('\n');
                     i += 2;
@@ -174,26 +266,30 @@ fn main() -> anyhow::Result<()> {
         .ok_or_else(|| anyhow::anyhow!("Unsupported language: {}", args.lang))?;
     let src = fs::read_to_string(&args.file)?;
 
-    let ast = lang.ast_grep(&src);
-    let root = ast.root();
+    let new_src = match lang {
+        AppLang::Ast(ast_lang) => {
+            let ast = ast_lang.ast_grep(&src);
+            let root = ast.root();
+            let mut edits = root.replace_all(&*args.pattern, &*args.replace);
 
-    let mut edits = root.replace_all(&*args.pattern, &*args.replace);
+            if edits.is_empty() {
+                println!("No matches found for pattern.");
+                return Ok(());
+            }
 
-    if edits.is_empty() {
-        println!("No matches found for pattern.");
-        return Ok(());
-    }
+            edits.sort_by(|a, b| b.position.cmp(&a.position));
 
-    edits.sort_by(|a, b| b.position.cmp(&a.position));
+            let mut bytes = src.clone().into_bytes();
+            for edit in edits {
+                let pos = edit.position;
+                let len = edit.deleted_length;
+                bytes.splice(pos..pos + len, edit.inserted_text);
+            }
+            String::from_utf8(bytes)?
+        }
+        AppLang::Capnp => apply_capnp_replace(&src, &args.pattern, &args.replace)?,
+    };
 
-    let mut bytes = src.clone().into_bytes();
-    for edit in edits {
-        let pos = edit.position;
-        let len = edit.deleted_length;
-        bytes.splice(pos..pos + len, edit.inserted_text);
-    }
-
-    let new_src = String::from_utf8(bytes)?;
     fs::write(&args.file, &new_src)?;
 
     let unified = unified_diff(&src, &new_src, &args.file.display().to_string());
@@ -205,20 +301,20 @@ fn main() -> anyhow::Result<()> {
             println!("{}", unified);
         }
         DiffStyle::Pi => {
-            println!("{}", render_pi_diff(&src, &new_src, &args.file.display().to_string()));
+            println!("{}", render_pi_diff(&src, &new_src));
         }
         DiffStyle::Delta => {
             if let Some(delta) = render_delta(&unified) {
                 println!("{}", delta);
             } else {
-                println!("{}", render_pi_diff(&src, &new_src, &args.file.display().to_string()));
+                println!("{}", render_pi_diff(&src, &new_src));
             }
         }
         DiffStyle::Auto => {
             if let Some(delta) = render_delta(&unified) {
                 println!("{}", delta);
             } else {
-                println!("{}", render_pi_diff(&src, &new_src, &args.file.display().to_string()));
+                println!("{}", render_pi_diff(&src, &new_src));
             }
         }
     }

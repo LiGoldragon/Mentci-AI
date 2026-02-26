@@ -32,6 +32,14 @@
    :path "mentci-launch"
    :interfaces ["rust.launch.systemd" "rust.launch.terminal"]
    :status :experimental}
+  {:id "mentci-policy-engine"
+   :path "mentci-policy-engine"
+   :interfaces ["rust.policy.engine" "rust.admission.control"]
+   :status :draft}
+  {:id "mentci-mcp-gateway"
+   :path "mentci-mcp-gateway"
+   :interfaces ["mcp.gateway" "mcp.admission.routing"]
+   :status :draft}
   {:id "mentci-vcs"
    :path "mentci-vcs"
    :interfaces ["rust.vcs.wrapper"]

@@ -58,7 +58,9 @@ async fn main() -> Result<()> {
     // Add specialized vocabulary with specific instructions
     let stt_instructions = request.get_critical_phonetic_instructions()?.to_string()?;
 
-    prompt_text = format!("{} {}\n\nThe recording may contain specialized vocabulary: {}", prompt_text, stt_instructions, vocab_str);
+    let vocabulary_preamble_template = request.get_vocabulary_preamble_template()?.to_string()?;
+            let vocabulary_preamble = vocabulary_preamble_template.replace("{vocabulary}", &vocab_str);
+        prompt_text = format!("{} {}\n\n{}", prompt_text, stt_instructions, vocabulary_preamble);
 
     if request.get_include_emotional_emphasis() {
         let emo = request.get_emotional_emphasis_instruction()?.to_string()?;
@@ -103,10 +105,12 @@ async fn main() -> Result<()> {
             println!("{}", text);
             
             // Call chronos to get timestamp
-            let chronos_output = std::process::Command::new("chronos")
-                .args(&["--format", "am", "--precision", "second"])
-                .output()
-                .map_err(|e| anyhow::anyhow!("Failed to execute chronos: {}", e));
+            let chronos_format = request.get_chronos_format()?.to_string()?;
+                        let chronos_precision = request.get_chronos_precision()?.to_string()?;
+                        let chronos_output = std::process::Command::new("chronos")
+                            .args(&["--format", chronos_format.as_str(), "--precision", chronos_precision.as_str()])
+                            .output()
+                            .map_err(|e| anyhow::anyhow!("Failed to execute chronos: {}", e));
                 
             match chronos_output {
                 Ok(output) if output.status.success() => {
@@ -117,7 +121,7 @@ async fn main() -> Result<()> {
                     if let Err(e) = fs::create_dir_all(transcript_dir) {
                         eprintln!("Failed to create transcript directory: {}", e);
                     } else {
-                        let filename = format!("{}.md", solar_date);
+                        let filename = request.get_transcript_filename_template()?.to_string()?.replace("{solar_date}", &solar_date);
                         let filepath = transcript_dir.join(filename);
                         if let Err(e) = fs::write(&filepath, text) {
                             eprintln!("Failed to write transcript file: {}", e);

@@ -13,7 +13,7 @@
     # Level 5 / Criome Ecosystem Sources
     criomos.url = "github:Criome/CriomOS";
     sema.url = "github:Criome/sema";
-    lojix.url = "github:Criome/lojix";
+    lojix.url = "github:Criome/tryme";
     seahawk.url = "github:Criome/seahawk";
     skrips.url = "github:Criome/skrips";
     mkZolaWebsite.url = "github:Criome/mkZolaWebsite";
@@ -37,83 +37,111 @@
     };
 
     # External Collaborations
-        attractor = {
-          url = "github:strongdm/attractor";
-          flake = false;
-        };
-        attractor-docs = {
-          url = "github:brynary/attractor";
-          flake = false;
-        };
-    
-        opencode = {
-          url = "github:opencode-ai/opencode";
-          flake = false;
-        };
-        codex-cli-nix.url = "github:sadjow/codex-cli-nix";
+    attractor = {
+      url = "github:strongdm/attractor";
+      flake = false;
+    };
+    attractor-docs = {
+      url = "github:brynary/attractor";
+      flake = false;
+    };
 
-        pi-mono = {
-          url = "github:badlogic/pi-mono";
-          flake = false;
-        };
-        pi-agent-rust = {
-          url = "github:Dicklesworthstone/pi_agent_rust";
-          flake = false;
+    opencode = {
+      url = "github:opencode-ai/opencode";
+      flake = false;
+    };
+    codex-cli-nix.url = "github:sadjow/codex-cli-nix";
+
+    pi-mono = {
+      url = "github:badlogic/pi-mono";
+      flake = false;
+    };
+    pi-agent-rust = {
+      url = "github:Dicklesworthstone/pi_agent_rust";
+      flake = false;
+    };
+
+    # Research Sources
+    leash = {
+      url = "github:strongdm/leash";
+      flake = false;
+    };
+    activeadmin = {
+      url = "github:activeadmin/activeadmin";
+      flake = false;
+    };
+  };
+
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      flake-utils,
+      crane,
+      fenix,
+      criomos,
+      sema,
+      lojix,
+      seahawk,
+      skrips,
+      mkZolaWebsite,
+      webpublish,
+      goldragon,
+      maisiliym,
+      kibord,
+      bookofsol,
+      bookofgoldragon,
+      aski,
+      attractor,
+      opencode,
+      codex-cli-nix,
+      leash,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        attractorSrc = inputs.attractor;
+        attractorDocsSrc = inputs."attractor-docs";
+        pkgs = import nixpkgs { inherit system; };
+        rustToolchain = fenix.packages.${system}.latest.toolchain;
+        rustAnalyzer = fenix.packages.${system}.rust-analyzer;
+        craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
+
+        namespace = import ./Components/nix {
+          inherit
+            pkgs
+            craneLib
+            system
+            inputs
+            ;
+          rust_toolchain = rustToolchain;
+          rust_analyzer = rustAnalyzer;
+          codex_cli_nix = codex-cli-nix;
+          attractor_src = attractorSrc;
+          attractor_docs_src = attractorDocsSrc;
+          pi_mono_src = inputs.pi-mono;
+          pi_agent_rust_src = inputs.pi-agent-rust;
+          repo_root = ./.;
         };
 
-        # Research Sources
-        leash = {
-          url = "github:strongdm/leash";
-          flake = false;
+        jail = import ./Components/nix/jail.nix {
+          inherit pkgs;
+          Sources = namespace.jail_sources;
         };
-        activeadmin = {
-          url = "github:activeadmin/activeadmin";
-          flake = false;
-        };
-      };
-    
-      outputs = inputs@{
-        self, nixpkgs, flake-utils, crane, fenix,
-        criomos, sema, lojix, seahawk, skrips, mkZolaWebsite,
-        webpublish, goldragon, maisiliym, kibord, bookofsol, bookofgoldragon, aski, attractor, opencode, codex-cli-nix, leash, ...
-      }:
-        flake-utils.lib.eachDefaultSystem (system:
-          let
-            attractorSrc = inputs.attractor;
-            attractorDocsSrc = inputs."attractor-docs";
-            pkgs = import nixpkgs { inherit system; };
-            rustToolchain = fenix.packages.${system}.latest.toolchain;
-            rustAnalyzer = fenix.packages.${system}.rust-analyzer;
-            craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
-    
-            namespace = import ./Components/nix {
-              inherit pkgs craneLib system inputs;
-              rust_toolchain = rustToolchain;
-              rust_analyzer = rustAnalyzer;
-              codex_cli_nix = codex-cli-nix;
-              attractor_src = attractorSrc;
-              attractor_docs_src = attractorDocsSrc;
-              pi_mono_src = inputs.pi-mono;
-              pi_agent_rust_src = inputs.pi-agent-rust;
-              repo_root = ./.;
-            };
 
-            jail = import ./Components/nix/jail.nix {
-              inherit pkgs;
-              Sources = namespace.jail_sources;
-            };
+        devShell = namespace.dev_shell { inherit jail; };
 
-            devShell = namespace.dev_shell { inherit jail; };
-    
-
-      in {
+      in
+      {
         packages = {
           default = namespace.mentci_ai;
           mentciAi = namespace.mentci_ai;
           mentciBox = namespace.mentci_box;
           mentciBoxDefault = namespace.mentci_box_default;
           mentciLaunch = namespace.mentci_launch;
-          execute = namespace.execute; chronos = namespace.chronos;
+          execute = namespace.execute;
+          chronos = namespace.chronos;
           mentciStt = namespace.mentci_stt;
           mentciUser = namespace.mentci_user;
           mentciMcp = namespace.mentci_mcp;
@@ -139,7 +167,10 @@
         apps.default = flake-utils.lib.mkApp {
           drv = namespace.mentci_ai;
         };
-        apps.chronos = flake-utils.lib.mkApp { drv = namespace.chronos; exePath = "/bin/chronos"; }; 
+        apps.chronos = flake-utils.lib.mkApp {
+          drv = namespace.chronos;
+          exePath = "/bin/chronos";
+        };
         apps.execute = flake-utils.lib.mkApp {
           drv = namespace.execute;
           exePath = "/bin/execute";
@@ -170,5 +201,6 @@
         };
 
         devShells.default = devShell;
-      });
+      }
+    );
 }

@@ -31,7 +31,12 @@
     "testFiles": [],
     "sourceFiles": [
       "Components/mentci-mcp/edit/src/main.rs",
-      "tmp/structural_edit_diff_test.rs"
+      "tmp/structural_edit_diff_test.rs",
+      "tmp/structural_edit_ui_test.rs",
+      "/home/li/.pi/agent/extensions/pi-superpowers-plus/workflow-monitor.ts",
+      "/home/li/.pi/agent/extensions/pi-superpowers-plus/workflow-monitor/workflow-tracker.ts",
+      "Components/mentci-policy-engine/src/lib.rs",
+      "Components/mentci-mcp-gateway/src/main.rs"
     ],
     "redVerificationPending": false
   },

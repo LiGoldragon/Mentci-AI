@@ -11,8 +11,11 @@ members = [
     "Components/mentci-user",
     "Components/mentci-mcp/core",
     "Components/mentci-mcp/jj",
-    "Components/mentci-mcp/capnp"
-, "Components/mentci-mcp/edit"]
+    "Components/mentci-mcp/capnp",
+    "Components/mentci-mcp/edit",
+    "Components/mentci-policy-engine",
+    "Components/mentci-mcp-gateway"
+]
 
 [profile.release]
 lto = true

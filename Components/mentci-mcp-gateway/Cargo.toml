@@ -1,0 +1,7 @@
+[package]
+name = "mentci-mcp-gateway"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+mentci-policy-engine = { path = "../mentci-policy-engine" }

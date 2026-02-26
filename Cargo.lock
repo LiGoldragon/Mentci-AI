@@ -1270,11 +1270,23 @@ dependencies = [
  "ast-grep-core",
  "ast-grep-language",
  "clap 4.5.60",
+ "regex",
  "similar",
 ]
 
 [[package]]
+name = "mentci-mcp-gateway"
+version = "0.1.0"
+dependencies = [
+ "mentci-policy-engine",
+]
+
+[[package]]
 name = "mentci-mcp-jj"
+version = "0.1.0"
+
+[[package]]
+name = "mentci-policy-engine"
 version = "0.1.0"
 
 [[package]]
