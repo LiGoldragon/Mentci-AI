@@ -43,15 +43,4 @@
   (pkgs.writeShellScriptBin "mentci-bootstrap" ''
     ${pkgs.cargo}/bin/cargo run --quiet --manifest-path Components/mentci-aid/Cargo.toml --bin mentci-ai -- job/jails bootstrap "$@"
   '')
-  
-  # mentci-vtcode
-  # UI Wrapper to inject structured API keys before launching VTCode.
-  # This adheres to the Logic-Data Separation rule: the environment variables
-  # (like GEMINI_API_KEY) are hydrated purely from the `mentci-user` secret layer.
-  (pkgs.writeShellScriptBin "mentci-vtcode" ''
-    if command -v mentci-user >/dev/null 2>&1; then
-      eval "$(mentci-user export-env 2>/dev/null)"
-    fi
-    exec vtcode "$@"
-  '')
 ]

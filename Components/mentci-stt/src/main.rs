@@ -40,8 +40,8 @@ async fn main() -> Result<()> {
     };
 
     let secret_name = request.get_api_key_secret_name()?.to_string()?;
-    let api_key = mentci_user::get_secret(&secret_name)?
-        .context(format!("Secret {} not found in mentci-user config or env", secret_name))?;
+    let api_key = std::env::var(&secret_name)
+        .context(format!("Secret {} not found in environment (make sure mentci-user has exported it)", secret_name))?;
 
     let model_name = request.get_model()?.to_string()?;
     let provider_url = request.get_provider_url()?.to_string()?;
