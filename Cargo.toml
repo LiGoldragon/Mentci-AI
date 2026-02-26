@@ -9,6 +9,7 @@ members = [
     "Components/mentci-box-lib",
     "Components/mentci-stt",
     "Components/mentci-user",
+    "Components/mentci-dig",
     "Components/mentci-mcp/core",
     "Components/mentci-mcp/jj",
     "Components/mentci-mcp/capnp",

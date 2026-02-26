@@ -248,12 +248,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "capnp"
+version = "0.21.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4e92edec8974fcd7ece90bb021db782abe14a61c10c817f197f700fef7430eb8"
+dependencies = [
+ "embedded-io",
+]
+
+[[package]]
 name = "capnpc"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c75ba30e0f08582d53c2f3710cf4bb65ff562614b1ba86906d7391adffe189ec"
 dependencies = [
- "capnp",
+ "capnp 0.19.8",
+]
+
+[[package]]
+name = "capnpc"
+version = "0.21.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6da96dcb0a0e0c526daf42bac55e1550f18ad973df9ef9ba75204f332c80ad16"
+dependencies = [
+ "capnp 0.21.7",
 ]
 
 [[package]]
@@ -1190,8 +1208,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-trait",
- "capnp",
- "capnpc",
+ "capnp 0.19.8",
+ "capnpc 0.19.0",
  "dot-parser",
  "edn-rs",
  "mentci-box-lib",
@@ -1225,9 +1243,21 @@ name = "mentci-box-lib"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "capnp",
- "capnpc",
+ "capnp 0.19.8",
+ "capnpc 0.19.0",
  "serde",
+ "tracing",
+]
+
+[[package]]
+name = "mentci-dig"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "capnp 0.21.7",
+ "capnpc 0.21.4",
+ "serde",
+ "serde_json",
  "tracing",
 ]
 
@@ -1249,8 +1279,8 @@ name = "mentci-launch"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "capnp",
- "capnpc",
+ "capnp 0.19.8",
+ "capnpc 0.19.0",
  "tempfile",
 ]
 
@@ -1295,8 +1325,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
- "capnp",
- "capnpc",
+ "capnp 0.19.8",
+ "capnpc 0.19.0",
  "mentci-box-lib",
  "mentci-user",
  "reqwest 0.12.28",
@@ -1311,8 +1341,8 @@ name = "mentci-user"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "capnp",
- "capnpc",
+ "capnp 0.19.8",
+ "capnpc 0.19.0",
  "serde",
  "serde_json",
 ]
