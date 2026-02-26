@@ -1285,6 +1285,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "mentci-mcp"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "ast-grep-core",
+ "ast-grep-language",
+ "capnp 0.21.7",
+ "capnpc 0.21.4",
+ "serde_json",
+]
+
+[[package]]
 name = "mentci-mcp-capnp"
 version = "0.1.0"
 
