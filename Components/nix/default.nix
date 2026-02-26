@@ -75,9 +75,8 @@ let
   };
 
   vtcode = import ./vtcode.nix {
-    inherit pkgs;
+    inherit pkgs craneLib;
     src = vtcode_src;
-    rust_toolchain = rust_toolchain;
   };
 
   execute = pkgs.runCommand "mentci-execute" { } ''
