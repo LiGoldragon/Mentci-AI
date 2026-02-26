@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, mentci_vcs, pi_dev, unified_llm, pi_rust, execute, chronos, mentci_stt, mentci_user, mentci_mcp }:
+{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, mentci_vcs, pi_dev, unified_llm, pi_rust, vtcode, execute, chronos, mentci_stt, mentci_user, mentci_mcp }:
 
 [
   pkgs.babashka
@@ -28,10 +28,17 @@
   pkgs.nodejs
   unified_llm
   pi_rust
+  vtcode
   (pkgs.writeShellScriptBin "mentci-commit" ''
     mentci-vcs commit "$@"
   '')
   (pkgs.writeShellScriptBin "mentci-bootstrap" ''
     ${pkgs.cargo}/bin/cargo run --quiet --manifest-path Components/mentci-aid/Cargo.toml --bin mentci-ai -- job/jails bootstrap "$@"
+  '')
+  (pkgs.writeShellScriptBin "mentci-vtcode" ''
+    if command -v mentci-user >/dev/null 2>&1; then
+      eval "$(mentci-user export-env 2>/dev/null)"
+    fi
+    exec vtcode "$@"
   '')
 ]

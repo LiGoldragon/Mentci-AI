@@ -3,4 +3,5 @@
  :subject "VTCode-Inspection"
  :developmentPath "../../../Development/high/VTCode-Inspection"
  :entries ["591912084834_answer_vtcode-inspection-roadmap-and-high-value-prospects.md"
-           "591912085205_answer_vtcode-deep-architectural-analysis.md"]}
+           "591912085205_answer_vtcode-deep-architectural-analysis.md"
+           "591912085453_answer_vtcode-integration-and-key-abstraction.md"]}

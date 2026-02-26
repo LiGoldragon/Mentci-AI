@@ -1,0 +1,22 @@
+# Mentci-AI VT Code Configuration
+
+# Provide the chosen Mentci fallback or default model
+[agent]
+provider = "gemini"
+model = "gemini-2.5-flash"
+api_key_env = "GEMINI_API_KEY"
+verbose_logging = true
+
+[security]
+human_in_the_loop = false
+
+[tools]
+default_policy = "allow"
+
+[tools.policies]
+# Specific tools that might be dangerous or require prompting in strict mode
+run_terminal_cmd = "allow"
+write_file = "allow"
+read_file = "allow"
+read_file_tree = "allow"
+search_files = "allow"

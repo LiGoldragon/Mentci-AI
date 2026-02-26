@@ -1569,6 +1569,7 @@
         "seahawk": "seahawk_2",
         "sema": "sema",
         "skrips": "skrips_2",
+        "vtcode-src": "vtcode-src",
         "webpublish": "webpublish"
       }
     },
@@ -2090,6 +2091,23 @@
       "original": {
         "owner": "qmk",
         "repo": "v-usb",
+        "type": "github"
+      }
+    },
+    "vtcode-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772042736,
+        "narHash": "sha256-+sodgJwNEhb7WU2h4cjruH1WnEQKuw447jfMYTcK6mQ=",
+        "owner": "vinhnx",
+        "repo": "vtcode",
+        "rev": "1d737a04d640662576b5232fa0013ac2864bc29e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vinhnx",
+        "ref": "0.83.0",
+        "repo": "vtcode",
         "type": "github"
       }
     },

@@ -13,7 +13,7 @@
     # Level 5 / Criome Ecosystem Sources
     criomos.url = "github:Criome/CriomOS";
     sema.url = "github:Criome/sema";
-    lojix.url = "github:Criome/tryme";
+    lojix.url = "github:Criome/lojix";
     seahawk.url = "github:Criome/seahawk";
     skrips.url = "github:Criome/skrips";
     mkZolaWebsite.url = "github:Criome/mkZolaWebsite";
@@ -58,6 +58,10 @@
     };
     pi-agent-rust = {
       url = "github:Dicklesworthstone/pi_agent_rust";
+      flake = false;
+    };
+    vtcode-src = {
+      url = "github:vinhnx/vtcode/0.83.0";
       flake = false;
     };
 
@@ -122,6 +126,7 @@
           attractor_docs_src = attractorDocsSrc;
           pi_mono_src = inputs.pi-mono;
           pi_agent_rust_src = inputs.pi-agent-rust;
+          vtcode_src = inputs.vtcode-src;
           repo_root = ./.;
         };
 
@@ -150,6 +155,7 @@
           piDev = namespace.pi_dev;
           unifiedLlm = namespace.unified_llm;
           piRust = namespace.pi_rust;
+          vtcode = namespace.vtcode;
           gemini-cli = namespace.gemini_cli;
         };
 
