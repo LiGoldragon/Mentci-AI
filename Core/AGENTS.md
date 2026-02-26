@@ -66,6 +66,7 @@ Agents execute within a **Mentci-Box** (Nix Jail). All operations must be perfor
 *   **Atomic Intent:** Every single modification MUST result in an `intent:` commit. Do not bundle independent changes.
 *   **Dirty Tree Rule:** Never finish a response with a dirty working copy. Use `jj commit` before finalizing.
 *   **Session Synthesis:** Use `execute finalize` at the end of every prompt to aggregate intents. This tool automatically reads `.mentci/session.json`.
+*   **Protocol Correction Persistence:** When a user corrects process/protocol behavior, the correction must be written into the authoritative guidance files in the same session and committed.
 *   **Auditability:** Use `jj log` as the authoritative audit trail.
 
 ## 4. Admin Developer Mode

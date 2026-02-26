@@ -18,6 +18,8 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 8. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
 9. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
 10. **Hard pre-edit gate:** if the tree is dirty at prompt start, stop implementation, isolate pre-existing intent(s), and commit them before touching any additional files.
+11. **Protocol correction persistence:** if the user corrects workflow/protocol behavior, encode that correction in the relevant `Core/*.md` guidance file(s) within the same prompt session and commit it.
+12. **Prompt-to-guidance traceability:** session history rewrites that change process behavior must leave a clear rule in guidance docs, not only in commit metadata.
 
 ## 2. Preconditions
 1. Prefer working in the dev shell so `MENTCI_*` variables and the jail workspace are active.
