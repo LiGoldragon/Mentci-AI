@@ -6,7 +6,7 @@
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Primary Working Bookmark:** `dev`.
 *   **Current Programming Version:** `(will be updated by commit hook or manually)`
-*   **Latest Release Tag:** `v0.12.8.57.3` (current milestone).
+*   **Latest Release Tag:** `v0.12.9.4.12` (current milestone).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository now operates with a native Rust actor-based orchestration layer (`execute`) and strict Logic-Data separation.
@@ -42,7 +42,9 @@ R&D is the mirrored two-tree model:
   - `Library/specs/MentciLaunchSpec.md`: systemd + terminal launch contract for Mentci-Box.
 - **Primary Operator Interface:** TypeScript `pi` (`pi`) is default; Rust `pi` remains non-default validation lane.
 
-## 5. Current Operational Snapshot (♓︎.8.57.3 | 5919 AM)
+## 5. Current Operational Snapshot (♓︎.9.4.12 | 5919 AM)
+- **Component Locality:** Cap'n Proto schemas now live within component directories. Architectural guidelines enforce SHA-256 hash synchronization between binary and text message versions.
+- **Pure Nix devShell:** `mentci-user` bootstraps environment variables purely within the Nix shell logic, removing the need for external shell wrappers.
 - `dev` lineage continues to enforce the **Rust-Only Mandate**, officially deprecating Python, Clojure, and ad-hoc shell patching. Ad-hoc extraction scripts must now be explicitly marked for rewriting into Sema-grade components like `mentci-dig`.
 - **UI Abstraction Standardization:** All User Interfaces (Pi, VTCode, Gemini) strictly separate Logic and Data. Secrets (`GEMINI_API_KEY`, etc.) are injected purely via `mentci-user export-env`, never via local `.env` files.
 - **VTCode Integration:** The Rust-native semantic terminal coding agent `vtcode` is integrated into the `nix develop` environment via the `mentci-vtcode` wrapper, ready for trial alongside `pi`.

@@ -1,3 +1,12 @@
+## release: v0.12.9.4.12 - capnp component locality, hash-synced messages, and pure nix devshell integration
+♓︎9°4'12" | 5919 AM
+
+- **Cap'n Proto Component Locality:** Implemented a core architectural shift where all Cap'n Proto schemas (`*.capnp`) now reside within their respective component's logic directory (e.g., `Components/mentci-user/schema/`).
+- **Hash-Synced Binary Messages:** Established a protocol for passing structured data to components using prebuilt Cap'n Proto binary messages synced to text-versions via SHA-256 hashes (e.g., `setup_4311f0704ec238e2.bin`).
+- **Pure Nix devShell Secret Injection:** Refactored `mentci-user` into a generic Rust tool that bootstraps environment secrets via the new Cap'n Proto spec, enabling the Nix `dev_shell.nix` to inject keys purely without shell script wrappers.
+- **Architectural Guidance Updates:** Formalized component-local schemas and synced binary message requirements in `Core/ARCHITECTURAL_GUIDELINES.md`.
+- **Logic Cleanup:** Decoupled `mentci-stt` from internal secret resolution, delegating environment hydration entirely to the primary `mentci-user` devShell integration.
+
 ## release: v0.12.8.57.3 - vtcode integration, ui abstraction, and sema lineage mining
 ♓︎8°57'3" | 5919 AM
 
