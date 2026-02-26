@@ -60,6 +60,7 @@ The strict separation of "logic" (code) and "data" (variables, paths, regexes, c
 *   **Push Cadence:** Every structural change must be immediately committed and pushed to `dev`.
 *   **Commit-Every-Intent (Level 5):** The Mentci Engine must automatically execute a `jj` commit after **every single atomic modification** (e.g., one file write, one replacement). Each commit represents exactly one intention. Combining multiple unrelated modifications into a single "success" commit is forbidden.
 *   **Authority:** Li Goldragon is the highest authority (Top Admin).
+*   **Protocol Correction Persistence (Higher-Order Rule):** When a user corrects workflow/protocol behavior, that correction must be encoded in the authoritative `Core/*.md` guidance files in the same prompt session and committed; commit-message-only corrections are insufficient.
 *   **Shipping Protocol (Jail):** Isolated agents in a Jail environment must use the `mentci-commit` tool to ship changes. This tool synchronizes a writable implementation workspace back to the project root and performs a `jj` commit to the target bookmark specified in `MENTCI_COMMIT_TARGET`.
 *   **Usage:** `mentci-commit "intent: <message>"`
 *   **Operational Steps:** See `Core/VersionControlProtocol.md`.
