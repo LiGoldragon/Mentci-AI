@@ -229,13 +229,11 @@ High-level architectural context (framing, mission statements, global mandates) 
 *   **Chronographic Style:** All dates must prioritize the **Ecliptic Chronographic format** (e.g., `♓︎ 1° 15' 1" | 5919 AM`). Gregorian dates should be included in parentheses or otherwise de-emphasized (e.g., `(Feb 19, 2026)`). 
     *   **Ordinality:** Seconds and minutes are 1-based ordinals (0 on ephemeris = 1st ordinal).
     *   **Adaptive Precision:** High-precision units (seconds, minutes) may be omitted if unknown or if the context only requires lower granularity (e.g., `♓︎ 1° | 5919 AM` for broad milestones). Truncation must always occur from right-to-left.
-*   **Comments:** Mandatory *only* when the "why" cannot be structural (e.g., specific timeouts, protocol quirks). Boilerplate is never documented.
-
-## 8. ECLIPTIC CHRONOGRAPHIC VERSIONING
-
-**All versions and dates must adhere to the True Solar Ordinal-Zodiac system.**
-
 See **`Library/architecture/ChronographySpec.md`** for the complete technical specification of the 1-based ordinal system.
+*   **Comments:** Mandatory *only* when the "why" cannot be structural (e.g., specific timeouts, protocol quirks). Boilerplate is never documented.
+*   **Aski Transition:** Migration from EDN to Aski for metadata and configuration MUST occur ONLY when a verified two-way parser/renderer (SIR-compliant) is available to ensure lossless transformations between human-readable authoring and canonical representation.
+*   **Intelligence Portability Layer:** Core instructions and guidelines MUST be migrated to an autonomous injection layer (Mentci Intelligence Layer) that provides relevant guidance to agents at session start, reducing filesystem-loading overhead and enabling parallel portability.
+*   **Traceable Knowledge Mining:** Any findings extracted from external research or chat history (e.g., ChatGPT exports) must be synthesized into high-weight research artifacts in `Research/high/` and linked to the relevant `Development/` plan.
 
 *   **Year System:** Anno Mundi (AM). (Current Year: 5919 AM).
 *   **Version Format:** `Cycle.Sign.Degree.Minute.Second`
