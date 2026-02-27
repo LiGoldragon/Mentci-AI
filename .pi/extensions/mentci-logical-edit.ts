@@ -19,15 +19,16 @@ function highlightCode(code: string, lang: string, theme: any): string {
   if (!code) return "";
   try {
     const highlighted = hljs.highlight(code, { language: lang }).value;
+    
     return highlighted
-      .replace(/<span class="hljs-keyword">/g, '\x1b[35m')
-      .replace(/<span class="hljs-string">/g, '\x1b[32m')
-      .replace(/<span class="hljs-comment">/g, '\x1b[90m')
-      .replace(/<span class="hljs-function">/g, '\x1b[34m')
+      .replace(/<span class="hljs-keyword">/g, '\x1b[35m')      // Purple
+      .replace(/<span class="hljs-string">/g, '\x1b[32m')       // Green
+      .replace(/<span class="hljs-comment">/g, '\x1b[90m')      // Grey
+      .replace(/<span class="hljs-function">/g, '\x1b[34m')     // Blue
       .replace(/<span class="hljs-title( function_)?">/g, '\x1b[34m')
-      .replace(/<span class="hljs-params">/g, '\x1b[37m')
-      .replace(/<span class="hljs-number">/g, '\x1b[33m')
-      .replace(/<span class="hljs-built_in">/g, '\x1b[36m')
+      .replace(/<span class="hljs-params">/g, '\x1b[37m')      // White
+      .replace(/<span class="hljs-number">/g, '\x1b[33m')      // Yellow
+      .replace(/<span class="hljs-built_in">/g, '\x1b[36m')    // Cyan
       .replace(/<span class="hljs-attr">/g, '\x1b[36m')
       .replace(/<\/span>/g, '\x1b[0m')
       .replace(/&quot;/g, '"')
@@ -37,6 +38,27 @@ function highlightCode(code: string, lang: string, theme: any): string {
   } catch {
     return theme.fg("muted", code);
   }
+}
+
+/**
+ * Manual EDN stringification for simple objects since we don't have a node-edn lib.
+ * This ensures the "Intent" block is actual EDN, not JSON mislabeled.
+ */
+function stringifyEDN(obj: any): string {
+  if (obj === null) return "nil";
+  if (typeof obj === "string") return `"${obj.replace(/"/g, '\\"')}"`;
+  if (typeof obj === "number") return obj.toString();
+  if (typeof obj === "boolean") return obj.toString();
+  if (Array.isArray(obj)) {
+    return "[" + obj.map(stringifyEDN).join(" ") + "]";
+  }
+  if (typeof obj === "object") {
+    const entries = Object.entries(obj)
+      .map(([k, v]) => `:${k} ${stringifyEDN(v)}`)
+      .join("\n  ");
+    return `{\n  ${entries}\n}`;
+  }
+  return String(obj);
 }
 
 function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
@@ -50,7 +72,13 @@ function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
         if (data && typeof data === 'object' && data.file && data.text) {
             data = [data];
         } else {
-            return new Text(theme.fg("error", `DEBUG: Content is not a match or array: ${content}`), 0, 0);
+            // Check for double-wrapping in string content
+            try {
+                const inner = JSON.parse(data);
+                data = Array.isArray(inner) ? inner : [inner];
+            } catch {
+                return new Text(theme.fg("error", `DEBUG: Content is not a match or array: ${content}`), 0, 0);
+            }
         }
     }
 
@@ -60,7 +88,12 @@ function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
 
     let out = "";
     if (queryDetails && queryDetails.query) {
-      const edn = `;; Logical Query Intent\n{:project "${queryDetails.project || "default"}"\n :lang "${queryDetails.language || "text"}"\n :query "${queryDetails.query.replace(/"/g, '\\"')}"}`;
+      const intentObj = {
+        project: queryDetails.project || "default",
+        lang: queryDetails.language || "text",
+        query: queryDetails.query
+      };
+      const edn = `;; Logical Query Intent\n${stringifyEDN(intentObj)}`;
       out += highlightCode(edn, "clojure", theme) + "\n" + "─".repeat(40) + "\n\n";
     }
 
