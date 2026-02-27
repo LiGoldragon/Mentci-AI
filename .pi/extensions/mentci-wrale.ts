@@ -26,10 +26,6 @@ async function withWraleRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T>
   }
 }
 
-function projectMissing(message: string, project: string): boolean {
-  return message.includes(`Project '${project}' not found`);
-}
-
 export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "wrale_register_project",
@@ -77,32 +73,18 @@ export default function (pi: ExtensionAPI) {
     execute: async (_toolCallId: string, args: any) => {
       try {
         const result = await withWraleRuntime(async (runtime) => {
-          try {
-            return await runtime.callTool("wrale-tree-sitter", "get_ast", {
-              args: {
-                project: args.project,
-                path: args.path,
-                max_depth: args.maxDepth,
-                include_text: args.includeText,
-              },
-            });
-          } catch (e: any) {
-            const message = `${e?.message || e}`;
-            if (!projectMissing(message, args.project)) throw e;
+          await runtime.callTool("wrale-tree-sitter", "register_project_tool", {
+            args: { path: ".", name: args.project },
+          }).catch(() => undefined);
 
-            await runtime.callTool("wrale-tree-sitter", "register_project_tool", {
-              args: { path: ".", name: args.project },
-            });
-
-            return await runtime.callTool("wrale-tree-sitter", "get_ast", {
-              args: {
-                project: args.project,
-                path: args.path,
-                max_depth: args.maxDepth,
-                include_text: args.includeText,
-              },
-            });
-          }
+          return await runtime.callTool("wrale-tree-sitter", "get_ast", {
+            args: {
+              project: args.project,
+              path: args.path,
+              max_depth: args.maxDepth,
+              include_text: args.includeText,
+            },
+          });
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
@@ -131,34 +113,19 @@ export default function (pi: ExtensionAPI) {
     execute: async (_toolCallId: string, args: any) => {
       try {
         const result = await withWraleRuntime(async (runtime) => {
-          try {
-            return await runtime.callTool("wrale-tree-sitter", "run_query", {
-              args: {
-                project: args.project,
-                query: args.query,
-                file_path: args.filePath,
-                language: args.language,
-                max_results: args.maxResults,
-              },
-            });
-          } catch (e: any) {
-            const message = `${e?.message || e}`;
-            if (!projectMissing(message, args.project)) throw e;
+          await runtime.callTool("wrale-tree-sitter", "register_project_tool", {
+            args: { path: ".", name: args.project },
+          }).catch(() => undefined);
 
-            await runtime.callTool("wrale-tree-sitter", "register_project_tool", {
-              args: { path: ".", name: args.project },
-            });
-
-            return await runtime.callTool("wrale-tree-sitter", "run_query", {
-              args: {
-                project: args.project,
-                query: args.query,
-                file_path: args.filePath,
-                language: args.language,
-                max_results: args.maxResults,
-              },
-            });
-          }
+          return await runtime.callTool("wrale-tree-sitter", "run_query", {
+            args: {
+              project: args.project,
+              query: args.query,
+              file_path: args.filePath,
+              language: args.language,
+              max_results: args.maxResults,
+            },
+          });
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
