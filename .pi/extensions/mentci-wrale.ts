@@ -152,7 +152,7 @@ export default function (pi: ExtensionAPI) {
             args: { path: ".", name: args.project },
           }).catch(() => undefined);
 
-          return await runtime.callTool("wrale-tree-sitter", "get_ast", {
+          const raw: any = await runtime.callTool("wrale-tree-sitter", "get_ast", {
             args: {
               project: args.project,
               path: args.path,
@@ -160,6 +160,9 @@ export default function (pi: ExtensionAPI) {
               include_text: args.includeText,
             },
           });
+
+          // FILTER: If it's a massive AST, we could skeletonize here if needed
+          return raw;
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
@@ -195,7 +198,7 @@ export default function (pi: ExtensionAPI) {
             args: { path: ".", name: args.project },
           }).catch(() => undefined);
 
-          return await runtime.callTool("wrale-tree-sitter", "run_query", {
+          const raw: any = await runtime.callTool("wrale-tree-sitter", "run_query", {
             args: {
               project: args.project,
               query: args.query,
@@ -204,6 +207,20 @@ export default function (pi: ExtensionAPI) {
               max_results: args.maxResults,
             },
           });
+
+          // FILTER: Extract only what we want for the LLM context
+          if (Array.isArray(raw)) {
+            const filtered = raw.map((match: any) => ({
+              file: match.file,
+              line: (match.start?.row ?? 0) + 1,
+              capture: match.capture,
+              // Only keep snippet if explicitly requested or under certain length
+              // For now, we keep it but could add a flag to skeletonize
+              text: match.text?.trim()
+            }));
+            return filtered;
+          }
+          return raw;
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
