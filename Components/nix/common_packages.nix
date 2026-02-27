@@ -35,6 +35,7 @@
   
   # Runtime dependencies
   pkgs.nodejs
+  pkgs.sqlite
   
   # Wrapper Scripts
   (pkgs.writeShellScriptBin "mentci-commit" ''
