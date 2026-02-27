@@ -18,3 +18,5 @@ Outputs/
 /.mentci/
 /.gemini/.voice-recordings/
 /.voice-recordings/
+/.vtcode/
+/vtcode.toml
