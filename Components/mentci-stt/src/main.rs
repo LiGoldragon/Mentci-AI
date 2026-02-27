@@ -1,7 +1,7 @@
 
 pub mod schema;
-pub use schema::{atom_filesystem_capnp, mentci_capnp};
-use schema::mentci_capnp::stt_request;
+pub use schema::stt_capnp;
+use schema::stt_capnp::stt_request;
 use std::io::Read;
 use structopt::StructOpt;
 use std::fs;

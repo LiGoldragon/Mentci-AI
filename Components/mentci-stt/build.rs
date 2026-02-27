@@ -1,8 +1,7 @@
 fn main() {
     capnpc::CompilerCommand::new()
-        .src_prefix("../schema")
-        .file("../schema/mentci.capnp")
-        .file("../schema/atom_filesystem.capnp")
+        .src_prefix("schema")
+        .file("schema/stt.capnp")
         .run()
         .expect("schema compiler command");
 }
