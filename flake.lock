@@ -2097,16 +2097,16 @@
     "vtcode-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772042736,
-        "narHash": "sha256-+sodgJwNEhb7WU2h4cjruH1WnEQKuw447jfMYTcK6mQ=",
-        "owner": "vinhnx",
+        "lastModified": 1772188196,
+        "narHash": "sha256-VW2Dk/Mj82tV9TbJiW6vxxp5jHr59GvAjyjbN5RF+9U=",
+        "owner": "LiGoldragon",
         "repo": "vtcode",
-        "rev": "1d737a04d640662576b5232fa0013ac2864bc29e",
+        "rev": "b5184e65d5180ee5056abed306e9920cfd1c7bc3",
         "type": "github"
       },
       "original": {
-        "owner": "vinhnx",
-        "ref": "0.83.0",
+        "owner": "LiGoldragon",
+        "ref": "0.83.0-goldragon-fixes",
         "repo": "vtcode",
         "type": "github"
       }
