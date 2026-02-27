@@ -1,6 +1,7 @@
 import type { ExtensionAPI, Theme } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 import { execSync } from "child_process";
+import * as fs from "fs";
 import * as path from "path";
 import { Text } from "@mariozechner/pi-tui";
 
@@ -106,7 +107,18 @@ function renderUnifiedDiffForPi(raw: string, theme: Theme): string {
   return out.join("\n");
 }
 
+function loadSemaProgrammerSkill(workspaceRoot: string): string | null {
+  const skillPath = path.join(workspaceRoot, ".pi", "skills", "sema-programmer", "SKILL.md");
+  if (!fs.existsSync(skillPath)) return null;
+  try {
+    return fs.readFileSync(skillPath, "utf-8").trim();
+  } catch {
+    return null;
+  }
+}
+
 export default function (pi: ExtensionAPI) {
+  let semaSkillInjected = false;
   pi.registerTool({
     name: "structural_edit",
     label: "mentci-mcp-edit",
@@ -181,6 +193,7 @@ export default function (pi: ExtensionAPI) {
   });
 
   pi.on("session_start", async () => {
+    semaSkillInjected = false;
     try {
       const workspaceRoot = process.cwd();
       const chronos = execSync(`chronos --format am --precision second`, {
@@ -193,6 +206,26 @@ export default function (pi: ExtensionAPI) {
       }).trim();
       console.log(`\n--- Pre-Hook Injected State ---\nTime: ${chronos}\n${jjStatus}\n-------------------------------`);
     } catch (_e) {}
+  });
+
+  pi.on("session_switch", async () => {
+    semaSkillInjected = false;
+  });
+
+  pi.on("before_agent_start", async () => {
+    if (semaSkillInjected) return undefined;
+    const workspaceRoot = process.cwd();
+    const skillText = loadSemaProgrammerSkill(workspaceRoot);
+    if (!skillText) return undefined;
+
+    semaSkillInjected = true;
+    return {
+      message: {
+        customType: "sema-programmer-injection",
+        display: false,
+        content: `<system-reminder>\nProgrammatic Skill Injection: sema-programmer\n\n${skillText}\n</system-reminder>`,
+      },
+    };
   });
 
   pi.on("tool_call", async (ctx: any) => {
