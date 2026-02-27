@@ -7,7 +7,12 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 2. **END-OF-FLOW PUSH:** Every completed prompt session **MUST** end with a push to `dev` on the `origin` remote.
 3. **COMMIT EVERY INTENT:** One atomic modification per commit. No bundling.
 4. **NO DIRTY TREES:** Finishing a turn with uncommitted changes is a protocol violation.
-5. **ATOMIC MESSAGES:** Use `intent: <short description>` for all intermediate commits.
+5. **ATOMIC MESSAGES + CONTEXT TRAILER:** Use `intent: <short description>` for intermediate commits, and include commit-context sections for every commit (see Rule 5.1).
+5.1. **MANDATORY COMMIT CONTEXT (EVERY COMMIT):** Every commit message (including `intent:` commits) must persist three sections:
+   - `## Prompt`
+   - `## Context`
+   - `## Summary`
+   These sections may be concise, but they are mandatory for auditability.
 6. **SESSION SYNTHESIS:** Full prompt/context attribution is reserved for final session synthesis per `Core/ContextualSessionProtocol.md`.
 7. **PUSH VERIFICATION:** Always verify that the push was successful and the bookmark is visible on the remote.
 6.1. Every `session:` commit description must include an explicit solar baseline line immediately after the title:
@@ -32,7 +37,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 ## 3. Atomic Change Loop
 1. Make exactly one atomic change.
 2. Verify status: `mentci-jj status`
-3. Commit with minimal intent message only: `mentci-jj commit "intent: <short description>"`
+3. Commit using `intent:` title plus mandatory context sections (`## Prompt`, `## Context`, `## Summary`).
 4. Repeat until all intended changes are committed.
 5. Parallelization is allowed: related atomic intents may be developed on parallel revisions.
 6. Session synthesis:
@@ -43,6 +48,9 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
    - Create a structured file at `.mentci/session.json` containing the following schema: `{"summary": "title...", "prompt": "Original prompt...", "context": "Agent context...", "model": "gemini-3-flash...", "changes": ["change 1", "change 2"]}`
    - Use `execute finalize` to read this file, synthesize a compliant `session:` message, and safely target the finalized non-empty revision.
    - This prevents moving bookmarks onto empty working-copy commits and guarantees data under subtitles is not missing.
+6.2 Preferred automation for every intent commit:
+   - Store commit metadata in `.mentci/commit-context.json` with keys `prompt`, `context`, and `summary`.
+   - Generate commit messages from this metadata so every commit persists Prompt/Context/Summary without omission.
 7. Before declaring the prompt complete, run `execute session-guard`; non-zero exit means session synthesis is missing or malformed.
 8. Run `execute root-guard`; non-zero exit means top-level FS contract drift.
 9. Advance and push once:
