@@ -1,27 +1,11 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 import { Text } from "@mariozechner/pi-tui";
-import { createRuntime, type Runtime } from "../npm/node_modules/mcporter/dist/index.js";
-
-let runtimePromise: Promise<Runtime> | null = null;
-
-async function getRuntime(): Promise<Runtime> {
-  if (!runtimePromise) {
-    runtimePromise = createRuntime({ rootDir: process.cwd() });
-  }
-  return runtimePromise;
-}
+import { createRuntime } from "../npm/node_modules/mcporter/dist/index.js";
 
 async function resetRuntime(): Promise<void> {
-  if (!runtimePromise) return;
-  try {
-    const runtime = await runtimePromise;
-    await runtime.close();
-  } catch {
-    // ignore close errors; we still reset the handle below
-  } finally {
-    runtimePromise = null;
-  }
+  // No persistent runtime cache now; kept as explicit no-op for compatibility.
+  return;
 }
 
 function toTextResult(result: unknown): string {
@@ -34,8 +18,12 @@ function toTextResult(result: unknown): string {
 }
 
 async function callWrale(toolName: string, args: Record<string, unknown>) {
-  const runtime = await getRuntime();
-  return runtime.callTool("wrale-tree-sitter", toolName, { args });
+  const runtime = await createRuntime({ rootDir: process.cwd() });
+  try {
+    return await runtime.callTool("wrale-tree-sitter", toolName, { args });
+  } finally {
+    await runtime.close();
+  }
 }
 
 export default function (pi: ExtensionAPI) {

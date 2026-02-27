@@ -36,15 +36,24 @@ Fresh mcporter runtime (single process):
 
 ## Operational notes
 - Existing long-lived runtime/daemon can keep old broken server code loaded.
-- After patch, run one of:
-  - `wrale_reset_runtime` (new Pi tool), or
-  - `/reload`, or
-  - `npx -y mcporter daemon restart` if daemon mode is used.
+- Pi-visible success must come from Pi tool calls, not shell-only checks.
 
-## Current Mentci config adjustment
+## Current Mentci config/extension adjustment
 - Removed `lifecycle: keep-alive` from `config/mcporter.json`.
-  - avoids daemon-sticky stale server process behavior during active iteration.
-  - extension-level runtime cache still provides per-session continuity.
+- Updated `.pi/extensions/mentci-wrale.ts` to create/close mcporter runtime per tool call.
+  - avoids stale in-memory wrale process reuse
+  - ensures each Pi wrale tool call runs against current runtime state.
+
+## Pi verification sequence (required)
+1. `/reload`
+2. `wrale_register_project` with `path:"."`, `name:"mentci"`
+3. `wrale_run_query` with:
+   - `project:"mentci"`
+   - `filePath:"Components/mentci-user/src/main.rs"`
+   - `query:"(function_item) @fn"`
+   - `language:"rust"`
+   - `maxResults:2`
+4. Confirm non-error capture results in Pi tool output.
 
 ## Follow-up
 - Upstream bug should be patched in wrale release.
