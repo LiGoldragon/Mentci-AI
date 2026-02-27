@@ -1,7 +1,7 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 import { Text } from "@mariozechner/pi-tui";
-import { createRuntime, type Runtime } from "mcporter";
+import { createRuntime, type Runtime } from "../npm/node_modules/mcporter/dist/index.js";
 
 let runtimePromise: Promise<Runtime> | null = null;
 
