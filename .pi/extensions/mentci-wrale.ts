@@ -12,6 +12,18 @@ async function getRuntime(): Promise<Runtime> {
   return runtimePromise;
 }
 
+async function resetRuntime(): Promise<void> {
+  if (!runtimePromise) return;
+  try {
+    const runtime = await runtimePromise;
+    await runtime.close();
+  } catch {
+    // ignore close errors; we still reset the handle below
+  } finally {
+    runtimePromise = null;
+  }
+}
+
 function toTextResult(result: unknown): string {
   if (typeof result === "string") return result;
   try {
@@ -114,6 +126,21 @@ export default function (pi: ExtensionAPI) {
     },
     renderCall(_args, theme) {
       const text = theme.fg("toolTitle", theme.bold("wrale_run_query"));
+      return new Text(text, 0, 0);
+    },
+  });
+
+  pi.registerTool({
+    name: "wrale_reset_runtime",
+    label: "wrale-tree-sitter",
+    description: "Reset wrale runtime connection (use after server/version/config changes).",
+    parameters: Type.Object({}),
+    execute: async () => {
+      await resetRuntime();
+      return { content: [{ type: "text", text: "wrale runtime reset" }] };
+    },
+    renderCall(_args, theme) {
+      const text = theme.fg("toolTitle", theme.bold("wrale_reset_runtime"));
       return new Text(text, 0, 0);
     },
   });

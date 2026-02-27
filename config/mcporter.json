@@ -2,8 +2,7 @@
   "mcpServers": {
     "wrale-tree-sitter": {
       "command": "/home/li/git/Mentci-AI/.venv-wrale/bin/python",
-      "args": ["-m", "mcp_server_tree_sitter.server"],
-      "lifecycle": "keep-alive"
+      "args": ["-m", "mcp_server_tree_sitter.server"]
     }
   }
 }
