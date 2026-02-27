@@ -46,12 +46,12 @@ function renderQueryResults(result: any, theme: any): Text {
   }
 }
 
-async function withWraleRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
+async function withTreeSitterRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
   const runtime = await createRuntime({ rootDir: process.cwd() });
   try {
     // Idempotent project registration MUST happen in the SAME process as the query.
     // Since we close the runtime per call, we must register per call.
-    await runtime.callTool("wrale-tree-sitter", "register_project_tool", {
+    await runtime.callTool("mentci-tree-sitter", "register_project_tool", {
       args: { path: ".", name: "mentci" },
     }).catch(() => undefined);
     return await fn(runtime);
@@ -104,9 +104,9 @@ function renderAstResult(result: any, theme: any): Text {
 
 export default function (pi: ExtensionAPI) {
   pi.registerTool({
-    name: "wrale_register_project",
-    label: "wrale-tree-sitter",
-    description: "Register a project directory with wrale tree-sitter MCP server.",
+    name: "ts_register_project",
+    label: "mentci-tree-sitter",
+    description: "Register a project directory with tree-sitter MCP server.",
     parameters: Type.Object({
       path: Type.String({ description: "Project root path (e.g. .)" }),
       name: Type.Optional(Type.String({ description: "Project alias" })),
@@ -114,8 +114,8 @@ export default function (pi: ExtensionAPI) {
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
-        const result = await withWraleRuntime((runtime) =>
-          runtime.callTool("wrale-tree-sitter", "register_project_tool", {
+        const result = await withTreeSitterRuntime((runtime) =>
+          runtime.callTool("mentci-tree-sitter", "register_project_tool", {
             args: {
               path: args.path,
               name: args.name,
@@ -125,21 +125,21 @@ export default function (pi: ExtensionAPI) {
         );
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `wrale_register_project error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `ts_register_project error: ${e?.message || e}` }] };
       }
     },
     renderCall(args, theme) {
       const text =
-        theme.fg("toolTitle", theme.bold("wrale_register_project ")) +
+        theme.fg("toolTitle", theme.bold("ts_register_project ")) +
         theme.fg("accent", args.name || args.path || "project");
       return new Text(text, 0, 0);
     },
   });
 
   pi.registerTool({
-    name: "wrale_get_ast",
-    label: "wrale-tree-sitter",
-    description: "Get AST for a file through wrale tree-sitter MCP server.",
+    name: "ts_get_ast",
+    label: "mentci-tree-sitter",
+    description: "Get AST for a file through tree-sitter MCP server.",
     parameters: Type.Object({
       project: Type.String({ description: "Registered project name" }),
       path: Type.String({ description: "File path relative to project root" }),
@@ -148,8 +148,8 @@ export default function (pi: ExtensionAPI) {
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
-        const result = await withWraleRuntime(async (runtime) => {
-          const raw: any = await runtime.callTool("wrale-tree-sitter", "get_ast", {
+        const result = await withTreeSitterRuntime(async (runtime) => {
+          const raw: any = await runtime.callTool("mentci-tree-sitter", "get_ast", {
             args: {
               project: args.project,
               path: args.path,
@@ -163,12 +163,12 @@ export default function (pi: ExtensionAPI) {
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `wrale_get_ast error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `ts_get_ast error: ${e?.message || e}` }] };
       }
     },
     renderCall(args, theme) {
       const text =
-        theme.fg("toolTitle", theme.bold("wrale_get_ast ")) +
+        theme.fg("toolTitle", theme.bold("ts_get_ast ")) +
         theme.fg("accent", args.path || "file");
       return new Text(text, 0, 0);
     },
@@ -178,9 +178,9 @@ export default function (pi: ExtensionAPI) {
   });
 
   pi.registerTool({
-    name: "wrale_run_query",
-    label: "wrale-tree-sitter",
-    description: "Run a tree-sitter query via wrale server.",
+    name: "ts_run_query",
+    label: "mentci-tree-sitter",
+    description: "Run a tree-sitter query via tree-sitter server.",
     parameters: Type.Object({
       project: Type.String({ description: "Registered project name" }),
       query: Type.String({ description: "Tree-sitter query string" }),
@@ -190,8 +190,8 @@ export default function (pi: ExtensionAPI) {
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
-        const result = await withWraleRuntime(async (runtime) => {
-          const raw: any = await runtime.callTool("wrale-tree-sitter", "run_query", {
+        const result = await withTreeSitterRuntime(async (runtime) => {
+          const raw: any = await runtime.callTool("mentci-tree-sitter", "run_query", {
             args: {
               project: args.project,
               query: args.query,
@@ -217,11 +217,11 @@ export default function (pi: ExtensionAPI) {
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `wrale_run_query error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `ts_run_query error: ${e?.message || e}` }] };
       }
     },
     renderCall(_args, theme) {
-      const text = theme.fg("toolTitle", theme.bold("wrale_run_query"));
+      const text = theme.fg("toolTitle", theme.bold("ts_run_query"));
       return new Text(text, 0, 0);
     },
     renderResult(result, _options, theme) {
@@ -230,16 +230,16 @@ export default function (pi: ExtensionAPI) {
   });
 
   pi.registerTool({
-    name: "wrale_reset_runtime",
-    label: "wrale-tree-sitter",
-    description: "Reset wrale runtime connection (use after server/version/config changes).",
+    name: "ts_reset_runtime",
+    label: "mentci-tree-sitter",
+    description: "Reset tree-sitter runtime connection (use after server/version/config changes).",
     parameters: Type.Object({}),
     execute: async () => {
       await resetRuntime();
-      return { content: [{ type: "text", text: "wrale runtime reset" }] };
+      return { content: [{ type: "text", text: "tree-sitter runtime reset" }] };
     },
     renderCall(_args, theme) {
-      const text = theme.fg("toolTitle", theme.bold("wrale_reset_runtime"));
+      const text = theme.fg("toolTitle", theme.bold("ts_reset_runtime"));
       return new Text(text, 0, 0);
     },
   });
