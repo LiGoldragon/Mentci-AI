@@ -3,6 +3,8 @@ import { Type } from "@sinclair/typebox";
 import { Text } from "@mariozechner/pi-tui";
 import { createRuntime } from "../npm/node_modules/mcporter/dist/index.js";
 import hljs from "../npm/node_modules/highlight.js/lib/index.js";
+import * as fs from "fs";
+import * as path from "path";
 
 async function resetRuntime(): Promise<void> {
   return;
@@ -13,52 +15,68 @@ function toTextResult(result: unknown): string {
 }
 
 /**
- * Converts highlight.js HTML output to Pi-TUI Text objects with ANSI-like coloring.
+ * Mirror Hook: Writes the final UI string to a predictable location.
+ */
+function mirrorUI(text: string) {
+  try {
+    const mirrorPath = "/home/li/git/Mentci-AI/.mentci/ui_mirror.txt";
+    fs.appendFileSync(mirrorPath, "\n--- SNAPSHOT ---\n" + text, "utf-8");
+  } catch {}
+}
+
+const COLOR_MAP: Record<string, string> = {
+  'keyword': '\x1b[35m',      // Purple
+  'string': '\x1b[32m',       // Green
+  'comment': '\x1b[90m',      // Grey
+  'function': '\x1b[34m',      // Blue
+  'title': '\x1b[34m',
+  'params': '\x1b[37m',       // White
+  'number': '\x1b[33m',       // Yellow
+  'built_in': '\x1b[36m',     // Cyan
+  'attr': '\x1b[36m',
+  'symbol': '\x1b[33m',       // Yellow
+  'punctuation': '\x1b[37m',
+  'meta': '\x1b[90m',
+  'operator': '\x1b[37m',
+  'variable': '\x1b[37m',
+  'type': '\x1b[36m'
+};
+
+/**
+ * Robust highlighter that maps all hljs classes to ANSI.
  */
 function highlightCode(code: string, lang: string, theme: any): string {
   if (!code) return "";
   try {
-    // highlight.js returns { value: '...' }
     const res = hljs.highlight(code, { language: lang });
-    const highlighted = res.value;
-    
-    if (!highlighted) return code;
+    let html = res.value;
+    if (!html) return code;
 
-    return highlighted
-      .replace(/<span class="hljs-keyword">/g, '\x1b[35m')      // Purple
-      .replace(/<span class="hljs-string">/g, '\x1b[32m')       // Green
-      .replace(/<span class="hljs-comment">/g, '\x1b[90m')      // Grey
-      .replace(/<span class="hljs-function">/g, '\x1b[34m')     // Blue
-      .replace(/<span class="hljs-title( function_)?">/g, '\x1b[34m')
-      .replace(/<span class="hljs-params">/g, '\x1b[37m')      // White
-      .replace(/<span class="hljs-number">/g, '\x1b[33m')      // Yellow
-      .replace(/<span class="hljs-built_in">/g, '\x1b[36m')    // Cyan
-      .replace(/<span class="hljs-attr">/g, '\x1b[36m')
-      .replace(/<\/span>/g, '\x1b[0m')
+    // Greedy regex to catch any span with an hljs class
+    html = html.replace(/<span[^>]*class="[^"]*hljs-([^" ]+)[^"]*"[^>]*>/g, (_match, group) => {
+        return COLOR_MAP[group] || '\x1b[37m';
+    });
+    
+    html = html.replace(/<\/span>/g, '\x1b[0m');
+    
+    return html
       .replace(/&quot;/g, '"')
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&');
   } catch (e) {
-    return code; // Fallback to raw code on highter error
+    return code; 
   }
 }
 
-/**
- * Manual EDN stringification for simple objects.
- */
 function stringifyEDN(obj: any): string {
   if (obj === null || obj === undefined) return "nil";
   if (typeof obj === "string") return `"${obj.replace(/"/g, '\\"')}"`;
   if (typeof obj === "number") return obj.toString();
   if (typeof obj === "boolean") return obj.toString();
-  if (Array.isArray(obj)) {
-    return "[" + obj.map(stringifyEDN).join(" ") + "]";
-  }
+  if (Array.isArray(obj)) return "[" + obj.map(stringifyEDN).join(" ") + "]";
   if (typeof obj === "object") {
-    const entries = Object.entries(obj)
-      .map(([k, v]) => `:${k} ${stringifyEDN(v)}`)
-      .join("\n  ");
+    const entries = Object.entries(obj).map(([k, v]) => `:${k} ${stringifyEDN(v)}`).join("\n  ");
     return `{\n  ${entries}\n}`;
   }
   return String(obj);
@@ -66,74 +84,61 @@ function stringifyEDN(obj: any): string {
 
 function renderQueryResults(result: any, theme: any, args: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text(theme.fg("error", "Empty tool result."), 0, 0);
+  if (!content) return new Text(theme.fg("error", "No match content."), 0, 0);
 
+  let finalOutput = "";
   try {
-    let data = JSON.parse(content);
-    
-    // Normalize data to array
-    if (!Array.isArray(data)) {
-        if (data && typeof data === 'object' && data.file) {
-            data = [data];
-        } else {
-            return new Text(theme.fg("error", "Result is not a valid match set.") + "\n" + content, 0, 0);
-        }
-    }
+    let rawData = JSON.parse(content);
+    let results: any[] = [];
+    let callArgs = args;
 
-    let out = "";
-    
-    // 1. Amazing Header: The EDN Intent block
-    // Note: args is the second parameter in renderResult(result, args, theme)
-    const queryStr = args?.query || "unknown";
-    const project = args?.project || "mentci";
-    const language = args?.language || "rust";
+    if (rawData.results && Array.isArray(rawData.results)) {
+        results = rawData.results;
+        callArgs = rawData.args || args;
+    } else if (Array.isArray(rawData)) {
+        results = rawData;
+    } else if (typeof rawData === 'object' && rawData.file) {
+        results = [rawData];
+    }
 
     const intentObj = {
-      project,
-      language,
-      query: queryStr
+      project: callArgs?.project || "mentci",
+      language: callArgs?.language || "rust",
+      query: callArgs?.query || "unknown"
     };
     
-    out += theme.fg("toolTitle", theme.bold(";; Logical Query Intent")) + "\n";
-    out += highlightCode(stringifyEDN(intentObj), "clojure", theme) + "\n";
-    out += theme.fg("muted", "─".repeat(50)) + "\n\n";
+    finalOutput += theme.fg("toolTitle", theme.bold(";; Logical Query Intent")) + "\n";
+    finalOutput += highlightCode(stringifyEDN(intentObj), "clojure", theme) + "\n";
+    finalOutput += theme.fg("muted", "─".repeat(50)) + "\n\n";
 
-    if (data.length === 0) {
-      out += theme.fg("muted", "No matches found in the codebase.");
-      return new Text(out, 0, 0);
-    }
-
-    // 2. High-Density Matches
-    for (const match of data) {
-      const file = match.file || "unknown";
-      const line = match.line || "?";
-      const capture = match.capture ? theme.fg("accent", `@${match.capture}`) : "";
-      
-      out += theme.fg("toolTitle", `${file}:${line}`) + " " + capture + "\n";
-      
-      if (match.text) {
-        const lang = file.endsWith(".rs") ? "rust" : file.endsWith(".ts") ? "typescript" : "text";
-        const highlighted = highlightCode(match.text, lang, theme);
-        // Indent snippets for better visual separation
-        out += highlighted.split("\n").map((l: string) => "  " + l).join("\n") + "\n\n";
+    if (results.length === 0) {
+      finalOutput += theme.fg("muted", "No matches found.");
+    } else {
+      for (const match of results) {
+        const file = match.file || "unknown";
+        const line = match.line || "?";
+        const capture = match.capture ? theme.fg("accent", `@${match.capture}`) : "";
+        finalOutput += theme.fg("toolTitle", `${file}:${line}`) + " " + capture + "\n";
+        if (match.text) {
+          const lang = file.endsWith(".rs") ? "rust" : "typescript";
+          const highlighted = highlightCode(match.text, lang, theme);
+          finalOutput += highlighted.split("\n").map((l: string) => "  " + l).join("\n") + "\n\n";
+        }
       }
     }
-
-    return new Text(out.trim(), 0, 0);
+    const res = finalOutput.trim();
+    mirrorUI(res);
+    return new Text(res, 0, 0);
   } catch (e: any) {
-    return new Text(
-      theme.fg("error", `Rendering Exception: ${e.message}`) + 
-      "\n" + theme.fg("muted", e.stack || "") + 
-      "\n\nRAW CONTENT:\n" + content, 
-      0, 0
-    );
+    const err = theme.fg("error", `Render Error: ${e.message}`) + "\n" + content;
+    mirrorUI(err);
+    return new Text(err, 0, 0);
   }
 }
 
 async function withLogicalRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
   const runtime = await createRuntime({ rootDir: process.cwd() });
   try {
-    // Ensure project is always registered in the same process
     await runtime.callTool("mentci-tree-sitter", "register_project_tool", {
       args: { path: ".", name: "mentci" },
     }).catch(() => undefined);
@@ -145,15 +150,12 @@ async function withLogicalRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<
 
 function renderAstResult(result: any, theme: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text(theme.fg("error", "Empty AST result."), 0, 0);
-
+  if (!content) return new Text(theme.fg("error", "Empty AST."), 0, 0);
   try {
     const parsed = JSON.parse(content);
     const tree = parsed.tree;
-    if (!tree) return new Text(theme.fg("error", "No AST tree found in result.") + "\n" + content, 0, 0);
-
+    if (!tree) { mirrorUI(content); return new Text(content, 0, 0); }
     let out = theme.fg("toolTitle", `${parsed.file} [${parsed.language}]`) + "\n";
-
     function formatNode(node: any, depth: number): string {
       const indent = "  ".repeat(depth);
       let line = `${indent}${theme.fg("accent", node.type)}`;
@@ -161,16 +163,18 @@ function renderAstResult(result: any, theme: any): Text {
       if (start) line += theme.fg("muted", ` [${start.row + 1}:${start.column}]`);
       if (node.text && node.text.length < 60 && !node.children_count) line += " " + theme.fg("success", JSON.stringify(node.text));
       let res = line + "\n";
-      if (node.children) {
-        for (const child of node.children) res += formatNode(child, depth + 1);
-      } else if (node.truncated) res += `${indent}  ...\n`;
+      if (node.children) for (const child of node.children) res += formatNode(child, depth + 1);
+      else if (node.truncated) res += `${indent}  ...\n`;
       return res;
     }
-
     out += formatNode(tree, 0);
-    return new Text(out.trim(), 0, 0);
+    const res = out.trim();
+    mirrorUI(res);
+    return new Text(res, 0, 0);
   } catch (e: any) {
-    return new Text(theme.fg("error", `AST Rendering Exception: ${e.message}`) + "\n\n" + content, 0, 0);
+    const err = theme.fg("error", `AST Error: ${e.message}`) + "\n" + content;
+    mirrorUI(err);
+    return new Text(err, 0, 0);
   }
 }
 
@@ -251,27 +255,21 @@ export default function (pi: ExtensionAPI) {
             args: { project: args.project, query: args.query, file_path: args.filePath, language: args.language, max_results: args.maxResults },
           });
 
-          // DEPOT: Extract data from the double-wrapped mcporter envelope.
-          const data = (raw as any).structuredContent?.result || (raw as any).content?.[0]?.text || raw;
+          const contentStr = (raw as any).content?.[0]?.text;
+          let data = raw;
+          if (contentStr) { try { data = JSON.parse(contentStr); } catch { data = contentStr; } }
+          if (data && data.content && Array.isArray(data.content)) { try { data = JSON.parse(data.content[0].text); } catch {} }
 
-          let final = data;
-          if (typeof data === 'string') {
-              try { final = JSON.parse(data); } catch { final = data; }
+          let results = [];
+          if (Array.isArray(data)) {
+            results = data.map((match: any) => {
+                let snippet = match.text?.trim() || "";
+                return { file: match.file, line: match.line || (match.start?.row ?? 0) + 1, capture: match.capture, text: snippet };
+            });
+          } else if (data && typeof data === 'object' && data.file) {
+              results = [{ file: data.file, line: data.line || (data.start?.row ?? 0) + 1, capture: data.capture, text: data.text?.trim() }];
           }
-          
-          if (final && final.content && Array.isArray(final.content)) {
-               try { final = JSON.parse(final.content[0].text); } catch {}
-          }
-
-          if (Array.isArray(final)) {
-            return final.map((match: any) => ({
-              file: match.file,
-              line: (match.start?.row ?? 0) + 1,
-              capture: match.capture,
-              text: match.text?.trim()
-            }));
-          }
-          return final;
+          return { results, args };
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
@@ -282,7 +280,6 @@ export default function (pi: ExtensionAPI) {
       return new Text(theme.fg("toolTitle", theme.bold("logical_run_query")), 0, 0);
     },
     renderResult(result, options, theme) {
-      // options.args contains the tool call arguments
       return renderQueryResults(result, theme, (options as any).args);
     },
   });
