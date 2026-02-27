@@ -19,7 +19,14 @@ Mentci does not center its long-term UX on text-only DSL interaction.
 Mentci reuses Aski where text interfaces are beneficial, while moving primary operator interaction toward direct visual and symbolic interfaces.
 
 ### 2.1 The Binary Horizon (SEMA)
-While Aski optimizes the text channel, the ultimate efficiency lies in **SEMA binary data**. By moving from text-based Aski to fully specified structured trees of enumerators, LLM cognition becomes two to three orders of magnitude more efficient than text.
+While Aski optimizes the text channel, the ultimate efficiency lies in **SEMA binary data**. By moving from text-based Aski to fully specified structured trees of enumerators, LLM cognition becomes two to three orders of magnitude more efficient than text. **SEMA** is the authoritative machine-code symbolic language.
+
+### 2.2 Aski Variants: Lojix and Sajban
+Aski is divided into two primary counterparts:
+1.  **aski-lojix (lojix):** The technical/structural variant used for system specifications, Nix abstractions, and logic flow.
+2.  **aski-sajban (sajban):** The natural-language variant used for representing inferred human meaning, linguistic structures, and psyche-to-graph translation.
+
+**Sajban** (formerly a term for SEMA) is now reserved exclusively for the natural-language Aski. It is **self-loading**: it requires its own semantic rules to project from the underlying SEMA binary into an ASCII surface.
 
 ## 3. Homoiconicity Contract
 

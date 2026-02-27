@@ -43,6 +43,7 @@ R&D is the mirrored two-tree model:
 - **Primary Operator Interface:** TypeScript `pi` (`pi`) is default; Rust `pi` remains non-default validation lane.
 
 ## 5. Current Operational Snapshot (♓︎.9.4.12 | 5919 AM)
+- **Terminology Alignment:** Officially marked "sajban" as deprecated for "sema" (the machine-code symbolic language). **Sajban** is now the name for the natural-language **Aski** (`aski-sajban`), which is self-loading from SEMA binary.
 - **Component Locality:** Cap'n Proto schemas now live within component directories. Architectural guidelines enforce SHA-256 hash synchronization between binary and text message versions.
 - **Pure Nix devShell:** `mentci-user` bootstraps environment variables purely within the Nix shell logic, removing the need for external shell wrappers.
 - `dev` lineage continues to enforce the **Rust-Only Mandate**, officially deprecating Python, Clojure, and ad-hoc shell patching. Ad-hoc extraction scripts must now be explicitly marked for rewriting into Sema-grade components like `mentci-dig`.

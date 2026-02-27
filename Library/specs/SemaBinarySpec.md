@@ -21,4 +21,11 @@ SEMA is a machine-native format designed to bypass the token inefficiencies of t
 *   Direct SEMA ingestion by LLMs is targeted to be **two to three orders of magnitude** more efficient than text-based reasoning.
 
 ## 3. Precursors
-SEMA is the successor to `Sajban` ("language of knowledge").
+SEMA is the successor to `Sajban` ("language of knowledge"). The term **Sajban** is now **DEPRECATED** when referring to the machine-code symbolic language, which is canonically identified as **SEMA**.
+
+## 4. Resurrection of Sajban (aski-sajban)
+The name **Sajban** has been brought back by popular demand as the identifier for the **natural-language Aski** (the counterpart to `aski-lojix`). 
+
+*   **Full Name:** `aski-sajban`
+*   **Shorthand:** `sajban`
+*   **Property:** `sajban` is self-loading; it requires its own semantic definitions to render itself from the `SEMA` binary format into ASCII representation.
