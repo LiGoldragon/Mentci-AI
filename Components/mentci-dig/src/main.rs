@@ -5,7 +5,7 @@ pub mod mentci_capnp {
     include!(concat!(env!("OUT_DIR"), "/mentci_capnp.rs"));
 }
 
-use mentci_capnp::{dig_request, DigStrategy};
+use mentci_capnp::dig_request;
 use anyhow::Result;
 
 pub struct DigEngine;
