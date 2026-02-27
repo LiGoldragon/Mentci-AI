@@ -5,12 +5,10 @@ import { createRuntime } from "../npm/node_modules/mcporter/dist/index.js";
 import hljs from "../npm/node_modules/highlight.js/lib/index.js";
 
 async function resetRuntime(): Promise<void> {
-  // No persistent runtime cache now; kept as explicit no-op for compatibility.
   return;
 }
 
 function toTextResult(result: unknown): string {
-  // For the LLM context, we want the leanest possible valid JSON string.
   return JSON.stringify(result);
 }
 
@@ -18,19 +16,18 @@ function toTextResult(result: unknown): string {
  * Converts highlight.js HTML output to Pi-TUI Text objects with ANSI-like coloring.
  */
 function highlightCode(code: string, lang: string, theme: any): string {
+  if (!code) return "";
   try {
     const highlighted = hljs.highlight(code, { language: lang }).value;
-    
-    // Simple HTML-to-ANSI mapping for highlight.js classes
     return highlighted
-      .replace(/<span class="hljs-keyword">/g, '\x1b[35m')      // Purple
-      .replace(/<span class="hljs-string">/g, '\x1b[32m')       // Green
-      .replace(/<span class="hljs-comment">/g, '\x1b[90m')      // Grey
-      .replace(/<span class="hljs-function">/g, '\x1b[34m')     // Blue
+      .replace(/<span class="hljs-keyword">/g, '\x1b[35m')
+      .replace(/<span class="hljs-string">/g, '\x1b[32m')
+      .replace(/<span class="hljs-comment">/g, '\x1b[90m')
+      .replace(/<span class="hljs-function">/g, '\x1b[34m')
       .replace(/<span class="hljs-title( function_)?">/g, '\x1b[34m')
-      .replace(/<span class="hljs-params">/g, '\x1b[37m')      // White
-      .replace(/<span class="hljs-number">/g, '\x1b[33m')      // Yellow
-      .replace(/<span class="hljs-built_in">/g, '\x1b[36m')    // Cyan
+      .replace(/<span class="hljs-params">/g, '\x1b[37m')
+      .replace(/<span class="hljs-number">/g, '\x1b[33m')
+      .replace(/<span class="hljs-built_in">/g, '\x1b[36m')
       .replace(/<span class="hljs-attr">/g, '\x1b[36m')
       .replace(/<\/span>/g, '\x1b[0m')
       .replace(/&quot;/g, '"')
@@ -44,32 +41,32 @@ function highlightCode(code: string, lang: string, theme: any): string {
 
 function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text(theme.fg("muted", "No content found in result."), 0, 0);
+  if (!content) return new Text(theme.fg("error", "DEBUG: result.content[0].text is empty"), 0, 0);
 
   try {
-    // result.content[0].text is a JSON string of an array or an error message.
-    let parsed = JSON.parse(content);
+    let data = JSON.parse(content);
     
-    // If mcporter returned an envelope inside the string (some versions do)
-    if (parsed.content && Array.isArray(parsed.content)) {
-        parsed = JSON.parse(parsed.content[0].text);
+    if (!Array.isArray(data)) {
+        if (data && typeof data === 'object' && data.file && data.text) {
+            data = [data];
+        } else {
+            return new Text(theme.fg("error", `DEBUG: Content is not a match or array: ${content}`), 0, 0);
+        }
     }
 
-    if (!Array.isArray(parsed) || parsed.length === 0) {
+    if (data.length === 0) {
       return new Text(theme.fg("muted", "No matches found for query."), 0, 0);
     }
 
     let out = "";
-    
-    // Add Query Intent Header (EDN-style)
-    if (queryDetails) {
-      const edn = `;; Logical Query Intent\n{:project "${queryDetails.project}"\n :lang "${queryDetails.language}"\n :query "${queryDetails.query.replace(/"/g, '\\"')}"}`;
+    if (queryDetails && queryDetails.query) {
+      const edn = `;; Logical Query Intent\n{:project "${queryDetails.project || "default"}"\n :lang "${queryDetails.language || "text"}"\n :query "${queryDetails.query.replace(/"/g, '\\"')}"}`;
       out += highlightCode(edn, "clojure", theme) + "\n" + "─".repeat(40) + "\n\n";
     }
 
-    for (const match of parsed) {
+    for (const match of data) {
       const file = match.file || "unknown";
-      const line = match.line || "?";
+      const line = match.line || (match.start?.row !== undefined ? match.start.row + 1 : "?");
       const capture = match.capture ? theme.fg("accent", `@${match.capture}`) : "";
       const lang = file.endsWith(".rs") ? "rust" : file.endsWith(".ts") ? "typescript" : "text";
       
@@ -77,15 +74,12 @@ function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
       
       if (match.text) {
         const highlighted = highlightCode(match.text, lang, theme);
-        const snippet = highlighted.split("\n")
-          .map((l: string) => "  " + l)
-          .join("\n");
-        out += snippet + "\n\n";
+        out += highlighted.split("\n").map((l: string) => "  " + l).join("\n") + "\n\n";
       }
     }
     return new Text(out.trim(), 0, 0);
-  } catch (e) {
-    return new Text(theme.fg("error", `Rendering Error: ${e}`) + "\n\n" + content, 0, 0);
+  } catch (e: any) {
+    return new Text(theme.fg("error", `DEBUG Rendering Exception: ${e?.stack || e}`) + "\n\nRAW_CONTENT:\n" + content, 0, 0);
   }
 }
 
@@ -103,47 +97,32 @@ async function withLogicalRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<
 
 function renderAstResult(result: any, theme: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text(theme.fg("muted", "No content found in result."), 0, 0);
+  if (!content) return new Text(theme.fg("error", "DEBUG: result.content[0].text is empty"), 0, 0);
 
   try {
-    let parsed = JSON.parse(content);
-    if (parsed.content && Array.isArray(parsed.content)) {
-        parsed = JSON.parse(parsed.content[0].text);
-    }
-    
+    const parsed = JSON.parse(content);
     const tree = parsed.tree;
-    if (!tree) return new Text(content, 0, 0);
+    if (!tree) return new Text(theme.fg("error", "DEBUG: No .tree in parsed JSON") + "\n" + content, 0, 0);
 
     let out = theme.fg("toolTitle", `${parsed.file} [${parsed.language}]`) + "\n";
 
     function formatNode(node: any, depth: number): string {
       const indent = "  ".repeat(depth);
       let line = `${indent}${theme.fg("accent", node.type)}`;
-      
       const start = node.start_point;
-      if (start) {
-        line += theme.fg("muted", ` [${start.row + 1}:${start.column}]`);
-      }
-
-      if (node.text && node.text.length < 60 && !node.children_count) {
-        line += " " + theme.fg("success", JSON.stringify(node.text));
-      }
-
+      if (start) line += theme.fg("muted", ` [${start.row + 1}:${start.column}]`);
+      if (node.text && node.text.length < 60 && !node.children_count) line += " " + theme.fg("success", JSON.stringify(node.text));
       let res = line + "\n";
       if (node.children) {
-        for (const child of node.children) {
-          res += formatNode(child, depth + 1);
-        }
-      } else if (node.truncated) {
-        res += `${indent}  ...\n`;
-      }
+        for (const child of node.children) res += formatNode(child, depth + 1);
+      } else if (node.truncated) res += `${indent}  ...\n`;
       return res;
     }
 
     out += formatNode(tree, 0);
     return new Text(out.trim(), 0, 0);
-  } catch (e) {
-    return new Text(theme.fg("error", `Rendering Error: ${e}`) + "\n\n" + content, 0, 0);
+  } catch (e: any) {
+    return new Text(theme.fg("error", `DEBUG Rendering Exception: ${e?.stack || e}`) + "\n\n" + content, 0, 0);
   }
 }
 
@@ -161,24 +140,17 @@ export default function (pi: ExtensionAPI) {
       try {
         const result = await withLogicalRuntime((runtime) =>
           runtime.callTool("mentci-tree-sitter", "register_project_tool", {
-            args: {
-              path: args.path,
-              name: args.name,
-              description: args.description,
-            },
+            args: { path: args.path, name: args.name, description: args.description },
           })
         );
-        const text = toTextResult((result as any).content?.[0]?.text || (result as any).structuredContent?.result || result);
-        return { content: [{ type: "text", text }] };
+        const data = (result as any).structuredContent?.result || (result as any).content?.[0]?.text || result;
+        return { content: [{ type: "text", text: toTextResult(data) }] };
       } catch (e: any) {
         return { content: [{ type: "text", text: `logical_register_project error: ${e?.message || e}` }] };
       }
     },
     renderCall(args, theme) {
-      const text =
-        theme.fg("toolTitle", theme.bold("logical_register_project ")) +
-        theme.fg("accent", args.name || args.path || "project");
-      return new Text(text, 0, 0);
+      return new Text(theme.fg("toolTitle", theme.bold("logical_register_project ")) + theme.fg("accent", args.name || args.path || "project"), 0, 0);
     },
   });
 
@@ -195,27 +167,18 @@ export default function (pi: ExtensionAPI) {
     execute: async (_toolCallId: string, args: any) => {
       try {
         const result = await withLogicalRuntime(async (runtime) => {
-          const raw: any = await runtime.callTool("mentci-tree-sitter", "get_ast", {
-            args: {
-              project: args.project,
-              path: args.path,
-              max_depth: args.maxDepth,
-              include_text: args.includeText,
-            },
+          return await runtime.callTool("mentci-tree-sitter", "get_ast", {
+            args: { project: args.project, path: args.path, max_depth: args.maxDepth, include_text: args.includeText },
           });
-          return raw;
         });
-        const text = toTextResult((result as any).content?.[0]?.text || (result as any).structuredContent?.result || result);
-        return { content: [{ type: "text", text }] };
+        const data = (result as any).structuredContent?.result || (result as any).content?.[0]?.text || result;
+        return { content: [{ type: "text", text: toTextResult(data) }] };
       } catch (e: any) {
         return { content: [{ type: "text", text: `logical_get_ast error: ${e?.message || e}` }] };
       }
     },
     renderCall(args, theme) {
-      const text =
-        theme.fg("toolTitle", theme.bold("logical_get_ast ")) +
-        theme.fg("accent", args.path || "file");
-      return new Text(text, 0, 0);
+      return new Text(theme.fg("toolTitle", theme.bold("logical_get_ast ")) + theme.fg("accent", args.path || "file"), 0, 0);
     },
     renderResult(result, _options, theme) {
       return renderAstResult(result, theme);
@@ -237,35 +200,29 @@ export default function (pi: ExtensionAPI) {
       try {
         const result = await withLogicalRuntime(async (runtime) => {
           const raw: any = await runtime.callTool("mentci-tree-sitter", "run_query", {
-            args: {
-              project: args.project,
-              query: args.query,
-              file_path: args.filePath,
-              language: args.language,
-              max_results: args.maxResults,
-            },
+            args: { project: args.project, query: args.query, file_path: args.filePath, language: args.language, max_results: args.maxResults },
           });
 
-          // Unwrap mcporter response
-          const contentStr = (raw as any).content?.[0]?.text;
-          let data = raw;
-          if (contentStr) {
-            try {
-              data = JSON.parse(contentStr);
-            } catch {
-              data = contentStr;
-            }
+          const data = (raw as any).structuredContent?.result || (raw as any).content?.[0]?.text || raw;
+
+          let final = data;
+          if (typeof data === 'string') {
+              try { final = JSON.parse(data); } catch { final = data; }
+          }
+          
+          if (final && final.content && Array.isArray(final.content)) {
+               try { final = JSON.parse(final.content[0].text); } catch {}
           }
 
-          if (Array.isArray(data)) {
-            return data.map((match: any) => ({
+          if (Array.isArray(final)) {
+            return final.map((match: any) => ({
               file: match.file,
               line: (match.start?.row ?? 0) + 1,
               capture: match.capture,
               text: match.text?.trim()
             }));
           }
-          return data;
+          return final;
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
@@ -273,8 +230,7 @@ export default function (pi: ExtensionAPI) {
       }
     },
     renderCall(args, theme) {
-      const text = theme.fg("toolTitle", theme.bold("logical_run_query"));
-      return new Text(text, 0, 0);
+      return new Text(theme.fg("toolTitle", theme.bold("logical_run_query")), 0, 0);
     },
     renderResult(result, args, theme) {
       return renderQueryResults(result, theme, args);
@@ -291,8 +247,7 @@ export default function (pi: ExtensionAPI) {
       return { content: [{ type: "text", text: "logical runtime reset" }] };
     },
     renderCall(_args, theme) {
-      const text = theme.fg("toolTitle", theme.bold("logical_reset_runtime"));
-      return new Text(text, 0, 0);
+      return new Text(theme.fg("toolTitle", theme.bold("logical_reset_runtime")), 0, 0);
     },
   });
 }
