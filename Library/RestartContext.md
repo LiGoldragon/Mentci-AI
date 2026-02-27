@@ -17,6 +17,8 @@ Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilizati
 - Implemented Aski Projector workflow (EDN -> Cap'n Proto text -> packed binary) in Rust via `aski-lib` + `mentci-mcp`.
 - Migrated key component data authorities (`mentci-stt`, `mentci-user`, `mentci-intel`) to EDN sidecar sources.
 - Strengthened release protocol toward signed tagging and dual chronographic formatting.
+- Established **Logical Editing** (AST-aware) and **Search Intelligence** (Linkup) as primary symbolic tools.
+- Implemented **Mirror Hook** protocol to eliminate agent-UI synchronization hallucinations.
 
 ## 2. Mandatory Core Context (The Program)
 These files define the agent's operating logic and must be loaded automatically:
@@ -48,6 +50,7 @@ R&D is the mirrored two-tree model:
   - `Library/architecture/MentciBoxIsolation.md`: Mentci Box isolation protocol.
   - `Library/specs/MentciLaunchSpec.md`: systemd + terminal launch contract for Mentci-Box.
 - **Primary Operator Interface:** TypeScript `pi` (`pi`) is default; Rust `pi` remains non-default validation lane.
+- **Symbolic Discovery Surface:** `logical-edit` (AST queries) and `linkup` (web validation) are the canonical discovery tools. Agents must prefer `logical_run_query` over `grep` for code analysis.
 
 ## 5. Current Operational Snapshot (♓︎.9.59.28 | 5919 AM)
 - **Terminology Alignment:** Officially marked "sajban" as deprecated for "sema" (the machine-code symbolic language). **Sajban** is now the name for the natural-language **Aski** (`aski-sajban`), which is self-loading from SEMA binary.
@@ -60,7 +63,8 @@ R&D is the mirrored two-tree model:
 - **VTCode Integration:** The Rust-native semantic terminal coding agent `vtcode` is integrated into the `nix develop` environment via the `mentci-vtcode` wrapper, ready for trial alongside `pi`.
 - **Philosophical Alignment:** The "Local Machine of Fit" mandate is deeply codified (`Core/PHILOSOPHY_OF_INTENT.md`), explicitly rejecting manipulative AI governance and enforcing local, patient agent execution.
 - **Data-Logic Separation:** Hardcoding API keys or configuration strings in logic is a Severe Violation. `mentci-user` dynamically fetches secrets via `gopass`.
-- **Programmatic Refactoring:** Regex/string file patching is forbidden. We are moving to AST/CST lossless transformations via the `mentci-mcp` Rust server and the newly scaffolded `mentci-dig` component.
+- **Programmatic Refactoring:** Regex/string file patching is forbidden. We are moving to AST/CST lossless transformations via the `mentci-mcp` Rust server, the `logical-edit` query engine, and the newly scaffolded `mentci-dig` component.
+- **Web-Aware Validation:** All ecosystem and maturity claims must be verified via `linkup` before being presented to the user.
 
 ## 6. Guard Health Snapshot
 Latest observed gate outcomes:

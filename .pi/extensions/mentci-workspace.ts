@@ -183,22 +183,6 @@ export default function (pi: ExtensionAPI) {
     },
   });
 
-  // Normalize structural_edit output (drop noisy unified headers).
-  pi.on("tool_result", async (event: any) => {
-    if (event?.toolName !== "structural_edit") return undefined;
-
-    const raw = (event.content || [])
-      .filter((c: any) => c?.type === "text")
-      .map((c: any) => c.text)
-      .join("\n");
-
-    const cleaned = cleanUnifiedDiffText(raw);
-
-    return {
-      content: [{ type: "text", text: cleaned }],
-    };
-  });
-
   pi.on("session_start", async () => {
     try {
       const workspaceRoot = process.cwd();
