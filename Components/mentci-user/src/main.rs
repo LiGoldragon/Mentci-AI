@@ -3,6 +3,7 @@ use std::env;
 use std::fs::File;
 #[cfg(unix)]
 use std::os::unix::process::CommandExt;
+use std::io::BufReader;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
@@ -63,6 +64,30 @@ fn collect_env_values(
     Ok(out)
 }
 
+fn read_setup_message(setup_bin: &Path) -> Result<capnp::message::Reader<capnp::serialize::OwnedSegments>> {
+    let packed_attempt = (|| {
+        let file = File::open(setup_bin)
+            .with_context(|| format!("Failed to open {}", setup_bin.display()))?;
+        let mut reader = BufReader::new(file);
+        capnp::serialize_packed::read_message(&mut reader, capnp::message::ReaderOptions::new())
+            .with_context(|| format!("Failed to read packed capnp message from {}", setup_bin.display()))
+    })();
+
+    if let Ok(message) = packed_attempt {
+        if message
+            .get_root::<mentci_user_capnp::user_setup_config::Reader>()
+            .is_ok()
+        {
+            return Ok(message);
+        }
+    }
+
+    let mut file = File::open(setup_bin)
+        .with_context(|| format!("Failed to open {}", setup_bin.display()))?;
+    capnp::serialize::read_message(&mut file, capnp::message::ReaderOptions::new())
+        .with_context(|| format!("Failed to read unpacked capnp message from {}", setup_bin.display()))
+}
+
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
 
@@ -98,9 +123,7 @@ fn main() -> Result<()> {
         _ => anyhow::bail!("Unknown mode: {}", mode),
     };
 
-    let mut file = File::open(&setup_bin)
-        .with_context(|| format!("Failed to open {}", setup_bin.display()))?;
-    let message_reader = capnp::serialize::read_message(&mut file, capnp::message::ReaderOptions::new())?;
+    let message_reader = read_setup_message(&setup_bin)?;
     let setup = message_reader.get_root::<mentci_user_capnp::user_setup_config::Reader>()?;
     let env_values = collect_env_values(setup)?;
 
@@ -139,5 +162,70 @@ fn main() -> Result<()> {
     {
         let status = cmd.status()?;
         std::process::exit(status.code().unwrap_or(1));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    fn temp_file_path(suffix: &str) -> PathBuf {
+        let nanos = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        std::env::temp_dir().join(format!("mentci-user-{}-{}.bin", suffix, nanos))
+    }
+
+    fn write_setup(path: &Path, packed: bool) -> Result<()> {
+        let mut message = capnp::message::Builder::new_default();
+        {
+            let mut root = message.init_root::<mentci_user_capnp::user_setup_config::Builder>();
+            root.set_text_hash("test");
+            root.set_user_config_path(".mentci/user.json");
+            let mut reqs = root.init_required_env_vars(1);
+            let mut req = reqs.reborrow().get(0);
+            req.set_name("LINKUP_API_KEY");
+            req.set_default_method("literal");
+            req.set_default_path("dummy");
+        }
+
+        let mut file = File::create(path)?;
+        if packed {
+            capnp::serialize_packed::write_message(&mut file, &message)?;
+        } else {
+            capnp::serialize::write_message(&mut file, &message)?;
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn reads_packed_setup_bin() {
+        let path = temp_file_path("packed");
+        write_setup(&path, true).unwrap();
+
+        let reader = read_setup_message(&path).unwrap();
+        let root = reader
+            .get_root::<mentci_user_capnp::user_setup_config::Reader>()
+            .unwrap();
+        assert_eq!(root.get_text_hash().unwrap().to_string().unwrap(), "test");
+
+        let _ = fs::remove_file(path);
+    }
+
+    #[test]
+    fn reads_unpacked_setup_bin() {
+        let path = temp_file_path("unpacked");
+        write_setup(&path, false).unwrap();
+
+        let reader = read_setup_message(&path).unwrap();
+        let root = reader
+            .get_root::<mentci_user_capnp::user_setup_config::Reader>()
+            .unwrap();
+        assert_eq!(root.get_text_hash().unwrap().to_string().unwrap(), "test");
+
+        let _ = fs::remove_file(path);
     }
 }

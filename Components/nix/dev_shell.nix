@@ -31,7 +31,12 @@ pkgs.mkShell {
     # Initialize user-specific extension secrets (Logic-Data Separation)
     # mentci-user resolves default setup source from MENTCI_USER_SETUP_BIN / canonical paths.
     if command -v mentci-user >/dev/null 2>&1; then
-      eval "$(mentci-user export-env 2>/dev/null)"
+      if _mentci_user_exports="$(mentci-user export-env 2>/dev/null)"; then
+        eval "$_mentci_user_exports"
+      else
+        echo "[mentci-user] warning: export-env failed; secrets were not loaded into this shell" >&2
+      fi
+      unset _mentci_user_exports
     fi
 
     # Ensure stable pi-source symlink for Nix tokenization fix
