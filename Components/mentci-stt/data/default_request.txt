@@ -1,0 +1,21 @@
+(
+  audioPath = "",
+  vocabulary = [
+    "Mentci", "mentci-aid", "Mentci-Box", "Aski", "Lojix", "Criome", "SEMA",
+    "Rust", "Clojure", "Nix", "Jujutsu", "jj", "Cap'n Proto", "capnp",
+    "babashka", "bb", "Attractor", "Lojix-Sema"
+  ],
+  providerUrl = "https://generativelanguage.googleapis.com/v1beta/models",
+  apiKeySecretName = "GEMINI_API_KEY",
+  model = "gemini-2.5-flash",
+  basePrompt = "You are an expert transcriber and linguist working on the Mentci-AI project (created by Li Goldragon). Please transcribe the following audio recording with extremely high fidelity.",
+  includeEmotionalEmphasis = true,
+  emotionalEmphasisInstruction = "Furthermore, it is critical that you pick up on emotional emphasis. If the speaker places heavy emphasis, passion, urgency, or hesitation on certain words or phrases, indicate that in the transcription using markdown (e.g., *italics* for light emphasis, **bold** for strong emphasis, [pauses] or [sighs] where appropriate). Return ONLY the high-fidelity transcription.",
+  mimeType = "audio/ogg; codecs=opus",
+  criticalPhoneticInstructions = "Mentci, Aski, Lojix, Criome, SEMA.",
+  transcriptDir = ".voice-recordings/transcripts",
+  vocabularyPreambleTemplate = "The recording contains technical terms from the Mentci-AI ecosystem.",
+  chronosFormat = "am",
+  chronosPrecision = "second",
+  transcriptFilenameTemplate = "{{chronos}}.md"
+)
