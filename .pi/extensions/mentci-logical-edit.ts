@@ -16,7 +16,6 @@ function toTextResult(result: unknown): string {
 
 /**
  * Converts highlight.js HTML output to Pi-TUI Text objects with ANSI-like coloring.
- * This is a lightweight "browserless" highlighter for the terminal.
  */
 function highlightCode(code: string, lang: string, theme: any): string {
   try {
@@ -33,7 +32,11 @@ function highlightCode(code: string, lang: string, theme: any): string {
       .replace(/<span class="hljs-number">/g, '\x1b[33m')      // Yellow
       .replace(/<span class="hljs-built_in">/g, '\x1b[36m')    // Cyan
       .replace(/<span class="hljs-attr">/g, '\x1b[36m')
-      .replace(/<\/span>/g, '\x1b[0m');
+      .replace(/<\/span>/g, '\x1b[0m')
+      .replace(/&quot;/g, '"')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&');
   } catch {
     return theme.fg("muted", code);
   }
@@ -41,12 +44,19 @@ function highlightCode(code: string, lang: string, theme: any): string {
 
 function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text(theme.fg("muted", "No output."), 0, 0);
+  if (!content) return new Text(theme.fg("muted", "No content found in result."), 0, 0);
 
   try {
-    const parsed = JSON.parse(content);
+    // result.content[0].text is a JSON string of an array or an error message.
+    let parsed = JSON.parse(content);
+    
+    // If mcporter returned an envelope inside the string (some versions do)
+    if (parsed.content && Array.isArray(parsed.content)) {
+        parsed = JSON.parse(parsed.content[0].text);
+    }
+
     if (!Array.isArray(parsed) || parsed.length === 0) {
-      return new Text(theme.fg("muted", "No matches found."), 0, 0);
+      return new Text(theme.fg("muted", "No matches found for query."), 0, 0);
     }
 
     let out = "";
@@ -74,8 +84,8 @@ function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
       }
     }
     return new Text(out.trim(), 0, 0);
-  } catch {
-    return new Text(content, 0, 0);
+  } catch (e) {
+    return new Text(theme.fg("error", `Rendering Error: ${e}`) + "\n\n" + content, 0, 0);
   }
 }
 
@@ -93,10 +103,14 @@ async function withLogicalRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<
 
 function renderAstResult(result: any, theme: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text(theme.fg("muted", "No output."), 0, 0);
+  if (!content) return new Text(theme.fg("muted", "No content found in result."), 0, 0);
 
   try {
-    const parsed = JSON.parse(content);
+    let parsed = JSON.parse(content);
+    if (parsed.content && Array.isArray(parsed.content)) {
+        parsed = JSON.parse(parsed.content[0].text);
+    }
+    
     const tree = parsed.tree;
     if (!tree) return new Text(content, 0, 0);
 
@@ -128,8 +142,8 @@ function renderAstResult(result: any, theme: any): Text {
 
     out += formatNode(tree, 0);
     return new Text(out.trim(), 0, 0);
-  } catch {
-    return new Text(content, 0, 0);
+  } catch (e) {
+    return new Text(theme.fg("error", `Rendering Error: ${e}`) + "\n\n" + content, 0, 0);
   }
 }
 
@@ -154,7 +168,7 @@ export default function (pi: ExtensionAPI) {
             },
           })
         );
-        const text = toTextResult((result as any).content?.[0]?.text || result);
+        const text = toTextResult((result as any).content?.[0]?.text || (result as any).structuredContent?.result || result);
         return { content: [{ type: "text", text }] };
       } catch (e: any) {
         return { content: [{ type: "text", text: `logical_register_project error: ${e?.message || e}` }] };
@@ -191,7 +205,7 @@ export default function (pi: ExtensionAPI) {
           });
           return raw;
         });
-        const text = toTextResult((result as any).content?.[0]?.text || result);
+        const text = toTextResult((result as any).content?.[0]?.text || (result as any).structuredContent?.result || result);
         return { content: [{ type: "text", text }] };
       } catch (e: any) {
         return { content: [{ type: "text", text: `logical_get_ast error: ${e?.message || e}` }] };
@@ -232,7 +246,16 @@ export default function (pi: ExtensionAPI) {
             },
           });
 
-          const data = (raw as any).structuredContent?.result || (raw as any).content?.[0]?.text || raw;
+          // Unwrap mcporter response
+          const contentStr = (raw as any).content?.[0]?.text;
+          let data = raw;
+          if (contentStr) {
+            try {
+              data = JSON.parse(contentStr);
+            } catch {
+              data = contentStr;
+            }
+          }
 
           if (Array.isArray(data)) {
             return data.map((match: any) => ({
