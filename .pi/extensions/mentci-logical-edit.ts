@@ -28,7 +28,7 @@ const COLOR_MAP: Record<string, string> = {
   'keyword': '\x1b[35m',      // Purple
   'string': '\x1b[32m',       // Green
   'comment': '\x1b[90m',      // Grey
-  'function': '\x1b[34m',      // Blue
+  'function': '\x1b[34m',     // Blue
   'title': '\x1b[34m',
   'params': '\x1b[37m',       // White
   'number': '\x1b[33m',       // Yellow
@@ -39,26 +39,33 @@ const COLOR_MAP: Record<string, string> = {
   'meta': '\x1b[90m',
   'operator': '\x1b[37m',
   'variable': '\x1b[37m',
-  'type': '\x1b[36m'
+  'type': '\x1b[36m',
+  'property': '\x1b[36m'
 };
 
 /**
- * Robust highlighter that maps all hljs classes to ANSI.
+ * Extremely aggressive highlighter that strips ALL spans and replaces with ANSI.
  */
-function highlightCode(code: string, lang: string, theme: any): string {
+function highlightCode(code: string, lang: string): string {
   if (!code) return "";
   try {
     const res = hljs.highlight(code, { language: lang });
     let html = res.value;
     if (!html) return code;
 
-    // Greedy regex to catch any span with an hljs class
-    html = html.replace(/<span[^>]*class="[^"]*hljs-([^" ]+)[^"]*"[^>]*>/g, (_match, group) => {
+    // 1. Map known hljs classes to ANSI
+    // We use a loose match to catch spans with multiple classes or different attribute orders
+    html = html.replace(/<span[^>]+class=["'][^"']*hljs-([^" ]+)[^"']*["'][^>]*>/g, (_match, group) => {
         return COLOR_MAP[group] || '\x1b[37m';
     });
     
+    // 2. Close all spans
     html = html.replace(/<\/span>/g, '\x1b[0m');
     
+    // 3. Nuke any remaining stray HTML tags (safety)
+    html = html.replace(/<[^>]+>/g, '');
+    
+    // 4. Decode entities
     return html
       .replace(/&quot;/g, '"')
       .replace(/&lt;/g, '<')
@@ -82,36 +89,22 @@ function stringifyEDN(obj: any): string {
   return String(obj);
 }
 
-function renderQueryResults(result: any, theme: any, args: any): Text {
+function renderQueryResults(result: any, theme: any): Text {
   const content = result.content?.[0]?.text;
   if (!content) return new Text(theme.fg("error", "No match content."), 0, 0);
 
   let finalOutput = "";
   try {
-    let rawData = JSON.parse(content);
-    let results: any[] = [];
-    let callArgs = args;
+    const envelope = JSON.parse(content);
+    const results = envelope.results || [];
+    const callArgs = envelope.args || {};
 
-    if (rawData.results && Array.isArray(rawData.results)) {
-        results = rawData.results;
-        callArgs = rawData.args || args;
-    } else if (Array.isArray(rawData)) {
-        results = rawData;
-    } else if (typeof rawData === 'object' && rawData.file) {
-        results = [rawData];
-    }
-
-    const intentObj = {
-      project: callArgs?.project || "mentci",
-      language: callArgs?.language || "rust",
-      query: callArgs?.query || "unknown"
-    };
-    
+    // 1. Amazing Header: The EDN Intent block
     finalOutput += theme.fg("toolTitle", theme.bold(";; Logical Query Intent")) + "\n";
-    finalOutput += highlightCode(stringifyEDN(intentObj), "clojure", theme) + "\n";
+    finalOutput += highlightCode(stringifyEDN(callArgs), "clojure") + "\n";
     finalOutput += theme.fg("muted", "─".repeat(50)) + "\n\n";
 
-    if (results.length === 0) {
+    if (!Array.isArray(results) || results.length === 0) {
       finalOutput += theme.fg("muted", "No matches found.");
     } else {
       for (const match of results) {
@@ -121,7 +114,7 @@ function renderQueryResults(result: any, theme: any, args: any): Text {
         finalOutput += theme.fg("toolTitle", `${file}:${line}`) + " " + capture + "\n";
         if (match.text) {
           const lang = file.endsWith(".rs") ? "rust" : "typescript";
-          const highlighted = highlightCode(match.text, lang, theme);
+          const highlighted = highlightCode(match.text, lang);
           finalOutput += highlighted.split("\n").map((l: string) => "  " + l).join("\n") + "\n\n";
         }
       }
@@ -159,8 +152,7 @@ function renderAstResult(result: any, theme: any): Text {
     function formatNode(node: any, depth: number): string {
       const indent = "  ".repeat(depth);
       let line = `${indent}${theme.fg("accent", node.type)}`;
-      const start = node.start_point;
-      if (start) line += theme.fg("muted", ` [${start.row + 1}:${start.column}]`);
+      if (node.start_point) line += theme.fg("muted", ` [${node.start_point.row + 1}:${node.start_point.column}]`);
       if (node.text && node.text.length < 60 && !node.children_count) line += " " + theme.fg("success", JSON.stringify(node.text));
       let res = line + "\n";
       if (node.children) for (const child of node.children) res += formatNode(child, depth + 1);
@@ -182,39 +174,34 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "logical_register_project",
     label: "logical-edit",
-    description: "Register a project directory for logical code analysis.",
+    description: "Register a project directory.",
     parameters: Type.Object({
-      path: Type.String({ description: "Project root path (e.g. .)" }),
-      name: Type.Optional(Type.String({ description: "Project alias" })),
-      description: Type.Optional(Type.String({ description: "Optional project description" })),
+      path: Type.String(),
+      name: Type.Optional(Type.String()),
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
         const result = await withLogicalRuntime((runtime) =>
           runtime.callTool("mentci-tree-sitter", "register_project_tool", {
-            args: { path: args.path, name: args.name, description: args.description },
+            args: { path: args.path, name: args.name },
           })
         );
-        const data = (result as any).structuredContent?.result || (result as any).content?.[0]?.text || result;
-        return { content: [{ type: "text", text: toTextResult(data) }] };
+        return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `logical_register_project error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `Error: ${e.message}` }] };
       }
-    },
-    renderCall(args, theme) {
-      return new Text(theme.fg("toolTitle", theme.bold("logical_register_project ")) + theme.fg("accent", args.name || args.path || "project"), 0, 0);
     },
   });
 
   pi.registerTool({
     name: "logical_get_ast",
     label: "logical-edit",
-    description: "Get AST for a file through logical analysis engine.",
+    description: "Get AST.",
     parameters: Type.Object({
-      project: Type.String({ description: "Registered project name" }),
-      path: Type.String({ description: "File path relative to project root" }),
-      maxDepth: Type.Optional(Type.Number({ description: "AST depth limit" })),
-      includeText: Type.Optional(Type.Boolean({ description: "Include node text" })),
+      project: Type.String(),
+      path: Type.String(),
+      maxDepth: Type.Optional(Type.Number()),
+      includeText: Type.Optional(Type.Boolean()),
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
@@ -223,14 +210,10 @@ export default function (pi: ExtensionAPI) {
             args: { project: args.project, path: args.path, max_depth: args.maxDepth, include_text: args.includeText },
           });
         });
-        const data = (result as any).structuredContent?.result || (result as any).content?.[0]?.text || result;
-        return { content: [{ type: "text", text: toTextResult(data) }] };
+        return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `logical_get_ast error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `Error: ${e.message}` }] };
       }
-    },
-    renderCall(args, theme) {
-      return new Text(theme.fg("toolTitle", theme.bold("logical_get_ast ")) + theme.fg("accent", args.path || "file"), 0, 0);
     },
     renderResult(result, _options, theme) {
       return renderAstResult(result, theme);
@@ -240,13 +223,13 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "logical_run_query",
     label: "logical-edit",
-    description: "Run a syntax query via logical analysis engine.",
+    description: "Run structural syntax query.",
     parameters: Type.Object({
-      project: Type.String({ description: "Registered project name" }),
-      query: Type.String({ description: "Tree-sitter query string" }),
-      filePath: Type.Optional(Type.String({ description: "Optional file path" })),
-      language: Type.Optional(Type.String({ description: "Optional language" })),
-      maxResults: Type.Optional(Type.Number({ description: "Max matches" })),
+      project: Type.String(),
+      query: Type.String(),
+      filePath: Type.Optional(Type.String()),
+      language: Type.Optional(Type.String()),
+      maxResults: Type.Optional(Type.Number()),
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
@@ -262,10 +245,12 @@ export default function (pi: ExtensionAPI) {
 
           let results = [];
           if (Array.isArray(data)) {
-            results = data.map((match: any) => {
-                let snippet = match.text?.trim() || "";
-                return { file: match.file, line: match.line || (match.start?.row ?? 0) + 1, capture: match.capture, text: snippet };
-            });
+            results = data.map((match: any) => ({
+              file: match.file,
+              line: match.line || (match.start?.row ?? 0) + 1,
+              capture: match.capture,
+              text: match.text?.trim()
+            }));
           } else if (data && typeof data === 'object' && data.file) {
               results = [{ file: data.file, line: data.line || (data.start?.row ?? 0) + 1, capture: data.capture, text: data.text?.trim() }];
           }
@@ -273,28 +258,35 @@ export default function (pi: ExtensionAPI) {
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `logical_run_query error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `Error: ${e.message}` }] };
       }
     },
-    renderCall(args, theme) {
-      return new Text(theme.fg("toolTitle", theme.bold("logical_run_query")), 0, 0);
-    },
-    renderResult(result, options, theme) {
-      return renderQueryResults(result, theme, (options as any).args);
+    renderResult(result, _options, theme) {
+      return renderQueryResults(result, theme);
     },
   });
 
   pi.registerTool({
-    name: "logical_reset_runtime",
+    name: "logical_debug_view",
     label: "logical-edit",
-    description: "Reset logical editing runtime connection.",
+    description: "View the UI mirror file (agent only).",
     parameters: Type.Object({}),
     execute: async () => {
-      await resetRuntime();
-      return { content: [{ type: "text", text: "logical runtime reset" }] };
-    },
-    renderCall(_args, theme) {
-      return new Text(theme.fg("toolTitle", theme.bold("logical_reset_runtime")), 0, 0);
-    },
+      try {
+        const mirrorPath = "/home/li/git/Mentci-AI/.mentci/ui_mirror.txt";
+        const text = fs.readFileSync(mirrorPath, "utf-8");
+        return { content: [{ type: "text", text }] };
+      } catch (e: any) {
+        return { content: [{ type: "text", text: `No mirror found: ${e.message}` }] };
+      }
+    }
+  });
+
+  pi.registerCommand("logical-reload", {
+    description: "Reload Extensions",
+    handler: async (_args, ctx) => {
+      ctx.ui.notify("Reloading...", "info");
+      await ctx.reload();
+    }
   });
 }
