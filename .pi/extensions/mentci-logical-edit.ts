@@ -2,6 +2,7 @@ import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 import { Text } from "@mariozechner/pi-tui";
 import { createRuntime } from "../npm/node_modules/mcporter/dist/index.js";
+import hljs from "../npm/node_modules/highlight.js/lib/index.js";
 
 async function resetRuntime(): Promise<void> {
   // No persistent runtime cache now; kept as explicit no-op for compatibility.
@@ -13,7 +14,32 @@ function toTextResult(result: unknown): string {
   return JSON.stringify(result);
 }
 
-function renderQueryResults(result: any, theme: any): Text {
+/**
+ * Converts highlight.js HTML output to Pi-TUI Text objects with ANSI-like coloring.
+ * This is a lightweight "browserless" highlighter for the terminal.
+ */
+function highlightCode(code: string, lang: string, theme: any): string {
+  try {
+    const highlighted = hljs.highlight(code, { language: lang }).value;
+    
+    // Simple HTML-to-ANSI mapping for highlight.js classes
+    return highlighted
+      .replace(/<span class="hljs-keyword">/g, '\x1b[35m')      // Purple
+      .replace(/<span class="hljs-string">/g, '\x1b[32m')       // Green
+      .replace(/<span class="hljs-comment">/g, '\x1b[90m')      // Grey
+      .replace(/<span class="hljs-function">/g, '\x1b[34m')     // Blue
+      .replace(/<span class="hljs-title( function_)?">/g, '\x1b[34m')
+      .replace(/<span class="hljs-params">/g, '\x1b[37m')      // White
+      .replace(/<span class="hljs-number">/g, '\x1b[33m')      // Yellow
+      .replace(/<span class="hljs-built_in">/g, '\x1b[36m')    // Cyan
+      .replace(/<span class="hljs-attr">/g, '\x1b[36m')
+      .replace(/<\/span>/g, '\x1b[0m');
+  } catch {
+    return theme.fg("muted", code);
+  }
+}
+
+function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
   const content = result.content?.[0]?.text;
   if (!content) return new Text(theme.fg("muted", "No output."), 0, 0);
 
@@ -24,18 +50,25 @@ function renderQueryResults(result: any, theme: any): Text {
     }
 
     let out = "";
+    
+    // Add Query Intent Header (EDN-style)
+    if (queryDetails) {
+      const edn = `;; Logical Query Intent\n{:project "${queryDetails.project}"\n :lang "${queryDetails.language}"\n :query "${queryDetails.query.replace(/"/g, '\\"')}"}`;
+      out += highlightCode(edn, "clojure", theme) + "\n" + "─".repeat(40) + "\n\n";
+    }
+
     for (const match of parsed) {
       const file = match.file || "unknown";
       const line = match.line || "?";
       const capture = match.capture ? theme.fg("accent", `@${match.capture}`) : "";
+      const lang = file.endsWith(".rs") ? "rust" : file.endsWith(".ts") ? "typescript" : "text";
       
       out += theme.fg("toolTitle", `${file}:${line}`) + " " + capture + "\n";
       
       if (match.text) {
-        // Indent and dim the code snippet
-        const lines = match.text.split("\n");
-        const snippet = lines
-          .map((l: string) => "  " + theme.fg("muted", l))
+        const highlighted = highlightCode(match.text, lang, theme);
+        const snippet = highlighted.split("\n")
+          .map((l: string) => "  " + l)
           .join("\n");
         out += snippet + "\n\n";
       }
@@ -49,7 +82,6 @@ function renderQueryResults(result: any, theme: any): Text {
 async function withLogicalRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
   const runtime = await createRuntime({ rootDir: process.cwd() });
   try {
-    // Idempotent project registration MUST happen in the SAME process as the query.
     await runtime.callTool("mentci-tree-sitter", "register_project_tool", {
       args: { path: ".", name: "mentci" },
     }).catch(() => undefined);
@@ -217,12 +249,12 @@ export default function (pi: ExtensionAPI) {
         return { content: [{ type: "text", text: `logical_run_query error: ${e?.message || e}` }] };
       }
     },
-    renderCall(_args, theme) {
+    renderCall(args, theme) {
       const text = theme.fg("toolTitle", theme.bold("logical_run_query"));
       return new Text(text, 0, 0);
     },
-    renderResult(result, _options, theme) {
-      return renderQueryResults(result, theme);
+    renderResult(result, args, theme) {
+      return renderQueryResults(result, theme, args);
     },
   });
 
