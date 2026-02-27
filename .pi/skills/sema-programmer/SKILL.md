@@ -24,6 +24,7 @@ Before editing code:
 1. Run `jj status`.
 2. If tree is dirty, isolate and commit existing intent first.
 3. Confirm data authority artifact exists (`.edn` and/or `.bin` sidecar) before coding defaults.
+4. For external tooling/ecosystem claims, run quick Linkup validation (`linkup_web_search`/`linkup_web_answer`) before asserting status or maturity.
 
 ## Sema Implementation Flow
 
