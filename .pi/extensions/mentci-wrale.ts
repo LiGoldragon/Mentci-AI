@@ -9,12 +9,8 @@ async function resetRuntime(): Promise<void> {
 }
 
 function toTextResult(result: unknown): string {
-  if (typeof result === "string") return result;
-  try {
-    return JSON.stringify(result, null, 2);
-  } catch {
-    return String(result);
-  }
+  // For the LLM context, we want the leanest possible valid JSON string.
+  return JSON.stringify(result);
 }
 
 function renderQueryResults(result: any, theme: any): Text {
@@ -30,7 +26,7 @@ function renderQueryResults(result: any, theme: any): Text {
     let out = "";
     for (const match of parsed) {
       const file = match.file || "unknown";
-      const line = match.start?.row !== undefined ? match.start.row + 1 : "?";
+      const line = match.line || "?";
       const capture = match.capture ? theme.fg("accent", `@${match.capture}`) : "";
       
       out += theme.fg("toolTitle", `${file}:${line}`) + " " + capture + "\n";
@@ -53,6 +49,11 @@ function renderQueryResults(result: any, theme: any): Text {
 async function withWraleRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
   const runtime = await createRuntime({ rootDir: process.cwd() });
   try {
+    // Idempotent project registration MUST happen in the SAME process as the query.
+    // Since we close the runtime per call, we must register per call.
+    await runtime.callTool("wrale-tree-sitter", "register_project_tool", {
+      args: { path: ".", name: "mentci" },
+    }).catch(() => undefined);
     return await fn(runtime);
   } finally {
     await runtime.close();
@@ -148,10 +149,6 @@ export default function (pi: ExtensionAPI) {
     execute: async (_toolCallId: string, args: any) => {
       try {
         const result = await withWraleRuntime(async (runtime) => {
-          await runtime.callTool("wrale-tree-sitter", "register_project_tool", {
-            args: { path: ".", name: args.project },
-          }).catch(() => undefined);
-
           const raw: any = await runtime.callTool("wrale-tree-sitter", "get_ast", {
             args: {
               project: args.project,
@@ -194,10 +191,6 @@ export default function (pi: ExtensionAPI) {
     execute: async (_toolCallId: string, args: any) => {
       try {
         const result = await withWraleRuntime(async (runtime) => {
-          await runtime.callTool("wrale-tree-sitter", "register_project_tool", {
-            args: { path: ".", name: args.project },
-          }).catch(() => undefined);
-
           const raw: any = await runtime.callTool("wrale-tree-sitter", "run_query", {
             args: {
               project: args.project,
