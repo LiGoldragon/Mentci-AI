@@ -17,12 +17,87 @@ function toTextResult(result: unknown): string {
   }
 }
 
+function renderQueryResults(result: any, theme: any): Text {
+  const content = result.content?.[0]?.text;
+  if (!content) return new Text("", 0, 0);
+
+  try {
+    const parsed = JSON.parse(content);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return new Text(theme.fg("muted", "No matches found."), 0, 0);
+    }
+
+    let out = "";
+    for (const match of parsed) {
+      const file = match.file || "unknown";
+      const line = match.start?.row !== undefined ? match.start.row + 1 : "?";
+      const capture = match.capture ? theme.fg("accent", `@${match.capture}`) : "";
+      
+      out += theme.fg("toolTitle", `${file}:${line}`) + " " + capture + "\n";
+      
+      if (match.text) {
+        // Indent and dim the code snippet
+        const lines = match.text.split("\n");
+        const snippet = lines
+          .map((l: string) => "  " + theme.fg("muted", l))
+          .join("\n");
+        out += snippet + "\n\n";
+      }
+    }
+    return new Text(out.trim(), 0, 0);
+  } catch {
+    return new Text(content, 0, 0);
+  }
+}
+
 async function withWraleRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
   const runtime = await createRuntime({ rootDir: process.cwd() });
   try {
     return await fn(runtime);
   } finally {
     await runtime.close();
+  }
+}
+
+function renderAstResult(result: any, theme: any): Text {
+  const content = result.content?.[0]?.text;
+  if (!content) return new Text("", 0, 0);
+
+  try {
+    const parsed = JSON.parse(content);
+    const tree = parsed.tree;
+    if (!tree) return new Text(content, 0, 0);
+
+    let out = theme.fg("toolTitle", `${parsed.file} [${parsed.language}]`) + "\n";
+
+    function formatNode(node: any, depth: number): string {
+      const indent = "  ".repeat(depth);
+      let line = `${indent}${theme.fg("accent", node.type)}`;
+      
+      const start = node.start_point;
+      if (start) {
+        line += theme.fg("muted", ` [${start.row + 1}:${start.column}]`);
+      }
+
+      if (node.text && node.text.length < 60 && !node.children_count) {
+        line += " " + theme.fg("success", JSON.stringify(node.text));
+      }
+
+      let res = line + "\n";
+      if (node.children) {
+        for (const child of node.children) {
+          res += formatNode(child, depth + 1);
+        }
+      } else if (node.truncated) {
+        res += `${indent}  ...\n`;
+      }
+      return res;
+    }
+
+    out += formatNode(tree, 0);
+    return new Text(out.trim(), 0, 0);
+  } catch {
+    return new Text(content, 0, 0);
   }
 }
 
@@ -97,6 +172,9 @@ export default function (pi: ExtensionAPI) {
         theme.fg("accent", args.path || "file");
       return new Text(text, 0, 0);
     },
+    renderResult(result, _options, theme) {
+      return renderAstResult(result, theme);
+    },
   });
 
   pi.registerTool({
@@ -135,6 +213,9 @@ export default function (pi: ExtensionAPI) {
     renderCall(_args, theme) {
       const text = theme.fg("toolTitle", theme.bold("wrale_run_query"));
       return new Text(text, 0, 0);
+    },
+    renderResult(result, _options, theme) {
+      return renderQueryResults(result, theme);
     },
   });
 
