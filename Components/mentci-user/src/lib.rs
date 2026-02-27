@@ -6,7 +6,7 @@ use std::fs;
 use std::process::Command;
 use std::path::Path;
 use anyhow::{Context, Result};
-use capnp::serialize;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
