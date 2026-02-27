@@ -16,7 +16,9 @@ members = [
     "Components/mentci-mcp/capnp",
     "Components/mentci-mcp/edit",
     "Components/mentci-policy-engine",
-    "Components/mentci-mcp-gateway"
+    "Components/mentci-mcp-gateway",
+    "Components/aski-lib",
+    "Components/aski-cli"
 ]
 
 [profile.release]

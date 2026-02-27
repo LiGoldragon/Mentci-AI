@@ -26,7 +26,7 @@ pkgs.mkShell {
     export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
 
     # Define the canonical path to the prebuilt Cap'n Proto environment spec
-    export MENTCI_USER_SETUP_BIN="${repo_root}/Components/mentci-user/data/setup_4311f0704ec238e2.bin"
+    export MENTCI_USER_SETUP_BIN="${repo_root}/Components/mentci-user/data/setup_44887cc6d40e12cd.bin"
 
     # Initialize user-specific extension secrets (Logic-Data Separation)
     # The shellHook knows NO data. It relies purely on the mentci-user Rust binary

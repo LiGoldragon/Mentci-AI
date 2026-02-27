@@ -2,12 +2,13 @@ pub mod mcp_capnp {
     include!(concat!(env!("OUT_DIR"), "/mcp_capnp.rs"));
 }
 
-use mcp_capnp::{structural_edit_request};
+pub mod capnp_tools;
 use anyhow::{Context, Result};
 use std::io::{self, BufRead, Write};
 use serde_json::{json, Value};
 use ast_grep_core::{AstGrep};
 use ast_grep_language::{SupportLang};
+use mcp_capnp::{structural_edit_request};
 
 struct StructuralEditor;
 
@@ -99,6 +100,21 @@ impl McpHandler {
                                 },
                                 "required": ["filePath", "language", "pattern", "rewrite"]
                             }
+                        },
+                        {
+                            "name": "capnp_sync_protocol",
+                            "description": "Syncs a text-version EDN specification into a prebuilt Cap'n Proto binary message (using hash in filename and symlink). Use this to avoid writing ad-hoc shell scripts for Cap'n Proto compilation.",
+                            "inputSchema": {
+                                "type": "object",
+                                "properties": {
+                                    "schemaPath": { "type": "string" },
+                                    "rootStruct": { "type": "string" },
+                                    "textSourcePath": { "type": "string", "description": "Path to the EDN file" },
+                                    "outputDir": { "type": "string" },
+                                    "baseName": { "type": "string" }
+                                },
+                                "required": ["schemaPath", "rootStruct", "textSourcePath", "outputDir", "baseName"]
+                            }
                         }
                     ]
                 }
@@ -108,7 +124,27 @@ impl McpHandler {
                 let name = params.get("name").and_then(|v| v.as_str()).context("Missing tool name")?;
                 let args = params.get("arguments").context("Missing arguments")?;
 
-                if name == "structural_edit" {
+                if name == "capnp_sync_protocol" {
+                    let schema_path = args.get("schemaPath").and_then(|v| v.as_str()).unwrap_or("");
+                    let root_struct = args.get("rootStruct").and_then(|v| v.as_str()).unwrap_or("");
+                    let text_source_path = args.get("textSourcePath").and_then(|v| v.as_str()).unwrap_or("");
+                    let output_dir = args.get("outputDir").and_then(|v| v.as_str()).unwrap_or("");
+                    let base_name = args.get("baseName").and_then(|v| v.as_str()).unwrap_or("");
+                    
+                    let result = capnp_tools::capnp_sync_protocol(schema_path, root_struct, text_source_path, output_dir, base_name);
+                    let text = match result {
+                        Ok(msg) => msg,
+                        Err(e) => format!("Error: {}", e),
+                    };
+
+                    Ok(json!({
+                        "jsonrpc": "2.0",
+                        "id": id,
+                        "result": {
+                            "content": [{ "type": "text", "text": text }]
+                        }
+                    }))
+                } else if name == "structural_edit" {
                     let mut message = capnp::message::Builder::new_default();
                     {
                         let mut req_builder = message.init_root::<structural_edit_request::Builder>();
