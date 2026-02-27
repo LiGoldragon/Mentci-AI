@@ -11,17 +11,15 @@ This document defines the Pi-native path and when `/reload` is required.
 ## Can wrale be used as a Pi extension?
 Yes.
 
-Two practical options:
+Implemented in Mentci:
+- Local extension file: `.pi/extensions/mentci-wrale.ts`
+- Registered Pi tools:
+  - `wrale_register_project`
+  - `wrale_get_ast`
+  - `wrale_run_query`
+- Backend path: `mcporter` runtime -> `config/mcporter.json` -> `wrale-tree-sitter` server definition.
 
-1. **Via MCP runtime package path (mcporter-backed)**
-   - Keep wrale configured in `config/mcporter.json`.
-   - Expose wrale operations through Pi MCP tooling layer.
-
-2. **Via explicit local Pi extension wrapper**
-   - Add wrapper tools in `.pi/extensions/mentci-workspace.ts` (or separate extension) that call the configured wrale server endpoint.
-   - Example wrapper tools: `wrale_register_project`, `wrale_get_ast`, `wrale_run_query`, `wrale_analyze_project`.
-
-For Mentci, option 2 gives clearer UX and deterministic tool names in Pi.
+This gives a Pi-native tool surface (no direct shell command usage required by the user).
 
 ---
 
@@ -44,12 +42,13 @@ This matches observed Linkup behavior root cause in Mentci: env-gated tools were
 ## Canonical wrale test sequence (Pi-native)
 
 1. Ensure wrale server is installed and configured (`config/mcporter.json`).
-2. Start Pi session.
-3. Run `/reload`.
-4. In Pi, run a wrale tool call (or wrapper tool call):
-   - register project
-   - query AST for a Rust file
-5. Verify output appears as tool result in Pi UI (not only shell).
+2. Ensure extension sources parse cleanly (a syntax error in any extension can hide tools).
+3. Start Pi session.
+4. Run `/reload`.
+5. In Pi, run wrapper tools:
+   - `wrale_register_project` (path `.` name `mentci`)
+   - `wrale_get_ast` (project `mentci`, path `Components/mentci-user/src/main.rs`)
+6. Verify output appears as tool result in Pi UI (not only shell).
 
 If tool not found:
 - confirm config path is correct

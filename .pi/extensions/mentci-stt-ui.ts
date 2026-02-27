@@ -20,7 +20,7 @@ export default function (pi: ExtensionAPI) {
       try {
         const workspaceRoot = process.cwd();
         // Use the wrapper to ensure env vars (API keys) are injected
-        const cmd = \`mentci-stt --audio "\${args.audio}" --capnp "\${args.capnp}"\`;
+        const cmd = `mentci-stt --audio "${args.audio}" --capnp "${args.capnp}"`;
         const output = execSync(cmd, { cwd: workspaceRoot, encoding: "utf-8" }).trim();
 
         return {
@@ -28,7 +28,7 @@ export default function (pi: ExtensionAPI) {
         };
       } catch (e: any) {
         return {
-          content: [{ type: "text", text: \`Error executing mentci-stt: \${e.message}\n\${e.stdout}\n\${e.stderr}\` }],
+          content: [{ type: "text", text: `Error executing mentci-stt: ${e.message}\n${e.stdout}\n${e.stderr}` }],
         };
       }
     },
@@ -54,7 +54,7 @@ export default function (pi: ExtensionAPI) {
     execute: async (ctx) => {
       try {
         const workspaceRoot = process.cwd();
-        const latestAudio = execSync(\`ls -t .voice-recordings/*.opus | head -n 1\`, {
+        const latestAudio = execSync(`ls -t .voice-recordings/*.opus | head -n 1`, {
           cwd: workspaceRoot,
           encoding: "utf-8",
         }).trim();
@@ -64,17 +64,17 @@ export default function (pi: ExtensionAPI) {
           return;
         }
 
-        ctx.ui.notify(\`Transcribing \${path.basename(latestAudio)}...\`, "info");
+        ctx.ui.notify(`Transcribing ${path.basename(latestAudio)}...`, "info");
         
         // We use the default capnp request bin
         const capnp = "Components/mentci-stt/data/default_request.bin";
-        const cmd = \`mentci-stt --audio "\${latestAudio}" --capnp "\${capnp}"\`;
+        const cmd = `mentci-stt --audio "${latestAudio}" --capnp "${capnp}"`;
         const output = execSync(cmd, { cwd: workspaceRoot, encoding: "utf-8" }).trim();
 
         // Inject the result into the editor
-        ctx.ui.inject(\`Transcript of \${path.basename(latestAudio)}:\\n\\n\${output}\\n\`);
+        ctx.ui.inject(`Transcript of ${path.basename(latestAudio)}:\n\n${output}\n`);
       } catch (e: any) {
-        ctx.ui.notify(\`STT failed: \${e.message}\`, "error");
+        ctx.ui.notify(`STT failed: ${e.message}`, "error");
       }
     }
   });
