@@ -115,6 +115,20 @@ impl McpHandler {
                                 },
                                 "required": ["schemaPath", "rootStruct", "textSourcePath", "outputDir", "baseName"]
                             }
+                        },
+                        {
+                            "name": "update_skill_heuristics",
+                            "description": "Records a learned condition and workaround to a skill's runtime.edn file (Tier 3), preserving it across session compactions.",
+                            "inputSchema": {
+                                "type": "object",
+                                "properties": {
+                                    "skillName": { "type": "string" },
+                                    "condition": { "type": "string" },
+                                    "resolution": { "type": "string" },
+                                    "context": { "type": "string" }
+                                },
+                                "required": ["skillName", "condition", "resolution"]
+                            }
                         }
                     ]
                 }
@@ -124,7 +138,55 @@ impl McpHandler {
                 let name = params.get("name").and_then(|v| v.as_str()).context("Missing tool name")?;
                 let args = params.get("arguments").context("Missing arguments")?;
 
-                if name == "capnp_sync_protocol" {
+                if name == "update_skill_heuristics" {
+                    let skill_name = args.get("skillName").and_then(|v| v.as_str()).unwrap_or("");
+                    let condition = args.get("condition").and_then(|v| v.as_str()).unwrap_or("");
+                    let resolution = args.get("resolution").and_then(|v| v.as_str()).unwrap_or("");
+                    let context_val = args.get("context").and_then(|v| v.as_str()).unwrap_or("");
+                    
+                    let path = std::path::PathBuf::from(".pi").join("skills").join(skill_name).join("runtime.edn");
+                    
+                    if let Some(parent) = path.parent() {
+                        let _ = std::fs::create_dir_all(parent);
+                    }
+                    
+                    let id_str = std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .map(|d| d.as_secs().to_string())
+                        .unwrap_or_else(|_| "0".to_string());
+                        
+                    let entry = format!("\n  {{:id \"{}\"\n   :condition \"{}\"\n   :resolution \"{}\"\n   :context \"{}\"}}\n", id_str, condition.replace("\"", "\\\""), resolution.replace("\"", "\\\""), context_val.replace("\"", "\\\""));
+                    
+                    let result = match std::fs::read_to_string(&path) {
+                        Ok(mut content) => {
+                            if content.trim().ends_with(']') {
+                                content.truncate(content.trim_end().len() - 1);
+                                content.push_str(&entry);
+                                content.push_str("]\n");
+                                std::fs::write(&path, content).map(|_| "Successfully appended heuristic.".to_string())
+                            } else {
+                                Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "Invalid EDN file structure"))
+                            }
+                        },
+                        Err(_) => {
+                            let init_content = format!("[{}]", entry);
+                            std::fs::write(&path, init_content).map(|_| "Successfully created and appended heuristic.".to_string())
+                        }
+                    };
+                    
+                    let text = match result {
+                        Ok(msg) => msg,
+                        Err(e) => format!("Error: {}", e),
+                    };
+
+                    Ok(json!({
+                        "jsonrpc": "2.0",
+                        "id": id,
+                        "result": {
+                            "content": [{ "type": "text", "text": text }]
+                        }
+                    }))
+                } else if name == "capnp_sync_protocol" {
                     let schema_path = args.get("schemaPath").and_then(|v| v.as_str()).unwrap_or("");
                     let root_struct = args.get("rootStruct").and_then(|v| v.as_str()).unwrap_or("");
                     let text_source_path = args.get("textSourcePath").and_then(|v| v.as_str()).unwrap_or("");
