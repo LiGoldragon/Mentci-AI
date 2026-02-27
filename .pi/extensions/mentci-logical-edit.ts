@@ -14,7 +14,6 @@ function toTextResult(result: unknown): string {
 }
 
 function renderQueryResults(result: any, theme: any): Text {
-  // result is the raw response from execute()
   const content = result.content?.[0]?.text;
   if (!content) return new Text(theme.fg("muted", "No output."), 0, 0);
 
@@ -47,11 +46,10 @@ function renderQueryResults(result: any, theme: any): Text {
   }
 }
 
-async function withTreeSitterRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
+async function withLogicalRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
   const runtime = await createRuntime({ rootDir: process.cwd() });
   try {
     // Idempotent project registration MUST happen in the SAME process as the query.
-    // Since we close the runtime per call, we must register per call.
     await runtime.callTool("mentci-tree-sitter", "register_project_tool", {
       args: { path: ".", name: "mentci" },
     }).catch(() => undefined);
@@ -105,9 +103,9 @@ function renderAstResult(result: any, theme: any): Text {
 
 export default function (pi: ExtensionAPI) {
   pi.registerTool({
-    name: "ts_register_project",
-    label: "mentci-tree-sitter",
-    description: "Register a project directory with tree-sitter MCP server.",
+    name: "logical_register_project",
+    label: "logical-edit",
+    description: "Register a project directory for logical code analysis.",
     parameters: Type.Object({
       path: Type.String({ description: "Project root path (e.g. .)" }),
       name: Type.Optional(Type.String({ description: "Project alias" })),
@@ -115,7 +113,7 @@ export default function (pi: ExtensionAPI) {
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
-        const result = await withTreeSitterRuntime((runtime) =>
+        const result = await withLogicalRuntime((runtime) =>
           runtime.callTool("mentci-tree-sitter", "register_project_tool", {
             args: {
               path: args.path,
@@ -124,25 +122,24 @@ export default function (pi: ExtensionAPI) {
             },
           })
         );
-        // UNWRAP for LLM context
         const text = toTextResult((result as any).content?.[0]?.text || result);
         return { content: [{ type: "text", text }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `ts_register_project error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `logical_register_project error: ${e?.message || e}` }] };
       }
     },
     renderCall(args, theme) {
       const text =
-        theme.fg("toolTitle", theme.bold("ts_register_project ")) +
+        theme.fg("toolTitle", theme.bold("logical_register_project ")) +
         theme.fg("accent", args.name || args.path || "project");
       return new Text(text, 0, 0);
     },
   });
 
   pi.registerTool({
-    name: "ts_get_ast",
-    label: "mentci-tree-sitter",
-    description: "Get AST for a file through tree-sitter MCP server.",
+    name: "logical_get_ast",
+    label: "logical-edit",
+    description: "Get AST for a file through logical analysis engine.",
     parameters: Type.Object({
       project: Type.String({ description: "Registered project name" }),
       path: Type.String({ description: "File path relative to project root" }),
@@ -151,7 +148,7 @@ export default function (pi: ExtensionAPI) {
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
-        const result = await withTreeSitterRuntime(async (runtime) => {
+        const result = await withLogicalRuntime(async (runtime) => {
           const raw: any = await runtime.callTool("mentci-tree-sitter", "get_ast", {
             args: {
               project: args.project,
@@ -162,16 +159,15 @@ export default function (pi: ExtensionAPI) {
           });
           return raw;
         });
-        // UNWRAP for LLM context
         const text = toTextResult((result as any).content?.[0]?.text || result);
         return { content: [{ type: "text", text }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `ts_get_ast error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `logical_get_ast error: ${e?.message || e}` }] };
       }
     },
     renderCall(args, theme) {
       const text =
-        theme.fg("toolTitle", theme.bold("ts_get_ast ")) +
+        theme.fg("toolTitle", theme.bold("logical_get_ast ")) +
         theme.fg("accent", args.path || "file");
       return new Text(text, 0, 0);
     },
@@ -181,9 +177,9 @@ export default function (pi: ExtensionAPI) {
   });
 
   pi.registerTool({
-    name: "ts_run_query",
-    label: "mentci-tree-sitter",
-    description: "Run a tree-sitter query via tree-sitter server.",
+    name: "logical_run_query",
+    label: "logical-edit",
+    description: "Run a syntax query via logical analysis engine.",
     parameters: Type.Object({
       project: Type.String({ description: "Registered project name" }),
       query: Type.String({ description: "Tree-sitter query string" }),
@@ -193,7 +189,7 @@ export default function (pi: ExtensionAPI) {
     }),
     execute: async (_toolCallId: string, args: any) => {
       try {
-        const result = await withTreeSitterRuntime(async (runtime) => {
+        const result = await withLogicalRuntime(async (runtime) => {
           const raw: any = await runtime.callTool("mentci-tree-sitter", "run_query", {
             args: {
               project: args.project,
@@ -204,10 +200,8 @@ export default function (pi: ExtensionAPI) {
             },
           });
 
-          // Extract content if it's the raw MCP envelope
           const data = (raw as any).structuredContent?.result || (raw as any).content?.[0]?.text || raw;
 
-          // FILTER: Extract only what we want for the LLM context
           if (Array.isArray(data)) {
             return data.map((match: any) => ({
               file: match.file,
@@ -220,11 +214,11 @@ export default function (pi: ExtensionAPI) {
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
-        return { content: [{ type: "text", text: `ts_run_query error: ${e?.message || e}` }] };
+        return { content: [{ type: "text", text: `logical_run_query error: ${e?.message || e}` }] };
       }
     },
     renderCall(_args, theme) {
-      const text = theme.fg("toolTitle", theme.bold("ts_run_query"));
+      const text = theme.fg("toolTitle", theme.bold("logical_run_query"));
       return new Text(text, 0, 0);
     },
     renderResult(result, _options, theme) {
@@ -233,16 +227,16 @@ export default function (pi: ExtensionAPI) {
   });
 
   pi.registerTool({
-    name: "ts_reset_runtime",
-    label: "mentci-tree-sitter",
-    description: "Reset tree-sitter runtime connection (use after server/version/config changes).",
+    name: "logical_reset_runtime",
+    label: "logical-edit",
+    description: "Reset logical editing runtime connection.",
     parameters: Type.Object({}),
     execute: async () => {
       await resetRuntime();
-      return { content: [{ type: "text", text: "tree-sitter runtime reset" }] };
+      return { content: [{ type: "text", text: "logical runtime reset" }] };
     },
     renderCall(_args, theme) {
-      const text = theme.fg("toolTitle", theme.bold("ts_reset_runtime"));
+      const text = theme.fg("toolTitle", theme.bold("logical_reset_runtime"));
       return new Text(text, 0, 0);
     },
   });
