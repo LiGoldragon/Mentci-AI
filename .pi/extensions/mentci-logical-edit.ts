@@ -18,8 +18,12 @@ function toTextResult(result: unknown): string {
 function highlightCode(code: string, lang: string, theme: any): string {
   if (!code) return "";
   try {
-    const highlighted = hljs.highlight(code, { language: lang }).value;
+    // highlight.js returns { value: '...' }
+    const res = hljs.highlight(code, { language: lang });
+    const highlighted = res.value;
     
+    if (!highlighted) return code;
+
     return highlighted
       .replace(/<span class="hljs-keyword">/g, '\x1b[35m')      // Purple
       .replace(/<span class="hljs-string">/g, '\x1b[32m')       // Green
@@ -35,17 +39,16 @@ function highlightCode(code: string, lang: string, theme: any): string {
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&');
-  } catch {
-    return theme.fg("muted", code);
+  } catch (e) {
+    return code; // Fallback to raw code on highter error
   }
 }
 
 /**
- * Manual EDN stringification for simple objects since we don't have a node-edn lib.
- * This ensures the "Intent" block is actual EDN, not JSON mislabeled.
+ * Manual EDN stringification for simple objects.
  */
 function stringifyEDN(obj: any): string {
-  if (obj === null) return "nil";
+  if (obj === null || obj === undefined) return "nil";
   if (typeof obj === "string") return `"${obj.replace(/"/g, '\\"')}"`;
   if (typeof obj === "number") return obj.toString();
   if (typeof obj === "boolean") return obj.toString();
@@ -61,64 +64,76 @@ function stringifyEDN(obj: any): string {
   return String(obj);
 }
 
-function renderQueryResults(result: any, theme: any, queryDetails?: any): Text {
+function renderQueryResults(result: any, theme: any, args: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text(theme.fg("error", "DEBUG: result.content[0].text is empty"), 0, 0);
+  if (!content) return new Text(theme.fg("error", "Empty tool result."), 0, 0);
 
   try {
     let data = JSON.parse(content);
     
+    // Normalize data to array
     if (!Array.isArray(data)) {
-        if (data && typeof data === 'object' && data.file && data.text) {
+        if (data && typeof data === 'object' && data.file) {
             data = [data];
         } else {
-            // Check for double-wrapping in string content
-            try {
-                const inner = JSON.parse(data);
-                data = Array.isArray(inner) ? inner : [inner];
-            } catch {
-                return new Text(theme.fg("error", `DEBUG: Content is not a match or array: ${content}`), 0, 0);
-            }
+            return new Text(theme.fg("error", "Result is not a valid match set.") + "\n" + content, 0, 0);
         }
     }
 
-    if (data.length === 0) {
-      return new Text(theme.fg("muted", "No matches found for query."), 0, 0);
-    }
-
     let out = "";
-    if (queryDetails && queryDetails.query) {
-      const intentObj = {
-        project: queryDetails.project || "default",
-        lang: queryDetails.language || "text",
-        query: queryDetails.query
-      };
-      const edn = `;; Logical Query Intent\n${stringifyEDN(intentObj)}`;
-      out += highlightCode(edn, "clojure", theme) + "\n" + "─".repeat(40) + "\n\n";
+    
+    // 1. Amazing Header: The EDN Intent block
+    // Note: args is the second parameter in renderResult(result, args, theme)
+    const queryStr = args?.query || "unknown";
+    const project = args?.project || "mentci";
+    const language = args?.language || "rust";
+
+    const intentObj = {
+      project,
+      language,
+      query: queryStr
+    };
+    
+    out += theme.fg("toolTitle", theme.bold(";; Logical Query Intent")) + "\n";
+    out += highlightCode(stringifyEDN(intentObj), "clojure", theme) + "\n";
+    out += theme.fg("muted", "─".repeat(50)) + "\n\n";
+
+    if (data.length === 0) {
+      out += theme.fg("muted", "No matches found in the codebase.");
+      return new Text(out, 0, 0);
     }
 
+    // 2. High-Density Matches
     for (const match of data) {
       const file = match.file || "unknown";
-      const line = match.line || (match.start?.row !== undefined ? match.start.row + 1 : "?");
+      const line = match.line || "?";
       const capture = match.capture ? theme.fg("accent", `@${match.capture}`) : "";
-      const lang = file.endsWith(".rs") ? "rust" : file.endsWith(".ts") ? "typescript" : "text";
       
       out += theme.fg("toolTitle", `${file}:${line}`) + " " + capture + "\n";
       
       if (match.text) {
+        const lang = file.endsWith(".rs") ? "rust" : file.endsWith(".ts") ? "typescript" : "text";
         const highlighted = highlightCode(match.text, lang, theme);
+        // Indent snippets for better visual separation
         out += highlighted.split("\n").map((l: string) => "  " + l).join("\n") + "\n\n";
       }
     }
+
     return new Text(out.trim(), 0, 0);
   } catch (e: any) {
-    return new Text(theme.fg("error", `DEBUG Rendering Exception: ${e?.stack || e}`) + "\n\nRAW_CONTENT:\n" + content, 0, 0);
+    return new Text(
+      theme.fg("error", `Rendering Exception: ${e.message}`) + 
+      "\n" + theme.fg("muted", e.stack || "") + 
+      "\n\nRAW CONTENT:\n" + content, 
+      0, 0
+    );
   }
 }
 
 async function withLogicalRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<T> {
   const runtime = await createRuntime({ rootDir: process.cwd() });
   try {
+    // Ensure project is always registered in the same process
     await runtime.callTool("mentci-tree-sitter", "register_project_tool", {
       args: { path: ".", name: "mentci" },
     }).catch(() => undefined);
@@ -130,12 +145,12 @@ async function withLogicalRuntime<T>(fn: (runtime: any) => Promise<T>): Promise<
 
 function renderAstResult(result: any, theme: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text(theme.fg("error", "DEBUG: result.content[0].text is empty"), 0, 0);
+  if (!content) return new Text(theme.fg("error", "Empty AST result."), 0, 0);
 
   try {
     const parsed = JSON.parse(content);
     const tree = parsed.tree;
-    if (!tree) return new Text(theme.fg("error", "DEBUG: No .tree in parsed JSON") + "\n" + content, 0, 0);
+    if (!tree) return new Text(theme.fg("error", "No AST tree found in result.") + "\n" + content, 0, 0);
 
     let out = theme.fg("toolTitle", `${parsed.file} [${parsed.language}]`) + "\n";
 
@@ -155,7 +170,7 @@ function renderAstResult(result: any, theme: any): Text {
     out += formatNode(tree, 0);
     return new Text(out.trim(), 0, 0);
   } catch (e: any) {
-    return new Text(theme.fg("error", `DEBUG Rendering Exception: ${e?.stack || e}`) + "\n\n" + content, 0, 0);
+    return new Text(theme.fg("error", `AST Rendering Exception: ${e.message}`) + "\n\n" + content, 0, 0);
   }
 }
 
@@ -236,6 +251,7 @@ export default function (pi: ExtensionAPI) {
             args: { project: args.project, query: args.query, file_path: args.filePath, language: args.language, max_results: args.maxResults },
           });
 
+          // DEPOT: Extract data from the double-wrapped mcporter envelope.
           const data = (raw as any).structuredContent?.result || (raw as any).content?.[0]?.text || raw;
 
           let final = data;
@@ -265,8 +281,9 @@ export default function (pi: ExtensionAPI) {
     renderCall(args, theme) {
       return new Text(theme.fg("toolTitle", theme.bold("logical_run_query")), 0, 0);
     },
-    renderResult(result, args, theme) {
-      return renderQueryResults(result, theme, args);
+    renderResult(result, options, theme) {
+      // options.args contains the tool call arguments
+      return renderQueryResults(result, theme, (options as any).args);
     },
   });
 
