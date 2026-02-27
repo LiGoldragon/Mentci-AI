@@ -14,8 +14,9 @@ function toTextResult(result: unknown): string {
 }
 
 function renderQueryResults(result: any, theme: any): Text {
+  // result is the raw response from execute()
   const content = result.content?.[0]?.text;
-  if (!content) return new Text("", 0, 0);
+  if (!content) return new Text(theme.fg("muted", "No output."), 0, 0);
 
   try {
     const parsed = JSON.parse(content);
@@ -62,7 +63,7 @@ async function withTreeSitterRuntime<T>(fn: (runtime: any) => Promise<T>): Promi
 
 function renderAstResult(result: any, theme: any): Text {
   const content = result.content?.[0]?.text;
-  if (!content) return new Text("", 0, 0);
+  if (!content) return new Text(theme.fg("muted", "No output."), 0, 0);
 
   try {
     const parsed = JSON.parse(content);
@@ -123,7 +124,9 @@ export default function (pi: ExtensionAPI) {
             },
           })
         );
-        return { content: [{ type: "text", text: toTextResult(result) }] };
+        // UNWRAP for LLM context
+        const text = toTextResult((result as any).content?.[0]?.text || result);
+        return { content: [{ type: "text", text }] };
       } catch (e: any) {
         return { content: [{ type: "text", text: `ts_register_project error: ${e?.message || e}` }] };
       }
@@ -157,11 +160,11 @@ export default function (pi: ExtensionAPI) {
               include_text: args.includeText,
             },
           });
-
-          // FILTER: If it's a massive AST, we could skeletonize here if needed
           return raw;
         });
-        return { content: [{ type: "text", text: toTextResult(result) }] };
+        // UNWRAP for LLM context
+        const text = toTextResult((result as any).content?.[0]?.text || result);
+        return { content: [{ type: "text", text }] };
       } catch (e: any) {
         return { content: [{ type: "text", text: `ts_get_ast error: ${e?.message || e}` }] };
       }
@@ -201,19 +204,19 @@ export default function (pi: ExtensionAPI) {
             },
           });
 
+          // Extract content if it's the raw MCP envelope
+          const data = (raw as any).structuredContent?.result || (raw as any).content?.[0]?.text || raw;
+
           // FILTER: Extract only what we want for the LLM context
-          if (Array.isArray(raw)) {
-            const filtered = raw.map((match: any) => ({
+          if (Array.isArray(data)) {
+            return data.map((match: any) => ({
               file: match.file,
               line: (match.start?.row ?? 0) + 1,
               capture: match.capture,
-              // Only keep snippet if explicitly requested or under certain length
-              // For now, we keep it but could add a flag to skeletonize
               text: match.text?.trim()
             }));
-            return filtered;
           }
-          return raw;
+          return data;
         });
         return { content: [{ type: "text", text: toTextResult(result) }] };
       } catch (e: any) {
