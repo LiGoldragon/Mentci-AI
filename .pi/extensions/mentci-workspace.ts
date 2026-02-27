@@ -108,17 +108,24 @@ function renderUnifiedDiffForPi(raw: string, theme: Theme): string {
 }
 
 function loadSemaProgrammerSkill(workspaceRoot: string): string | null {
-  const skillPath = path.join(workspaceRoot, ".pi", "skills", "sema-programmer", "SKILL.md");
-  if (!fs.existsSync(skillPath)) return null;
+  const skillDir = path.join(workspaceRoot, ".pi", "skills", "sema-programmer");
+  const compiledPath = path.join(skillDir, "absolute_rules.md");
+  const skillPath = path.join(skillDir, "SKILL.md");
+
   try {
-    return fs.readFileSync(skillPath, "utf-8").trim();
+    if (fs.existsSync(compiledPath)) {
+      return fs.readFileSync(compiledPath, "utf-8").trim();
+    }
+    if (fs.existsSync(skillPath)) {
+      return fs.readFileSync(skillPath, "utf-8").trim();
+    }
+    return null;
   } catch {
     return null;
   }
 }
 
 export default function (pi: ExtensionAPI) {
-  let semaSkillInjected = false;
   pi.registerTool({
     name: "structural_edit",
     label: "mentci-mcp-edit",
@@ -193,7 +200,6 @@ export default function (pi: ExtensionAPI) {
   });
 
   pi.on("session_start", async () => {
-    semaSkillInjected = false;
     try {
       const workspaceRoot = process.cwd();
       const chronos = execSync(`chronos --format am --precision second`, {
@@ -208,22 +214,18 @@ export default function (pi: ExtensionAPI) {
     } catch (_e) {}
   });
 
-  pi.on("session_switch", async () => {
-    semaSkillInjected = false;
-  });
-
   pi.on("before_agent_start", async () => {
-    if (semaSkillInjected) return undefined;
+    // We inject every turn to ensure the latest Absolute Rules bypass /compact decay.
+    // The policy engine compiler ensures this text is dense and token-efficient.
     const workspaceRoot = process.cwd();
     const skillText = loadSemaProgrammerSkill(workspaceRoot);
     if (!skillText) return undefined;
 
-    semaSkillInjected = true;
     return {
       message: {
         customType: "sema-programmer-injection",
         display: false,
-        content: `<system-reminder>\nProgrammatic Skill Injection: sema-programmer\n\n${skillText}\n</system-reminder>`,
+        content: `<system-reminder>\nAdaptive Authority: sema-programmer\n\n${skillText}\n</system-reminder>`,
       },
     };
   });
