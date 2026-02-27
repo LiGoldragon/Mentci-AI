@@ -41,6 +41,7 @@ enum DiffStyle {
 enum AppLang {
     Ast(SupportLang),
     Capnp,
+    Text,
 }
 
 #[derive(Debug, Clone)]
@@ -136,7 +137,9 @@ fn parse_lang(lang: &str) -> Option<AppLang> {
         "python" | "py" => Some(AppLang::Ast(SupportLang::Python)),
         "nix" => Some(AppLang::Ast(SupportLang::Nix)),
         "bash" | "sh" => Some(AppLang::Ast(SupportLang::Bash)),
+        "json" => Some(AppLang::Ast(SupportLang::Json)),
         "capnp" => Some(AppLang::Capnp),
+        "text" | "markdown" | "md" | "yaml" | "yml" => Some(AppLang::Text),
         _ => None,
     }
 }
@@ -155,7 +158,7 @@ fn render_delta(unified: &str) -> Option<String> {
         .arg("--line-numbers")
         .arg("--true-color=always")
         .arg("--24-bit-color=always")
-        .arg("--side-by-side=false")
+        .arg("--side-by-side")
         .arg("--keep-plus-minus-markers")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -288,6 +291,13 @@ fn main() -> anyhow::Result<()> {
             String::from_utf8(bytes)?
         }
         AppLang::Capnp => apply_capnp_replace(&src, &args.pattern, &args.replace)?,
+        AppLang::Text => {
+            if !src.contains(&args.pattern) {
+                println!("No exact match found for text pattern.");
+                return Ok(());
+            }
+            src.replace(&args.pattern, &args.replace)
+        }
     };
 
     fs::write(&args.file, &new_src)?;
