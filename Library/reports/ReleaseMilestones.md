@@ -63,3 +63,18 @@ This file maintains the durable record of session milestones and goal outcomes s
 
 ## [Previous Historical Logs Elided for Brevity - see git history]
 ♓︎.6.8.53 5919AM | v0.12.6.8.53 | Major structural shift: Rust Actor Orchestration, Logic-Data Separation, and Full Repository Sweep complete. Deleted legacy Babashka scripts.
+
+## release: v0.12.9.59.28 - aski projector, native capnp sync protocol, and edn spec-source migration
+♓︎9°59'28" | 5919 AM
+
+- **Core Hash:** `f251679`
+- **Aski Projector:** Implemented native Rust EDN-to-Cap'n-Proto-text projection in `Components/aski-lib`.
+- **MCP Protocol Tooling:** Added `capnp_sync_protocol` to `Components/mentci-mcp` for deterministic hash-synced binary generation.
+- **Spec Authority Migration:** Converted `mentci-stt`, `mentci-user`, and `mentci-intel` data authorities from ad-hoc text to EDN source sidecars.
+- **Operational Cleanup:** Removed obsolete sync shell surfaces and aligned symlinked `.bin` message pointers.
+
+### transition from previous tagged release (`v0.12.8.5.55`)
+- Added VTCode integration lane and hardened Gemini schema compatibility for tool calls.
+- Enforced stronger component-local Cap'n Proto schema/data contracts.
+- Shifted structured message authoring toward EDN-first authoring with Rust-native projection.
+- Continued Rust-only replacement of script surfaces and policy codification in core guidance.

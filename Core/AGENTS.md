@@ -31,6 +31,7 @@ Enforcement requirements:
 
 *   **Architecture Gate:** Any change conflicting with the hierarchy in `Core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
 *   **Version-Control Gate:** `Core/VersionControlProtocol.md` is mandatory procedure, not guidance.
+*   **Release Signature Gate:** Release tags are mandatory signed artifacts; unsigned release tags are protocol-invalid.
 *   **Restart Context Mandate:** Any modification to major repository components (Engine logic, core protocols, input structures) **must** be reflected in an update to `Library/RestartContext.md` and a new entry in `Outputs/Logs/ReleaseMilestones.md`. Agents must consult the Restart Context at the beginning of every session to understand the project's current spatial map.
 
 ## 0. Core Sema Object Principles & Philosophical Alignment (Primary)

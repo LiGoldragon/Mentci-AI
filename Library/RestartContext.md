@@ -6,10 +6,17 @@
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Primary Working Bookmark:** `dev`.
 *   **Current Programming Version:** `(will be updated by commit hook or manually)`
-*   **Latest Release Tag:** `v0.12.9.4.12` (current milestone).
+*   **Latest Release Tag:** `v0.12.9.59.28` (current milestone).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository now operates with a native Rust actor-based orchestration layer (`execute`) and strict Logic-Data separation.
+
+## 1.1 Transition Summary Since Last Tagged Release (`v0.12.8.5.55`)
+- Introduced Cap'n Proto component-local schema enforcement and hash-synced binary message protocol as normal operating contract.
+- Integrated VTCode into Nix tooling lane with Mentci-specific stability and smoke-test checks.
+- Implemented Aski Projector workflow (EDN -> Cap'n Proto text -> packed binary) in Rust via `aski-lib` + `mentci-mcp`.
+- Migrated key component data authorities (`mentci-stt`, `mentci-user`, `mentci-intel`) to EDN sidecar sources.
+- Strengthened release protocol toward signed tagging and dual chronographic formatting.
 
 ## 2. Mandatory Core Context (The Program)
 These files define the agent's operating logic and must be loaded automatically:
@@ -42,9 +49,11 @@ R&D is the mirrored two-tree model:
   - `Library/specs/MentciLaunchSpec.md`: systemd + terminal launch contract for Mentci-Box.
 - **Primary Operator Interface:** TypeScript `pi` (`pi`) is default; Rust `pi` remains non-default validation lane.
 
-## 5. Current Operational Snapshot (♓︎.9.4.12 | 5919 AM)
+## 5. Current Operational Snapshot (♓︎.9.59.28 | 5919 AM)
 - **Terminology Alignment:** Officially marked "sajban" as deprecated for "sema" (the machine-code symbolic language). **Sajban** is now the name for the natural-language **Aski** (`aski-sajban`), which is self-loading from SEMA binary.
 - **Component Locality:** Cap'n Proto schemas now live within component directories. Architectural guidelines enforce SHA-256 hash synchronization between binary and text message versions.
+- **Aski Projector + Native Sync:** `aski-lib` now projects EDN into Cap'n Proto text and `mentci-mcp` exposes `capnp_sync_protocol` for hash-synced `.bin` generation without ad-hoc shell scripts.
+- **Spec-Source Migration:** `mentci-stt`, `mentci-user`, and `mentci-intel` now use EDN text source artifacts (`*.edn`) as the editable authority feeding prebuilt Cap'n Proto binaries.
 - **Pure Nix devShell:** `mentci-user` bootstraps environment variables purely within the Nix shell logic, removing the need for external shell wrappers.
 - `dev` lineage continues to enforce the **Rust-Only Mandate**, officially deprecating Python, Clojure, and ad-hoc shell patching. Ad-hoc extraction scripts must now be explicitly marked for rewriting into Sema-grade components like `mentci-dig`.
 - **UI Abstraction Standardization:** All User Interfaces (Pi, VTCode, Gemini) strictly separate Logic and Data. Secrets (`GEMINI_API_KEY`, etc.) are injected purely via `mentci-user export-env`, never via local `.env` files.

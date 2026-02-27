@@ -15,6 +15,9 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
    - canonical shape: `spaceSeparated [dotSeparated [ZodiaUnicode deg min sec], concatenated [Year \"AM\"]]`
    - Gregorian-only date lines are not acceptable as the primary session timestamp.
 7. Release default push target is `main`: when performing a release flow, push the release commit/tag to `main` unless explicitly overridden.
+7.1. **MANDATORY SIGNED RELEASE TAGS:** Every release tag must be cryptographically signed (GPG or SSH signing).
+   - Unsigned release tags are protocol-invalid.
+   - Verify with: `git tag -v <tag>` (or equivalent verification command) before declaring release completion.
 8. Aggressive auto-commit: any filesystem change must be committed immediately. Do not wait for explicit user prompts like "commit everything."
 9. Per-prompt dirty-tree auto-commit: if the working copy is dirty at the start of a prompt, create a commit before making any new changes. After completing the prompt, create at least one new commit for the prompt's work.
 10. **Hard pre-edit gate:** if the tree is dirty at prompt start, stop implementation, isolate pre-existing intent(s), and commit them before touching any additional files.
@@ -59,8 +62,11 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
    - `## Agent Context`
    - `## Logical Changes`
    This is enforced by `execute session-guard`.
-14.2. Session message timestamp format is mandatory:
-   - commit/session text uses `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`
+14.2. Session/release dating format is mandatory:
+   - commit/session text uses `<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`.
+   - release notes and release commit messages must include both:
+     1) Unicode zodiac chronography (`<ZodiaUnicode>.<deg>.<min>.<sec> <Year>AM`), and
+     2) numeric protocol version string (for example `v0.12.9.59.28`).
    - release/version tags use cycle offset where `5919 AM -> 0`, `5920 AM -> 1`, etc.
 15. Every completed prompt must emit/update a research artifact in `Research/<priority>/<Subject>/` (new file or existing subject update); prompts are not complete without research coverage.
 16. Session push invariant: prompt completion is invalid until the finalized `session:` commit is pushed (default `dev`) and verified.
