@@ -91,6 +91,7 @@ When introducing a new tool, library, or dependency (e.g., via `nixpkgs` or vend
 *   **Scope:** Applies across Rust, Clojure, and Nix integration boundaries.
 *   **Cap'n Proto Component Locality:** All Cap'n Proto schema files (`*.capnp`) MUST live within their respective component's logic directory (e.g., `Components/mentci-user/schema/`), rather than a centralized schema directory.
 *   **Cap'n Proto Prebuilt Messages:** When passing structured data to a component, use a prebuilt Cap'n Proto binary message stored alongside a text-version (e.g., JSON or EDN) in the component's data directory. Use a hash of the text-version to keep them synced, either by embedding the hash in the filename (e.g., `config_<hash>.bin`) or inside the payload, and verify this synchronization automatically.
+*   **Prompt Engineering Portability:** Maintain a harness-independent intelligence layer using structured Sajban SIR (Semantic Intermediate Representation). Project this representation into Markdown on-demand for specific agent environments (`pi`, `vtcode`) to ensure persona and instruction consistency across parallel workspaces.
 *   **Required:** Launchers and services (including terminal launch paths) ingest their runtime configuration from a single Cap'n Proto init message.
 *   **Forbidden:** Splitting configuration semantics between init message and ad-hoc environment variables.
 *   **Allowed env surface:** OS/runtime process concerns only (for example PATH, HOME, locale), not domain configuration.
