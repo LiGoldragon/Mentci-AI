@@ -15,6 +15,8 @@ The "Logical Editing" plane has been established as the primary structural analy
   - Explicit **EDN Intent Headers** clearly show what the tool is doing.
   - **Mirror Hook:** Final UI output is written to `.mentci/ui_mirror.txt` so agents can "see" what the user sees, solving synchronization hallucinations.
 - **Stability:** Ported to a process-coherent ephemeral model (registration + query in one process) to prevent state loss in pure Nix environments.
+- **Envelope Protocol:** Discovered that `mcporter` returns JSON strings inside `content[0].text` of an outer envelope. Implemented recursive double-unwrapping in the extension `execute` layer to ensure valid JSON reaches the UI renderers and the LLM context.
+- **Memory Management:** Purposely avoid long-lived persistent runtime handles in the extension host to prevent stale server state from masking fixes; fresh runtimes are created and closed per tool call.
 
 ## 3. Component: `linkup` (Search Intelligence)
 - **Status:** Integrated and operational.
