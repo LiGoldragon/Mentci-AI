@@ -1084,6 +1084,23 @@
         "type": "github"
       }
     },
+    "mentci-user-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772285569,
+        "narHash": "sha256-NF48X9KUU3zEfADPwDXKtbw/Qil9N8rr4qe1cCojdkg=",
+        "ref": "main",
+        "rev": "e32aefdb148c15269077ededebbba9953335981c",
+        "revCount": 1,
+        "type": "git",
+        "url": "file:///home/li/git/mentci-fractal/components/mentci-user"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "file:///home/li/git/mentci-fractal/components/mentci-user"
+      }
+    },
     "mfgtools": {
       "flake": false,
       "locked": {
@@ -1561,6 +1578,7 @@
         "leash": "leash",
         "lojix": "lojix",
         "maisiliym": "maisiliym_2",
+        "mentci-user-src": "mentci-user-src",
         "mkZolaWebsite": "mkZolaWebsite_2",
         "nixpkgs": "nixpkgs_6",
         "opencode": "opencode",

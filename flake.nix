@@ -65,6 +65,12 @@
       flake = false;
     };
 
+    # Fractal Universe Inputs
+    mentci-user-src = {
+      url = "git+file:///home/li/git/mentci-fractal/components/mentci-user?ref=main";
+      flake = false;
+    };
+
     # Research Sources
     leash = {
       url = "github:strongdm/leash";
@@ -127,6 +133,7 @@
           pi_mono_src = inputs.pi-mono;
           pi_agent_rust_src = inputs.pi-agent-rust;
           vtcode_src = inputs.vtcode-src;
+          mentci_user_src = inputs.mentci-user-src;
           repo_root = ./.;
         };
 

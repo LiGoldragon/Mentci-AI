@@ -1,17 +1,17 @@
-{ craneLib, pkgs, ... }:
+{ craneLib, pkgs, src, ... }:
 
 let
   # Support .capnp files in the source
   capnpFilter = path: type: (builtins.match ".*\\.capnp$" path != null);
-  src = pkgs.lib.cleanSourceWith {
-    src = craneLib.path ./.;
+  cleanSrc = pkgs.lib.cleanSourceWith {
+    src = src;
     filter = path: type:
       (capnpFilter path type) || (craneLib.filterCargoSources path type);
   };
   commonArgs = {
     pname = "mentci-user";
     version = "0.1.0";
-    inherit src;
+    src = cleanSrc;
     nativeBuildInputs = [ pkgs.capnproto ];
     doCheck = false;
   };

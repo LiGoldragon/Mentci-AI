@@ -10,6 +10,7 @@
 , pi_mono_src
 , pi_agent_rust_src
 , vtcode_src
+, mentci_user_src
 , repo_root
 }:
 
@@ -28,6 +29,7 @@ let
 
   mentci_user = import ./mentci_user.nix {
     inherit craneLib pkgs;
+    src = mentci_user_src;
   };
 
   mentci_mcp = import ./mentci_mcp.nix {

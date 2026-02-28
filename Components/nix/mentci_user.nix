@@ -1,5 +1,5 @@
-{ craneLib, pkgs }:
+{ craneLib, pkgs, src }:
 
 import ../mentci-user/default.nix {
-  inherit craneLib pkgs;
+  inherit craneLib pkgs src;
 }
