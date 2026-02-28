@@ -31,10 +31,12 @@ Before editing code:
 ### 1) Model the Data First
 - Define or update sidecar data (`.edn` preferred for text authority).
 - Use Cap'n Proto schemas for transport/state contracts.
+- **Contract Isolation:** Inter-component communication channels must be defined as independent Cap'n Proto/EDN contracts, preparing for a DVCS architecture where contracts live in dedicated repositories.
 - Do not hardcode paths, env names, model IDs, or prompt payloads in logic.
 
 ### 2) Keep Logic in Rust
 - Implement behavior in Rust objects/traits.
+- **Component Boundaries:** Treat every component as a strict boundary (future standalone `jj` repository). They must interact only through schema-validated channels.
 - Use one-object-in / one-object-out patterns where practical.
 - Avoid ad-hoc shell/Python/Clojure for runtime logic.
 
