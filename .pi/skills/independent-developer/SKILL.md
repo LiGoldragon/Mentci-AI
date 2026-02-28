@@ -26,9 +26,11 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Mirror Verification:** After any UI or structural change, read `.mentci/ui_mirror.txt` to confirm the machine's output matches the intended design.
 
 ### 3. DVCS Rigor (Jujutsu)
-- Treat every component as a future independent `jj` repository.
-- Use atomic `intent:` commits for every logical change.
-- End every session with a finalized `session:` commit pushed to `dev`.
+- **Fractal Repository Protocol:** Treat every component as a future standalone `jj` repository. Inter-component interaction must happen only through schema-validated channels.
+- **Intent-Bookmark Schema:** Use the machine-parsable bookmark schema: `UidHash__TypeIntent__Subflow` (e.g., `f5919__fractalize__mentci-user`).
+- **Atomic Intent:** Use `intent:` commits for every logical change.
+- **Session Finalization:** End every turn with a `session:` commit. Always verify local/remote bookmark alignment for both `dev` and any specialized `research` branches before completion.
+- **Rebase Mandate:** When working across branches, always rebase research work onto the advanced `dev` baseline to maintain a clean linear history.
 
 ### 4. Implementation Flow
 1. **Research & Verify:** Use Linkup to validate assumptions.
