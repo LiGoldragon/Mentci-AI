@@ -1,5 +1,12 @@
 {:kind :index
- :title "Fractal DVCS & Hermetic Builds"
+ :title "Fractal DVCS & Content-Addressed Rebasing"
  :subject "Fractal-DVCS"
  :developmentPath "../../../Development/high/Fractal-DVCS"
- :entries ["591912111900_report_hermetic_flake_inputs.md"]}
+ :entries ["591912111122_report_crypto-content-addressed-rebase-system.md"
+           "591912111123_report_aski-datalog-symbolic-interaction.md"
+           "591912111124_report_repo-to-relational-translation.md"
+           "591912111325_report_samskara-architecture-epiphany.md"
+           "591912111326_extract_samskara-vision-deep-dive.md"
+           "591912111327_report_repo-wide-refactor-roadmap.md"
+           "591912111900_report_hermetic_flake_inputs.md"
+           "591912281515_report_devshell_verification.md"]}
