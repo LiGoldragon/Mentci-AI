@@ -11,14 +11,13 @@
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository now operates with a native Rust actor-based orchestration layer (`execute`) and strict Logic-Data separation.
 
-## 1.1 Transition Summary Since Last Tagged Release (`v0.12.10.52.12`)
-- Initiated the **Fractal DVCS Migration**: Started the split of `Components/` into independent `jj` repositories, beginning with `mentci-user`.
-- Implemented the **Saṃskāra Bridge**: A structured state projection layer utilizing `jj`'s native JSON templating to convert VCS history into Cap'n Proto/EDN contracts.
-- Established the **Flow Registry**: A SQLite-based shadow index (`flow_registry.db`) to track distributed intents across the fractal repository network.
-- Standardized the **Intent-Bookmark Schema**: `UidHash__TypeIntent__Subflow` (e.g., `f5919__fractalize__mentci_user`) to enable automated rebase/merge reasoning.
-- Deployed the **Independent Developer Skill**: A high-level operational aggregator that mandates external validation (Linkup), structural mastery, and history auditing.
-- Defined and designed **Logical File Search (LFS)**: an architecture-aware semantic indexing layer using SQLite.
-- Established **Pi as the Vim of the AI Agent Era**, prioritizing programmatic interaction and multi-harness portability (Pi <-> VTCode).
+## 1.1 Transition Summary Since Last README Update (`c8e82e2c`)
+- **Fractal Universe Phase 2 Baseline:** Transitioned from a monorepo workspace to a distributed network of independent `jj` repositories coordinated via Nix Flake inputs.
+- **Saṃskāra Bridge Operationalized:** Implemented the structural projection layer to ingest raw VCS state into machine-readable Cap'n Proto contracts.
+- **Flow Registry Active:** Established a central SQLite shadow index (`flow_registry.db`) to track distributed intent bookmarks across the fractal network.
+- **Logical Plane Guidelines Established:** Formalized protocols for symbolic code interaction, including Tree-sitter analysis, structural editing, and terminal mirroring.
+- **Independent Developer Mandate:** Deployed the primary operational skill enforcing mandatory Linkup validation and historical audit trails before declaring impasses.
+- **Build & Secret Hardening:** Achieved zero-warning workspace baseline and implemented packed Cap'n Proto support for the `mentci-user` secret pipeline.
 
 ## 2. Mandatory Core Context (The Program)
 These files define the agent's operating logic and must be loaded automatically:

@@ -1,4 +1,5 @@
 # Mentci-AI: Level 5 "Dark Factory" AI Daemon
+**Last Update:** `5a7805017fd2` (Fractal Universe Phase 2 Baseline)
 
 ## mentci-aid (Mentci-AI Daemon)
 The core Rust logic of this repository is identified as **mentci-aid**. 
@@ -13,21 +14,20 @@ Mentci-AI is a Nix-and-Rust based AI daemon designed for **Level 5 "Dark Factory
 To automate implementation details and liberate the human mind through autonomous symbolic manipulation, returning to the technological levels of the Golden Age.
 
 ## Core Pillars
-1.  **Nix Jail Isolation**: Pure, reproducible execution environments.
+1.  **Fractal DVCS Isolation**: Distributed `jj` repositories coordinated via Saṃskāra and the Flow Registry.
 2.  **Sema Object Style**: Strict ontological structure in Rust and Nix.
-3.  **Attractor Orchestration**: DOT-based DAG pipelines for AI workflows.
-4.  **Handshake Logging Protocol**: Cryptographic provenance and EDN-based record of truth.
+3.  **Logical Plane**: AST-aware symbolic interaction and structural editing (Tree-sitter/ast-grep).
+4.  **Hermetic Nix Integration**: Pure, reproducible execution environments using Flake inputs for distributed components.
 
 ## Structure
 - `Core/`: Authoritative architectural mandates and protocols.
   - `Library/RestartContext.md`: The primary overview and state-resumption map.
+- `Components/samskara/`: The structural bridge and fractal orchestrator.
 - `Components/schema/`: The semantic truth (Cap'n Proto).
-- `Components/nix/jail.nix`: The isolated dev environment definition.
-- `Components/mentci-aid/src/main.rs`: The Rust daemon implementation (**mentci-aid**).
-- `Components/mentci-launch/`: Systemd-backed terminal/service launcher for Mentci-Box sessions.
+- `Components/nix/`: The isolated dev shell and build pipeline.
+- `Components/mentci-aid/`: The Rust daemon implementation (**mentci-aid**).
+- `.mentci/flow_registry.db`: SQLite shadow index tracking the fractal repository network.
 - `execute`: High-performance Rust/Actor orchestrator.
-- `Components/workflows/`: DOT files defining agent execution graphs.
-- `Outputs/Logs/`: Durable audit trails and milestone logs.
 - `Library/`: Secondary documentation (architecture, specs, guides).
 
 ## Usage
