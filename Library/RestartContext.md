@@ -11,15 +11,14 @@
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository now operates with a native Rust actor-based orchestration layer (`execute`) and strict Logic-Data separation.
 
-## 1.1 Transition Summary Since Last Tagged Release (`v0.12.8.5.55`)
-- Introduced Cap'n Proto component-local schema enforcement and hash-synced binary message protocol as normal operating contract.
-- Integrated VTCode into Nix tooling lane with Mentci-specific stability and smoke-test checks.
-- Implemented Aski Projector workflow (EDN -> Cap'n Proto text -> packed binary) in Rust via `aski-lib` + `mentci-mcp`.
-- Migrated key component data authorities (`mentci-stt`, `mentci-user`, `mentci-intel`) to EDN sidecar sources.
-- Strengthened release protocol toward signed tagging and dual chronographic formatting.
-- Established **Logical Context Persistence** skill to automate repository semantic routing.
-- Initiated **Pi API Specification** research to bridge TypeScript extensions with Sema-grade Rust implementation via Cap'n Proto.
-- Implemented **Mirror Hook** protocol to eliminate agent-UI synchronization hallucinations.
+## 1.1 Transition Summary Since Last Tagged Release (`v0.12.9.59.28`)
+- Established the **Logical Editing** (AST-aware) plane, moving beyond raw text search to structural/semantic analysis.
+- Implemented **Adaptive Skill Authority** (Tiers 2 & 3), enabling agents to learn and persist boundary conditions (e.g., structural edit limitations) without losing authority after context compaction.
+- Designed **Logical File Search (LFS)**: a semantic repository indexing layer using SQLite to categorize repo artifacts by architecture and intent.
+- Integrated the **Mirror Hook** protocol, allowing agents to verify rendered TUI state and eliminate synchronization hallucinations.
+- Hardened the secret injection pipeline (`mentci-user`) to support packed Cap'n Proto messages and improved devshell diagnostic visibility.
+- Conducted a full workspace Rust warning sweep, establishing a zero-warning baseline.
+- Formalized the **Logical Plane Guidelines** in `Core/LOGICAL_PLANE_GUIDELINES.md` and codified the **Web Validation Mandate** for routine ecosystem verification.
 - Defined and designed **Logical File Search (LFS)**: an architecture-aware semantic indexing layer using SQLite.
 - Established **Pi as the Vim of the AI Agent Era**, prioritizing programmatic interaction and multi-harness portability (Pi <-> VTCode).
 
