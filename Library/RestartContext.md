@@ -17,7 +17,8 @@ Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilizati
 - Implemented Aski Projector workflow (EDN -> Cap'n Proto text -> packed binary) in Rust via `aski-lib` + `mentci-mcp`.
 - Migrated key component data authorities (`mentci-stt`, `mentci-user`, `mentci-intel`) to EDN sidecar sources.
 - Strengthened release protocol toward signed tagging and dual chronographic formatting.
-- Established **Logical Editing** (AST-aware) and **Search Intelligence** (Linkup) as primary symbolic tools.
+- Established **Logical Context Persistence** skill to automate repository semantic routing.
+- Initiated **Pi API Specification** research to bridge TypeScript extensions with Sema-grade Rust implementation via Cap'n Proto.
 - Implemented **Mirror Hook** protocol to eliminate agent-UI synchronization hallucinations.
 
 ## 2. Mandatory Core Context (The Program)
