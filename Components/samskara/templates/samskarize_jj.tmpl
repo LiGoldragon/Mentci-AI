@@ -1,0 +1,8 @@
+"{" ++
+  "\"changeId\": \"" ++ change_id.shortest(8) ++ "\"," ++
+  "\"commitId\": \"" ++ commit_id.shortest(8) ++ "\"," ++
+  "\"workingCopy\": " ++ if(current_working_copy, "true", "false") ++ "," ++
+  "\"conflict\": " ++ if(conflict, "true", "false") ++ "," ++
+  "\"bookmarks\": [" ++ bookmarks.map(|b| "\"" ++ b ++ "\"").join(",") ++ "]," ++
+  "\"parents\": [" ++ parents.map(|p| "\"" ++ p.commit_id().shortest(8) ++ "\"").join(",") ++ "]" ++
+"}"
