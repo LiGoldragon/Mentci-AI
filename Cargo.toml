@@ -8,7 +8,6 @@ members = [
     "Components/mentci-launch",
     "Components/mentci-box-lib",
     "Components/mentci-stt",
-    "Components/mentci-user",
     "Components/mentci-dig",
     "Components/mentci-mcp",
     "Components/mentci-mcp/core",
