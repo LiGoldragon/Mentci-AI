@@ -49,3 +49,8 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - [ ] Structural edits used and verified via Mirror.
 - [ ] History audited for clues before declaring an impasse.
 - [ ] Atomic `intent:` commits pushed to `dev`.
+
+### 6. Crypto-Content-Addressed Rebasing
+- **Independent Clones over Worktrees:** Due to shared operation-log staleness in standard `jj` worktrees, prefer working in entirely independent `jj` clones when executing distinct flows.
+- **Root Authority Claim:** When opening an independent clone, the root `MentciCommit` Cap'n Proto message must define the `ownedSpacename` (the branch or subset of the DVCS variable space this clone is permitted to mutate).
+- **Pruned Context:** When a redesign completes, the system should emit a new root `MentciCommit` that links to a compressed, cryptographic archive of its ancestor history, cleanly resetting the LLM context window to just the active surface area.

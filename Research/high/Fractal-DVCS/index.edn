@@ -1,5 +1,6 @@
 {:kind :index
- :title "Fractal DVCS & Hermetic Builds"
+ :title "Fractal DVCS & Content-Addressed Rebasing"
  :subject "Fractal-DVCS"
  :developmentPath "../../../Development/high/Fractal-DVCS"
- :entries ["591912111900_report_hermetic_flake_inputs.md"]}
+ :entries ["591912111122_report_crypto-content-addressed-rebase-system.md"
+           "591912111900_report_hermetic_flake_inputs.md"]}
