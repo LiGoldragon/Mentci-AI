@@ -7,7 +7,8 @@
           "Core/AGENTS.md"
           "Core/SEMA_RUST_GUIDELINES.md"
           "Core/SEMA_CLOJURE_GUIDELINES.md"
-          "Core/SEMA_NIX_GUIDELINES.md"]
+          "Core/SEMA_NIX_GUIDELINES.md",
+          "Core/LOGICAL_PLANE_GUIDELINES.md"]
   :requirements [:all-caps :fully-human-review-data]}
  :stableContract
  {:files ["Core/VersionControlProtocol.md"

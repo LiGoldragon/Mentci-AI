@@ -13,9 +13,10 @@ The following files are mandatory authority sources and **must be loaded automat
 4. `Core/VersionControlProtocol.md`
 5. `Core/HIGH_LEVEL_GOALS.md`
 5. `Core/SEMA_RUST_GUIDELINES.md`, `Core/SEMA_CLOJURE_GUIDELINES.md`, `Core/SEMA_NIX_GUIDELINES.md` (as relevant to touched files)
-6. `Library/RestartContext.md` (The overview map)
-7. `Core/AGENTS.md` (This file)
-8. `Core/index.edn` (Authority Registry)
+6. `Core/LOGICAL_PLANE_GUIDELINES.md` (Symbolic logic protocols)
+7. `Library/RestartContext.md` (The overview map)
+8. `Core/AGENTS.md` (This file)
+9. `Core/index.edn` (Authority Registry)
 
 Enforcement requirements:
 

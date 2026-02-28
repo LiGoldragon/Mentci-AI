@@ -1,0 +1,5 @@
+{:kind :index
+ :title "Structural Editing"
+ :reports [["591912096015_report_diff-visualizer-and-mcp-capability-audit.md" :milestone]
+           ["591912101447_report_external-mcp-comparison-treesitter-vs-ast-grep-mcp.md" :decision]
+           ["591912110100_report_logical-edit-current-state.md" :state]]}

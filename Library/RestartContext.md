@@ -20,6 +20,8 @@ Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilizati
 - Established **Logical Context Persistence** skill to automate repository semantic routing.
 - Initiated **Pi API Specification** research to bridge TypeScript extensions with Sema-grade Rust implementation via Cap'n Proto.
 - Implemented **Mirror Hook** protocol to eliminate agent-UI synchronization hallucinations.
+- Defined and designed **Logical File Search (LFS)**: an architecture-aware semantic indexing layer using SQLite.
+- Established **Pi as the Vim of the AI Agent Era**, prioritizing programmatic interaction and multi-harness portability (Pi <-> VTCode).
 
 ## 2. Mandatory Core Context (The Program)
 These files define the agent's operating logic and must be loaded automatically:

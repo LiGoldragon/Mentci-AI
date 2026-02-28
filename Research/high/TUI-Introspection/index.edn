@@ -1,0 +1,3 @@
+{:kind :index
+ :title "TUI Introspection"
+ :designs [["591912102204_design_tui-self-debugging-eye.md" :spec]]}

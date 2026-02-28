@@ -1,0 +1,4 @@
+{:kind :index
+ :title "Pi API Specification"
+ :reports [["591912110150_report_pi_api_capnp_bridge.md" :bridge]
+           ["591912110200_report_pi_is_the_vim_of_ai.md" :positioning]]}
