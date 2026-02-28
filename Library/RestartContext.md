@@ -11,14 +11,12 @@
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization. The repository now operates with a native Rust actor-based orchestration layer (`execute`) and strict Logic-Data separation.
 
-## 1.1 Transition Summary Since Last Tagged Release (`v0.12.9.59.28`)
-- Established the **Logical Editing** (AST-aware) plane, moving beyond raw text search to structural/semantic analysis.
-- Implemented **Adaptive Skill Authority** (Tiers 2 & 3), enabling agents to learn and persist boundary conditions (e.g., structural edit limitations) without losing authority after context compaction.
-- Designed **Logical File Search (LFS)**: a semantic repository indexing layer using SQLite to categorize repo artifacts by architecture and intent.
-- Integrated the **Mirror Hook** protocol, allowing agents to verify rendered TUI state and eliminate synchronization hallucinations.
-- Hardened the secret injection pipeline (`mentci-user`) to support packed Cap'n Proto messages and improved devshell diagnostic visibility.
-- Conducted a full workspace Rust warning sweep, establishing a zero-warning baseline.
-- Formalized the **Logical Plane Guidelines** in `Core/LOGICAL_PLANE_GUIDELINES.md` and codified the **Web Validation Mandate** for routine ecosystem verification.
+## 1.1 Transition Summary Since Last Tagged Release (`v0.12.10.52.12`)
+- Initiated the **Fractal DVCS Migration**: Started the split of `Components/` into independent `jj` repositories, beginning with `mentci-user`.
+- Implemented the **Saṃskāra Bridge**: A structured state projection layer utilizing `jj`'s native JSON templating to convert VCS history into Cap'n Proto/EDN contracts.
+- Established the **Flow Registry**: A SQLite-based shadow index (`flow_registry.db`) to track distributed intents across the fractal repository network.
+- Standardized the **Intent-Bookmark Schema**: `UidHash__TypeIntent__Subflow` (e.g., `f5919__fractalize__mentci_user`) to enable automated rebase/merge reasoning.
+- Deployed the **Independent Developer Skill**: A high-level operational aggregator that mandates external validation (Linkup), structural mastery, and history auditing.
 - Defined and designed **Logical File Search (LFS)**: an architecture-aware semantic indexing layer using SQLite.
 - Established **Pi as the Vim of the AI Agent Era**, prioritizing programmatic interaction and multi-harness portability (Pi <-> VTCode).
 

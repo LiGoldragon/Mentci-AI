@@ -2,6 +2,15 @@
 
 This file maintains the durable record of session milestones and goal outcomes since the last major release tag.
 
+## release: v0.12.10.52.12 - samskara bridge, fractalization baseline, and flow registry initialization
+♓︎10°52'12" | 5919 AM
+
+- **Saṃskāra Bridge:** Implemented the first target for the structural bridge: Jujutsu (`jj`). Authored a verified JSON template that projects raw repo state into valid contracts, bypassing brittle text parsing.
+- **Fractalization Baseline:** Initiated the transition to a distributed repository architecture. Successfully split `mentci-user` into a standalone `jj` repository at `mentci-fractal/components/mentci-user`.
+- **Flow Registry:** Initialized the central SQLite "Intent Database" (`flow_registry.db`) and recorded the first fractal flows, enabling automated orchestration and success tracking.
+- **Intent-Bookmark Schema:** Standardized the `UidHash__TypeIntent__Subflow` schema, verified its compatibility with the `jj` revset parser, and integrated it into the `independent-developer` workflow.
+- **Independent Developer Skill:** Deployed the primary operational aggregator skill, mandating the "Audit History Before Impasse" protocol and Linkup-based external validation.
+
 ## release: v0.12.10.48.58 - logical editing plane, adaptive authority, and search intelligence integration
 ♓︎10°48'58" | 5919 AM
 
