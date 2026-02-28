@@ -31,8 +31,14 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 3. **Draft & Plan:** Use `/skill:brainstorming` followed by `/skill:writing-plans`.
 4. **Implement & Verify:** Use structural tools and self-verify via the Mirror Hook.
 
+### 5. History as the Primary Debugging Surface
+- **Never give up before auditing history.** The answer to a failing tool or a logic error is most often lying in the commit log (`jj log -p`) or the operation log (`jj op log`).
+- **Research the past:** If a tool was working yesterday but fails today, use `jj diff -r @--` to isolate what changed in the environment or configuration.
+- **Record failures:** If you encounter an extension-loading error, don't just retry; document the exact state of `.pi/extensions.edn` and the process environment in a Research artifact.
+
 ## Completion Checklist
 - [ ] Linkup validation performed and documented in Research.
 - [ ] Sema-grade Logic/Data separation achieved.
 - [ ] Structural edits used and verified via Mirror.
+- [ ] History audited for clues before declaring an impasse.
 - [ ] Atomic `intent:` commits pushed to `dev`.
