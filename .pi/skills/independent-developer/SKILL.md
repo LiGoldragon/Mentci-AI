@@ -1,3 +1,8 @@
+---
+name: independent-developer
+description: Operates as a self-sufficient, tool-dense, and architecturally rigorous Mentci-AI developer.
+---
+
 # Independent Developer
 
 ## Overview
