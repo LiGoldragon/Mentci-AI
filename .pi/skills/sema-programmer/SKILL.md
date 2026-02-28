@@ -3,13 +3,12 @@ name: sema-programmer
 description: Use when implementing or refactoring Rust/Nix/Cap'n Proto work under Sema Object Style, Logic-Data separation, and component-local schema policy
 ---
 
-> **Related skills:** `/skill:test-driven-development`, `/skill:systematic-debugging`, `/skill:verification-before-completion`
+> **Related skills:** `/skill:independent-developer`, `/skill:test-driven-development`, `/skill:systematic-debugging`, `/skill:verification-before-completion`
 
 # Sema Programmer
 
 ## Overview
-
-This skill enforces **Sema-grade implementation quality** for Mentci-AI.
+This skill enforces **Sema-grade implementation quality** for Mentci-AI. It is a lower-level technical building block for the `/skill:independent-developer`.
 
 Primary goals:
 1. Preserve **Logic-Data Separation**.
