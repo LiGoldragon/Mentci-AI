@@ -1087,11 +1087,11 @@
     "mentci-user-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772285569,
-        "narHash": "sha256-NF48X9KUU3zEfADPwDXKtbw/Qil9N8rr4qe1cCojdkg=",
+        "lastModified": 1772285652,
+        "narHash": "sha256-27brUeYCNCubGr8/DW6hdgw0ToIval6QSkTsF9i6LEU=",
         "ref": "main",
-        "rev": "e32aefdb148c15269077ededebbba9953335981c",
-        "revCount": 1,
+        "rev": "38bf36332afc60f075244eda1225f87afc618f09",
+        "revCount": 2,
         "type": "git",
         "url": "file:///home/li/git/mentci-fractal/components/mentci-user"
       },
