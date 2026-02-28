@@ -1,0 +1,5 @@
+{:kind :index
+ :title "Fractal DVCS & Hermetic Builds"
+ :subject "Fractal-DVCS"
+ :developmentPath "../../../Development/high/Fractal-DVCS"
+ :entries ["591912111900_report_hermetic_flake_inputs.md"]}
