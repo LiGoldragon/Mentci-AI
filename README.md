@@ -15,8 +15,9 @@ To automate implementation details and liberate the human mind through autonomou
 ## Core Pillars
 1.  **Nix Jail Isolation**: Pure, reproducible execution environments.
 2.  **Sema Object Style**: Strict ontological structure in Rust and Nix.
-3.  **Attractor Orchestration**: DOT-based DAG pipelines for AI workflows.
-4.  **Handshake Logging Protocol**: Cryptographic provenance and EDN-based record of truth.
+3.  **Fractal DVCS**: Distributed repository network managed via hermetic Nix Flake inputs.
+4.  **Saṃskāra Bridge**: Structured VCS state projection into Cap'n Proto/EDN contracts.
+5.  **Handshake Logging Protocol**: Cryptographic provenance and EDN-based record of truth.
 
 ## Structure
 - `Core/`: Authoritative architectural mandates and protocols.
