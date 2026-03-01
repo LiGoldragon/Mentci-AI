@@ -47,10 +47,16 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   ## Validation
   <Evidence of correctness: test output, cargo check, or linkup verification>
   ```
-- **Clean Tree Mandate:** Never start work on a "dirty" commit or a commit that already contains a message without any corresponding changes in the working copy. If a commit exists only with a message (pre-setting intention), it must be treated as a "directive commit." The agent must start a NEW commit (`jj new`) to perform the actual work, ensuring that the "intention" and the "implementation" remain distinct until finalization.
-- Use atomic `intent:` commits for every logical change.
-- **Bookmark Movement Protocol:** Never move a bookmark (like `dev`) to the "active" working copy (`@`) if it is currently being edited. Always create a new child commit (`jj new`), finalize the content, and then move/push the bookmark to that immutable state.
+- **Clean Tree Mandate (Implementation/Intent Separation):** 
+  - **The Working Copy (@) MUST remain anonymous and empty** while work is in progress. 
+  - Never describe the active working copy (`jj describe`) before the mutation is complete.
+  - If a commit exists only with a message (pre-setting intention), it is a "Directive Commit." You MUST create a NEW child commit (`jj new`) to perform the work.
+  - **Atomic Finalization:** Only describe the commit once the physical changes are staged in that commit. This ensures that every described node in the history is a non-empty, atomic logical unit.
+- **Bookmark Movement Protocol:** 
+  - Never move a bookmark (like `dev`) to an "actively edited" or undescribed commit. 
+  - Always finalize the work into a described commit, then move the bookmark to that immutable state: `jj bookmark set <name> -r <finalized_revision>`.
 - **Mandatory Pushing:** Always push bookmarks after movement to ensure local/remote alignment: `jj git push --bookmark <name>`.
+- **Phantom Intent Avoidance:** Never create "Phantom Commits" (descriptions without diffs). If a squash or rebase results in an empty described commit, it must be squashed into its neighbor or deleted.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
 
 ### 4. Implementation Flow
