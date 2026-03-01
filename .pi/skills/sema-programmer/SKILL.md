@@ -27,6 +27,19 @@ Before editing code:
 
 ## Sema Implementation Flow
 
+### 0) Modern Style Boundary Rule
+- When integrating legacy or externally generated code (e.g., Cap'n Proto), wrap the inclusion in a dedicated module with surgical lint allowances:
+  ```rust
+  #[allow(unused_parens, dead_code, unused_imports, non_snake_case, unused_qualifications)]
+  pub mod [name]_capnp {
+      include!(concat!(env!("OUT_DIR"), "/[name]_capnp.rs"));
+  }
+  ```
+- This isolates the generator's style from the Actor's domain logic.
+- Every component must follow the 'Mentci-STT' fractal structure: `src/` for logic, `contracts/` for EAV/Cap'n Proto definitions, and `tests/` for isolated suites.
+
+## Sema Implementation Flow
+
 ### 1) Model the Data First
 - Define or update sidecar data (`.edn` preferred for text authority).
 - Use Cap'n Proto schemas for transport/state contracts.
