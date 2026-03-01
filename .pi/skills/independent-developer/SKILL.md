@@ -31,12 +31,24 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 
 ### 3. DVCS Rigor (Jujutsu)
 - Treat every component as a future independent `jj` repository.
+- **Commit Protocol (Standard Intent Header):** Every commit message MUST follow this template. The agent MUST use the exact original prompt from the interaction; if the prompt is lost, it must be synthesized from session intent.
+  ```markdown
+  ## Original Prompt
+  <The exact user prompt that initiated this logical change>
+
+  ## Context
+  <High-level architectural/session status, e.g., "Salvaging history" or "Evolving Datalog substrate">
+
+  ## Summary
+  <Bullet points of specific logical and physical changes>
+
+  ## Validation
+  <Evidence of correctness: test output, cargo check, or linkup verification>
+  ```
 - Use atomic `intent:` commits for every logical change.
 - **Bookmark Movement Protocol:** Never move a bookmark (like `dev`) to the "active" working copy (`@`) if it is currently being edited. Always create a new child commit (`jj new`), finalize the content, and then move/push the bookmark to that immutable state.
 - **Mandatory Pushing:** Always push bookmarks after movement to ensure local/remote alignment: `jj git push --bookmark <name>`.
-- **Extraction over Rebasing (Dangling History):** Never use `jj rebase` to bring an ancient or abandoned commit into the modern trunk, as it will resurrect stale filesystem states (e.g. un-ignored `node_modules`). Always use `jj restore --from <old_commit> <file_path>` to surgically extract content, or copy the content into a fresh commit.
-- **Op-Log Rollbacks:** If a sequence of operations scrambles the tree, do *not* iteratively spam `jj undo`. Run `jj op log -n 10`, locate the pristine state before the mistake, and run `jj op restore <operation_id>`.
-- **Visual Timeline Verification:** Before pushing, always verify timeline linearity and committer timestamps using: `jj log -n 10 --no-graph -T 'commit_id.short(8) ++ " " ++ committer.timestamp() ++ " " ++ description.first_line() ++ "\n"'`
+- **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
 
 ### 4. Implementation Flow
 1. **Research & Verify:** Use Linkup to validate assumptions.

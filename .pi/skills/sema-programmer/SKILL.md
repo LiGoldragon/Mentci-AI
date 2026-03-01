@@ -64,19 +64,8 @@ Before editing code:
 
 ### 5) Commit Protocol
 - Commit each intent atomically.
-- Every commit message MUST follow the "Standard Intent Header":
-  ```markdown
-  ## Original Prompt
-  <The exact user prompt that initiated this logical change>
-
-  ## Context
-  <High-level architectural/session status, e.g., "Salvaging history" or "Evolving Datalog substrate">
-
-  ## Summary
-  <Bullet points of specific logical and physical changes>
-  ```
-- **Generalization Rule:** Keep specific implementation details, transient commit hashes, or temporary session identifiers out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property (e.g., hash algorithms or encoding schemes).
-- **Session Commits:** For final session finalization, use the `session:` prefix and include "Logical Changes" and "Validation" sections.
+- **Header Standard:** All commit and session documentation MUST follow the template defined in the `independent-developer` skill (Original Prompt, Context, Summary, Validation).
+- **Prompt Fidelity:** The agent MUST prioritize using the exact original prompt from the user. If the prompt has been lost due to session context resets, it MUST be synthesized to accurately represent the user's intent.
 - Push `dev` and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
 
 ## Anti-Patterns (Forbidden)
