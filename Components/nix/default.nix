@@ -73,7 +73,7 @@ let
   };
 
   vtcode = import ./vtcode.nix {
-    inherit pkgs craneLib;
+    inherit pkgs rust_toolchain;
     src = vtcode_src;
   };
 
