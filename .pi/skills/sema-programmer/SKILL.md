@@ -64,7 +64,7 @@ Before editing code:
 
 ### 5) Commit Protocol
 - Commit each intent atomically.
-- Every commit message MUST follow the "Rux Header" standard:
+- Every commit message MUST follow the "Standard Intent Header":
   ```markdown
   ## Original Prompt
   <The exact user prompt that initiated this logical change>
@@ -75,7 +75,8 @@ Before editing code:
   ## Summary
   <Bullet points of specific logical and physical changes>
   ```
-- **Session Commits:** For final session finalization, use the `session:` prefix and include "Logical Changes" and "Validation" sections as seen in the `rux` history.
+- **Generalization Rule:** Keep specific implementation details, transient commit hashes, or temporary session identifiers out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property (e.g., hash algorithms or encoding schemes).
+- **Session Commits:** For final session finalization, use the `session:` prefix and include "Logical Changes" and "Validation" sections.
 - Push `dev` and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
 
 ## Anti-Patterns (Forbidden)
