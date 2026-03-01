@@ -46,6 +46,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 ### 5. History as the Primary Debugging Surface
 - **Never give up before auditing history.** The answer to a failing tool or a logic error is most often lying in the commit log (`jj log -p`) or the operation log (`jj op log`).
 - **Research the past:** If a tool was working yesterday but fails today, use `jj diff -r @--` to isolate what changed in the environment or configuration.
+- **Toxic/Massive Commits:** When examining unknown or old dangling commits, do not blindly run `jj diff -r <hash>`. If the commit contains thousands of vendored files (e.g. accidentally tracking `node_modules`), printing the diff can crash the tooling or poison your context window. Always run `jj log -r <hash> --no-graph -T 'commit_id ++ "\n"' | xargs -I {} jj diff --stat -r {}` first to see the blast radius before looking at file contents. If a commit is overwhelmingly toxic, abandon it entirely rather than attempting to filter it.
 - **Record failures:** If you encounter an extension-loading error, don't just retry; document the exact state of `.pi/extensions.edn` and the process environment in a Research artifact.
 
 ## Completion Checklist
