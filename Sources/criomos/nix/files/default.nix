@@ -1,3 +1,0 @@
-{
-  thinkpadBlobs = import ./thinkpadBlobs.nix;
-}

@@ -1,5 +1,0 @@
-[
-  "maisiliym"
-  "goldragon"
-  "seahawk"
-]

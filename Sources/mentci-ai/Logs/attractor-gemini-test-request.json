@@ -1,3 +1,0 @@
-{
-  "dot": "digraph GeminiNoKeySession {\n  rankdir=LR\n  start [shape=Mdiamond, label=\"Start\"]\n  gen   [shape=box, label=\"Gemini Codergen\", prompt=\"Reply with exactly: GEMINI_OK\"]\n  exit  [shape=Msquare, label=\"Exit\"]\n  start -> gen -> exit\n}\n"
-}
