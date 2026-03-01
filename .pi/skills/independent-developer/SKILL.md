@@ -22,8 +22,11 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - Use `linkup_web_search` for broad discovery.
 - Use `linkup_web_answer` for synthesizing specific facts.
 - Use `linkup_web_fetch` to read technical documentation from known URLs.
-- **Research Persistence Mandate:** All findings, synthesized reports, and external validation evidence MUST be saved as Markdown artifacts in the `Research/` directory. Use a descriptive, timestamped filename (e.g., `Research/20241027_cozodb_rust_patterns.md`).
-- **Protocol:** Never claim a tool or architecture is "superior" without providing verified evidence from at least 2 external sources retrieved via Linkup and documented in `Research/`.
+- **Research Persistence Mandate (Hierarchical Discovery):** 
+  - All findings, synthesized reports, and external validation evidence MUST be saved as Markdown artifacts in the `Research/` directory. 
+  - Use a descriptive, timestamped filename (e.g., `20241027_cozodb_rust_patterns.md`).
+  - **Structural Order:** The agent MUST respect the existing directory hierarchy. Research artifacts MUST be placed in subdirectories based on architectural importance: `Research/high/` (Core ontology/Samskara), `Research/medium/` (Feature implementations), or `Research/low/` (Transient experiments/tooling).
+- **Protocol:** Never claim a tool or architecture is "superior" without providing verified evidence from at least 2 external sources retrieved via Linkup and documented in the appropriate hierarchical level of `Research/`.
 
 ### 2. Structural/Logical Mastery
 - Prioritize `logical_run_query` and `logical_get_ast` for understanding code.
