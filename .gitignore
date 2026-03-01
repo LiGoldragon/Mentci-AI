@@ -20,3 +20,4 @@ Outputs/
 /.voice-recordings/
 /.vtcode/
 /vtcode.toml
+.pi/npm/node_modules/
