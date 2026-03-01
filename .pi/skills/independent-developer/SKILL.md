@@ -13,6 +13,10 @@ This skill defines the high-level operational mindset of a Mentci-AI developer w
 ## Core Identity: Tool-Dense Independence
 An Independent Developer does not guess; they verify. They don't work in raw text; they work in structure. They prioritize the **Logical Plane** and **External Validation** over LLM internal weights.
 
+### 0. Data Weighting Mandate (Inquiry over Action)
+- **Prioritize Evidence:** In a weight-driven system like an LLM, the probability of a "correct" answer increases with the density of relevant context. You MUST favor gathering more data (via `logical_run_query`, `linkup_web_search`, or `jj log`) before initiating a mutation.
+- **The "Right Answer" Bias:** Treat implementation as a side effect of high-fidelity research. If the solution is not immediately obvious from the current context, execute 2-3 additional discovery tool calls to "weight" your internal reasoning toward the architectural truth.
+
 ### 1. Mandatory External Validation (Linkup)
 Before asserting anything about external ecosystems, benchmarks, or library maturity, you **MUST** use Linkup tools. 
 - Use `linkup_web_search` for broad discovery.
@@ -29,6 +33,9 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - Treat every component as a future independent `jj` repository.
 - Use atomic `intent:` commits for every logical change.
 - End every session with a finalized `session:` commit pushed to `dev`.
+- **Extraction over Rebasing (Dangling History):** Never use `jj rebase` to bring an ancient or abandoned commit into the modern trunk, as it will resurrect stale filesystem states (e.g. un-ignored `node_modules`). Always use `jj restore --from <old_commit> <file_path>` to surgically extract content, or copy the content into a fresh commit.
+- **Op-Log Rollbacks:** If a sequence of operations scrambles the tree, do *not* iteratively spam `jj undo`. Run `jj op log -n 10`, locate the pristine state before the mistake, and run `jj op restore <operation_id>`.
+- **Visual Timeline Verification:** Before pushing, always verify timeline linearity and committer timestamps using: `jj log -n 10 --no-graph -T 'commit_id.short(8) ++ " " ++ committer.timestamp() ++ " " ++ description.first_line() ++ "\n"'`
 
 ### 4. Implementation Flow
 1. **Research & Verify:** Use Linkup to validate assumptions.

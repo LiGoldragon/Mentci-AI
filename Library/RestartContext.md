@@ -5,8 +5,8 @@
 **Metadata:**
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Primary Working Bookmark:** `dev`.
-*   **Current Programming Version:** `f681220` (unifying Level 6 Saṃskāra Baseline).
-*   **Latest Release Tag:** `v0.12.11.60.55` (current milestone).
+*   **Current Programming Version:** `f681220` (unifying Level 6 Saṃskāra Baseline & Debugging protocols).
+*   **Latest Release Tag:** `v0.12.12.3.29` (current milestone).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization, now entering **Level 6 Instinctive Symbolic Interaction**. The repository operates with a native Rust actor-based orchestration layer and distributed **Fractal DVCS** architecture.
@@ -18,6 +18,7 @@ Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilizati
 - **Stable Interaction Mandate:** Codified the requirement to use durable **Change IDs** instead of volatile Commit IDs for agentic operations.
 - **Data Weighting Mandate:** Enforced the "Inquiry over Action" principle, requiring dense evidence gathering (Linkup/Logical queries) before code mutations.
 - **Terminal Research:** Audited modern terminal emulators (WezTerm, Ghostty, Kitty) for hot-reloading capability and agentic integration.
+- **Deep Rebase Disaster Recovery:** Formally outlawed using `jj rebase` for historical intent recovery, establishing "Content Extraction over Rebasing" to prevent `.gitignore` time-machine pollution.
 - **Independence Refinement:** Updated the `independent-developer` skill with Lineage Integrity and Crypto-Content-Addressed Rebasing protocols.
 
 ## 2. Mandatory Core Context (The Program)
@@ -49,12 +50,14 @@ R&D is the mirrored two-tree model:
 - **Primary Operator Interface:** TypeScript `pi` (`pi`) is default; Rust `pi` remains non-default validation lane.
 - **Symbolic Discovery Surface:** `logical-edit` (AST queries) and `linkup` (web validation) are the canonical discovery tools.
 
-## 5. Current Operational Snapshot (♓︎.11.60.55 | 5919 AM)
+## 5. Current Operational Snapshot (♓︎.12.9.60 | 5919 AM)
 - **Fractal Protocol:** Treating every component as a strict boundary; inter-component interaction must occur only through schema-validated channels.
 - **Inquiry over Action:** LLM logic is weighted toward architectural fit through 2-3 additional discovery calls.
 - **Change ID Primacy:** Agents target logical units of work using durable identifiers that persist through rebases.
 - **Pure Nix devShell:** `mentci-user` bootstraps environment variables purely within the Nix shell logic.
 - **Programmatic Refactoring:** moving to AST/CST lossless transformations via the `mentci-mcp` Rust server and `logical-edit`.
+- **Extraction over Rebasing:** Due to the "Deep Rebase Disaster," history recovery relies strictly on `jj restore` or manual content extraction, never `jj rebase`, to prevent resurrecting stale un-ignored directory states (like `node_modules`).
+- **Op-Log Recovery:** Mistakes during VCS operations are rectified surgically using `jj op restore <operation_id>` rather than destructive `jj undo` chains.
 
 ## 6. Guard Health Snapshot
 Latest observed gate outcomes:
