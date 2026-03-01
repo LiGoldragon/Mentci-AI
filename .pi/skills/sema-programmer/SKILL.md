@@ -64,11 +64,19 @@ Before editing code:
 
 ### 5) Commit Protocol
 - Commit each intent atomically.
-- Every commit message must include:
-  - `## Prompt`
-  - `## Context`
-  - `## Summary`
-- Push `dev` and verify local/remote bookmark alignment.
+- Every commit message MUST follow the "Rux Header" standard:
+  ```markdown
+  ## Original Prompt
+  <The exact user prompt that initiated this logical change>
+
+  ## Context
+  <High-level architectural/session status, e.g., "Salvaging history" or "Evolving Datalog substrate">
+
+  ## Summary
+  <Bullet points of specific logical and physical changes>
+  ```
+- **Session Commits:** For final session finalization, use the `session:` prefix and include "Logical Changes" and "Validation" sections as seen in the `rux` history.
+- Push `dev` and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
 
 ## Anti-Patterns (Forbidden)
 - Hardcoding configuration data into Rust logic.
