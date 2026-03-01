@@ -1,66 +1,19 @@
 {:version 1
  :components
- [{:id "aski-cli"
-   :path "aski-cli"
-   :interfaces ["rust.aski.cli"]
-   :status :experimental}
-  {:id "aski-lib"
-   :path "aski-lib"
-   :interfaces ["rust.aski.lib"]
-   :status :experimental}
-  {:id "chronos"
-   :path "chronos"
-   :interfaces ["rust.time.tool"]
-   :status :active}
-  {:id "mentci-aid"
-   :path "mentci-aid"
-   :interfaces ["rust.engine" "rust.daemon" "execute.orchestrator"]
-   :status :active}
-  {:id "mentci-box"
-   :path "mentci-box"
-   :interfaces ["rust.jail.cli"]
-   :status :experimental}
-  {:id "mentci-box-lib"
-   :path "mentci-box-lib"
-   :interfaces ["rust.jail.lib"]
-   :status :experimental}
-  {:id "mentci-fs"
-   :path "mentci-fs"
-   :interfaces ["rust.fs.index"]
-   :status :experimental}
-  {:id "mentci-launch"
-   :path "mentci-launch"
-   :interfaces ["rust.launch.systemd" "rust.launch.terminal"]
-   :status :experimental}
-  {:id "mentci-policy-engine"
-   :path "mentci-policy-engine"
-   :interfaces ["rust.policy.engine" "rust.admission.control"]
-   :status :draft}
-  {:id "mentci-mcp-gateway"
-   :path "mentci-mcp-gateway"
-   :interfaces ["mcp.gateway" "mcp.admission.routing"]
-   :status :draft}
-  {:id "mentci-vcs"
-   :path "mentci-vcs"
-   :interfaces ["rust.vcs.wrapper"]
-   :status :active}
-  {:id "nix"
-   :path "nix"
-   :interfaces ["nix.namespace"]
-   :status :active}
-  {:id "schema"
-   :path "schema"
-   :interfaces ["schema.capnp" "schema.edn"]
-   :status :active}
-  {:id "tasks"
-   :path "tasks"
-   :interfaces ["task.checklists"]
-   :status :active}
-  {:id "tools"
-   :path "tools"
-   :interfaces ["editor.integration" "formatting"]
-   :status :active}
-  {:id "workflows"
-   :path "workflows"
-   :interfaces ["workflow.definitions"]
-   :status :active}]}
+ [{:id "aski-cli" :path "aski-cli" :interfaces ["rust.aski.cli"] :status :experimental}
+  {:id "aski-lib" :path "aski-lib" :interfaces ["rust.aski.lib"] :status :experimental}
+  {:id "chronos" :path "chronos" :interfaces ["rust.time.tool"] :status :active}
+  {:id "mentci-aid" :path "mentci-aid" :interfaces ["rust.engine" "rust.daemon" "execute.orchestrator"] :status :active}
+  {:id "mentci-box" :path "mentci-box" :interfaces ["rust.jail.cli"] :status :experimental}
+  {:id "mentci-box-lib" :path "mentci-box-lib" :interfaces ["rust.jail.lib"] :status :experimental}
+  {:id "mentci-fs" :path "mentci-fs" :interfaces ["rust.fs.index"] :status :experimental}
+  {:id "mentci-launch" :path "mentci-launch" :interfaces ["rust.launch.systemd" "rust.launch.terminal"] :status :experimental}
+  {:id "mentci-policy-engine" :path "mentci-policy-engine" :interfaces ["rust.policy.engine" "rust.admission.control"] :status :draft}
+  {:id "mentci-mcp-gateway" :path "mentci-mcp-gateway" :interfaces ["mcp.gateway" "mcp.admission.routing"] :status :prototype}
+  {:id "mentci-vcs" :path "mentci-vcs" :interfaces ["rust.vcs.wrapper"] :status :prototype}
+  {:id "mentci-datalog" :path "mentci-datalog" :interfaces ["rust.datalog.world" "rust.eav.substrate"] :status :active}
+  {:id "nix" :path "nix" :interfaces ["nix.namespace"] :status :active}
+  {:id "schema" :path "schema" :interfaces ["schema.capnp" "schema.edn"] :status :active}
+  {:id "tasks" :path "tasks" :interfaces ["task.checklists"] :status :active}
+  {:id "tools" :path "tools" :interfaces ["editor.integration" "formatting"] :status :active}
+  {:id "workflows" :path "workflows" :interfaces ["workflow.definitions"] :status :active}]}

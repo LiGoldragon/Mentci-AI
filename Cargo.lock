@@ -1275,6 +1275,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "mentci-datalog"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "capnp 0.19.8",
+ "serde",
+ "tempfile",
+]
+
+[[package]]
 name = "mentci-dig"
 version = "0.1.0"
 dependencies = [
