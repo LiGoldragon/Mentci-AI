@@ -33,6 +33,8 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - Treat every component as a future independent `jj` repository.
 - **Commit Protocol (Standard Intent Header):** Every commit message MUST follow this template. The agent MUST use the exact original prompt from the interaction; if the prompt is lost, it must be synthesized from session intent.
   ```markdown
+  intent: <Short, one-line summary of the change>
+
   ## Original Prompt
   <The exact user prompt that initiated this logical change>
 
@@ -45,6 +47,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   ## Validation
   <Evidence of correctness: test output, cargo check, or linkup verification>
   ```
+- **Clean Tree Mandate:** Never start work on a "dirty" commit or a commit that already contains a message without any corresponding changes in the working copy. If a commit exists only with a message (pre-setting intention), it must be treated as a "directive commit." The agent must start a NEW commit (`jj new`) to perform the actual work, ensuring that the "intention" and the "implementation" remain distinct until finalization.
 - Use atomic `intent:` commits for every logical change.
 - **Bookmark Movement Protocol:** Never move a bookmark (like `dev`) to the "active" working copy (`@`) if it is currently being edited. Always create a new child commit (`jj new`), finalize the content, and then move/push the bookmark to that immutable state.
 - **Mandatory Pushing:** Always push bookmarks after movement to ensure local/remote alignment: `jj git push --bookmark <name>`.
