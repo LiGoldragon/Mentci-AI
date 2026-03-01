@@ -50,7 +50,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Clean Tree Mandate (Implementation/Intent Separation):** 
   - **The Working Copy (@) MUST remain anonymous and empty** while work is in progress. 
   - Never describe the active working copy (`jj describe`) before the mutation is complete.
-  - If a commit exists only with a message (pre-setting intention), it is a "Directive Commit." You MUST create a NEW child commit (`jj new`) to perform the work.
+  - If a commit exists only with a message (pre-setting intention), it is a "Directive Commit." While this practice is discouraged, if a description exists on a clean worktree, treat it as critical "context"—it represents a quantifiable intent left by a predecessor (agent or human). In such cases, you should still create a NEW child commit (`jj new`) to perform the actual work, preserving the directive as a distinct node in the history.
   - **Atomic Finalization:** Only describe the commit once the physical changes are staged in that commit. This ensures that every described node in the history is a non-empty, atomic logical unit.
 - **Bookmark Movement Protocol:** 
   - Never move a bookmark (like `dev`) to an "actively edited" or undescribed commit. 
