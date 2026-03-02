@@ -2628,6 +2628,7 @@ dependencies = [
  "cozo",
  "serde",
  "serde_json",
+ "walkdir",
 ]
 
 [[package]]

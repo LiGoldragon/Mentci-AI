@@ -21,3 +21,4 @@ Outputs/
 /.vtcode/
 /vtcode.toml
 .pi/npm/node_modules/
+.samskara
