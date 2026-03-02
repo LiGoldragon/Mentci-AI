@@ -67,6 +67,11 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`). This ensures the next prompt or agent invocation begins with a clean, empty working copy ready for fresh intent.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
 
+- **Basic Rebase and Push Workflow:**
+    1.  **Fetch latest from remote:** `jj git fetch` (updates local view of remote bookmarks like `main@origin`).
+    2.  **Rebase your bookmark onto `main`:** `jj rebase -b <your-bookmark-name> -d main@origin` (moves your commits on top of the latest `main` from remote).
+    3.  **Push your rebased bookmark:** `jj git push --bookmark <your-bookmark-name>` (publishes your updated bookmark to the remote).
+
 ### 4. Resolving Version Bugs & Tooling Issues
 - **Version Bumps Allowed:** Always look for a newer trusted release when hitting a version-related bug. Bumping the version is allowed and encouraged to resolve issues.
 - **Forking as Fallback:** If the version bump doesn't work, fork the dependency into `Sources/` and use our fork (use `gh` or `hub` for forking).
