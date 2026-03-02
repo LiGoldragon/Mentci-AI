@@ -62,7 +62,8 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Bookmark Movement Protocol:** 
   - Never move a bookmark (like `dev`) to an "actively edited" or undescribed commit. 
   - Always finalize the work into a described commit, then move the bookmark to that immutable state: `jj bookmark set <name> -r <finalized_revision>`.
-- **Mandatory Pushing:** Always push bookmarks after movement to ensure local/remote alignment: `jj git push --bookmark <name>`.
+  - **Worktree Alignment:** The primary development bookmark of the current repository is considered the authoritative head. You MUST ensure your working copy is always based on this active bookmark. If the active bookmark is moved (by you or an external process, such as a rebase by a master agent), your working copy MUST follow it to maintain alignment. In most cases, this will involve rebasing your working copy onto the new location of the bookmark. If in doubt on how to align, ask for clarification.
+- **Mandatory Pushing:** Always push the bookmark you are currently working on (`jj git push --bookmark <name>`). If in doubt about which bookmark to push, ask for clarification. Verify local/remote bookmark alignment.
 - **Phantom Intent Avoidance:** Never create "Phantom Commits" (descriptions without diffs). If a squash or rebase results in an empty described commit, it must be squashed into its neighbor or deleted.
 - **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`). This ensures the next prompt or agent invocation begins with a clean, empty working copy ready for fresh intent.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
