@@ -12,10 +12,10 @@ This skill enforces **Sema-grade implementation quality** for Mentci-AI. It is a
 
 Primary goals:
 1. Preserve **Logic-Data Separation**.
-2. Keep all application logic in **Rust** (outside Nix infra concerns).
+2. Keep all application logic in **Rust** (outside Nix infra concerns). No ad-hoc scripts or Python.
 3. Keep schemas **component-local** and messages hash-synced.
-4. Prefer **structural editing** over brittle text patching.
-5. Keep commits atomic, auditable, and protocol-compliant.
+4. Keep commits atomic, auditable, and protocol-compliant.
+5. **Universal Object Specification:** Embrace the Object approach as universal. Everything is an object, and even free functions are really just object methods in an orchestration shell.
 
 ## Preconditions
 
@@ -38,35 +38,34 @@ Before editing code:
 - This isolates the generator's style from the Actor's domain logic.
 - Every component must follow the 'Mentci-STT' fractal structure: `src/` for logic, `contracts/` for EAV/Cap'n Proto definitions, and `tests/` for isolated suites.
 
-## Sema Implementation Flow
+### 1) Universal Object Approach & Trait-Domain Rule
+- **Everything Is an Object:** Reusable behavior belongs to named types or traits. Free functions exist only as orchestration shells in binaries.
+- **Single Object In/Out:** Every method accepts at most *one explicit object argument* and returns *exactly one object*. If multiple inputs/outputs are needed, define a new object.
+- **Direction Encodes Action:** Prefer `from_*`, `to_*`, `into_*`. Avoid verbs like `read`, `write`, `load`, `save` when direction conveys meaning.
+- **Trait-Domain Rule:** Any behavior in the semantic domain of an existing trait must be expressed as a trait implementation (e.g., `FromStr`), rather than a new inherent method.
 
-### 1) Model the Data First
-- Define or update sidecar data (`.edn` preferred for text authority).
-- Use Cap'n Proto schemas for transport/state contracts.
+### 2) Model the Data First (Sidecar Pattern)
+- Define or update sidecar data (`.edn` or `capnp` preferred for external data).
+- Use Cap'n Proto schemas for transport/state contracts. **Schema Is Sema:** Transmissible objects are defined in schemas.
 - **Contract Isolation:** Inter-component communication channels must be defined as independent Cap'n Proto/EDN contracts, preparing for a DVCS architecture where contracts live in dedicated repositories.
-- Do not hardcode paths, env names, model IDs, or prompt payloads in logic.
+- **Logic-Data Separation:** Implementation files must not contain hardcoded paths, regexes, or numeric constants. Do not hardcode env names, model IDs, or prompt payloads in logic.
+- **Init Envelope Purity (Very High Importance):** Runtime launch and initialization configuration must arrive as *one Cap'n Proto init message object*. Environment variables are not used as domain-state inputs.
 
-### 2) Keep Logic in Rust
-- Implement behavior in Rust objects/traits.
-- **Component Boundaries:** Treat every component as a strict boundary (future standalone `jj` repository). They must interact only through schema-validated channels.
-- Use one-object-in / one-object-out patterns where practical.
-- Avoid ad-hoc shell/Python/Clojure for runtime logic.
-
-### 3) Edit Structurally
-- Use `structural_edit` for source transformations when feasible.
-- If structural matching fails, use precise `edit` with minimal scope.
-- Record structural-edit limitations in research when encountered.
+### 3) Keep Logic in Rust & Actor-First Concurrency
+- Implement behavior in Rust objects/traits. No Python, Clojure, or ad-hoc shell for runtime logic.
+- **Actor-First Concurrency:** All multi-step symbolic transformations and concurrent tasks must be implemented as supervised actors using the `ractor` framework.
+- **Component Boundaries:** Treat every component as a strict boundary. They must interact only through schema-validated channels (symbolic messaging).
 
 ### 4) Verify in Full Workspace Context
 - Run targeted checks first, then `cargo check --workspace`.
 - Validate warning hygiene and generated-code boundaries.
-- For generated files, place lint allowances on wrapper module boundaries (never patch generated output directly).
 
 ### 5) Commit Protocol
 - Commit each intent atomically.
 - **Header Standard:** All commit and session documentation MUST follow the template defined in the `independent-developer` skill (Original Prompt, Context, Summary, Validation).
-- **Prompt Fidelity:** The agent MUST prioritize using the exact original prompt from the user. If the prompt has been lost due to session context resets, it MUST be synthesized to accurately represent the user's intent.
+- **Prompt Fidelity:** The agent MUST prioritize using the exact original prompt from the user.
 - Push `dev` and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
+- **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`) to leave a clean, empty worktree for the next interaction.
 
 ## Anti-Patterns (Forbidden)
 - Hardcoding configuration data into Rust logic.
@@ -76,8 +75,8 @@ Before editing code:
 
 ## Completion Checklist
 - [ ] Data authority is externalized and current.
-- [ ] Rust implementation aligns with Sema object conventions.
-- [ ] Structural edit used where practical; fallbacks documented if needed.
+- [ ] Rust implementation aligns with Sema object conventions (Single Object In/Out, Trait domains).
 - [ ] `cargo check --workspace` clean.
 - [ ] Research artifact updated for non-trivial findings.
 - [ ] Intent commits + final session metadata committed and pushed.
+- [ ] Empty commit created at the end of the session (`jj new`).

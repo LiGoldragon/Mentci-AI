@@ -1,0 +1,23 @@
+// CozoScript for Mentci-AI World Ontology
+
+// Create table for major components and their importance rating
+:create component {
+    name: String
+    =>
+    rating: Int,
+    description: String
+}
+
+// Create table for agent skills
+:create agent_skill {
+    name: String
+    =>
+    path: String,
+    description: String
+}
+
+// Create relations for dependencies
+:create dependency {
+    dependent: String,
+    dependency: String
+}

@@ -31,10 +31,9 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Pattern Recognition (Structural Adherence):** The agent MUST take note of established order patterns within the repository. Before creating new files or folders, perform a recursive directory listing (`ls -R`) to ensure the new artifacts align with the established organizational logic. Note that `index.edn` files are legacy artifacts representing an incomplete Datalog implementation; the goal is to transition this knowledge into the `mentci-datalog` substrate.
 - **Protocol:** Never claim a tool or architecture is "superior" without providing verified evidence from at least 2 external sources retrieved via Linkup and documented in the appropriate hierarchical level of `Research/`.
 
-### 2. Structural/Logical Mastery
+### 2. Logical Mastery
 - Prioritize `logical_run_query` and `logical_get_ast` for understanding code.
-- Always use `structural_edit` for mutation where supported.
-- **Mirror Verification:** After any UI or structural change, read `.mentci/ui_mirror.txt` to confirm the machine's output matches the intended design.
+- **Mirror Verification:** After any UI or code change, read `.mentci/ui_mirror.txt` to confirm the machine's output matches the intended design.
 
 ### 3. DVCS Rigor (Jujutsu)
 - Treat every component as a future independent `jj` repository.
@@ -64,28 +63,39 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   - Always finalize the work into a described commit, then move the bookmark to that immutable state: `jj bookmark set <name> -r <finalized_revision>`.
 - **Mandatory Pushing:** Always push bookmarks after movement to ensure local/remote alignment: `jj git push --bookmark <name>`.
 - **Phantom Intent Avoidance:** Never create "Phantom Commits" (descriptions without diffs). If a squash or rebase results in an empty described commit, it must be squashed into its neighbor or deleted.
+- **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`). This ensures the next prompt or agent invocation begins with a clean, empty working copy ready for fresh intent.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
 
-### 4. Implementation Flow
+### 4. Resolving Version Bugs & Tooling Issues
+- **Version Bumps Allowed:** Always look for a newer trusted release when hitting a version-related bug. Bumping the version is allowed and encouraged to resolve issues.
+- **Forking as Fallback:** If the version bump doesn't work, fork the dependency into `Sources/` and use our fork (use `gh` or `hub` for forking).
+- **$EDITOR and Saṃskāra:** The `$EDITOR` problem is effectively fixed by Saṃskāra before it even exists. Backburner any manual/legacy `$EDITOR` fixes.
+
+### 5. Implementation Flow
 1. **Research & Verify:** Use Linkup to validate assumptions.
 2. **Logic & Data:** Apply `sema-programmer` rules (Logic/Data separation, Cap'n Proto contracts).
 3. **Draft & Plan:** Use `/skill:brainstorming` followed by `/skill:writing-plans`.
-4. **Implement & Verify:** Use structural tools and self-verify via the Mirror Hook.
+4. **Implement & Verify:** Use appropriate tools (`edit`, `write`) and self-verify via the Mirror Hook.
 
-### 5. History as the Primary Debugging Surface
+### 6. History as the Primary Debugging Surface
 - **Never give up before auditing history.** The answer to a failing tool or a logic error is most often lying in the commit log (`jj log -p`) or the operation log (`jj op log`).
 - **Research the past:** If a tool was working yesterday but fails today, use `jj diff -r @--` to isolate what changed in the environment or configuration.
 - **Toxic/Massive Commits:** When examining unknown or old dangling commits, do not blindly run `jj diff -r <hash>`. If the commit contains thousands of vendored files (e.g. accidentally tracking `node_modules`), printing the diff can crash the tooling or poison your context window. Always run `jj log -r <hash> --no-graph -T 'commit_id ++ "\n"' | xargs -I {} jj diff --stat -r {}` first to see the blast radius before looking at file contents. If a commit is overwhelmingly toxic, abandon it entirely rather than attempting to filter it.
 - **Record failures:** If you encounter an extension-loading error, don't just retry; document the exact state of `.pi/extensions.edn` and the process environment in a Research artifact.
 
+### 7. The World Database (CozoDB) & Component Rating
+- **Specifying the World:** Our main task is specifying the world using CozoDB, which is then emitted in a Cap'n Proto specification.
+- **Database Initialization:** We maintain a database to give an importance rating to every major component of the repo, and to store agent skills and protocols. Ensure that as new components or skills are developed, they are tracked and rated in this Datalog/CozoDB substrate.
+
 ## Completion Checklist
 - [ ] Linkup validation performed and documented in Research.
 - [ ] Sema-grade Logic/Data separation achieved.
-- [ ] Structural edits used and verified via Mirror.
+- [ ] Changes verified via Mirror.
 - [ ] History audited for clues before declaring an impasse.
 - [ ] Atomic `intent:` commits pushed to `dev`.
+- [ ] Session ended with `jj new` to leave a clean worktree.
 
-### 6. Crypto-Content-Addressed Rebasing
+### 8. Crypto-Content-Addressed Rebasing
 - **Independent Clones over Worktrees:** Due to shared operation-log staleness in standard `jj` worktrees, prefer working in entirely independent `jj` clones when executing distinct flows.
 - **Root Authority Claim:** When opening an independent clone, the root `MentciCommit` Cap'n Proto message must define the `ownedSpacename` (the branch or subset of the DVCS variable space this clone is permitted to mutate).
 - **Pruned Context:** When a redesign completes, the system should emit a new root `MentciCommit` that links to a compressed, cryptographic archive of its ancestor history, cleanly resetting the LLM context window to just the active surface area.
