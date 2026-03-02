@@ -56,7 +56,9 @@ impl Actor for WorldActor {
             ":create component { name: String => rating: Int, description: String }",
             ":create agent_skill { name: String => path: String, description: String, push_branch: String }",
             ":create dependency { dependent: String, dependency: String }",
-            ":create config_file { path: String => component: String, ext: String }"
+            ":create config_file { path: String => component: String, ext: String }",
+            ":create sandbox { id: String => path: String, agent_id: String, bookmark: String, status: String, intent: String }",
+            ":create sandbox_event { sandbox_id: String, timestamp: Int => type: String, message: String }"
         ];
         for s in schemas {
             let _ = db.run_script(s, Default::default(), ScriptMutability::Mutable);

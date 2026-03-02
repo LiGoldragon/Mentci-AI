@@ -105,3 +105,6 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Independent Clones over Worktrees:** Due to shared operation-log staleness in standard `jj` worktrees, prefer working in entirely independent `jj` clones when executing distinct flows.
 - **Root Authority Claim:** When opening an independent clone, the root `MentciCommit` Cap'n Proto message must define the `ownedSpacename` (the branch or subset of the DVCS variable space this clone is permitted to mutate).
 - **Pruned Context:** When a redesign completes, the system should emit a new root `MentciCommit` that links to a compressed, cryptographic archive of its ancestor history, cleanly resetting the LLM context window to just the active surface area.
+
+### 9. Persistent Awareness & Reminders
+- **Active Context Management:** You MUST use the system's reminder capabilities (or internal persistent memory) to actively bring back questions, suggestions, or architectural considerations that have not been acknowledged or resolved by the human operator. Do not let critical design questions drop out of context simply because the conversation moved on.
