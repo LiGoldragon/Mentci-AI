@@ -48,9 +48,9 @@ Before editing code:
 ### 2) Model the Data First (Sidecar Pattern)
 - Define or update sidecar data (`.edn` or `capnp` preferred for external data).
 - Use Cap'n Proto schemas for transport/state contracts. **Schema Is Sema:** Transmissible objects are defined in schemas.
-- **Contract Isolation:** Inter-component communication channels must be defined as independent Cap'n Proto/EDN contracts, preparing for a DVCS architecture where contracts live in dedicated repositories.
+- **Contract Isolation (CRITICAL IMPORTANCE):** Inter-component communication channels MUST be defined as independent Cap'n Proto/EDN contracts in their own dedicated repositories or Component directories (e.g., `Components/criome-contract`). This ensures both components can version-control and use the contract without rebuilding each other on unrelated changes. This is a foundational pillar of the Criome meta-architecture.
 - **Logic-Data Separation:** Implementation files must not contain hardcoded paths, regexes, or numeric constants. Do not hardcode env names, model IDs, or prompt payloads in logic.
-- **Init Envelope Purity (Very High Importance):** Runtime launch and initialization configuration must arrive as *one Cap'n Proto init message object*. Environment variables are not used as domain-state inputs.
+- **Init Envelope Purity (Very High Importance):** Runtime launch and initialization configuration must arrive as *one Cap'n Proto init message object*. Environment variables are not used as domain-state inputs. This init message should ideally be addressed by a short CA hash (e.g., BLAKE3).
 
 ### 3) Keep Logic in Rust & Actor-First Concurrency
 - Implement behavior in Rust objects/traits. No Python, Clojure, or ad-hoc shell for runtime logic.
