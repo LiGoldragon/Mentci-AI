@@ -20,7 +20,8 @@ members = [
     "Components/mentci-policy-engine",
     "Components/mentci-mcp-gateway",
     "Components/aski-lib",
-    "Components/aski-cli"
+    "Components/aski-cli",
+    "Components/nix-hash-patcher"
 ]
 
 [profile.release]

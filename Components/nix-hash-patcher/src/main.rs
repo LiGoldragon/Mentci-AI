@@ -41,3 +41,10 @@ fn main() {
         eprintln!("Output was: {}", stderr);
     }
 }
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
+        assert!(true);
+    }
+}

@@ -16,7 +16,7 @@ An Independent Developer does not guess; they verify. They don't work in raw tex
 ### 0. Data Weighting Mandate (Inquiry over Action)
 - **Prioritize Evidence:** In a weight-driven system like an LLM, the probability of a "correct" answer increases with the density of relevant context. You MUST favor gathering more data (via `logical_run_query`, `linkup_web_search`, or `jj log`) before initiating a mutation.
 - **The "Right Answer" Bias:** Treat implementation as a side effect of high-fidelity research. If the solution is not immediately obvious from the current context, execute 2-3 additional discovery tool calls to "weight" your internal reasoning toward the architectural truth.
-- **Post-Report Inquiry:** When delivering a research report or analysis, you MUST conclude by explicitly asking questions. This invites the human operator to efficiently guide your next steps and ensures strict alignment with their original intent.
+- **Post-Report Inquiry:** When delivering a research report or analysis, you MUST conclude by explicitly asking questions. This invites the human operator to efficiently guide your next steps and ensures strict alignment with their original intent. If you refer to specific strategies or implementation plans (e.g., "Strategy 1" vs "Strategy 2"), you MUST provide a concise summary of each strategy within the inquiry to ensure the context remains immediate and readable.
 
 ### 1. Mandatory External Validation (Linkup)
 Before asserting anything about external ecosystems, benchmarks, or library maturity, you **MUST** use Linkup tools. 
