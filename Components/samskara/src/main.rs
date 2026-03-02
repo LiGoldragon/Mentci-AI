@@ -9,6 +9,7 @@ use capnp_rpc::{rpc_twoparty_capnp, twoparty, RpcSystem, pry};
 use futures::{FutureExt, AsyncReadExt};
 use tokio::task::LocalSet;
 
+#[allow(unused_parens, dead_code, unused_imports, non_snake_case, unused_qualifications)]
 pub mod samskara_world_capnp {
     include!(concat!(env!("OUT_DIR"), "/samskara_world_capnp.rs"));
 }
