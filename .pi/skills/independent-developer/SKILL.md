@@ -57,13 +57,18 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Clean Tree Mandate (Implementation/Intent Separation):** 
   - **The Working Copy (@) MUST remain anonymous and empty** while work is in progress. 
   - Never describe the active working copy (`jj describe`) before the mutation is complete.
-  - If a commit exists only with a message (pre-setting intention), it is a "Directive Commit." While this practice is discouraged, if a description exists on a clean worktree, treat it as critical "context"—it represents a quantifiable intent left by a predecessor (agent or human). In such cases, you should still create a NEW child commit (`jj new`) to perform the actual work, preserving the directive as a distinct node in the history.
+  - **Workflow:** 
+    1. Perform physical work in the anonymous working copy (`@`).
+    2. Once complete, finalize the intent by describing the commit: `jj describe -m "..."`.
+    3. If starting a new independent task, create a NEW empty commit: `jj new`.
+  - **Directive Commits:** If a commit exists only with a message (pre-setting intention), it is a "Directive Commit." If a description exists on a clean worktree, treat it as critical "context"—it represents a quantifiable intent left by a predecessor. In such cases, you should still create a NEW child commit (`jj new`) to perform the actual work, preserving the directive as a distinct node in the history.
   - **Atomic Finalization:** Only describe the commit once the physical changes are staged in that commit. This ensures that every described node in the history is a non-empty, atomic logical unit.
 - **Bookmark Movement Protocol:** 
   - Never move a bookmark (like `dev`) to an "actively edited" or undescribed commit. 
   - Always finalize the work into a described commit, then move the bookmark to that immutable state: `jj bookmark set <name> -r <finalized_revision>`.
   - **Worktree Alignment:** The primary development bookmark of the current repository is considered the authoritative head. You MUST ensure your working copy is always based on this active bookmark. If the active bookmark is moved (by you or an external process, such as a rebase by a master agent), your working copy MUST follow it to maintain alignment. In most cases, this will involve rebasing your working copy onto the new location of the bookmark. If in doubt on how to align, ask for clarification.
 - **Mandatory Pushing:** Always push the bookmark you are currently working on (`jj git push --bookmark <name>`). If in doubt about which bookmark to push, ask for clarification. Verify local/remote bookmark alignment.
+  - **Two-Step Interaction:** Note that `jj git push` may first stage the movement (showing "Changes to push to origin") and then require a subsequent identical command to actually perform the network push. Always verify with `jj log -r <name>@origin` or a repeated push command.
 - **Phantom Intent Avoidance:** Never create "Phantom Commits" (descriptions without diffs). If a squash or rebase results in an empty described commit, it must be squashed into its neighbor or deleted.
 - **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`). This ensures the next prompt or agent invocation begins with a clean, empty working copy ready for fresh intent.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
@@ -82,7 +87,8 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 1. **Research & Verify:** Use Linkup to validate assumptions.
 2. **Logic & Data:** Apply `sema-programmer` rules (Logic/Data separation, Cap'n Proto contracts).
 3. **Draft & Plan:** Use `/skill:brainstorming` followed by `/skill:writing-plans`.
-4. **Implement & Verify:** Use appropriate tools (`edit`, `write`) and self-verify via the Mirror Hook.
+4. **Confident Mutation:** An Independent Developer makes changes when confident about their usefulness and logical integrity. If a change is logically sound and cannot break existing functionality, proceed with implementation.
+5. **Implement & Verify:** Use appropriate tools (`edit`, `write`) and self-verify via the Mirror Hook.
 
 ### 6. History as the Primary Debugging Surface
 - **Never give up before auditing history.** The answer to a failing tool or a logic error is most often lying in the commit log (`jj log -p`) or the operation log (`jj op log`).
