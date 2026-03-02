@@ -22,6 +22,13 @@ struct SttRequest {
   chronosFormat @12 :Text;
   chronosPrecision @13 :Text;
   transcriptFilenameTemplate @14 :Text;
+
+  phoneticMapping @15 :List(PhoneticEntry);
+
+  struct PhoneticEntry {
+    term @0 :Text;
+    phoneticHint @1 :Text;
+  }
 }
 
 struct SttResponse {

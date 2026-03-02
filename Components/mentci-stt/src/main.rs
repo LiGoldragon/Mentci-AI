@@ -59,8 +59,19 @@ async fn main() -> Result<()> {
     let stt_instructions = request.get_critical_phonetic_instructions()?.to_string()?;
 
     let vocabulary_preamble_template = request.get_vocabulary_preamble_template()?.to_string()?;
-            let vocabulary_preamble = vocabulary_preamble_template.replace("{vocabulary}", &vocab_str);
-        prompt_text = format!("{} {}\n\n{}", prompt_text, stt_instructions, vocabulary_preamble);
+    let vocabulary_preamble = vocabulary_preamble_template.replace("{vocabulary}", &vocab_str);
+
+    let mut phonetic_hints = vec![];
+    for entry in request.get_phonetic_mapping()? {
+        phonetic_hints.push(format!("{} (pronounced like '{}')", entry.get_term()?.to_string()?, entry.get_phonetic_hint()?.to_string()?));
+    }
+    let phonetic_instructions = if !phonetic_hints.is_empty() {
+        format!("\n\nPhonetic Pronunciation Hints:\n{}", phonetic_hints.join("\n"))
+    } else {
+        String::new()
+    };
+
+    prompt_text = format!("{} {}\n\n{}{}", prompt_text, stt_instructions, vocabulary_preamble, phonetic_instructions);
 
     if request.get_include_emotional_emphasis() {
         let emo = request.get_emotional_emphasis_instruction()?.to_string()?;
