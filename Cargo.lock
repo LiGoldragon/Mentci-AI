@@ -377,6 +377,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "capnp-futures"
+version = "0.19.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f8f3ee810b3890498e51028448ac732cdd5009223897124dd2fac6b085b5d867"
+dependencies = [
+ "capnp 0.19.8",
+ "futures",
+]
+
+[[package]]
+name = "capnp-rpc"
+version = "0.19.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fe57ab22a5e121e6fddaf36e837514aab9ae888bcff2baa6fda5630820dfc501"
+dependencies = [
+ "capnp 0.19.8",
+ "capnp-futures",
+ "futures",
+]
+
+[[package]]
 name = "capnpc"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -705,6 +726,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "704a3c26996a80471189265814dbc2c257598b96b8a7feae2d31ace646bb9782"
 dependencies = [
  "memchr",
+]
+
+[[package]]
+name = "dashmap"
+version = "5.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "978747c1d849a7d2ee5e8adc0159961c48fb7e5db2f06af6723b80123bb53856"
+dependencies = [
+ "cfg-if",
+ "hashbrown 0.14.5",
+ "lock_api",
+ "once_cell",
+ "parking_lot_core",
 ]
 
 [[package]]
@@ -1626,7 +1660,7 @@ dependencies = [
  "mentci-box-lib",
  "num-bigint",
  "pest",
- "ractor",
+ "ractor 0.11.2",
  "regex",
  "serde",
  "serde_json",
@@ -2233,12 +2267,27 @@ checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
 
 [[package]]
 name = "ractor"
+version = "0.9.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1d551077e2f2f354bd9cbe5520fe493cf57618bc70c1de4609f022ee9cc5d33"
+dependencies = [
+ "async-trait",
+ "dashmap 5.5.3",
+ "futures",
+ "once_cell",
+ "rand 0.8.5",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "ractor"
 version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "61e6aec2fe1f8a8f2fe79897826a0ea18b41f97735ee3704a6dd29c989a65c65"
 dependencies = [
  "async-trait",
- "dashmap",
+ "dashmap 6.1.0",
  "futures",
  "once_cell",
  "strum",
@@ -2624,10 +2673,15 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "capnp 0.19.8",
+ "capnp-rpc",
  "capnpc 0.19.0",
  "cozo",
+ "futures",
+ "ractor 0.9.8",
  "serde",
  "serde_json",
+ "tokio",
+ "tokio-util",
  "walkdir",
 ]
 
@@ -3234,6 +3288,7 @@ checksum = "9ae9cec805b01e8fc3fd2fe289f89149a9b66dd16786abd8b19cfa7b48cb0098"
 dependencies = [
  "bytes",
  "futures-core",
+ "futures-io",
  "futures-sink",
  "pin-project-lite",
  "tokio",
