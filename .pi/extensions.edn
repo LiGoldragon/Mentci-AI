@@ -2,7 +2,8 @@
  ["npm:@aliou/pi-linkup"
   "npm:@juanibiapina/pi-plan"
   "npm:@oh-my-pi/subagents"
-  "npm:@oh-my-pi/lsp"]
+  "npm:@oh-my-pi/lsp"
+  "npm:mcporter"]
  :settings
  {:theme "dark"
   :defaultProvider "google-gemini-cli"

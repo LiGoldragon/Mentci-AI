@@ -25,6 +25,17 @@ pkgs.mkShell {
     export MENTCI_REPO_ROOT="$(pwd)"
     export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
 
+    # Pi extension update check (Version-based)
+    _current_pi_version=$(pi --version 2>/dev/null)
+    _last_pi_version=$(cat .pi/last_pi_version 2>/dev/null)
+    if [ "$_current_pi_version" != "$_last_pi_version" ]; then
+      echo "[pi] Version change detected ($_last_pi_version -> $_current_pi_version). Updating extensions..."
+      if pi update; then
+        pi --version > .pi/last_pi_version
+      fi
+    fi
+    unset _current_pi_version _last_pi_version
+
     # Canonical Cap'n Proto environment spec pointer (hash-agnostic symlink)
     export MENTCI_USER_SETUP_BIN="${repo_root}/Components/mentci-user/data/setup.bin"
 

@@ -41,6 +41,7 @@ Before editing code:
 ### 1) Universal Object Approach & Trait-Domain Rule
 - **Everything Is an Object:** Reusable behavior belongs to named types or traits. Free functions exist only as orchestration shells in binaries.
 - **Single Object In/Out:** Every method accepts at most *one explicit object argument* and returns *exactly one object*. If multiple inputs/outputs are needed, define a new object.
+- **Complexity Guard:** Favor useful and simple object-based logic over difficult-to-reason-about systems. Implementation details should be encapsulated within clear object boundaries and traits.
 - **Direction Encodes Action:** Prefer `from_*`, `to_*`, `into_*`. Avoid verbs like `read`, `write`, `load`, `save` when direction conveys meaning.
 - **Trait-Domain Rule:** Any behavior in the semantic domain of an existing trait must be expressed as a trait implementation (e.g., `FromStr`), rather than a new inherent method.
 
