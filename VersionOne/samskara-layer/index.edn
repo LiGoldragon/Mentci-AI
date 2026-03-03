@@ -1,0 +1,7 @@
+{:kind :index
+ :title "VersionOne Saṃskāra Layer"
+ :entries ["README.md"
+           "protocol/index.edn"
+           "representations/index.edn"]
+ :status :active
+ :authority :primary}

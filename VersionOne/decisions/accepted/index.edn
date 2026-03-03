@@ -1,0 +1,5 @@
+{:kind :index
+ :title "Accepted Decisions"
+ :entries ["d-0001-jj-commands-as-samskara-requests.md"
+           "d-0002-main-executive-with-feedback-obligation.md"]
+ :status :accepted}

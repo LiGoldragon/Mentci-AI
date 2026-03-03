@@ -1,0 +1,11 @@
+{:kind :index
+ :title "VersionOne Saṃskāra Architecture Workspace"
+ :subject "VersionOne"
+ :entries ["README.md"
+           "data/index.edn"
+           "samskara-layer/index.edn"
+           "logical-components/index.edn"
+           "decisions/index.edn"
+           "templates/index.edn"]
+ :status :active
+ :authority "VersionOne/samskara-layer"}

@@ -1,0 +1,7 @@
+{:kind :index
+ :title "VersionOne Logical Components"
+ :entries ["README.md"
+           "selected/index.edn"
+           "in-review/index.edn"
+           "complete/index.edn"]
+ :status :active}

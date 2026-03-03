@@ -37,9 +37,9 @@ Agents updated")
 
 ### 2.0 Canonical Typed Root Set
 - Canonical top-level type root is modeled as:
-  - `(enum [Sources Components Outputs Research Development Core Library])`
+  - `(enum [Sources Components Outputs Research Development Core Library VersionOne])`
 - In Aski-FS sugared syntax, this is written directly as:
-  - `[Sources Components Outputs Research Development Core Library]`
+  - `[Sources Components Outputs Research Development Core Library VersionOne]`
 - Interpretation rule:
   - In schema/type position, `[]` denotes enum set membership.
   - Each first-letter-capitalized root name denotes a typed filesystem domain.
@@ -72,6 +72,12 @@ Agents updated")
 - **Promotion:**
     - **:success** -> The change is committed and becomes the new input for subscribed agents.
     - **:failure** -> Initiates a **Debug Loop** (Ref: `Development/high/Debugging/`).
+
+### 2.4 VersionOne (`VersionOne/`)
+- **Mode:** Writable (documentation + data authority).
+- **Behavior:** Tracks v1 architecture evolution, logical-component maturity states, and Saṃskāra-first protocol specifications.
+- **Center of Gravity:** `VersionOne/samskara-layer/` is the canonical location for v1 communication/data transition documentation.
+- **Lifecycle:** Material in `VersionOne/` is expected to graduate into stable `Core/`, `Library/`, or component-local contracts once protocol surfaces are accepted and implemented.
 
 ## 3. Symbolic Mapping (Aski-FS Structure-Driven)
 The following EDN structure represents the authoritative symbolic map of the `Sources` directory, utilizing the **Structure-Driven** syntax with **Symbol Keys**.

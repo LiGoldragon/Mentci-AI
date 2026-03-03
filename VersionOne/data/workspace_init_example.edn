@@ -1,0 +1,27 @@
+{:version 1
+ :message :AgentWorkspaceInit
+ :sessionHash "b3:example-session-hash"
+ :agentRole :component-agent
+ :ownedSpacename "mentci-ai/dev"
+ :lanePolicyHash "b3:lane-policy-v1"
+ :capabilities [:can-mutate-component-code :can-request-lane-sync]
+ :workspaceComponents
+ [{:repoId "mentci-ai"
+   :path "."
+   :mountMode :read-write
+   :purpose :mutate
+   :allowedLanes [:dev]}
+  {:repoId "mentci-user"
+   :path "Components/mentci-user"
+   :mountMode :read-write
+   :purpose :mutate
+   :allowedLanes [:dev]}
+  {:repoId "criome-contract"
+   :path "Components/criome-contract"
+   :mountMode :read-only
+   :purpose :consult}
+  {:repoId "research"
+   :path "Research"
+   :mountMode :read-only
+   :purpose :consult}]
+ :notes "Contract mutation remains role-gated and requires explicit capability."}

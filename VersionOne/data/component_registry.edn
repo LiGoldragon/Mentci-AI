@@ -1,0 +1,32 @@
+{:version 1
+ :domain :version-one
+ :logicalComponents
+ [{:id :samskara-layer
+   :status :selected
+   :kind :core
+   :description "Canonical message and transport authority for inter-agent communication and lane governance."}
+  {:id :lane-governor
+   :status :selected
+   :kind :actor
+   :description "Single execution gate for lane-mutating jj operations."}
+  {:id :forum-engine
+   :status :in-review
+   :kind :actor
+   :description "Deliberation loop for contested lane rewrite/sync decisions."}
+  {:id :filesystem-data-migration
+   :status :in-review
+   :kind :policy
+   :description "Progressive shift from path mutation to schema-addressed data mutation."}
+  {:id :lane-namespace-mirroring
+   :status :complete
+   :kind :policy
+   :description "Top-level lane names mirror into component lanes (example: dev -> component/dev)."}
+  {:id :refusal-feedback-message-standard
+   :status :complete
+   :kind :protocol
+   :description "Refusals must return structured reasons, suggestions, and open questions."}]
+ :repoBindings
+ [{:repo "mentci-ai" :role :master-agent :writable true}
+  {:repo "Components/criome-contract" :role :contract-authority :writable :role-dependent}
+  {:repo "Components/mentci-vcs" :role :lane-orchestration :writable true}
+  {:repo "Components/samskara" :role :message-runtime :writable true}]}

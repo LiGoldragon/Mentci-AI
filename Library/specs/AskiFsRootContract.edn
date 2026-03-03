@@ -1,5 +1,5 @@
 {:version 1
- :canonicalRoots [Sources Components Outputs Research Development Core Library]
+ :canonicalRoots [Sources Components Outputs Research Development Core Library VersionOne]
  :runtimeRoots [".git" ".jj" ".direnv" "target" ".mentci" ".gemini" "tmp" "result"]
  :requiredTopLevelFiles ["flake.nix"
                          "flake.lock"

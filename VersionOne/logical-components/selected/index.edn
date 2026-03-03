@@ -1,0 +1,6 @@
+{:kind :index
+ :title "Selected Logical Components"
+ :entries ["mentci-ai-master-agent.md"
+           "lane-governor.md"
+           "component-contract-authority.md"]
+ :status :selected}

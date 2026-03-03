@@ -1,0 +1,5 @@
+{:kind :index
+ :title "In-Review Decisions"
+ :entries ["d-0101-rewrite-authority-paths.md"
+           "d-0102-component-contract-mutation-scope.md"]
+ :status :in-review}

@@ -1,0 +1,7 @@
+{:kind :index
+ :title "Saṃskāra Protocol Set"
+ :entries ["message-flow.md"
+           "lane-governance.md"
+           "refusal-feedback-loop.md"
+           "role-capability-model.md"]
+ :status :active}

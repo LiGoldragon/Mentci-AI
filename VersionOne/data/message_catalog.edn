@@ -1,0 +1,35 @@
+{:version 1
+ :messageCatalog
+ [{:name :AgentWorkspaceInit
+   :layer :init
+   :requiredFields [:sessionHash :agentRole :ownedSpacename :workspaceComponents :lanePolicyHash]}
+  {:name :JjCommandRequest
+   :layer :execution
+   :requiredFields [:requestHash :operation :targetRepo :targetLane :justificationHash]}
+  {:name :PolicyContext
+   :layer :governance
+   :requiredFields [:policyHash :roleCapabilities :laneRules]}
+  {:name :DeliberationRequest
+   :layer :forum
+   :requiredFields [:requestHash :openingArgumentHash :participants]}
+  {:name :InterAgentArgument
+   :layer :forum
+   :requiredFields [:argumentHash :authorRole :claims :evidenceHashes]}
+  {:name :DeliberationDecision
+   :layer :forum
+   :requiredFields [:decisionHash :approved :decisionAuthority :rationale]}
+  {:name :RefusalFeedbackMessage
+   :layer :forum
+   :requiredFields [:targetRequestHash :reasons :suggestions :questions :requiredEvidence]}
+  {:name :RevisionResponseMessage
+   :layer :forum
+   :requiredFields [:supersedesRequestHash :changes :evidenceHashes]}
+  {:name :ExecutionResult
+   :layer :execution
+   :requiredFields [:requestHash :applied :resultingBookmarks :stdoutHash :stderrHash]}
+  {:name :HumanAuditorRequired
+   :layer :escalation
+   :requiredFields [:triggerRequestHash :cycleCount :summaryHash]}
+  {:name :AuditTrailBundle
+   :layer :audit
+   :requiredFields [:bundleHash :messageHashes :orderingProof]}]}

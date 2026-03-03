@@ -1,0 +1,25 @@
+{:version 1
+ :policy :lane-governance
+ :rules
+ {:executiveLane :main
+  :workingLanes [:dev :research]
+  :singleProjectEnforcement
+  {:mainCanIntegrateAnyLane true
+   :nonMainLanesRebaseOnMain true
+   :nonMainCannotForceMain false}
+  :crossRepoLaneMirroring
+  {:enabled true
+   :mapping :same-name
+   :example {:source "mentci-ai:dev" :target "component:dev"}}
+  :rewriteAuthority
+  {:default :deny
+   :allowedBy [:executiveDecision :forumApprovedDecision]
+   :requiresReason true}
+  :forumRefusalContract
+  {:mandatory true
+   :mustReturn [:reasons :suggestions :questions :requiredEvidence]
+   :returnToSourceAgent true}
+  :tieHandling
+  {:secondUnresolvedCycle :human-auditor-required}}
+ :laneMutationSurface
+ [:bookmark.set :bookmark.move :git.push-bookmark :rebase :sync-lane]}

@@ -1,0 +1,6 @@
+{:kind :index
+ :title "VersionOne Templates"
+ :entries ["component-record.md"
+           "deliberation-record.md"
+           "refusal-feedback-message.md"]
+ :status :active}

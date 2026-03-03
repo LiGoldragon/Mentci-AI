@@ -1,0 +1,5 @@
+{:kind :index
+ :title "Complete Logical Components"
+ :entries ["lane-namespace-mirroring.md"
+           "refusal-feedback-message-standard.md"]
+ :status :complete}

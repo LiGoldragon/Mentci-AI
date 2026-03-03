@@ -1,0 +1,15 @@
+{:version 1
+ :forumCycle
+ {:entryCondition :policy-blocked-or-rewrite-request
+  :participants [:dev :main :research]
+  :decisionShape [:approve :refuse :revise]
+  :refusalIsTerminal false
+  :refusalRequiresFeedbackMessage true
+  :sourceMustReceive [:reasons :suggestions :questions :requiredEvidence]
+  :mainAuthority :executive
+  :mainObligation
+  {:ifDevAndResearchCounterVote true
+   :mustIssueReconsiderationArgument true}
+  :escalation
+  {:onSecondUnresolvedCycle :human-auditor-required
+   :laneMutationUntilResolution :blocked}}}

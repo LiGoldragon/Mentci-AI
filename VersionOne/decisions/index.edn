@@ -1,0 +1,6 @@
+{:kind :index
+ :title "VersionOne Decisions"
+ :entries ["README.md"
+           "accepted/index.edn"
+           "in-review/index.edn"]
+ :status :active}

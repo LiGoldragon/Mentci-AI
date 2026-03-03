@@ -1,0 +1,6 @@
+{:kind :index
+ :title "Saṃskāra Representation Equivalence"
+ :entries ["aski-datalog.md"
+           "capnp-cahash.md"
+           "projection-equivalence.md"]
+ :status :active}
