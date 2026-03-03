@@ -3,5 +3,6 @@
  :entries ["message-flow.md"
            "lane-governance.md"
            "refusal-feedback-loop.md"
-           "role-capability-model.md"]
+           "role-capability-model.md"
+           "cozoscript-agent-queries.md"]
  :status :active}

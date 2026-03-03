@@ -2,7 +2,7 @@ use anyhow::{Result, Context};
 use cozo::{DbInstance, ScriptMutability, DataValue, Num};
 use std::fs;
 use walkdir::WalkDir;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use ractor::{Actor, ActorRef, ActorProcessingErr};
 use tokio::net::UnixListener;
 use capnp_rpc::{rpc_twoparty_capnp, twoparty, RpcSystem, pry};
@@ -58,13 +58,18 @@ impl Actor for WorldActor {
             ":create dependency { dependent: String, dependency: String }",
             ":create config_file { path: String => component: String, ext: String }",
             ":create sandbox { id: String => path: String, agent_id: String, bookmark: String, status: String, intent: String }",
-            ":create sandbox_event { sandbox_id: String, timestamp: Int => type: String, message: String }"
+            ":create sandbox_event { sandbox_id: String, timestamp: Int => type: String, message: String }",
+            ":create lane_policy { lane: String, rule: String => value: String }",
+            ":create agent_role { agent: String, role: String => scope: String }",
+            ":create tx_log { tx: Int => ts: Int, issuer: String, reason: String }",
+            ":create statement { id: String => subj: String, pred: String, obj: String, tx: Int, source: String, confidence: Float, plane: String, state: String }"
         ];
         for s in schemas {
             let _ = db.run_script(s, Default::default(), ScriptMutability::Mutable);
         }
 
         let mut state = WorldState { db, db_path };
+        apply_seed_scripts(&mut state)?;
         perform_rescan(&mut state).await?;
 
         Ok(state)
@@ -112,6 +117,34 @@ impl Actor for WorldActor {
     }
 }
 
+fn apply_seed_scripts(state: &mut WorldState) -> Result<()> {
+    let seed_directory = Path::new("Components/samskara/data");
+    if !seed_directory.exists() {
+        return Ok(());
+    }
+
+    let mut seed_files: Vec<PathBuf> = fs::read_dir(seed_directory)?
+        .filter_map(|entry| entry.ok().map(|item| item.path()))
+        .filter(|path| {
+            path.is_file()
+                && path.extension().and_then(|ext| ext.to_str()) == Some("cozo")
+                && path.file_name().and_then(|name| name.to_str()).map(|name| name.contains("seed")).unwrap_or(false)
+        })
+        .collect();
+    seed_files.sort();
+
+    for script_path in seed_files {
+        let script = fs::read_to_string(&script_path)
+            .with_context(|| format!("failed to read seed script {}", script_path.display()))?;
+        state
+            .db
+            .run_script(&script, Default::default(), ScriptMutability::Mutable)
+            .map_err(|error| anyhow::anyhow!("failed to run seed script {}: {:?}", script_path.display(), error))?;
+    }
+
+    Ok(())
+}
+
 async fn perform_rescan(state: &mut WorldState) -> Result<()> {
     let _ = state.db.run_script(":rm component { name }", Default::default(), ScriptMutability::Mutable);
     let _ = state.db.run_script(":rm config_file { path }", Default::default(), ScriptMutability::Mutable);
@@ -157,6 +190,18 @@ async fn perform_rescan(state: &mut WorldState) -> Result<()> {
                 if ext == "edn" {
                     let path_str = p.to_string_lossy().replace("\\", "/");
                     files_insert.push_str(&format!("    [\"{}\", \"Core\", \"{}\"],\n", path_str, ext));
+                    files_count += 1;
+                }
+            }
+        }
+    }
+    for entry in WalkDir::new("VersionOne").into_iter().filter_map(|e| e.ok()) {
+        let p = entry.path();
+        if p.is_file() {
+            if let Some(ext) = p.extension().and_then(|e| e.to_str()) {
+                if ext == "edn" || ext == "md" {
+                    let path_str = p.to_string_lossy().replace("\\", "/");
+                    files_insert.push_str(&format!("    [\"{}\", \"VersionOne\", \"{}\"],\n", path_str, ext));
                     files_count += 1;
                 }
             }
