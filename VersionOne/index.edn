@@ -6,6 +6,7 @@
            "samskara-layer/index.edn"
            "logical-components/index.edn"
            "decisions/index.edn"
-           "templates/index.edn"]
+           "templates/index.edn"
+           "research/index.edn"]
  :status :active
  :authority "VersionOne/samskara-layer"}
