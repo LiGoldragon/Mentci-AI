@@ -16,7 +16,6 @@ pkgs.mkShell {
     GH_PROMPT_DISABLED = "1";
     TERM = "dumb";
     PAGER = "cat";
-    EDITOR = "false";
 
     # Default Antigravity version for the pi agent
     PI_AI_ANTIGRAVITY_VERSION = "1.23.0";
