@@ -2,5 +2,6 @@
  :title "Saṃskāra Representation Equivalence"
  :entries ["aski-datalog.md"
            "capnp-cahash.md"
-           "projection-equivalence.md"]
+           "projection-equivalence.md"
+           "agent-operational-init.md"]
  :status :active}
