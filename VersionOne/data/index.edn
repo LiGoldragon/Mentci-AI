@@ -4,6 +4,7 @@
            "lane_policy_v1.edn"
            "message_catalog.edn"
            "forum_cycle_rules.edn"
-           "workspace_init_example.edn"]
+           "workspace_init_example.edn"
+           "handshake_outcome_v1.edn"]
  :format :edn
  :status :active}

@@ -4,5 +4,6 @@
            "lane-governance.md"
            "refusal-feedback-loop.md"
            "role-capability-model.md"
-           "cozoscript-agent-queries.md"]
+           "cozoscript-agent-queries.md"
+           "handshake-outcome-v1.md"]
  :status :active}

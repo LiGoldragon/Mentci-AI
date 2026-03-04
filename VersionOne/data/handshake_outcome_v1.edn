@@ -1,0 +1,20 @@
+{:version 1
+ :message :HandshakeOutcomeV1
+ :candidateProfiles
+ [{:id :A
+   :name :capability-only
+   :fields [:nodeId :dbId :protocolVersion :roles :allowedOps]
+   :strength :low
+   :notes "Useful for bootstrap prototyping; no state/liveness guarantees."}
+  {:id :B
+   :name :capability-plus-state
+   :fields [:nodeId :dbId :protocolVersion :roles :allowedOps :schemaHash :dataSnapshotHash :lastTx]
+   :strength :medium
+   :notes "Adds compatibility checks for schema/data lineage."}
+  {:id :C
+   :name :capability-state-lease
+   :fields [:nodeId :dbId :protocolVersion :roles :allowedOps :schemaHash :dataSnapshotHash :lastTx :leaseTtl :renewToken :failbackTarget]
+   :strength :high
+   :notes "Adds explicit liveness and failback authority for robust orchestration."}]
+ :recommended :C
+ :rolloutStages [:A-parse :B-enforce :C-lease-failback]}
