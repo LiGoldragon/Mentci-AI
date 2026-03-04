@@ -1,56 +1,74 @@
 # Agent Operational Init (VersionOne Representation)
 
-This representation defines *operational constants* that agents must not hardcode in logic or guidance text.
+This representation defines operational constants that agents must not hardcode in logic or guidance text.
 
-Primary use-case: the repository-local text currently hardcodes values like `dev`, `main`, `origin`, and the end-of-turn push target. In VersionOne, these are treated as **data** provided by a supervising repo/process (the lane governor / launcher) as part of an initialization envelope.
+Primary use-case: repository-local text often hardcodes values like `dev`, `main`, and `origin`. In VersionOne, these become data from a supervising repo/process through a single init input.
 
 ## Intent
 
-- Make repo+lane operational policy **parameterized**.
-- Keep docs and agent skills *structurally correct* without embedding literal bookmark names.
-- Allow a different repository (governor) to set the operational policy and pass it to the agent in a single object.
+- Make repo+lane operational policy parameterized.
+- Keep agent behavior correct without embedding literal bookmark names in logic.
+- Allow a separate authority repo to set runtime policy and pass it as one object.
 
-## Object: `AgentOperationalIntent`
+## Canonical Entry
 
-A minimal EDN form (Cap'n Proto equivalent should be introduced later):
+- **Canonical bootstrap filename:** `AI-init.cozo`
+- AI CLI behavior:
+  - `ai <file>`: use the file directly.
+  - `ai <repo_dir>`: resolve `<repo_dir>/AI-init.cozo`.
 
-```edn
-{:version 1
- :message :AgentOperationalIntent
+## Object: `AgentOperationalIntent` (Cozo-first)
 
- ;; Where the agent should consider "authoritative head" for its work.
- :primaryBookmark "dev"
+```cozo
+:create session_identity {
+  run_id: String,
+  operator_id: String,
+  launch_ts: String,
+  authority_hash: String
+}
 
- ;; Where to push and where to look for remote-tracking revisions.
- :primaryRemote "origin"
+:create agent_operational_intent {
+  primary_bookmark: String,
+  primary_remote: String,
+  integration_bookmark: String,
+  bookmark_moves_allowed_by: String,
+  end_push_remote: String,
+  end_push_bookmark: String,
+  verify_local_revset: String,
+  verify_remote_revset: String
+}
 
- ;; Integration target for rebases / merge-forward operations.
- :integrationBookmark "main"
+:create agent_capability_profile {
+  capability: String,
+  allowed: Bool,
+  notes: String
+}
 
- ;; Who is permitted to move the primary bookmark.
- ;; Typical values: :user | :agent | :lane-governor
- :bookmarkMovesAllowedBy :user
+:put session_identity {
+  ["run-001", "li", "5919.12.15", "b3:placeholder"]
+}
 
- ;; Default end-of-turn push target.
- :endOfTurnPushTarget {:remote "origin" :bookmark "dev"}
+:put agent_operational_intent {
+  ["dev", "origin", "main", "user", "origin", "dev", "bookmarks(dev)", "remote_bookmarks(\"dev@origin\")"]
+}
 
- ;; Optional: a canonical verification revset to assert alignment.
- ;; (Keep as data; tooling may render it to `jj log` commands.)
- :alignmentVerification
- {:local "bookmarks(dev)"
-  :remote "remote_bookmarks(dev@origin)"}}
+:put agent_capability_profile {
+  ["bookmark_move", true, "allowed only on explicit operator direction"],
+  ["cross_repo_mutation", false, "requires dedicated capability grant"]
+}
 ```
 
 ## Transfer / Authority
 
-- **Authority source:** a lane-governor repository (or equivalent) produces this object.
-- **Transport:** delivered to the agent as part of a single init envelope (ideally Cap'n Proto; EDN acceptable during transition).
-- **Local behavior:** the agent treats this object as higher authority than repo-local prose when deciding:
-  - which bookmark to base work on,
-  - which bookmark to advance/push,
-  - when (and whether) rebases are permitted.
+- **Authority source:** a lane-governor repository (or equivalent).
+- **Transport:** one init input object through `AI-init.cozo` (Cap'n Proto envelope can be added later).
+- **Local behavior:** this object overrides repo-local prose when deciding:
+  - which bookmark to base on,
+  - which bookmark to push,
+  - whether and how rebases are allowed.
 
-## Current repo operational truth (for `mentci-ai`, March 2026)
+## Current mentci-ai operational truth
 
-- `:primaryBookmark` is `"dev"`.
-- `:bookmarkMovesAllowedBy` is `:user` (the agent should not assume another tree moves `dev`; `dev` is moved only when explicitly requested by the human operator).
+- `primary_bookmark = "dev"`
+- `bookmark_moves_allowed_by = "user"`
+- no assumption that another tree moves `dev` implicitly.

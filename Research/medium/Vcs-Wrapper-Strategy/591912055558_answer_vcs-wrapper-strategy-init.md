@@ -27,4 +27,4 @@ A dedicated Rust component `mentci-vcs` is being developed to wrap all VCS calls
 Hardcoded operational constants like bookmark names (`dev`, `main`) and remotes (`origin`) should be treated as *data* delivered in an init envelope, not embedded in skills/docs/logic.
 
 - VersionOne representation: `VersionOne/samskara-layer/representations/agent-operational-init.md`
-- Example data authority: `VersionOne/data/agent_operational_intent_example.edn`
+- Example data authority: `VersionOne/data/AI-init.cozo`

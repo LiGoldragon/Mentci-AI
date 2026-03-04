@@ -2,6 +2,7 @@
  :title "VersionOne Research Consolidation"
  :entries ["591912142239_report_versionone-samskarad-cozoscript-examples.md"
            "591912145331_report_aski-cozo-reader-rules-and-delimiter-search.md"
+           "59191215813_strategy_repo-wide-edn-to-cozo-migration.md"
            "direction_split-into-smaller-repos.md"]
  :status :active
  :notes "VersionOne-local copies of active research used for current architecture direction."}

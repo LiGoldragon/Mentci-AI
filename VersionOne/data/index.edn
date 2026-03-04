@@ -6,6 +6,6 @@
            "forum_cycle_rules.edn"
            "workspace_init_example.edn"
            "handshake_outcome_v1.edn"
-           "agent_operational_intent_example.edn"]
- :format :edn
+           "AI-init.cozo"]
+ :format :cozo-primary
  :status :active}

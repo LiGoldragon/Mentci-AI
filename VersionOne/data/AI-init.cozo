@@ -1,0 +1,36 @@
+:create session_identity {
+  run_id: String,
+  operator_id: String,
+  launch_ts: String,
+  authority_hash: String
+}
+
+:create agent_operational_intent {
+  primary_bookmark: String,
+  primary_remote: String,
+  integration_bookmark: String,
+  bookmark_moves_allowed_by: String,
+  end_push_remote: String,
+  end_push_bookmark: String,
+  verify_local_revset: String,
+  verify_remote_revset: String
+}
+
+:create agent_capability_profile {
+  capability: String,
+  allowed: Bool,
+  notes: String
+}
+
+:put session_identity {
+  ["run-001", "li", "5919.12.15", "b3:placeholder"]
+}
+
+:put agent_operational_intent {
+  ["dev", "origin", "main", "user", "origin", "dev", "bookmarks(dev)", "remote_bookmarks(\"dev@origin\")"]
+}
+
+:put agent_capability_profile {
+  ["bookmark_move", true, "allowed only on explicit operator direction"],
+  ["cross_repo_mutation", false, "requires dedicated capability grant"]
+}
