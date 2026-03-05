@@ -5,6 +5,7 @@ let
     pname = "mentci-vcs";
     version = "0.1.0";
     src = ../mentci-vcs;
+    cargoLock = ../mentci-vcs/Cargo.lock;
     doCheck = false;
   };
 in

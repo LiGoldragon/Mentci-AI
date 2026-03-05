@@ -1,11 +1,12 @@
-{ craneLib, pkgs }:
+{ craneLib, pkgs, src, repo_root }:
 
 let
   commonArgs = {
     pname = "chronos";
     version = "0.1.0";
-    src = ../..;
-    cargoExtraArgs = "--manifest-path Components/chronos/Cargo.toml";
+    inherit src;
+    cargoExtraArgs = "--manifest-path Cargo.toml";
+    cargoLock = repo_root + "/Cargo.lock";
     doCheck = false;
   };
 in

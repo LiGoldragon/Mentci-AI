@@ -148,6 +148,15 @@
           pi_agent_rust_src = inputs.pi-agent-rust;
           vtcode_src = inputs.vtcode-src;
           repo_root = ./.;
+          mentci_aid_src = inputs.mentci-aid-src;
+          chronos_src = inputs.chronos-src;
+          mentci_stt_src = inputs.mentci-stt-src;
+          mentci_user_src = inputs.mentci-user-src;
+          mentci_mcp_src = inputs.mentci-mcp-src;
+          aski_lib_src = inputs.aski-lib-src;
+          mentci_box_src = inputs.mentci-box-src;
+          mentci_box_lib_src = inputs.mentci-box-lib-src;
+          mentci_launch_src = inputs.mentci-launch-src;
         };
 
         jail = import ./Components/nix/jail.nix {

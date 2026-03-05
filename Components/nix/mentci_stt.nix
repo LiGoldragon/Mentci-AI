@@ -1,12 +1,19 @@
-{ craneLib, pkgs }:
+{ craneLib, pkgs, src, mentci_box_lib_src, mentci_user_src, repo_root }:
 
 let
   commonArgs = {
     pname = "mentci-stt";
     version = "0.1.0";
-    src = ../..;
-    cargoExtraArgs = "--manifest-path Components/mentci-stt/Cargo.toml";
+    inherit src;
+    cargoExtraArgs = "--manifest-path Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
+    postUnpack = ''
+      mkdir -p /build/mentci-box-lib
+      cp -r ${mentci_box_lib_src}/. /build/mentci-box-lib/
+      ln -s ${mentci_user_src} /build/mentci-user
+      ln -s ${repo_root}/Components/schema /build/schema
+    '';
+    cargoLock = repo_root + "/Cargo.lock";
     doCheck = false;
   };
 in

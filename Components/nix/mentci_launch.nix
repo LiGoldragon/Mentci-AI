@@ -1,12 +1,16 @@
-{ craneLib, pkgs, repo_root }:
+{ craneLib, pkgs, src, repo_root }:
 
 let
   commonArgs = {
     pname = "mentci-launch";
     version = "0.1.0";
-    src = repo_root;
-    cargoExtraArgs = "--manifest-path Components/mentci-launch/Cargo.toml";
+    inherit src;
+    cargoExtraArgs = "--manifest-path Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
+    postUnpack = ''
+      ln -s ${repo_root}/Components/schema /build/schema
+    '';
+    cargoLock = repo_root + "/Cargo.lock";
     doCheck = false;
   };
 in

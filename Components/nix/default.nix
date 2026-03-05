@@ -11,39 +11,59 @@
 , pi_agent_rust_src
 , vtcode_src
 , repo_root
+, mentci_aid_src
+, chronos_src
+, mentci_stt_src
+, mentci_user_src
+, mentci_mcp_src
+, aski_lib_src
+, mentci_box_src
+, mentci_box_lib_src
+, mentci_launch_src
 }:
 
 let
   mentci_ai = import ./mentci_ai.nix {
-    inherit craneLib pkgs;
+    inherit craneLib pkgs repo_root;
+    src = mentci_aid_src;
+    inherit mentci_box_lib_src;
   };
 
   chronos = import ./chronos.nix {
-    inherit craneLib pkgs;
+    inherit craneLib pkgs repo_root;
+    src = chronos_src;
   };
 
   mentci_stt = import ./mentci_stt.nix {
-    inherit craneLib pkgs;
+    inherit craneLib pkgs repo_root;
+    src = mentci_stt_src;
+    inherit mentci_box_lib_src mentci_user_src;
   };
 
   mentci_user = import ./mentci_user.nix {
-    inherit craneLib pkgs;
+    inherit craneLib pkgs repo_root;
+    src = mentci_user_src;
   };
 
   mentci_mcp = import ./mentci_mcp.nix {
-    inherit craneLib pkgs;
+    inherit craneLib pkgs repo_root;
+    src = mentci_mcp_src;
+    inherit aski_lib_src;
   };
 
   mentci_box = import ./mentci_box.nix {
     inherit craneLib pkgs repo_root;
+    src = mentci_box_src;
+    inherit mentci_box_lib_src;
   };
 
   mentci_box_default = pkgs.callPackage ./mentci-box-default.nix {
-    inherit mentci_box;
+    inherit mentci_box mentci_box_src;
   };
 
   mentci_launch = import ./mentci_launch.nix {
     inherit craneLib pkgs repo_root;
+    src = mentci_launch_src;
   };
 
   mentci_vcs = import ./mentci_vcs.nix {
@@ -118,7 +138,7 @@ let
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
     pi_dev = pi_with_extensions;
-    inherit mentci_vcs unified_llm pi_rust vtcode execute chronos mentci_stt mentci_user mentci_mcp;
+    inherit unified_llm pi_rust vtcode execute chronos mentci_stt mentci_user mentci_mcp;
   };
 
   jail_sources = import ./jail_sources.nix {
