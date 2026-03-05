@@ -1,187 +1,82 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
+description: Use when implementation is complete, tests pass, and you need to integrate, release, or clean branch state in JJ
 ---
 
-> **Related skills:** Verify tests pass with `/skill:verification-before-completion`. Consider `/skill:requesting-code-review` before merging.
+> **Related skills:** Verify tests first with `/skill:verification-before-completion`. Consider `/skill:requesting-code-review` before release.
 
 # Finishing a Development Branch
 
 ## Overview
 
-Guide completion of development work by presenting clear options and handling chosen workflow.
+Mentci completion flow is JJ-first and release-aware.
 
-**Core principle:** Verify tests → Present options → Execute choice → Clean up.
+**Core principle:** Verify → choose integration path → execute atomically → leave clean handover.
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
-## The Process
+## Process
 
-### Step 1: Verify Tests
+### Step 1: Verify
 
-**Before presenting options, verify tests pass:**
+Run relevant checks for the change. Do not proceed if failing.
 
-```bash
-# Run project's test suite
-npm test / cargo test / pytest / go test ./...
-```
+### Step 2: Identify Target
 
-**If tests fail:**
-```
-Tests failing (<N> failures). Must fix before completing:
-
-[Show failures]
-
-Cannot proceed with merge/PR until tests pass.
-```
-
-Stop. Don't proceed to Step 2.
-
-**If tests pass:** Continue to Step 1.5.
-
-### Step 1.5: Documentation and Learnings
-
-Before presenting options, ask two questions:
-
-1. **"Does this work require documentation updates?"** (README, CHANGELOG, API docs, inline docs) — If yes, make the updates before proceeding.
-2. **"What was learned during this implementation?"** (surprises, codebase-specific knowledge, things to do differently next time) — Capture anything worth remembering using the memory tool's learnings file.
-
-### Step 2: Determine Base Branch
-
-```bash
-# Try common base branches
-git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
-```
-
-Or ask: "This branch split from main - is that correct?"
+Default integration target is `main` unless the user says otherwise.
 
 ### Step 3: Present Options
 
-Present exactly these 4 options:
+Present exactly these options:
 
-```
-Implementation complete. What would you like to do?
-
-1. Merge back to <base-branch> locally
-2. Push and create a Pull Request
-3. Keep the branch as-is (I'll handle it later)
-4. Discard this work
-
-Which option?
-```
-
-**Don't add explanation** - keep options concise.
+1. Move bookmark to finalized commit (no release tag)
+2. Create a tagged main release
+3. Keep branch state as-is
+4. Discard branch work
 
 ### Step 4: Execute Choice
 
-#### Option 1: Merge Locally
+#### Option 1: Move bookmark (no tag)
 
-```bash
-# Switch to base branch
-git checkout <base-branch>
+- Finalize commit description.
+- `jj bookmark set main -r <finalized-rev>`
+- `jj git push --bookmark main`
+- Verify with `jj log -r main -r 'main@origin' --no-graph`
 
-# Pull latest
-git pull
+#### Option 2: Tagged main release (required release path)
 
-# Merge feature branch
-git merge <feature-branch>
+For release flows, use the original zodiac-ordinal version style:
 
-# Verify tests on merged result
-<test command>
+- **Tag format:** `v<cycle>.<sign>.<degree>.<minute>.<second>`
+- **Current-era expected prefix:** `v0.12.x.x.x`
 
-# If tests pass
-git branch -d <feature-branch>
-```
+Required sequence:
 
-**If merge conflicts:** Abort the merge (`git merge --abort`) and suggest switching to Option 2 (PR) so the user can resolve conflicts manually. Don't attempt conflict resolution without explicit user approval.
+1. Ensure release commit is on `main`.
+2. Create a **signed** git tag on that commit:
+   - `git tag -s v0.12.<degree>.<minute>.<second> -m "release: v0.12.<degree>.<minute>.<second>"`
+   - Or full canonical form when not in current-era shorthand: `v<cycle>.<sign>.<degree>.<minute>.<second>`
+3. Push bookmark and tag:
+   - `jj git push --bookmark main`
+   - `git push origin <tag>`
+4. Verify:
+   - `jj log -r main -r 'main@origin' --no-graph`
+   - `git tag -v <tag>`
 
-Then: Cleanup worktree (Step 5)
+Release notes/commit body should summarize major changes and include the solar date line.
 
-#### Option 2: Push and Create PR
+#### Option 3: Keep as-is
 
-```bash
-# Push branch
-git push -u origin <feature-branch>
-
-# Create PR
-gh pr create --title "<title>" --body "$(cat <<'EOF'
-## Summary
-<2-3 bullets of what changed>
-
-## Test Plan
-- [ ] <verification steps>
-EOF
-)"
-```
-
-Then: Cleanup worktree (Step 5)
-
-#### Option 3: Keep As-Is
-
-Report: "Keeping branch <name>. Worktree preserved at <path>."
-
-**Don't cleanup worktree.**
+Report current bookmark/revision and stop.
 
 #### Option 4: Discard
 
-**Confirm first:**
-```
-This will permanently delete:
-- Branch <name>
-- All commits: <commit-list>
-- Worktree at <path>
-
-Type 'discard' to confirm.
-```
-
-Wait for exact confirmation.
-
-If confirmed:
-```bash
-git checkout <base-branch>
-git branch -D <feature-branch>
-```
-
-Then: Cleanup worktree (Step 5)
-
-### Step 5: Cleanup Worktree
-
-**For Options 1, 2, 4:**
-
-Check if in worktree:
-```bash
-git worktree list | grep $(git branch --show-current)
-```
-
-If yes:
-```bash
-git worktree remove <worktree-path>
-```
-
-**For Option 3:** Keep worktree.
-
-## Quick Reference
-
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
-|--------|-------|------|---------------|----------------|
-| 1. Merge locally | ✓ | - | - | ✓ |
-| 2. Create PR | - | ✓ | ✓ | - |
-| 3. Keep as-is | - | - | ✓ | - |
-| 4. Discard | - | - | - | ✓ (force) |
+Confirm intent, then abandon target revisions with `jj abandon <revset>`.
 
 ## Rules
 
-- Always verify tests before offering options — never merge or PR with failing tests
-- Present exactly 4 structured options — no open-ended "what next?"
-- Require typed "discard" confirmation for Option 4
-- Only cleanup worktree for Options 1 and 4
-- Never force-push without explicit request
-
-## Integration
-
-**Called by:**
-- **`/skill:subagent-driven-development`** (Step 7) - After all tasks complete
-- **`/skill:executing-plans`** (Step 5) - After all batches complete
-
-**Pairs with:**
-- **`/skill:using-git-worktrees`** - Cleans up worktree created by that skill
+- JJ is primary; do not switch to git-branch workflows for normal integration.
+- Release integration target is `main`.
+- Release tags must use the original version style (`v0.12.x.x.x` in current-era shorthand).
+- Do not claim release completion without tag verification.
+- End with clean handover commit (`jj new main`) when flow is complete.

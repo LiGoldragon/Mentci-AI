@@ -12,6 +12,7 @@ Year-version policy:
   - `5919 AM => v0.*`
   - `5920 AM => v1.*`
   - `5921 AM => v2.*`
+- Original style in current era is expected to appear as `v0.12.x.x.x` (cycle `0`, sign `12`, then degree/minute/second ordinals).
 
 ## 2. Format
 ### 2.1 Commit Message

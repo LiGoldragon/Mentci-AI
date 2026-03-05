@@ -6,7 +6,7 @@
 *   **Target Authority:** Top Admin, Li Goldragon.
 *   **Primary Working Bookmark:** `dev`.
 *   **Current Programming Version:** `f681220` (unifying Level 6 Saṃskāra Baseline & Debugging protocols).
-*   **Latest Release Tag:** `v0.12.12.3.29` (current milestone).
+*   **Latest Release Tag:** `v0.12.16.6.27` (current milestone).
 
 ## 1. Project Overview
 Mentci-AI is a Level 5 "Dark Factory" AI daemon (`mentci-aid`) under stabilization, now entering **Level 6 Instinctive Symbolic Interaction**. The repository operates with a native Rust actor-based orchestration layer and distributed **Fractal DVCS** architecture.
