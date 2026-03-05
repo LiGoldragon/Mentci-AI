@@ -1,0 +1,145 @@
+version = 1
+
+[[components]]
+id = "mentci-aid"
+path = "Components/mentci-aid"
+flake_input = "mentci-aid-src"
+repo = "git@github.com:LiGoldragon/mentci-aid.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-datalog"
+path = "Components/mentci-datalog"
+flake_input = "mentci-datalog-src"
+repo = "git@github.com:LiGoldragon/mentci-datalog.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "chronos"
+path = "Components/chronos"
+flake_input = "chronos-src"
+repo = "git@github.com:LiGoldragon/chronos.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-fs"
+path = "Components/mentci-fs"
+flake_input = "mentci-fs-src"
+repo = "git@github.com:LiGoldragon/mentci-fs.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-box"
+path = "Components/mentci-box"
+flake_input = "mentci-box-src"
+repo = "git@github.com:LiGoldragon/mentci-box.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-box-lib"
+path = "Components/mentci-box-lib"
+flake_input = "mentci-box-lib-src"
+repo = "git@github.com:LiGoldragon/mentci-box-lib.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-launch"
+path = "Components/mentci-launch"
+flake_input = "mentci-launch-src"
+repo = "git@github.com:LiGoldragon/mentci-launch.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-stt"
+path = "Components/mentci-stt"
+flake_input = "mentci-stt-src"
+repo = "git@github.com:LiGoldragon/mentci-stt.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-user"
+path = "Components/mentci-user"
+flake_input = "mentci-user-src"
+repo = "git@github.com:LiGoldragon/mentci-user.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "samskara"
+path = "Components/samskara"
+flake_input = "samskara-src"
+repo = "git@github.com:LiGoldragon/samskara.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-dig"
+path = "Components/mentci-dig"
+flake_input = "mentci-dig-src"
+repo = "git@github.com:LiGoldragon/mentci-dig.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-mcp"
+path = "Components/mentci-mcp"
+flake_input = "mentci-mcp-src"
+repo = "git@github.com:LiGoldragon/mentci-mcp.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-policy-engine"
+path = "Components/mentci-policy-engine"
+flake_input = "mentci-policy-engine-src"
+repo = "git@github.com:LiGoldragon/mentci-policy-engine.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "mentci-mcp-gateway"
+path = "Components/mentci-mcp-gateway"
+flake_input = "mentci-mcp-gateway-src"
+repo = "git@github.com:LiGoldragon/mentci-mcp-gateway.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "aski-lib"
+path = "Components/aski-lib"
+flake_input = "aski-lib-src"
+repo = "git@github.com:LiGoldragon/aski-lib.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "aski-cli"
+path = "Components/aski-cli"
+flake_input = "aski-cli-src"
+repo = "git@github.com:LiGoldragon/aski-cli.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "nix-hash-patcher"
+path = "Components/nix-hash-patcher"
+flake_input = "nix-hash-patcher-src"
+repo = "git@github.com:LiGoldragon/nix-hash-patcher.git"
+required_submodule = false
+required_flake_lock = false
+
+[[components]]
+id = "AI"
+path = "Components/AI"
+flake_input = "ai-src"
+repo = "git@github.com:LiGoldragon/AI.git"
+required_submodule = false
+required_flake_lock = false

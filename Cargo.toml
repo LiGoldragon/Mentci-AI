@@ -19,6 +19,7 @@ members = [
     "Components/mentci-mcp/edit",
     "Components/mentci-policy-engine",
     "Components/mentci-mcp-gateway",
+    "Components/mentci-vcs",
     "Components/aski-lib",
     "Components/aski-cli",
     "Components/nix-hash-patcher"
