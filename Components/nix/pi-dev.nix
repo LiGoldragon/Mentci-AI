@@ -46,6 +46,7 @@ pkgs.buildNpmPackage {
     rm -rf $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai
     mkdir -p $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai
     cp -r packages/ai/dist $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/
+    cp -r packages/ai/dist/. $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/
     cp packages/ai/package.json $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/
 
     rm -rf $out/lib/node_modules/pi/node_modules/@mariozechner/pi-agent-core

@@ -34,6 +34,7 @@ pkgs.buildNpmPackage {
     rm -rf $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai
     mkdir -p $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai
     cp -r packages/ai/dist $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/
+    cp -r packages/ai/dist/. $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/
     cp packages/ai/package.json $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/
     cp packages/ai/dist/bedrock-provider.js $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/bedrock-provider.js
     cp packages/ai/dist/bedrock-provider.d.ts $out/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/bedrock-provider.d.ts
