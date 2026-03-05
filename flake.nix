@@ -61,7 +61,7 @@
       flake = false;
     };
     vtcode-src = {
-      url = "github:LiGoldragon/vtcode/0.83.0-goldragon-fixes";
+      url = "github:vinhnx/vtcode/main";
       flake = false;
     };
 

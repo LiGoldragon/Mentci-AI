@@ -8,7 +8,7 @@ let
 in
 rustPlatform.buildRustPackage {
   pname = "vtcode";
-  version = "0.83.0-goldragon-fixes"; # from upstream
+  version = "main-snapshot"; # from vinhnx upstream main
   src = src;
 
   cargoLock = {
