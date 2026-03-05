@@ -1,6 +1,4 @@
-{:packages
- ["npm:@aliou/pi-linkup"]
- :extensions
+{:extensions
  ["!**"]
  :settings
  {:theme "dark"
