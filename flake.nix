@@ -11,7 +11,7 @@
     };
 
     # Level 5 / Criome Ecosystem Sources
-    criomos.url = "github:Criome/CriomOS";
+    criomos.url = "github:Criome/CriomOS/develop";
     sema.url = "github:Criome/sema";
     lojix.url = "github:Criome/lojix";
     seahawk.url = "github:Criome/seahawk";

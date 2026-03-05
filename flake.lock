@@ -482,15 +482,16 @@
         "xah-fly-keys": "xah-fly-keys"
       },
       "locked": {
-        "lastModified": 1771060469,
-        "narHash": "sha256-DkOppQgWyDibM1CNoHgCPedwGoatodkNVXlft1XtWuU=",
+        "lastModified": 1771867722,
+        "narHash": "sha256-/OtULKWvDeA9Ki0K72xzW/K/GU8Pg+o6GEMOeZUL7Wk=",
         "owner": "Criome",
         "repo": "CriomOS",
-        "rev": "f11eba4ad4482121b98c8c0327ac998dbdfac039",
+        "rev": "1e4e0565b2cc53c41f8c9cab6d1ef0c01dcd7b7b",
         "type": "github"
       },
       "original": {
         "owner": "Criome",
+        "ref": "develop",
         "repo": "CriomOS",
         "type": "github"
       }
