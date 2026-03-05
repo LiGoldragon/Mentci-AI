@@ -52,3 +52,6 @@
 [submodule "Components/AI"]
 	path = Components/AI
 	url = git@github.com:LiGoldragon/AI.git
+[submodule "Components/CriomOS"]
+	path = Components/CriomOS
+	url = git@github.com:Criome/CriomOS.git
