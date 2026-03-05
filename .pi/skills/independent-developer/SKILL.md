@@ -69,6 +69,13 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   - **Worktree Alignment:** The primary development bookmark of the current repository is considered the authoritative head. You MUST ensure your working copy is always based on this active bookmark. If the active bookmark is moved (by you or an external process, such as a rebase by a master agent), your working copy MUST follow it to maintain alignment. In most cases, this will involve rebasing your working copy onto the new location of the bookmark. If in doubt on how to align, ask for clarification.
 - **Mandatory Pushing:** Always push the bookmark you are currently working on (`jj git push --bookmark <name>`). If in doubt about which bookmark to push, ask for clarification. Verify local/remote bookmark alignment.
   - **Two-Step Interaction:** Note that `jj git push` may first stage the movement (showing "Changes to push to origin") and then require a subsequent identical command to actually perform the network push. Always verify with `jj log -r <name>@origin` or a repeated push command.
+- **Tagged Release Mode (Main-Only):** When creating a release, the release commit MUST be on `main` and MUST be tagged using the original zodiac-ordinal style.
+  - **Required tag style:** `v0.12.x.x.x` (current-era shorthand of `v<cycle>.<sign>.<degree>.<minute>.<second>`)
+  - **Required release flow:**
+    1. Create/verify release commit on `main`.
+    2. Create signed or annotated git tag with the same version.
+    3. Push `main` bookmark and push the release tag.
+    4. Verify `main == main@origin` and verify tag presence/signature.
 - **Phantom Intent Avoidance:** Never create "Phantom Commits" (descriptions without diffs). If a squash or rebase results in an empty described commit, it must be squashed into its neighbor or deleted.
 - **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`). This ensures the next prompt or agent invocation begins with a clean, empty working copy ready for fresh intent.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
@@ -105,7 +112,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - [ ] Sema-grade Logic/Data separation achieved.
 - [ ] Changes verified via Mirror.
 - [ ] History audited for clues before declaring an impasse.
-- [ ] Atomic `intent:` commits pushed to `dev`.
+- [ ] Atomic `intent:` commits pushed to the active integration bookmark (`main` for release mode).
 - [ ] Session ended with `jj new` to leave a clean worktree.
 
 ### 8. Crypto-Content-Addressed Rebasing
