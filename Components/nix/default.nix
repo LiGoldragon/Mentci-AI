@@ -65,6 +65,16 @@ let
     src = pi_mono_src;
   };
 
+  pi_linkup_extension = import ./pi-linkup-extension.nix {
+    inherit pkgs;
+  };
+
+  pi_with_extensions = import ./pi-with-extensions.nix {
+    inherit pkgs;
+    pi = pi;
+    pi_linkup_extension = pi_linkup_extension;
+  };
+
   pi_rust = import ./pi-rust.nix {
     inherit pkgs;
     src = pi_agent_rust_src;
@@ -102,7 +112,8 @@ let
     inherit rust_toolchain rust_analyzer;
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
-    inherit mentci_vcs pi_dev unified_llm pi_rust vtcode execute chronos mentci_stt mentci_user mentci_mcp;
+    pi_dev = pi_with_extensions;
+    inherit mentci_vcs unified_llm pi_rust vtcode execute chronos mentci_stt mentci_user mentci_mcp;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -122,7 +133,7 @@ let
       inherit pkgs jail;
       inherit common_packages;
       inherit repo_root;
-      pi = pi_dev;
+      pi = pi_with_extensions;
     };
 
   execute_check = import ./execute_check.nix {
@@ -130,6 +141,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_check components_index_check unified_llm pi_rust vtcode;
+  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_with_extensions pi_linkup_extension pi_check components_index_check unified_llm pi_rust vtcode;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

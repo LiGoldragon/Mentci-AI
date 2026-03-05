@@ -17,8 +17,6 @@ pkgs.mkShell {
     TERM = "dumb";
     PAGER = "cat";
 
-    # Default Antigravity version for the pi agent
-    PI_AI_ANTIGRAVITY_VERSION = "1.23.0";
   };
 
   shellHook = ''
