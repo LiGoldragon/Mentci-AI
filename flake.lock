@@ -80,6 +80,22 @@
         "type": "github"
       }
     },
+    "ai-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772644929,
+        "narHash": "sha256-IYksR4K3BjvUBC0R4x2CWTsVinejoVDcZ4v3tJB8HuQ=",
+        "ref": "refs/heads/dev",
+        "rev": "505c83d9e8c1bd07c6d961cadefdd7d1242a22d4",
+        "revCount": 3,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/AI.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/AI.git"
+      }
+    },
     "aski": {
       "flake": false,
       "locked": {
@@ -94,6 +110,38 @@
         "owner": "Criome",
         "repo": "aski",
         "type": "github"
+      }
+    },
+    "aski-cli-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722965,
+        "narHash": "sha256-dmBa8dIbVbRSArrWODQVdWNpVPySNmRVtwhY4g/U+/g=",
+        "ref": "refs/heads/main",
+        "rev": "50104fee168940377279a5dc216609c0d7a463b4",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/aski-cli.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/aski-cli.git"
+      }
+    },
+    "aski-lib-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722961,
+        "narHash": "sha256-QiefVdUDuCa9nw0Zzb0I0jpGP/e+3LXdlLPU0MqqQ38=",
+        "ref": "refs/heads/main",
+        "rev": "2e3c92c01708a5c2611c93c89082e8295073d1df",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/aski-lib.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/aski-lib.git"
       }
     },
     "attic": {
@@ -296,6 +344,22 @@
         "owner": "srid",
         "repo": "cargo-doc-live",
         "type": "github"
+      }
+    },
+    "chronos-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722906,
+        "narHash": "sha256-CgocFrRLqHlu35/laDQ1Y30J+Libz80oZdz/BC6wpXQ=",
+        "ref": "refs/heads/main",
+        "rev": "b8a0019377b9b0e24e0877fd75b1560b66de36f8",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/chronos.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/chronos.git"
       }
     },
     "codex-cli-nix": {
@@ -1084,6 +1148,198 @@
         "type": "github"
       }
     },
+    "mentci-aid-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722893,
+        "narHash": "sha256-jeCltIqqLLVxWmJ4fFbBfPL3vrkwNBhSTmebSWGS7AU=",
+        "ref": "refs/heads/main",
+        "rev": "d7ca91c2253a8d4fd1c9fd5ba963e65a0166cc24",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-aid.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-aid.git"
+      }
+    },
+    "mentci-box-lib-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722919,
+        "narHash": "sha256-VZbPcIPnQD84NUMy/h9xL9yslnl95cwjzMDA9S4tSU8=",
+        "ref": "refs/heads/main",
+        "rev": "2d817b6027c20fc58925b23714e8324a1627211c",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-box-lib.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-box-lib.git"
+      }
+    },
+    "mentci-box-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722915,
+        "narHash": "sha256-kuSrtyn9AB8rNNjI0ZkvlnTvYTgo5yaGe01/JtVPy6A=",
+        "ref": "refs/heads/main",
+        "rev": "68720bb87096c09c9107a195dc2ab74b161dc6e4",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-box.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-box.git"
+      }
+    },
+    "mentci-datalog-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722898,
+        "narHash": "sha256-MoQRsCpcJUMyJdCWIUN+FI0sk2RlT1Uq15RpR5bWA/E=",
+        "ref": "refs/heads/main",
+        "rev": "b75153709fd385bc17aca80ddba8d4eca62a72e0",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-datalog.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-datalog.git"
+      }
+    },
+    "mentci-dig-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722943,
+        "narHash": "sha256-dWkLppa3Fjp6/dApcP13m0s5rB5ab8a6pIhRUcnkgpg=",
+        "ref": "refs/heads/main",
+        "rev": "9d3f0a3a1682ea3dbb070c10171f056d2c8cb470",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-dig.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-dig.git"
+      }
+    },
+    "mentci-fs-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722910,
+        "narHash": "sha256-qIU+AUCZkEEodoM7ldkmBOI7r94huuZPVDoze2Qy/v4=",
+        "ref": "refs/heads/main",
+        "rev": "c279a177864d964e882a3aad54fbcc5a86561560",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-fs.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-fs.git"
+      }
+    },
+    "mentci-launch-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722924,
+        "narHash": "sha256-IVXUpxvImBkUJRU5V61SkW8eepXGreGMt86zUCnkghY=",
+        "ref": "refs/heads/main",
+        "rev": "de3c7863437430a3efc6f84ff39acb5fb92b6963",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-launch.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-launch.git"
+      }
+    },
+    "mentci-mcp-gateway-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722957,
+        "narHash": "sha256-EBobTQB4uN+lSrhv4V3gEeu4g+BtpHmT28y1rCpawBY=",
+        "ref": "refs/heads/main",
+        "rev": "7c558f6c98775bbb9d018f0f0b9808090b549d34",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-mcp-gateway.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-mcp-gateway.git"
+      }
+    },
+    "mentci-mcp-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722947,
+        "narHash": "sha256-HpQV43ZmxLDNEEd91vMMvf0QqW2k06x1/gXWLuPBpy4=",
+        "ref": "refs/heads/main",
+        "rev": "6bf865b225e4af6324d7032167f5f00c160e800b",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-mcp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-mcp.git"
+      }
+    },
+    "mentci-policy-engine-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722952,
+        "narHash": "sha256-oV3J2KLKqVJYKBAXejXQD6EpTnJDDhK7N2B/PWy0Idk=",
+        "ref": "refs/heads/main",
+        "rev": "d3e167b5ff68f615ffce9269f0c316c027ec3436",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-policy-engine.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-policy-engine.git"
+      }
+    },
+    "mentci-stt-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722929,
+        "narHash": "sha256-IawF/t1p9yd1D0fB7DAf2BSTWXONN4fzmD5VOLk0INs=",
+        "ref": "refs/heads/main",
+        "rev": "de15c6328c22412d182c120c9c688c368cba0330",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-stt.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-stt.git"
+      }
+    },
+    "mentci-user-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722933,
+        "narHash": "sha256-NF48X9KUU3zEfADPwDXKtbw/Qil9N8rr4qe1cCojdkg=",
+        "ref": "refs/heads/main",
+        "rev": "d9d70a6541be552b320e78ebc910207cfb03cfed",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-user.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/mentci-user.git"
+      }
+    },
     "mfgtools": {
       "flake": false,
       "locked": {
@@ -1225,6 +1481,22 @@
         "owner": "nix-community",
         "repo": "nix-github-actions",
         "type": "github"
+      }
+    },
+    "nix-hash-patcher-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722970,
+        "narHash": "sha256-/VujXE0zP4blbvlab9JBIszexovVmzYBoaNCUSs8hk0=",
+        "ref": "refs/heads/main",
+        "rev": "52fed96326394aba3d2e946e2c4f035e4ebe038e",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/nix-hash-patcher.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/nix-hash-patcher.git"
       }
     },
     "nixpkgs": {
@@ -1546,11 +1818,15 @@
     "root": {
       "inputs": {
         "activeadmin": "activeadmin",
+        "ai-src": "ai-src",
         "aski": "aski",
+        "aski-cli-src": "aski-cli-src",
+        "aski-lib-src": "aski-lib-src",
         "attractor": "attractor",
         "attractor-docs": "attractor-docs",
         "bookofgoldragon": "bookofgoldragon",
         "bookofsol": "bookofsol",
+        "chronos-src": "chronos-src",
         "codex-cli-nix": "codex-cli-nix",
         "crane": "crane",
         "criomos": "criomos",
@@ -1561,11 +1837,25 @@
         "leash": "leash",
         "lojix": "lojix",
         "maisiliym": "maisiliym_2",
+        "mentci-aid-src": "mentci-aid-src",
+        "mentci-box-lib-src": "mentci-box-lib-src",
+        "mentci-box-src": "mentci-box-src",
+        "mentci-datalog-src": "mentci-datalog-src",
+        "mentci-dig-src": "mentci-dig-src",
+        "mentci-fs-src": "mentci-fs-src",
+        "mentci-launch-src": "mentci-launch-src",
+        "mentci-mcp-gateway-src": "mentci-mcp-gateway-src",
+        "mentci-mcp-src": "mentci-mcp-src",
+        "mentci-policy-engine-src": "mentci-policy-engine-src",
+        "mentci-stt-src": "mentci-stt-src",
+        "mentci-user-src": "mentci-user-src",
         "mkZolaWebsite": "mkZolaWebsite_2",
+        "nix-hash-patcher-src": "nix-hash-patcher-src",
         "nixpkgs": "nixpkgs_6",
         "opencode": "opencode",
         "pi-agent-rust": "pi-agent-rust",
         "pi-mono": "pi-mono",
+        "samskara-src": "samskara-src",
         "seahawk": "seahawk_2",
         "sema": "sema",
         "skrips": "skrips_2",
@@ -1648,6 +1938,22 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
+      }
+    },
+    "samskara-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772722938,
+        "narHash": "sha256-wAiETaBPZQHZ9T4CRCWGzS+l24WjJGPO7R4lPSexm9c=",
+        "ref": "refs/heads/main",
+        "rev": "0e5bb1c335b07392d3220dbe767a0d83936b59e9",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/samskara.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/samskara.git"
       }
     },
     "seahawk": {

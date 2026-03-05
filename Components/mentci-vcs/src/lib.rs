@@ -165,6 +165,7 @@ pub struct ComponentSplitStatus {
     pub path: String,
     pub repo: String,
     pub submodule_present: bool,
+    pub submodule_rev: Option<String>,
     pub flake_rev: Option<String>,
     pub required_submodule: bool,
     pub required_flake_lock: bool,
@@ -205,6 +206,11 @@ where
 
     for component in &manifest.components {
         let submodule_present = is_submodule(repo_root, &component.path)?;
+        let submodule_rev = if submodule_present {
+            git_path_head_rev(repo_root, &component.path)?
+        } else {
+            None
+        };
         let flake_rev = flake_lock
             .lock_rev_for_input(&component.flake_input)
             .map(ToOwned::to_owned);
@@ -216,12 +222,20 @@ where
         if component.required_flake_lock && flake_rev.is_none() {
             violations.push("required flake.lock input missing or unlocked".to_owned());
         }
+        if component.required_flake_lock {
+            if let (Some(submodule_rev), Some(flake_rev)) = (submodule_rev.as_ref(), flake_rev.as_ref()) {
+                if submodule_rev != flake_rev {
+                    violations.push("submodule HEAD does not match flake.lock revision".to_owned());
+                }
+            }
+        }
 
         statuses.push(ComponentSplitStatus {
             id: component.id.clone(),
             path: component.path.clone(),
             repo: component.repo.clone(),
             submodule_present,
+            submodule_rev,
             flake_rev,
             required_submodule: component.required_submodule,
             required_flake_lock: component.required_flake_lock,
@@ -256,6 +270,27 @@ fn git_path_is_submodule(repo_root: &Path, path: &str) -> Result<bool> {
     };
 
     Ok(mode == "160000")
+}
+
+fn git_path_head_rev(repo_root: &Path, path: &str) -> Result<Option<String>> {
+    let output = Command::new("git")
+        .current_dir(repo_root)
+        .arg("-C")
+        .arg(path)
+        .arg("rev-parse")
+        .arg("HEAD")
+        .output()
+        .with_context(|| format!("Failed to resolve HEAD revision for {path}"))?;
+
+    if !output.status.success() {
+        return Ok(None);
+    }
+
+    let rev = String::from_utf8_lossy(&output.stdout).trim().to_owned();
+    if rev.is_empty() {
+        return Ok(None);
+    }
+    Ok(Some(rev))
 }
 
 #[cfg(test)]

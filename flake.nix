@@ -36,6 +36,26 @@
       flake = false;
     };
 
+    # Rust component split sources (submodule + flake lock dual authority)
+    mentci-aid-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-aid.git"; flake = false; };
+    mentci-datalog-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-datalog.git"; flake = false; };
+    chronos-src = { url = "git+ssh://git@github.com/LiGoldragon/chronos.git"; flake = false; };
+    mentci-fs-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-fs.git"; flake = false; };
+    mentci-box-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-box.git"; flake = false; };
+    mentci-box-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-box-lib.git"; flake = false; };
+    mentci-launch-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-launch.git"; flake = false; };
+    mentci-stt-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-stt.git"; flake = false; };
+    mentci-user-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-user.git"; flake = false; };
+    samskara-src = { url = "git+ssh://git@github.com/LiGoldragon/samskara.git"; flake = false; };
+    mentci-dig-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-dig.git"; flake = false; };
+    mentci-mcp-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-mcp.git"; flake = false; };
+    mentci-policy-engine-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-policy-engine.git"; flake = false; };
+    mentci-mcp-gateway-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-mcp-gateway.git"; flake = false; };
+    aski-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/aski-lib.git"; flake = false; };
+    aski-cli-src = { url = "git+ssh://git@github.com/LiGoldragon/aski-cli.git"; flake = false; };
+    nix-hash-patcher-src = { url = "git+ssh://git@github.com/LiGoldragon/nix-hash-patcher.git"; flake = false; };
+    ai-src = { url = "git+ssh://git@github.com/LiGoldragon/AI.git"; flake = false; };
+
     # External Collaborations
     attractor = {
       url = "github:strongdm/attractor";

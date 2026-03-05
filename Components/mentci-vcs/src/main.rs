@@ -88,18 +88,20 @@ fn run_component_split_status(repo_root: &std::path::Path, args: &[String]) -> R
 
     for status in &report.statuses {
         let lock_rev = status.flake_rev.as_deref().unwrap_or("-");
+        let submodule_rev = status.submodule_rev.as_deref().unwrap_or("-");
         let submodule_mark = if status.submodule_present { "yes" } else { "no" };
         if status.violations.is_empty() {
             println!(
-                "[ok] {} path={} submodule={} lock_rev={}",
-                status.id, status.path, submodule_mark, lock_rev
+                "[ok] {} path={} submodule={} submodule_rev={} lock_rev={}",
+                status.id, status.path, submodule_mark, submodule_rev, lock_rev
             );
         } else {
             println!(
-                "[violation] {} path={} submodule={} lock_rev={} issues={}",
+                "[violation] {} path={} submodule={} submodule_rev={} lock_rev={} issues={}",
                 status.id,
                 status.path,
                 submodule_mark,
+                submodule_rev,
                 lock_rev,
                 status.violations.join("; ")
             );

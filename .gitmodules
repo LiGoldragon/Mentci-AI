@@ -1,0 +1,54 @@
+[submodule "Components/mentci-aid"]
+	path = Components/mentci-aid
+	url = git@github.com:LiGoldragon/mentci-aid.git
+[submodule "Components/mentci-datalog"]
+	path = Components/mentci-datalog
+	url = git@github.com:LiGoldragon/mentci-datalog.git
+[submodule "Components/chronos"]
+	path = Components/chronos
+	url = git@github.com:LiGoldragon/chronos.git
+[submodule "Components/mentci-fs"]
+	path = Components/mentci-fs
+	url = git@github.com:LiGoldragon/mentci-fs.git
+[submodule "Components/mentci-box"]
+	path = Components/mentci-box
+	url = git@github.com:LiGoldragon/mentci-box.git
+[submodule "Components/mentci-box-lib"]
+	path = Components/mentci-box-lib
+	url = git@github.com:LiGoldragon/mentci-box-lib.git
+[submodule "Components/mentci-launch"]
+	path = Components/mentci-launch
+	url = git@github.com:LiGoldragon/mentci-launch.git
+[submodule "Components/mentci-stt"]
+	path = Components/mentci-stt
+	url = git@github.com:LiGoldragon/mentci-stt.git
+[submodule "Components/mentci-user"]
+	path = Components/mentci-user
+	url = git@github.com:LiGoldragon/mentci-user.git
+[submodule "Components/samskara"]
+	path = Components/samskara
+	url = git@github.com:LiGoldragon/samskara.git
+[submodule "Components/mentci-dig"]
+	path = Components/mentci-dig
+	url = git@github.com:LiGoldragon/mentci-dig.git
+[submodule "Components/mentci-mcp"]
+	path = Components/mentci-mcp
+	url = git@github.com:LiGoldragon/mentci-mcp.git
+[submodule "Components/mentci-policy-engine"]
+	path = Components/mentci-policy-engine
+	url = git@github.com:LiGoldragon/mentci-policy-engine.git
+[submodule "Components/mentci-mcp-gateway"]
+	path = Components/mentci-mcp-gateway
+	url = git@github.com:LiGoldragon/mentci-mcp-gateway.git
+[submodule "Components/aski-lib"]
+	path = Components/aski-lib
+	url = git@github.com:LiGoldragon/aski-lib.git
+[submodule "Components/aski-cli"]
+	path = Components/aski-cli
+	url = git@github.com:LiGoldragon/aski-cli.git
+[submodule "Components/nix-hash-patcher"]
+	path = Components/nix-hash-patcher
+	url = git@github.com:LiGoldragon/nix-hash-patcher.git
+[submodule "Components/AI"]
+	path = Components/AI
+	url = git@github.com:LiGoldragon/AI.git

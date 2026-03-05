@@ -36,3 +36,10 @@ Policy is progressive: strictness is toggled per component through manifest flag
 
 ## Operational rule
 `flake.lock` is the final integration authority. Submodule head may move during local development, but lock updates happen only after successful verification.
+
+## Migration execution snapshot
+- Created standalone GitHub repositories for targeted Rust components under `LiGoldragon/*` and pushed initial imports.
+- Rewrote initial component-repo commits so author/committer is `li <li@goldragon.criome.net>`.
+- Replaced in-repo component directories with git submodules at the same paths.
+- Added component flake inputs (`*-src`) and updated `flake.lock` pins to those exact component revisions.
+- Hardened `mentci-vcs component-split-status` to enforce submodule HEAD equals `flake.lock` pinned rev.

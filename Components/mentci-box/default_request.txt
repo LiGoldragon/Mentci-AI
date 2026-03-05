@@ -1,9 +1,0 @@
-(
-  worktreePath = ".",
-  homePath = "/tmp/mentci-box-home",
-  shareNetwork = false,
-  fetchSources = true,
-  prepareComponents = true,
-  binds = [],
-  roBinds = []
-)
