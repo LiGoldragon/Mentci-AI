@@ -169,6 +169,7 @@
           pi = namespace.pi;
           piDev = namespace.pi_dev;
           piSmoke = namespace.pi_check;
+          piWithExtensions = namespace.pi_with_extensions_check;
           unifiedLlm = namespace.unified_llm;
         };
 
