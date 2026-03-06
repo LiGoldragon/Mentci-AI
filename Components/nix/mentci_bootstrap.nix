@@ -1,7 +1,7 @@
 { pkgs, mentci_launch }:
 
 pkgs.writeShellScriptBin "mentci-bootstrap" ''
-  cmd="${1:-launcher}"
+  cmd="''${1:-launcher}"
   shift || true
 
   case "$cmd" in
