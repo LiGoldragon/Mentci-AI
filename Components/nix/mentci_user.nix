@@ -1,4 +1,4 @@
-{ craneLib, pkgs, src, repo_root }:
+{ craneLib, pkgs, src }:
 
 let
   commonArgs = {
@@ -7,7 +7,7 @@ let
     inherit src;
     cargoExtraArgs = "--manifest-path Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
-    cargoLock = repo_root + "/Cargo.lock";
+    cargoLock = src + "/Cargo.lock";
     doCheck = false;
   };
 in

@@ -1,4 +1,4 @@
-{ craneLib, pkgs, src, repo_root }:
+{ craneLib, pkgs, src }:
 
 let
   commonArgs = {
@@ -6,7 +6,7 @@ let
     version = "0.1.0";
     inherit src;
     cargoExtraArgs = "--manifest-path Cargo.toml";
-    cargoLock = repo_root + "/Cargo.lock";
+    cargoLock = src + "/Cargo.lock";
     doCheck = false;
   };
 in

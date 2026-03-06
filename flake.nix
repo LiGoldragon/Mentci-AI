@@ -149,6 +149,7 @@
           vtcode_src = inputs.vtcode-src;
           repo_root = ./.;
           mentci_aid_src = inputs.mentci-aid-src;
+          ai_src = inputs.ai-src;
           chronos_src = inputs.chronos-src;
           mentci_stt_src = inputs.mentci-stt-src;
           mentci_user_src = inputs.mentci-user-src;

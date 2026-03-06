@@ -1,4 +1,4 @@
-{ craneLib, pkgs, src, mentci_box_lib_src, mentci_user_src, repo_root }:
+{ craneLib, pkgs, src, mentci_box_lib_src, mentci_user_src, schema_src }:
 
 let
   commonArgs = {
@@ -11,9 +11,9 @@ let
       mkdir -p /build/mentci-box-lib
       cp -r ${mentci_box_lib_src}/. /build/mentci-box-lib/
       ln -s ${mentci_user_src} /build/mentci-user
-      ln -s ${repo_root}/Components/schema /build/schema
+      ln -s ${schema_src} /build/schema
     '';
-    cargoLock = repo_root + "/Cargo.lock";
+    cargoLock = src + "/Cargo.lock";
     doCheck = false;
   };
 in

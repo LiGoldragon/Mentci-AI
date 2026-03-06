@@ -1,4 +1,4 @@
-{ craneLib, pkgs, src, repo_root }:
+{ craneLib, pkgs, src, schema_src }:
 
 let
   commonArgs = {
@@ -8,9 +8,9 @@ let
     cargoExtraArgs = "--manifest-path Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
     postUnpack = ''
-      ln -s ${repo_root}/Components/schema /build/schema
+      ln -s ${schema_src} /build/schema
     '';
-    cargoLock = repo_root + "/Cargo.lock";
+    cargoLock = src + "/Cargo.lock";
     doCheck = false;
   };
 in

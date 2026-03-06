@@ -12,6 +12,7 @@
 , vtcode_src
 , repo_root
 , mentci_aid_src
+, ai_src
 , chronos_src
 , mentci_stt_src
 , mentci_user_src
@@ -24,36 +25,38 @@
 
 let
   mentci_ai = import ./mentci_ai.nix {
-    inherit craneLib pkgs repo_root;
-    src = mentci_aid_src;
-    inherit mentci_box_lib_src;
+    inherit craneLib;
+    src = ai_src;
   };
 
   chronos = import ./chronos.nix {
-    inherit craneLib pkgs repo_root;
+    inherit craneLib pkgs;
     src = chronos_src;
   };
 
   mentci_stt = import ./mentci_stt.nix {
-    inherit craneLib pkgs repo_root;
+    inherit craneLib pkgs;
     src = mentci_stt_src;
+    schema_src = ../schema;
     inherit mentci_box_lib_src mentci_user_src;
   };
 
   mentci_user = import ./mentci_user.nix {
-    inherit craneLib pkgs repo_root;
+    inherit craneLib pkgs;
     src = mentci_user_src;
   };
 
   mentci_mcp = import ./mentci_mcp.nix {
-    inherit craneLib pkgs repo_root;
+    inherit craneLib pkgs;
     src = mentci_mcp_src;
+    schema_src = ../schema;
     inherit aski_lib_src;
   };
 
   mentci_box = import ./mentci_box.nix {
-    inherit craneLib pkgs repo_root;
+    inherit craneLib pkgs;
     src = mentci_box_src;
+    schema_src = ../schema;
     inherit mentci_box_lib_src;
   };
 
@@ -62,8 +65,9 @@ let
   };
 
   mentci_launch = import ./mentci_launch.nix {
-    inherit craneLib pkgs repo_root;
+    inherit craneLib pkgs;
     src = mentci_launch_src;
+    schema_src = ../schema;
   };
 
   mentci_vcs = import ./mentci_vcs.nix {
@@ -108,8 +112,9 @@ let
   };
 
   execute = import ./execute.nix {
-    inherit craneLib pkgs repo_root;
+    inherit craneLib pkgs;
     src = mentci_aid_src;
+    schema_src = ../schema;
     inherit mentci_box_lib_src;
   };
 
@@ -163,7 +168,7 @@ let
     };
 
   execute_check = import ./execute_check.nix {
-    inherit pkgs mentci_ai;
+    inherit pkgs execute;
   };
 in
 {
