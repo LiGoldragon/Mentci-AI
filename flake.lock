@@ -1260,14 +1260,18 @@
     "mentci-launch-src": {
       "flake": false,
       "locked": {
-        "path": "./Components/mentci-launch",
-        "type": "path"
+        "lastModified": 1772799979,
+        "narHash": "sha256-lG9NOhJUuMqJON+CMYh0iP6afRgL4qld43QFB7OpuRA=",
+        "ref": "refs/heads/main",
+        "rev": "47b07acd5f569b034dd50fa8f7b20fa41d9269ad",
+        "revCount": 2,
+        "type": "git",
+        "url": "file:./Components/mentci-launch"
       },
       "original": {
-        "path": "./Components/mentci-launch",
-        "type": "path"
-      },
-      "parent": []
+        "type": "git",
+        "url": "file:./Components/mentci-launch"
+      }
     },
     "mentci-mcp-gateway-src": {
       "flake": false,
@@ -1288,14 +1292,18 @@
     "mentci-mcp-src": {
       "flake": false,
       "locked": {
-        "path": "./Components/mentci-mcp",
-        "type": "path"
+        "lastModified": 1772799979,
+        "narHash": "sha256-eY0RzVhePrjb6h8YxiBqR8iV/4Zh0BGB61JiYWpwesc=",
+        "ref": "refs/heads/main",
+        "rev": "aa3c71ee4377935fc046bdc61068e98ef15c3658",
+        "revCount": 2,
+        "type": "git",
+        "url": "file:./Components/mentci-mcp"
       },
       "original": {
-        "path": "./Components/mentci-mcp",
-        "type": "path"
-      },
-      "parent": []
+        "type": "git",
+        "url": "file:./Components/mentci-mcp"
+      }
     },
     "mentci-policy-engine-src": {
       "flake": false,
@@ -1316,26 +1324,34 @@
     "mentci-stt-src": {
       "flake": false,
       "locked": {
-        "path": "./Components/mentci-stt",
-        "type": "path"
+        "lastModified": 1772799979,
+        "narHash": "sha256-VbZqiz8GoT/4qt5DvQ1XH5RYmkEv2SL1ikA4UJS00nQ=",
+        "ref": "refs/heads/main",
+        "rev": "7762b0e3bfa12ee62453ceaff43a7b540acfd6bc",
+        "revCount": 2,
+        "type": "git",
+        "url": "file:./Components/mentci-stt"
       },
       "original": {
-        "path": "./Components/mentci-stt",
-        "type": "path"
-      },
-      "parent": []
+        "type": "git",
+        "url": "file:./Components/mentci-stt"
+      }
     },
     "mentci-user-src": {
       "flake": false,
       "locked": {
-        "path": "./Components/mentci-user",
-        "type": "path"
+        "lastModified": 1772799979,
+        "narHash": "sha256-W0STUHkfWBbulkh3PeS1MtAsVHnXZQY2QwvQzyGueMs=",
+        "ref": "refs/heads/main",
+        "rev": "794a3b8fc5f906dfde0844c01d28931357e191a4",
+        "revCount": 2,
+        "type": "git",
+        "url": "file:./Components/mentci-user"
       },
       "original": {
-        "path": "./Components/mentci-user",
-        "type": "path"
-      },
-      "parent": []
+        "type": "git",
+        "url": "file:./Components/mentci-user"
+      }
     },
     "mfgtools": {
       "flake": false,
