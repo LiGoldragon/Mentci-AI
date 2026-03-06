@@ -6,7 +6,7 @@ let
     version = "0.1.0";
     inherit src;
     cargoExtraArgs = "--manifest-path Cargo.toml";
-    cargoLock = ./locks/chronos.Cargo.lock;
+    cargoLock = src + "/Cargo.lock";
     doCheck = false;
   };
 in

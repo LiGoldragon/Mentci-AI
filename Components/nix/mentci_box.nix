@@ -12,7 +12,7 @@ let
       cp -r ${mentci_box_lib_src}/. /build/mentci-box-lib/
       ln -s ${schema_src} /build/schema
     '';
-    cargoLock = ./locks/mentci_box.Cargo.lock;
+    cargoLock = src + "/Cargo.lock";
     doCheck = false;
   };
 in

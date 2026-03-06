@@ -1229,6 +1229,18 @@
         "url": "ssh://git@github.com/LiGoldragon/mentci-dig.git"
       }
     },
+    "mentci-execute-src": {
+      "flake": false,
+      "locked": {
+        "path": "./Components/mentci-execute",
+        "type": "path"
+      },
+      "original": {
+        "path": "./Components/mentci-execute",
+        "type": "path"
+      },
+      "parent": []
+    },
     "mentci-fs-src": {
       "flake": false,
       "locked": {
@@ -1843,6 +1855,7 @@
         "mentci-box-src": "mentci-box-src",
         "mentci-datalog-src": "mentci-datalog-src",
         "mentci-dig-src": "mentci-dig-src",
+        "mentci-execute-src": "mentci-execute-src",
         "mentci-fs-src": "mentci-fs-src",
         "mentci-launch-src": "mentci-launch-src",
         "mentci-mcp-gateway-src": "mentci-mcp-gateway-src",

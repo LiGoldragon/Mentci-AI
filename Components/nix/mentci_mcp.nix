@@ -7,7 +7,7 @@ let
     inherit src;
     cargoExtraArgs = "--manifest-path Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
-    cargoLock = ./locks/mentci_mcp.Cargo.lock;
+    cargoLock = src + "/Cargo.lock";
     postUnpack = ''
       ln -s ${aski_lib_src} /build/aski-lib
       ln -s ${schema_src} /build/schema

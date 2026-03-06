@@ -43,12 +43,13 @@
     mentci-fs-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-fs.git"; flake = false; };
     mentci-box-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-box.git"; flake = false; };
     mentci-box-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-box-lib.git"; flake = false; };
-    mentci-launch-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-launch.git"; flake = false; };
-    mentci-stt-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-stt.git"; flake = false; };
-    mentci-user-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-user.git"; flake = false; };
+    mentci-launch-src = { url = "path:./Components/mentci-launch"; flake = false; };
+    mentci-execute-src = { url = "path:./Components/mentci-execute"; flake = false; };
+    mentci-stt-src = { url = "path:./Components/mentci-stt"; flake = false; };
+    mentci-user-src = { url = "path:./Components/mentci-user"; flake = false; };
     samskara-src = { url = "git+ssh://git@github.com/LiGoldragon/samskara.git"; flake = false; };
     mentci-dig-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-dig.git"; flake = false; };
-    mentci-mcp-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-mcp.git"; flake = false; };
+    mentci-mcp-src = { url = "path:./Components/mentci-mcp"; flake = false; };
     mentci-policy-engine-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-policy-engine.git"; flake = false; };
     mentci-mcp-gateway-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-mcp-gateway.git"; flake = false; };
     aski-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/aski-lib.git"; flake = false; };
@@ -158,6 +159,7 @@
           mentci_box_src = inputs.mentci-box-src;
           mentci_box_lib_src = inputs.mentci-box-lib-src;
           mentci_launch_src = inputs.mentci-launch-src;
+          mentci_execute_src = inputs.mentci-execute-src;
         };
 
         jail = import ./Components/nix/jail.nix {

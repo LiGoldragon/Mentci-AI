@@ -21,6 +21,7 @@
 , mentci_box_src
 , mentci_box_lib_src
 , mentci_launch_src
+, mentci_execute_src
 }:
 
 let
@@ -113,7 +114,7 @@ let
 
   execute = import ./execute.nix {
     inherit craneLib pkgs;
-    src = mentci_aid_src;
+    src = mentci_execute_src;
     schema_src = ../schema;
     inherit mentci_box_lib_src;
   };

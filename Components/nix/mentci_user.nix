@@ -7,7 +7,7 @@ let
     inherit src;
     cargoExtraArgs = "--manifest-path Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
-    cargoLock = ./locks/mentci_user.Cargo.lock;
+    cargoLock = src + "/Cargo.lock";
     doCheck = false;
   };
 in
