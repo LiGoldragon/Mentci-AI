@@ -107,9 +107,8 @@ let
     src = vtcode_src;
   };
 
-  execute = pkgs.runCommand "mentci-execute" { } ''
-    mkdir -p "$out/bin"
-    ln -s "${mentci_ai}/bin/execute" "$out/bin/execute"
+  execute = pkgs.writeShellScriptBin "execute" ''
+    exec ${pkgs.cargo}/bin/cargo run --quiet --manifest-path ${mentci_aid_src}/Cargo.toml --bin execute -- "$@"
   '';
 
   attractor = import ./attractor.nix {
@@ -138,7 +137,7 @@ let
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
     pi_dev = pi_with_extensions;
-    inherit unified_llm pi_rust vtcode execute chronos mentci_stt mentci_user mentci_mcp;
+    inherit unified_llm vtcode execute chronos mentci_stt mentci_user mentci_mcp;
   };
 
   jail_sources = import ./jail_sources.nix {
