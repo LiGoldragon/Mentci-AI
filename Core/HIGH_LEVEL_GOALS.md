@@ -4,7 +4,7 @@ This file defines durable, repository-level goals that guide orchestration and i
 
 ## Goal 0: mentci-aid Stabilization
 
-Establish **mentci-aid** as a functional, Level 5 autonomous pipeline daemon.
+Establish **mentci-aid** as a functional, Level-5 autonomous pipeline daemon.
 
 Required outcome:
 - `mentci-aid` reaches a continuously "Running State", listening on multiple sockets for Cap'n Proto messages from supervised child `mentci-aid` instances inside Mentci-Boxes.
