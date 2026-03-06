@@ -18,7 +18,7 @@ Required outcome:
 - **Init Envelope Purity:** runtime initialization state is transmitted as Cap'n Proto init message objects, not env-scattered domain config.
 - **Terminalized Box Launch Path:** a dedicated launcher component strategy exists for systemd-managed Mentci-Box terminal sessions.
 
-## Goal 1: Lojix/Aski Sub-Flow Handoff
+## Goal 1: Lojix/Aski sub-flow handoff
 
 Pass a subagent job intent as a homoiconic EDN/Lojix data artifact to a nested `mentci-box`.
 
