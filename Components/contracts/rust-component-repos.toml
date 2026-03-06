@@ -60,7 +60,7 @@ required_flake_lock = true
 id = "mentci-execute"
 path = "Components/mentci-execute"
 flake_input = "mentci-execute-src"
-repo = "local:path:Components/mentci-execute"
+repo = "git@github.com:LiGoldragon/mentci-execute.git"
 required_submodule = false
 required_flake_lock = true
 
