@@ -6,7 +6,7 @@ let
     version = "0.1.0";
     inherit src;
     cargoExtraArgs = "--manifest-path Cargo.toml";
-    cargoLock = src + "/Cargo.lock";
+    cargoLock = ./locks/mentci_ai.Cargo.lock;
     doCheck = false;
   };
 in

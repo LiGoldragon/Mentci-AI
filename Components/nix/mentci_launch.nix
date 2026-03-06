@@ -10,7 +10,7 @@ let
     postUnpack = ''
       ln -s ${schema_src} /build/schema
     '';
-    cargoLock = ../../Cargo.lock;
+    cargoLock = ./locks/mentci_launch.Cargo.lock;
     doCheck = false;
   };
 in

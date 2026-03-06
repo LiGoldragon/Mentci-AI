@@ -13,7 +13,7 @@ let
       ln -s ${mentci_user_src} /build/mentci-user
       ln -s ${schema_src} /build/schema
     '';
-    cargoLock = ../../Cargo.lock;
+    cargoLock = ./locks/mentci_stt.Cargo.lock;
     doCheck = false;
   };
 in
