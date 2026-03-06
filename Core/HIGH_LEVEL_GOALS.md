@@ -14,7 +14,7 @@ Required outcome:
 - **[DONE]** Full Repository Sweep complete (Sections 1-10).
 - **Assimilation:** Attractor is recognized purely as an inspiration for agent-flow. We do not fork it. Mentci-AI is implemented from first principles in Rust.
 - **R&D Mirror Integrity:** `Development/` and `Research/` remain mirrored by subject so execution guidance and traceable findings stay aligned.
-- **Control-Gate Integrity:** session and root guard health are maintained as release-blocking gates.
+- **Control-Gate Integrity:** Session and root guard health are maintained as release-blocking gates.
 - **Init Envelope Purity:** runtime initialization state is transmitted as Cap'n Proto init message objects, not env-scattered domain config.
 - **Terminalized Box Launch Path:** a dedicated launcher component strategy exists for systemd-managed Mentci-Box terminal sessions.
 
