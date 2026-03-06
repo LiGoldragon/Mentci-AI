@@ -159,3 +159,11 @@ flake_input = "criomos"
 repo = "git@github.com:Criome/CriomOS.git"
 required_submodule = true
 required_flake_lock = true
+
+[[components]]
+id = "criome-core"
+path = "Components/criome-core"
+flake_input = "criome-core-src"
+repo = "git@github.com:LiGoldragon/criome-core.git"
+required_submodule = false
+required_flake_lock = false

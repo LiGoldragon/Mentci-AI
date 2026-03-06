@@ -22,7 +22,8 @@ members = [
     "Components/mentci-vcs",
     "Components/aski-lib",
     "Components/aski-cli",
-    "Components/nix-hash-patcher"
+    "Components/nix-hash-patcher",
+    "Components/criome-core"
 ]
 
 [profile.release]
