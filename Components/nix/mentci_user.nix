@@ -7,7 +7,7 @@ let
     inherit src;
     cargoExtraArgs = "--manifest-path Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
-    cargoLock = if builtins.pathExists (src + "/Cargo.lock") then src + "/Cargo.lock" else ../../Cargo.lock;
+    cargoLock = ../../Cargo.lock;
     doCheck = false;
   };
 in

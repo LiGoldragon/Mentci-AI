@@ -10,7 +10,7 @@ let
     postUnpack = ''
       ln -s ${schema_src} /build/schema
     '';
-    cargoLock = if builtins.pathExists (src + "/Cargo.lock") then src + "/Cargo.lock" else ../../Cargo.lock;
+    cargoLock = ../../Cargo.lock;
     doCheck = false;
   };
 in
