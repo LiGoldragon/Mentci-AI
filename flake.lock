@@ -1186,15 +1186,15 @@
       "locked": {
         "lastModified": 1772800101,
         "narHash": "sha256-F1Abqc2rkpxxzXrp/y2i0epsoMxA8hUAV75C3MF58Rg=",
-        "ref": "refs/heads/main",
+        "owner": "LiGoldragon",
+        "repo": "mentci-box",
         "rev": "0ee2a07309e5ec8790193948c734c6343b6694e0",
-        "revCount": 2,
-        "type": "git",
-        "url": "file:./Components/mentci-box"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./Components/mentci-box"
+        "owner": "LiGoldragon",
+        "repo": "mentci-box",
+        "type": "github"
       }
     },
     "mentci-datalog-src": {
@@ -1234,15 +1234,15 @@
       "locked": {
         "lastModified": 1772800554,
         "narHash": "sha256-jeCltIqqLLVxWmJ4fFbBfPL3vrkwNBhSTmebSWGS7AU=",
-        "ref": "refs/heads/main",
+        "owner": "LiGoldragon",
+        "repo": "mentci-execute",
         "rev": "efd5f67229ec0a2c0d03433d6368da31d7c6fee5",
-        "revCount": 1,
-        "type": "git",
-        "url": "file:./Components/mentci-execute"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./Components/mentci-execute"
+        "owner": "LiGoldragon",
+        "repo": "mentci-execute",
+        "type": "github"
       }
     },
     "mentci-fs-src": {
@@ -1266,15 +1266,15 @@
       "locked": {
         "lastModified": 1772799979,
         "narHash": "sha256-lG9NOhJUuMqJON+CMYh0iP6afRgL4qld43QFB7OpuRA=",
-        "ref": "refs/heads/main",
+        "owner": "LiGoldragon",
+        "repo": "mentci-launch",
         "rev": "47b07acd5f569b034dd50fa8f7b20fa41d9269ad",
-        "revCount": 2,
-        "type": "git",
-        "url": "file:./Components/mentci-launch"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./Components/mentci-launch"
+        "owner": "LiGoldragon",
+        "repo": "mentci-launch",
+        "type": "github"
       }
     },
     "mentci-mcp-gateway-src": {
@@ -1298,15 +1298,15 @@
       "locked": {
         "lastModified": 1772799979,
         "narHash": "sha256-eY0RzVhePrjb6h8YxiBqR8iV/4Zh0BGB61JiYWpwesc=",
-        "ref": "refs/heads/main",
+        "owner": "LiGoldragon",
+        "repo": "mentci-mcp",
         "rev": "aa3c71ee4377935fc046bdc61068e98ef15c3658",
-        "revCount": 2,
-        "type": "git",
-        "url": "file:./Components/mentci-mcp"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./Components/mentci-mcp"
+        "owner": "LiGoldragon",
+        "repo": "mentci-mcp",
+        "type": "github"
       }
     },
     "mentci-policy-engine-src": {
@@ -1330,15 +1330,15 @@
       "locked": {
         "lastModified": 1772799979,
         "narHash": "sha256-VbZqiz8GoT/4qt5DvQ1XH5RYmkEv2SL1ikA4UJS00nQ=",
-        "ref": "refs/heads/main",
+        "owner": "LiGoldragon",
+        "repo": "mentci-stt",
         "rev": "7762b0e3bfa12ee62453ceaff43a7b540acfd6bc",
-        "revCount": 2,
-        "type": "git",
-        "url": "file:./Components/mentci-stt"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./Components/mentci-stt"
+        "owner": "LiGoldragon",
+        "repo": "mentci-stt",
+        "type": "github"
       }
     },
     "mentci-user-src": {
@@ -1346,15 +1346,15 @@
       "locked": {
         "lastModified": 1772799979,
         "narHash": "sha256-W0STUHkfWBbulkh3PeS1MtAsVHnXZQY2QwvQzyGueMs=",
-        "ref": "refs/heads/main",
+        "owner": "LiGoldragon",
+        "repo": "mentci-user",
         "rev": "794a3b8fc5f906dfde0844c01d28931357e191a4",
-        "revCount": 2,
-        "type": "git",
-        "url": "file:./Components/mentci-user"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./Components/mentci-user"
+        "owner": "LiGoldragon",
+        "repo": "mentci-user",
+        "type": "github"
       }
     },
     "mfgtools": {
