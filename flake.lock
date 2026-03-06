@@ -1184,17 +1184,17 @@
     "mentci-box-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772722915,
-        "narHash": "sha256-kuSrtyn9AB8rNNjI0ZkvlnTvYTgo5yaGe01/JtVPy6A=",
+        "lastModified": 1772800101,
+        "narHash": "sha256-F1Abqc2rkpxxzXrp/y2i0epsoMxA8hUAV75C3MF58Rg=",
         "ref": "refs/heads/main",
-        "rev": "68720bb87096c09c9107a195dc2ab74b161dc6e4",
-        "revCount": 1,
+        "rev": "0ee2a07309e5ec8790193948c734c6343b6694e0",
+        "revCount": 2,
         "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-box.git"
+        "url": "file:./Components/mentci-box"
       },
       "original": {
         "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-box.git"
+        "url": "file:./Components/mentci-box"
       }
     },
     "mentci-datalog-src": {
