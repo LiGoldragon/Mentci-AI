@@ -163,6 +163,7 @@
         jail = import ./Components/nix/jail.nix {
           inherit pkgs;
           Sources = namespace.jail_sources;
+          mentci_bootstrap = namespace.mentci_bootstrap;
         };
 
         devShell = namespace.dev_shell { inherit jail; };
@@ -176,6 +177,7 @@
           mentciBoxDefault = namespace.mentci_box_default;
           mentciLaunch = namespace.mentci_launch;
           execute = namespace.execute;
+          mentciBootstrap = namespace.mentci_bootstrap;
           chronos = namespace.chronos;
           mentciStt = namespace.mentci_stt;
           mentciUser = namespace.mentci_user;
@@ -213,6 +215,10 @@
         apps.execute = flake-utils.lib.mkApp {
           drv = namespace.execute;
           exePath = "/bin/execute";
+        };
+        apps.mentci-bootstrap = flake-utils.lib.mkApp {
+          drv = namespace.mentci_bootstrap;
+          exePath = "/bin/mentci-bootstrap";
         };
         apps.mentci-launch = flake-utils.lib.mkApp {
           drv = namespace.mentci_launch;

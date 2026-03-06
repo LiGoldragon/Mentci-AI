@@ -1,4 +1,4 @@
-{ pkgs, Sources, sourcesPath ? "Sources", outputsPath ? "Outputs", componentIndexPath ? "Components/index.edn", componentRegistryPath ? null }:
+{ pkgs, Sources, mentci_bootstrap, sourcesPath ? "Sources", outputsPath ? "Outputs", componentIndexPath ? "Components/index.edn", componentRegistryPath ? null }:
 
 let
   lib = pkgs.lib;
@@ -88,10 +88,11 @@ pkgs.mkShell {
     pkgs.clojure
     pkgs.nix-prefetch-git
     pkgs.tree
+    mentci_bootstrap
   ];
 
   shellHook = ''
-    # Minimal Shim: Call Rust actor launcher
-    cargo run --quiet --manifest-path ${../mentci-aid/Cargo.toml} --bin execute -- launcher
+    # Minimal Shim: Call bootstrap launcher surface
+    mentci-bootstrap launcher
   '';
 }
