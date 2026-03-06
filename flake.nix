@@ -44,7 +44,7 @@
     mentci-box-src = { url = "git+file:./Components/mentci-box"; flake = false; };
     mentci-box-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-box-lib.git"; flake = false; };
     mentci-launch-src = { url = "git+file:./Components/mentci-launch"; flake = false; };
-    mentci-execute-src = { url = "path:./Components/mentci-execute"; flake = false; };
+    mentci-execute-src = { url = "git+file:./Components/mentci-execute"; flake = false; };
     mentci-stt-src = { url = "git+file:./Components/mentci-stt"; flake = false; };
     mentci-user-src = { url = "git+file:./Components/mentci-user"; flake = false; };
     samskara-src = { url = "git+ssh://git@github.com/LiGoldragon/samskara.git"; flake = false; };
