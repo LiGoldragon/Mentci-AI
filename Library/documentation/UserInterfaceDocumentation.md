@@ -12,7 +12,7 @@ When documenting any new UI, the documentation **must** describe:
 2. **The Execution Wrapper:** How the UI is instantiated within the Nix boundary (e.g., `mentci-vtcode`).
 3. **The Data Contracts:** The structured data (Cap'n Proto, EDN, TOML) the UI reads or writes.
 
-## 2. Required Documentation Sections for UIs
+## 2. Required documentation sections for UIs
 
 Whenever a new UI or agent harness is integrated, its documentation (typically placed in `Library/documentation/` or its `README.md`) must include the following sections.
 
