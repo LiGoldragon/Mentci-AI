@@ -13,7 +13,7 @@ let
       ln -s ${mentci_user_src} /build/mentci-user
       ln -s ${schema_src} /build/schema
     '';
-    cargoLock = src + "/Cargo.lock";
+    cargoLock = if builtins.pathExists (src + "/Cargo.lock") then src + "/Cargo.lock" else ../../Cargo.lock;
     doCheck = false;
   };
 in

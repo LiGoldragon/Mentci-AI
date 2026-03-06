@@ -7,7 +7,7 @@ let
     inherit src;
     cargoExtraArgs = "--manifest-path Cargo.toml";
     nativeBuildInputs = [ pkgs.capnproto ];
-    cargoLock = src + "/Cargo.lock";
+    cargoLock = if builtins.pathExists (src + "/Cargo.lock") then src + "/Cargo.lock" else ../../Cargo.lock;
     postUnpack = ''
       ln -s ${aski_lib_src} /build/aski-lib
       ln -s ${schema_src} /build/schema
