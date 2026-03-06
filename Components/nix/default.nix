@@ -107,9 +107,11 @@ let
     src = vtcode_src;
   };
 
-  execute = pkgs.writeShellScriptBin "execute" ''
-    exec ${pkgs.cargo}/bin/cargo run --quiet --manifest-path ${mentci_aid_src}/Cargo.toml --bin execute -- "$@"
-  '';
+  execute = import ./execute.nix {
+    inherit craneLib pkgs repo_root;
+    src = mentci_aid_src;
+    inherit mentci_box_lib_src;
+  };
 
   attractor = import ./attractor.nix {
     inherit pkgs;
