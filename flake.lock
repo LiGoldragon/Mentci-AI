@@ -1260,18 +1260,14 @@
     "mentci-launch-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772722924,
-        "narHash": "sha256-IVXUpxvImBkUJRU5V61SkW8eepXGreGMt86zUCnkghY=",
-        "ref": "refs/heads/main",
-        "rev": "de3c7863437430a3efc6f84ff39acb5fb92b6963",
-        "revCount": 1,
-        "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-launch.git"
+        "path": "./Components/mentci-launch",
+        "type": "path"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-launch.git"
-      }
+        "path": "./Components/mentci-launch",
+        "type": "path"
+      },
+      "parent": []
     },
     "mentci-mcp-gateway-src": {
       "flake": false,
@@ -1292,18 +1288,14 @@
     "mentci-mcp-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772722947,
-        "narHash": "sha256-HpQV43ZmxLDNEEd91vMMvf0QqW2k06x1/gXWLuPBpy4=",
-        "ref": "refs/heads/main",
-        "rev": "6bf865b225e4af6324d7032167f5f00c160e800b",
-        "revCount": 1,
-        "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-mcp.git"
+        "path": "./Components/mentci-mcp",
+        "type": "path"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-mcp.git"
-      }
+        "path": "./Components/mentci-mcp",
+        "type": "path"
+      },
+      "parent": []
     },
     "mentci-policy-engine-src": {
       "flake": false,
@@ -1324,34 +1316,26 @@
     "mentci-stt-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772722929,
-        "narHash": "sha256-IawF/t1p9yd1D0fB7DAf2BSTWXONN4fzmD5VOLk0INs=",
-        "ref": "refs/heads/main",
-        "rev": "de15c6328c22412d182c120c9c688c368cba0330",
-        "revCount": 1,
-        "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-stt.git"
+        "path": "./Components/mentci-stt",
+        "type": "path"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-stt.git"
-      }
+        "path": "./Components/mentci-stt",
+        "type": "path"
+      },
+      "parent": []
     },
     "mentci-user-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772722933,
-        "narHash": "sha256-NF48X9KUU3zEfADPwDXKtbw/Qil9N8rr4qe1cCojdkg=",
-        "ref": "refs/heads/main",
-        "rev": "d9d70a6541be552b320e78ebc910207cfb03cfed",
-        "revCount": 1,
-        "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-user.git"
+        "path": "./Components/mentci-user",
+        "type": "path"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/mentci-user.git"
-      }
+        "path": "./Components/mentci-user",
+        "type": "path"
+      },
+      "parent": []
     },
     "mfgtools": {
       "flake": false,
