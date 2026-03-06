@@ -69,6 +69,8 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   - **Worktree Alignment:** The primary development bookmark of the current repository is considered the authoritative head. You MUST ensure your working copy is always based on this active bookmark. If the active bookmark is moved (by you or an external process, such as a rebase by a master agent), your working copy MUST follow it to maintain alignment. In most cases, this will involve rebasing your working copy onto the new location of the bookmark. If in doubt on how to align, ask for clarification.
 - **Mandatory Pushing:** Always push the bookmark you are currently working on (`jj git push --bookmark <name>`). If in doubt about which bookmark to push, ask for clarification. Verify local/remote bookmark alignment.
   - **Two-Step Interaction:** Note that `jj git push` may first stage the movement (showing "Changes to push to origin") and then require a subsequent identical command to actually perform the network push. Always verify with `jj log -r <name>@origin` or a repeated push command.
+- **Commit-Then-Validate Rule (Nix-heavy flows):** For rebuild-sensitive Nix work, create a small logical commit *before* running expensive `nix build`/`nix develop` validation. If validation fails, apply the fix as a new follow-up commit (do not rewrite the previous logical step). Continue in small commits until green.
+- **Chain-of-Intent Preference:** Favor a sequence of small atomic intent commits over one large mutation. End the sequence with a final `session` commit summarizing outcomes and evidence.
 - **Tagged Release Mode (Main-Only):** When creating a release, the release commit MUST be on `main` and MUST be tagged using the original zodiac-ordinal style.
   - **Required tag style:** `v0.12.x.x.x` (current-era shorthand of `v<cycle>.<sign>.<degree>.<minute>.<second>`)
   - **Required release flow:**
@@ -116,6 +118,8 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - [ ] Changes verified via Mirror.
 - [ ] History audited for clues before declaring an impasse.
 - [ ] Atomic `intent:` commits pushed to the active integration bookmark (`main` for release mode).
+- [ ] For Nix-heavy work: commit-before-validate cadence followed (small fix chain, then green).
+- [ ] Final `session` commit recorded with validation evidence.
 - [ ] Session ended with `jj new` to leave a clean worktree.
 
 ### 8. Crypto-Content-Addressed Rebasing
