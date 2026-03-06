@@ -14,7 +14,7 @@ When documenting any new UI, the documentation **must** describe:
 
 ## 2. Required Documentation Sections for UIs
 
-Whenever a new UI or Agent harness is integrated, its documentation (typically placed in `Library/documentation/` or its `README.md`) must include the following sections:
+Whenever a new UI or agent harness is integrated, its documentation (typically placed in `Library/documentation/` or its `README.md`) must include the following sections:
 
 ### 2.1. Component Identity
 What is the tool? (e.g., "VT Code: Rust-based semantic terminal agent").
