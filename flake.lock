@@ -1232,14 +1232,18 @@
     "mentci-execute-src": {
       "flake": false,
       "locked": {
-        "path": "./Components/mentci-execute",
-        "type": "path"
+        "lastModified": 1772800554,
+        "narHash": "sha256-jeCltIqqLLVxWmJ4fFbBfPL3vrkwNBhSTmebSWGS7AU=",
+        "ref": "refs/heads/main",
+        "rev": "efd5f67229ec0a2c0d03433d6368da31d7c6fee5",
+        "revCount": 1,
+        "type": "git",
+        "url": "file:./Components/mentci-execute"
       },
       "original": {
-        "path": "./Components/mentci-execute",
-        "type": "path"
-      },
-      "parent": []
+        "type": "git",
+        "url": "file:./Components/mentci-execute"
+      }
     },
     "mentci-fs-src": {
       "flake": false,
