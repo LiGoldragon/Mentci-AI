@@ -20,7 +20,7 @@ Whenever a new UI or agent harness is integrated, its documentation (typically p
 What is the tool? (e.g., "VT Code: Rust-based semantic terminal agent").
 Where is the source? (e.g., "Fetched via Nix flake from `vinhnx/vtcode`").
 
-### 2.2. Configuration & State (The "Data")
+### 2.2 Configuration & State (The "Data")
 Where does the tool store its operational data?
 - Explain the structured configuration file (e.g., `.vtcode/vtcode.toml` or `.pi/settings.json`).
 - Document what default policies are applied (e.g., `default_policy = "allow"`).
