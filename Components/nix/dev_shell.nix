@@ -23,23 +23,6 @@ pkgs.mkShell {
     export MENTCI_REPO_ROOT="$(pwd)"
     export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
 
-    # Pi extension version sync (no automatic updates by default)
-    mkdir -p .pi
-    if command -v pi >/dev/null 2>&1; then
-      _current_pi_version="$(pi --version 2>/dev/null || true)"
-      _last_pi_version="$(cat .pi/last_pi_version 2>/dev/null || true)"
-      if [ -n "$_current_pi_version" ] && [ "$_current_pi_version" != "$_last_pi_version" ]; then
-        if [ "''${PI_AUTO_UPDATE_EXTENSIONS:-0}" = "1" ]; then
-          if pi update >/dev/null 2>&1; then
-            printf '%s\n' "$_current_pi_version" > .pi/last_pi_version
-          fi
-        else
-          printf '%s\n' "$_current_pi_version" > .pi/last_pi_version
-        fi
-      fi
-      unset _current_pi_version _last_pi_version
-    fi
-
     # Canonical mentci-user setup pointer from component source input
     # (works for both local and remote flake-based `nix develop`)
     export MENTCI_USER_SETUP_BIN="${mentci_user_src}/data/setup.bin"
