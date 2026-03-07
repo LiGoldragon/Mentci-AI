@@ -1,4 +1,8 @@
 /target
+/Components/**/target/
+/.venv/
+/.venv-*/
+/venv/
 result
 .jj/
 .git/
