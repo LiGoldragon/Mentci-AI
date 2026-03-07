@@ -80,4 +80,24 @@ Interpretation:
 3. **Refine Flow Registry:** Add hierarchical rebase discovery logic to `mentci-flow`.
 4. **Flight Recorder Extension:** Standardize `jj` Op ID logging into `.mentci/op_history.txt`.
 
+## 9. Session Continuity Addendum (2026-03-07)
+- `main` currently points to `zvzuoyum / 980edb11` with:
+  - Pi update to `0.57.0` (`Components/nix/pi.nix`, `flake.lock` updated to pi-mono `b279d03d...`).
+  - `.pi/extensions.edn` removed (was disabling extension discovery with `"!**"`).
+- Prior commit on `main`: `wzupruqn / 1cf87dae`
+  - Removed shellHook behavior that created `.pi/last_pi_version` in repo working tree.
+- Prior commit on `main`: `wzwusktn / 453b17aa`
+  - Fixed `mentci-user export-env` initialization in flake-based `nix develop` by sourcing setup from `${mentci_user_src}/data/setup.bin` rather than `${repo_root}/Components/mentci-user/data/setup.bin`.
+- Important operational note:
+  - `nix develop github:LiGoldragon/Mentci-AI` may resolve default branch ref, while explicit `github:LiGoldragon/Mentci-AI/main` resolves `main` tip deterministically.
+- Verified extension/runtime context:
+  - Linkup extension discovered from path: `~/.pi/pi-source/node_modules/@aliou/pi-linkup/src/index.ts` after reload.
+  - `settings.json` remains the active settings authority for extension loading in this repo context.
+
+## 10. Next-Goal Handoff State
+- Repository status intended for next task handoff:
+  - `main` has been advanced with pi + shell behavior fixes.
+  - Working copy should be empty commit on top of `main` before starting the next objective.
+  - Continue `main`-only push protocol unless explicitly overridden.
+
 *The Great Work continues.*
