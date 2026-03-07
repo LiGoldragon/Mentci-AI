@@ -1,7 +1,0 @@
-{:extensions
- ["!**"]
- :settings
- {:theme "dark"
-  :defaultProvider "google-gemini-cli"
-  :defaultModel "gemini-2.5-flash"
-  :compaction {:enabled true :reserveTokens 16384 :keepRecentTokens 20000}}}
