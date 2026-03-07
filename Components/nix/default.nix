@@ -94,10 +94,20 @@ let
     inherit pkgs;
   };
 
+  pi_mcp_adapter_extension = import ./pi-mcp-adapter-extension.nix {
+    inherit pkgs;
+  };
+
+  jcodemunch_mcp = import ./jcodemunch-mcp.nix {
+    inherit pkgs;
+  };
+
   pi_with_extensions = import ./pi-with-extensions.nix {
     inherit pkgs;
     pi = pi;
     pi_linkup_extension = pi_linkup_extension;
+    pi_mcp_adapter_extension = pi_mcp_adapter_extension;
+    jcodemunch_mcp = jcodemunch_mcp;
   };
 
   pi_rust = import ./pi-rust.nix {
@@ -149,7 +159,7 @@ let
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
     pi_dev = pi_with_extensions;
-    inherit unified_llm vtcode mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp;
+    inherit unified_llm vtcode mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp jcodemunch_mcp;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -177,6 +187,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_with_extensions pi_linkup_extension pi_check pi_with_extensions_check components_index_check unified_llm pi_rust vtcode;
+  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_with_extensions pi_linkup_extension pi_mcp_adapter_extension jcodemunch_mcp pi_check pi_with_extensions_check components_index_check unified_llm pi_rust vtcode;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

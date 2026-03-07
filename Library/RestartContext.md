@@ -100,4 +100,17 @@ Interpretation:
   - Working copy should be empty commit on top of `main` before starting the next objective.
   - Continue `main`-only push protocol unless explicitly overridden.
 
+## 11. Session Continuity Addendum (2026-03-07, jCodeMunch)
+- Added Nix-packaged jCodeMunch MCP support for Pi extension runtime:
+  - `Components/nix/jcodemunch-mcp.nix` (PyPI package `jcodemunch-mcp` `1.0.0`)
+  - `Components/nix/pi-mcp-adapter-extension.nix` (npm package `pi-mcp-adapter` `2.1.2`)
+  - `Components/nix/pi-mcp-adapter-package-lock.json` vendored for deterministic npm dependency closure.
+- Extended `piWithExtensions` wrapper to load MCP adapter extension and expose jCodeMunch binary path:
+  - `Components/nix/pi-with-extensions.nix` now injects both Linkup + MCP adapter with explicit `--extension` flags.
+  - Wrapper PATH now prepends `${jcodemunch_mcp}/bin` for `jcodemunch-mcp` server command resolution.
+- Added project-scoped MCP server configuration:
+  - `.pi/mcp.json` with `jcodemunch` server using command `jcodemunch-mcp`, lazy lifecycle, telemetry-share opt-out.
+- Added/updated runtime checks:
+  - `Components/nix/pi_with_extensions_check.nix` now asserts MCP adapter presence and wrapper inclusion.
+
 *The Great Work continues.*

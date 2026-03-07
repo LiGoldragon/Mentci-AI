@@ -1,0 +1,17 @@
+{
+  "settings": {
+    "toolPrefix": "mcp",
+    "idleTimeout": 15
+  },
+  "mcpServers": {
+    "jcodemunch": {
+      "command": "jcodemunch-mcp",
+      "args": [],
+      "lifecycle": "lazy",
+      "directTools": false,
+      "env": {
+        "JCODEMUNCH_SHARE_SAVINGS": "0"
+      }
+    }
+  }
+}
