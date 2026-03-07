@@ -38,6 +38,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 
 ### 3. DVCS Rigor (Jujutsu)
 - Treat every component as a future independent `jj` repository.
+- **State Authority Rule (JJ over Git):** Repository state authority is `jj` (`jj status`, `jj log`, `jj bookmark list`). `git` is only a storage/transport backend for Jujutsu synchronization; do not use `git status`/`git log` as the source of truth for workflow decisions.
 - **Commit Protocol (Standard Intent Header):** Every commit message MUST follow this template. The agent MUST use the exact original prompt from the interaction; if the prompt is lost, it must be synthesized from session intent.
   ```markdown
   intent: <Short, one-line summary of the change>
