@@ -61,6 +61,51 @@ Before editing code:
 - Run targeted checks first, then `cargo check --workspace`.
 - Validate warning hygiene and generated-code boundaries.
 
+### 4.1) Criome/Core Modernization Rules (New Mandatory Lane)
+When touching `criome-core`, `criad`, or CriomOS data contracts, apply all rules below.
+
+#### A) Contract Namespacing by File and Module
+- Do not use long concatenated contract names as the primary organization method.
+- Prefer embedded namespaces through module/file boundaries.
+- Required shape:
+  - `contracts/<domain>/<kind>.rs` or equivalent nested modules.
+  - Access style should read as layered context (e.g., `contracts::node::Proposal`), not mega-identifiers.
+- Reason: improves retrieval clarity, keeps names context-local, and reduces semantic duplication.
+
+#### B) Species and Size Must Be Typed
+- Species fields are never free-form strings in domain contracts.
+- Use explicit enums for species categories (`NodeSpecies`, `UserSpecies`, etc.).
+- Size/trust classes should use enum magnitudes (`Min|Low|Med|Max`) unless a true scalar is required.
+- If numeric transport is required for downstream consumers (e.g., Nix projection), expose deterministic conversion methods on enums (`to_u8`, `as_str`) rather than storing raw strings everywhere.
+
+#### C) Shared Behavior for Cross-Domain Magnitudes
+- If node and user sizes share semantics, unify through one magnitude object/trait.
+- Derived predicates (`is_med`, `at_least`) belong on typed objects/traits, not ad-hoc call-site conditionals.
+
+#### D) Keep Nix as Consumer, Not Derivation Authority
+- Nix receives already-structured, derivation-ready data projections.
+- Do not move primary derivation complexity into Nix expressions.
+- Rust/cozo pipeline computes and normalizes; Nix consumes.
+
+#### E) Cozo Script Direction (Transitional Policy)
+- Cozo script may be adopted as a first-class messaging/spec lane for Criome workflows.
+- Transitional requirement:
+  1. maintain existing Cap'n Proto/EDN compatibility where already authoritative,
+  2. add reversible translation paths (Cozo <-> Cap'n Proto/typed Rust) before deprecating existing stores.
+- Forbidden: abrupt EDN/Cap'n Proto removal without migration bridge and validation report.
+
+#### F) Unstable Component Experimentation Label
+- Non-production components (e.g., `criome-core` MVP) must be explicitly marked unstable in central component stability index artifacts.
+- Experimental refactors are allowed in unstable lane, but must include:
+  - explicit scope boundary,
+  - migration notes,
+  - tests proving behavior did not regress.
+
+### 4.2) Sub-Agentization Heuristic for Heavy Operations
+- If one flow combines 3+ distinct concern sets (e.g., VCS + schema migration + UI tooling), split into specialized sub-tasks/agents.
+- Keep top-level agent focused on orchestration and integration, not all low-level operations at once.
+- Required for large transcript extraction workflows: persist per-topic commits (research/design/code) instead of one large summary mutation.
+
 ### 5) Commit Protocol
 - Commit each intent atomically.
 - **Header Standard:** All commit and session documentation MUST follow the template defined in the `independent-developer` skill (Original Prompt, Context, Summary, Validation).
