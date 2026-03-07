@@ -4,6 +4,7 @@ members = [
     "Components/mentci-datalog",
     "Components/mentci-aid",
     "Components/chronos",
+    "Components/chronos-lib",
     "Components/mentci-fs",
     "Components/mentci-box",
     "Components/mentci-launch",

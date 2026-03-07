@@ -11,6 +11,7 @@
   "workflows"]
  :unstable
  [{:id "aski-cli" :tier :experimental :reason "rapid API and format evolution"}
+  {:id "chronos-lib" :tier :prototype :reason "new shared time-format default helper for execute/chronos integration"}
   {:id "aski-lib" :tier :experimental :reason "language/runtime evolution in progress"}
   {:id "criome-core" :tier :unstable-mvp :reason "non-production sandbox for criad contract exploration"}
   {:id "mentci-box" :tier :experimental :reason "jail interface still evolving"}

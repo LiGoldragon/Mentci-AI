@@ -32,7 +32,7 @@ let
 
   chronos = import ./chronos.nix {
     inherit craneLib pkgs;
-    src = chronos_src;
+    src = ../chronos-lib;
   };
 
   mentci_stt = import ./mentci_stt.nix {
@@ -112,11 +112,16 @@ let
     src = vtcode_src;
   };
 
+  chronos_lib = import ./chronos-lib.nix {
+    inherit craneLib;
+    src = ../chronos-lib;
+  };
+
   execute = import ./execute.nix {
     inherit craneLib pkgs;
     src = mentci_execute_src;
     schema_src = ../schema;
-    inherit mentci_box_lib_src;
+    inherit mentci_box_lib_src chronos_lib;
   };
 
   mentci_bootstrap = import ./mentci_bootstrap.nix {
@@ -149,7 +154,7 @@ let
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
     pi_dev = pi_with_extensions;
-    inherit unified_llm vtcode mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp;
+    inherit unified_llm vtcode mentci_bootstrap chronos execute mentci_stt mentci_user mentci_mcp;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -177,6 +182,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_with_extensions pi_linkup_extension pi_check pi_with_extensions_check components_index_check unified_llm pi_rust vtcode;
+  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute chronos_lib mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_with_extensions pi_linkup_extension pi_check pi_with_extensions_check components_index_check unified_llm pi_rust vtcode;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }
