@@ -1,0 +1,21 @@
+[package]
+name = "chronos-lib"
+version = "0.1.0"
+edition = "2021"
+description = "Shared chronos invocation defaults for Mentci components"
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "chronos"
+path = "src/bin/chronos.rs"
+
+[dependencies]
+anyhow = "1.0"
+reqwest = { version = "0.11", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = "0.4"
+
+[workspace]

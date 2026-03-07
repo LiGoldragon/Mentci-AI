@@ -181,6 +181,7 @@
           execute = namespace.execute;
           mentciBootstrap = namespace.mentci_bootstrap;
           chronos = namespace.chronos;
+          chronosLib = namespace.chronos_lib;
           mentciStt = namespace.mentci_stt;
           mentciUser = namespace.mentci_user;
           mentciMcp = namespace.mentci_mcp;

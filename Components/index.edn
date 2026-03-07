@@ -3,6 +3,7 @@
  [{:id "aski-cli" :path "aski-cli" :interfaces ["rust.aski.cli"] :status :experimental}
   {:id "aski-lib" :path "aski-lib" :interfaces ["rust.aski.lib"] :status :experimental}
   {:id "chronos" :path "chronos" :interfaces ["rust.time.tool"] :status :active}
+  {:id "chronos-lib" :path "chronos-lib" :interfaces ["rust.time.library"] :status :prototype}
   {:id "criome-core" :path "criome-core" :interfaces ["rust.criad.contract" "rust.quorum.verifier" "rust.criosphere.state"] :status :unstable-mvp}
   {:id "mentci-aid" :path "mentci-aid" :interfaces ["rust.engine" "rust.daemon" "execute.orchestrator"] :status :active}
   {:id "mentci-box" :path "mentci-box" :interfaces ["rust.jail.cli"] :status :experimental}

@@ -1,4 +1,4 @@
-{ craneLib, pkgs, src, mentci_box_lib_src, schema_src }:
+{ craneLib, pkgs, src, mentci_box_lib_src, schema_src, chronos_lib }:
 
 let
   commonArgs = {
@@ -14,6 +14,7 @@ let
     '';
     cargoLock = src + "/Cargo.lock";
     doCheck = false;
+    propagatedBuildInputs = [ chronos_lib ];
   };
 in
 craneLib.buildPackage commonArgs
