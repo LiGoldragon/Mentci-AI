@@ -1,6 +1,6 @@
 use criome_core::contracts::{
     ApproveBatchRequest, CrioNodeProposal, CrioProposal, CrioProposalBatch, CrioUserProposal,
-    HorizonRequest,
+    HorizonRequest, Magnitude, NodeSpecies, UserSpecies,
 };
 use criome_core::engine::CrioCoreEngine;
 
@@ -15,21 +15,21 @@ fn approves_batch_applies_state_and_serves_horizon() {
                 nodes: vec![
                     CrioNodeProposal {
                         name: "atlas-center".to_string(),
-                        species: "center".to_string(),
-                        size: 3,
-                        trust: 3,
+                        species: NodeSpecies::Center,
+                        size: Magnitude::Max,
+                        trust: Magnitude::Max,
                     },
                     CrioNodeProposal {
                         name: "atlas-edge".to_string(),
-                        species: "edge".to_string(),
-                        size: 1,
-                        trust: 2,
+                        species: NodeSpecies::Edge,
+                        size: Magnitude::Low,
+                        trust: Magnitude::Med,
                     },
                 ],
                 users: vec![CrioUserProposal {
                     name: "li".to_string(),
-                    species: "code".to_string(),
-                    size: 3,
+                    species: UserSpecies::Code,
+                    size: Magnitude::Max,
                 }],
             }],
         },
@@ -65,15 +65,15 @@ fn rejects_duplicate_nodes_in_same_cluster_proposal() {
                 nodes: vec![
                     CrioNodeProposal {
                         name: "dup".to_string(),
-                        species: "center".to_string(),
-                        size: 3,
-                        trust: 3,
+                        species: NodeSpecies::Center,
+                        size: Magnitude::Max,
+                        trust: Magnitude::Max,
                     },
                     CrioNodeProposal {
                         name: "dup".to_string(),
-                        species: "edge".to_string(),
-                        size: 1,
-                        trust: 1,
+                        species: NodeSpecies::Edge,
+                        size: Magnitude::Low,
+                        trust: Magnitude::Low,
                     },
                 ],
                 users: vec![],
