@@ -1,4 +1,5 @@
 {:kind :index
  :title "Research Topic"
  :subject "Agentic-Architecture-Comparative"
- :entries ["591912175150_report_jcodemunch_overstory_openclaw_architecture_scan.md"]}
+ :entries ["591912175150_report_jcodemunch_overstory_openclaw_architecture_scan.md"
+           "5919121848_report_context_overstory_engineering_and_pi_subagents.md"]}
