@@ -168,7 +168,7 @@ let
     import ./dev_shell.nix {
       inherit pkgs jail;
       inherit common_packages;
-      inherit repo_root;
+      inherit repo_root mentci_user_src;
       pi = pi_with_extensions;
     };
 

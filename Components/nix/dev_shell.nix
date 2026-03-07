@@ -1,4 +1,4 @@
-{ pkgs, common_packages, jail, repo_root, pi }:
+{ pkgs, common_packages, jail, repo_root, pi, mentci_user_src }:
 
 pkgs.mkShell {
   name = "mentci-ai-dev";
@@ -40,8 +40,9 @@ pkgs.mkShell {
       unset _current_pi_version _last_pi_version
     fi
 
-    # Canonical Cap'n Proto environment spec pointer (hash-agnostic symlink)
-    export MENTCI_USER_SETUP_BIN="${repo_root}/Components/mentci-user/data/setup.bin"
+    # Canonical mentci-user setup pointer from component source input
+    # (works for both local and remote flake-based `nix develop`)
+    export MENTCI_USER_SETUP_BIN="${mentci_user_src}/data/setup.bin"
 
     # Initialize user-specific extension secrets (Logic-Data Separation)
     # mentci-user resolves default setup source from MENTCI_USER_SETUP_BIN / canonical paths.
