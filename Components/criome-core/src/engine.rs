@@ -186,9 +186,9 @@ impl CrioCozoStore {
                     "? [cluster, name, species, size, trust] <- [[\"{}\", \"{}\", \"{}\", {}, {}]]\n:put node {{cluster, name => species, size, trust}}",
                     escape(&cluster),
                     escape(&node.name),
-                    escape(&node.species),
-                    node.size,
-                    node.trust
+                    escape(node.species.as_str()),
+                    node.size.to_u8(),
+                    node.trust.to_u8()
                 );
                 self.run(&script, ScriptMutability::Mutable).map(|_| ())
             }
@@ -197,8 +197,8 @@ impl CrioCozoStore {
                     "? [cluster, name, species, size] <- [[\"{}\", \"{}\", \"{}\", {}]]\n:put user {{cluster, name => species, size}}",
                     escape(&cluster),
                     escape(&user.name),
-                    escape(&user.species),
-                    user.size
+                    escape(user.species.as_str()),
+                    user.size.to_u8()
                 );
                 self.run(&script, ScriptMutability::Mutable).map(|_| ())
             }
