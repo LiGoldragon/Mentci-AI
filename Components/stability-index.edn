@@ -1,0 +1,23 @@
+{:version 1
+ :description "Central stable-vs-unstable component index"
+ :stable
+ ["chronos"
+  "mentci-aid"
+  "mentci-datalog"
+  "nix"
+  "schema"
+  "tasks"
+  "tools"
+  "workflows"]
+ :unstable
+ [{:id "aski-cli" :tier :experimental :reason "rapid API and format evolution"}
+  {:id "aski-lib" :tier :experimental :reason "language/runtime evolution in progress"}
+  {:id "criome-core" :tier :unstable-mvp :reason "non-production sandbox for criad contract exploration"}
+  {:id "mentci-box" :tier :experimental :reason "jail interface still evolving"}
+  {:id "mentci-box-lib" :tier :experimental :reason "library surface not yet frozen"}
+  {:id "mentci-fs" :tier :experimental :reason "indexing and ontology tooling still evolving"}
+  {:id "mentci-launch" :tier :experimental :reason "launcher/service interfaces still in flux"}
+  {:id "mentci-execute" :tier :experimental :reason "recent source authority split"}
+  {:id "mentci-policy-engine" :tier :draft :reason "policy semantics not finalized"}
+  {:id "mentci-mcp-gateway" :tier :prototype :reason "gateway model not stabilized"}
+  {:id "mentci-vcs" :tier :prototype :reason "wrapper interface under active redesign"}]}
