@@ -2,18 +2,18 @@
 
 let
   linkupSrc = pkgs.fetchurl {
-    url = "https://registry.npmjs.org/@aliou/pi-linkup/-/pi-linkup-0.7.3.tgz";
-    hash = "sha256-SVm1CtRl+yiBIh+h30Wi5FkReB9tRvUwvvvBiROH0BA=";
+    url = "https://registry.npmjs.org/@aliou/pi-linkup/-/pi-linkup-0.7.4.tgz";
+    hash = "sha256-lPxk3YJ7Wgn3gOgWusWsh/8u3DieJgkr3zFwAdNFAB4=";
   };
 
   settingsSrc = pkgs.fetchurl {
-    url = "https://registry.npmjs.org/@aliou/pi-utils-settings/-/pi-utils-settings-0.4.0.tgz";
-    hash = "sha256-M9bUg18waZD4PqDL10Ha8DL/nr90rrgz0RKcVrIMzBk=";
+    url = "https://registry.npmjs.org/@aliou/pi-utils-settings/-/pi-utils-settings-0.10.0.tgz";
+    hash = "sha256-OGoMCqTMkqKvwg2BJbUVTc4jDCtmZRP5iZnJUPkD10A=";
   };
 
   settingsPkg = pkgs.stdenvNoCC.mkDerivation {
     pname = "pi-utils-settings";
-    version = "0.4.0";
+    version = "0.10.0";
     src = settingsSrc;
     nativeBuildInputs = [ pkgs.gnutar ];
     dontConfigure = true;
@@ -28,7 +28,7 @@ let
 in
 pkgs.stdenvNoCC.mkDerivation {
   pname = "pi-linkup-extension";
-  version = "0.7.3";
+  version = "0.7.4";
   src = linkupSrc;
   nativeBuildInputs = [ pkgs.gnutar ];
   dontConfigure = true;
