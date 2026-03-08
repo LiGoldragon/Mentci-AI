@@ -34,7 +34,7 @@ exec ${pkgs.nodejs}/bin/node "''${PI_PACKAGE_DIR}/dist/cli.js" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/@aliou/pi-linkup" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/pi-mcp-adapter" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/lsp-pi" \
-  --extension "''${PI_PACKAGE_DIR}/node_modules/@oh-my-pi/subagents" \
+  --extension "''${PI_PACKAGE_DIR}/node_modules/@oh-my-pi/subagents/tools/index.ts" \
   "$@"
 EOF
     substituteInPlace "$out/bin/pi" \
