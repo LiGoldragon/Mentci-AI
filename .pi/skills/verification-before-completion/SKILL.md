@@ -114,20 +114,9 @@ Skip any step = lying, not verifying
 ❌ Trust "agent says success"
 ```
 
-## When To Apply
-
-**ALWAYS before:**
-- ANY variation of success/completion claims
-- ANY expression of satisfaction
-- ANY positive statement about work state
-- Committing, PR creation, task completion
-- Moving to next task
-- Delegating to agents
-
-**Rule applies to:**
-- Exact phrases and paraphrases
-- Implications of success
-- ANY communication suggesting completion/correctness
+## Subagent Reliability & Raw Evidence Contract
+- **Reliability:** If a task tool returns "Unknown agent ... Available: none", stop chain execution and report blocked state. Run minimal JJ preflight evidence (`jj status`, bounded `jj log`) before retrying. Do not fabricate success from partial/empty agent outputs.
+- **Evidence:** For claims about push/build/test/model availability, include raw command output snippets. Summary-only reports are not acceptable for final verification.
 
 ## Enforcement
 

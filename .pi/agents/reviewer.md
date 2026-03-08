@@ -65,3 +65,12 @@ Keep reviews concise but thorough. Focus on substance.
 - After `jj new`, do not rebase/reshape empty @ unless explicitly required.
 - Before bookmark moves, run `jj log -r 'dev|@|@-' --no-graph`.
 - If repairing history, print raw before/after evidence.
+
+## Subagent Reliability & Raw Evidence Contract
+- **Reliability:** If a task tool returns "Unknown agent ... Available: none", stop chain execution and report blocked state. Run minimal JJ preflight evidence (`jj status`, bounded `jj log`) before retrying. Do not fabricate success from partial/empty agent outputs.
+- **Evidence:** For claims about push/build/test/model availability, include raw command output snippets. Summary-only reports are not acceptable for final verification.
+
+## Scope & Discipline
+- Prefer bounded commands and semantic lookup (`lsp`).
+- Avoid oversized scans and irrelevant output dumps.
+- Do not reintroduce `.pi/settings.json` deny-all extension policy (`"extensions": ["!**"]`). Preserve targeted exclusion patterns.

@@ -220,21 +220,9 @@ Done!
 **If subagent fails task:**
 - See **"When a Subagent Fails"** below — never code directly, always re-dispatch or escalate
 
-## When a Subagent Fails
-
-**You are the orchestrator. You do NOT write code. You dispatch subagents that write code.**
-
-If an implementer subagent fails, errors out, or produces incomplete work:
-
-1. **Attempt 1:** Dispatch a NEW fix subagent with specific instructions about what went wrong and what needs to change. Include the error output and the original task text.
-2. **Attempt 2:** If the fix subagent also fails, dispatch one more with a different approach or simplified scope.
-3. **After 2 failed attempts: STOP.** Report the failure to the user and ask how to proceed. The task likely needs redesign.
-
-**NEVER:**
-- Write code yourself to "help" or "finish up" — you are the orchestrator, not an implementer
-- Try to fix the subagent's work inline — this pollutes your context and defeats the fresh-subagent model
-- Silently skip the failed task and move on
-- Reduce quality gates (skip reviews) because a task is "almost done"
+## Subagent Reliability & Raw Evidence Contract
+- **Reliability:** If a task tool returns "Unknown agent ... Available: none", stop chain execution and report blocked state. Run minimal JJ preflight evidence (`jj status`, bounded `jj log`) before retrying. Do not fabricate success from partial/empty agent outputs.
+- **Evidence:** For claims about push/build/test/model availability, include raw command output snippets. Summary-only reports are not acceptable for final verification.
 
 ## After All Tasks Complete
 

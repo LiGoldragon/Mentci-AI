@@ -119,7 +119,23 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Failure Containment:** If a JJ command causes heavy resource pressure, stop issuing further heavy history/graph queries immediately, acknowledge the impact, and continue only with minimal bounded commands.
 - **Record failures:** If you encounter an extension-loading error, don't just retry; document the exact state of `.pi/extensions.edn` and the process environment in a Research artifact.
 
-### 7. The World Database (CozoDB) & Component Rating
+## JJ Anti-Churn Guardrails
+- Never move dev to empty commit.
+- Never leave multiple empty commits stacked above dev.
+- After `jj new`, do not rebase/reshape empty @ unless explicitly required.
+- Before bookmark moves, run `jj log -r 'dev|@|@-' --no-graph`.
+- If repairing history, print raw before/after evidence.
+
+## Subagent Reliability & Raw Evidence Contract
+- **Reliability:** If a task tool returns "Unknown agent ... Available: none", stop chain execution and report blocked state. Run minimal JJ preflight evidence (`jj status`, bounded `jj log`) before retrying. Do not fabricate success from partial/empty agent outputs.
+- **Evidence:** For claims about push/build/test/model availability, include raw command output snippets. Summary-only reports are not acceptable for final verification.
+
+## Scope & Discipline
+- Prefer bounded commands and semantic lookup (`lsp`).
+- Avoid oversized scans and irrelevant output dumps.
+- Do not reintroduce `.pi/settings.json` deny-all extension policy (`"extensions": ["!**"]`). Preserve targeted exclusion patterns.
+
+### 7. The World Database
 - **Specifying the World:** Our main task is specifying the world using CozoDB, which is then emitted in a Cap'n Proto specification.
 - **Database Initialization:** We maintain a database to give an importance rating to every major component of the repo, and to store agent skills and protocols. Ensure that as new components or skills are developed, they are tracked and rated in this Datalog/CozoDB substrate.
 
