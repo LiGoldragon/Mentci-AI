@@ -78,6 +78,7 @@ let
 
   pi = import ./pi.nix {
     inherit pkgs;
+    lib = pkgs.lib;
     src = pi_mono_src;
   };
 
