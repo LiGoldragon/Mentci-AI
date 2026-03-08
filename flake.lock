@@ -346,6 +346,22 @@
         "type": "github"
       }
     },
+    "chronos-lib-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772959445,
+        "narHash": "sha256-jXEirHimRpQOdPwxwhgc63hrMfR+iYTT8B6PW8K7fxs=",
+        "ref": "refs/heads/main",
+        "rev": "72b0fc069134198c2640a223d0930c36c62f8588",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/chronos-lib.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/chronos-lib.git"
+      }
+    },
     "chronos-src": {
       "flake": false,
       "locked": {
@@ -1843,6 +1859,7 @@
         "attractor-docs": "attractor-docs",
         "bookofgoldragon": "bookofgoldragon",
         "bookofsol": "bookofsol",
+        "chronos-lib-src": "chronos-lib-src",
         "chronos-src": "chronos-src",
         "codex-cli-nix": "codex-cli-nix",
         "crane": "crane",

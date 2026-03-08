@@ -7,6 +7,9 @@
 [submodule "Components/chronos"]
 	path = Components/chronos
 	url = git@github.com:LiGoldragon/chronos.git
+[submodule "Components/chronos-lib"]
+	path = Components/chronos-lib
+	url = git@github.com:LiGoldragon/chronos-lib.git
 [submodule "Components/mentci-fs"]
 	path = Components/mentci-fs
 	url = git@github.com:LiGoldragon/mentci-fs.git
@@ -55,3 +58,6 @@
 [submodule "Components/CriomOS"]
 	path = Components/CriomOS
 	url = git@github.com:Criome/CriomOS.git
+[submodule "Components/chronos-lib"]
+	path = Components/chronos-lib
+	url = git@github.com:LiGoldragon/chronos-lib.git

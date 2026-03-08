@@ -14,6 +14,7 @@
 , mentci_aid_src
 , ai_src
 , chronos_src
+, chronos_lib_src
 , mentci_stt_src
 , mentci_user_src
 , mentci_mcp_src
@@ -32,7 +33,7 @@ let
 
   chronos = import ./chronos.nix {
     inherit craneLib pkgs;
-    src = ../chronos-lib;
+    src = chronos_lib_src;
   };
 
   mentci_stt = import ./mentci_stt.nix {
@@ -129,7 +130,7 @@ let
 
   chronos_lib = import ./chronos-lib.nix {
     inherit craneLib;
-    src = ../chronos-lib;
+    src = chronos_lib_src;
   };
 
   execute = import ./execute.nix {

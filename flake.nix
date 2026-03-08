@@ -40,6 +40,7 @@
     mentci-aid-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-aid.git"; flake = false; };
     mentci-datalog-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-datalog.git"; flake = false; };
     chronos-src = { url = "git+ssh://git@github.com/LiGoldragon/chronos.git"; flake = false; };
+    chronos-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/chronos-lib.git"; flake = false; };
     mentci-fs-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-fs.git"; flake = false; };
     mentci-box-src = { url = "github:LiGoldragon/mentci-box"; flake = false; };
     mentci-box-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-box-lib.git"; flake = false; };
@@ -152,6 +153,7 @@
           mentci_aid_src = inputs.mentci-aid-src;
           ai_src = inputs.ai-src;
           chronos_src = inputs.chronos-src;
+          chronos_lib_src = inputs.chronos-lib-src;
           mentci_stt_src = inputs.mentci-stt-src;
           mentci_user_src = inputs.mentci-user-src;
           mentci_mcp_src = inputs.mentci-mcp-src;
