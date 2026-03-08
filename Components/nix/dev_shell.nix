@@ -23,6 +23,10 @@ pkgs.mkShell {
     export MENTCI_REPO_ROOT="$(pwd)"
     export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
 
+    # Keep pi mutable state inside the repo (no global ~/.pi/agent installs/state)
+    export PI_CODING_AGENT_DIR="$(pwd)/.pi/agent"
+    mkdir -p "$PI_CODING_AGENT_DIR"/{prompts,skills,themes,tools,sessions,agents,commands,extensions}
+
     # Canonical mentci-user setup pointer from component source input
     # (works for both local and remote flake-based `nix develop`)
     export MENTCI_USER_SETUP_BIN="${mentci_user_src}/data/setup.bin"
@@ -39,9 +43,8 @@ pkgs.mkShell {
     fi
 
     # Ensure stable pi-source symlink for Nix tokenization fix
-    # This prevents absolute Nix store paths (hashes) from leaking into the LLM system prompt
-    mkdir -p ~/.pi
-    export PI_SOURCE_STABLE_LINK="$HOME/.pi/pi-source"
+    # Keep the link project-local (avoid mutating ~/.pi)
+    export PI_SOURCE_STABLE_LINK="$(pwd)/.pi/pi-source"
     if [ ! -L "$PI_SOURCE_STABLE_LINK" ] || [ "$(readlink -f "$PI_SOURCE_STABLE_LINK")" != "${pi}/lib/node_modules/pi" ]; then
       ln -sfn "${pi}/lib/node_modules/pi" "$PI_SOURCE_STABLE_LINK"
     fi
