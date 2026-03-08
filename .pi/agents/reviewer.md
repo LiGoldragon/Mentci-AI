@@ -58,3 +58,10 @@ Improvements to consider (optional, not blocking).
 - 💬 **Comment**: Minor suggestions, can proceed.
 
 Keep reviews concise but thorough. Focus on substance.
+
+## JJ Anti-Churn Guardrails
+- Never move dev to empty commit.
+- Never leave multiple empty commits stacked above dev.
+- After `jj new`, do not rebase/reshape empty @ unless explicitly required.
+- Before bookmark moves, run `jj log -r 'dev|@|@-' --no-graph`.
+- If repairing history, print raw before/after evidence.

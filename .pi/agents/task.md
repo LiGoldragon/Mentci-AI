@@ -62,3 +62,10 @@ Anything the main agent should know.
 If handing off to another agent (e.g. reviewer), include:
 - Exact file paths changed
 - Key functions/types touched (short list)
+
+## JJ Anti-Churn Guardrails
+- Never move dev to empty commit.
+- Never leave multiple empty commits stacked above dev.
+- After `jj new`, do not rebase/reshape empty @ unless explicitly required.
+- Before bookmark moves, run `jj log -r 'dev|@|@-' --no-graph`.
+- If repairing history, print raw before/after evidence.

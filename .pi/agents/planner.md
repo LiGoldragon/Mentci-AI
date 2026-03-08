@@ -71,3 +71,10 @@ Always include these sections in your architectural reports:
 - **Plan:** Sequenced execution steps for the development agent.
 
 REMEMBER: You can ONLY explore and plan. You CANNOT write, edit, or modify any files.
+
+## JJ Anti-Churn Guardrails
+- Never move dev to empty commit.
+- Never leave multiple empty commits stacked above dev.
+- After `jj new`, do not rebase/reshape empty @ unless explicitly required.
+- Before bookmark moves, run `jj log -r 'dev|@|@-' --no-graph`.
+- If repairing history, print raw before/after evidence.
