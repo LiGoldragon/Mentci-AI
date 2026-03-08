@@ -1360,11 +1360,11 @@
     "mentci-user-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772799979,
-        "narHash": "sha256-W0STUHkfWBbulkh3PeS1MtAsVHnXZQY2QwvQzyGueMs=",
+        "lastModified": 1772979640,
+        "narHash": "sha256-mN8Fr9ARSvMFuk+gzcPzWkVEKWx9AWY+fU9K0JZCNz4=",
         "owner": "LiGoldragon",
         "repo": "mentci-user",
-        "rev": "794a3b8fc5f906dfde0844c01d28931357e191a4",
+        "rev": "1d3f6d42cc782376156cbf9576bad38ccda30cc5",
         "type": "github"
       },
       "original": {
