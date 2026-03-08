@@ -19,13 +19,36 @@ pkgs.stdenvNoCC.mkDerivation {
     ln -s "${lsp_pi_extension}" "$out/lib/node_modules/pi/node_modules/lsp-pi"
     ln -s "${pi_subagents_extension}" "$out/lib/node_modules/pi/node_modules/@oh-my-pi/subagents"
 
+    mkdir -p "$out/lib/node_modules/pi/node_modules/pi-subagents-adapter"
+    cat > "$out/lib/node_modules/pi/node_modules/pi-subagents-adapter/package.json" <<'EOF'
+{
+  "name": "pi-subagents-adapter",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "index.ts"
+}
+EOF
+    cat > "$out/lib/node_modules/pi/node_modules/pi-subagents-adapter/index.ts" <<'EOF'
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import subagentsFactory from "@oh-my-pi/subagents/tools/index.ts";
+
+export default function (pi: ExtensionAPI) {
+  const toolsOrTool = (subagentsFactory as any)({ cwd: process.cwd() });
+  const tools = Array.isArray(toolsOrTool) ? toolsOrTool : [toolsOrTool];
+  for (const tool of tools) {
+    if (tool && typeof tool === "object" && typeof (tool as any).name === "string") {
+      pi.registerTool(tool as any);
+    }
+  }
+}
+EOF
+
     mkdir -p "$out/bin"
     cat > "$out/bin/pi" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-: "''${PI_PACKAGE_DIR:=__PI_PACKAGE_DIR__}"
-export PI_PACKAGE_DIR
+export PI_PACKAGE_DIR="__PI_PACKAGE_DIR__"
 
 export NODE_PATH="''${PI_PACKAGE_DIR}/node_modules''${NODE_PATH:+:$NODE_PATH}"
 export PATH="__JCODEMUNCH_BIN__:$PATH"
@@ -34,7 +57,7 @@ exec ${pkgs.nodejs}/bin/node "''${PI_PACKAGE_DIR}/dist/cli.js" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/@aliou/pi-linkup" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/pi-mcp-adapter" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/lsp-pi" \
-  --extension "''${PI_PACKAGE_DIR}/node_modules/@oh-my-pi/subagents/tools/index.ts" \
+  --extension "''${PI_PACKAGE_DIR}/node_modules/pi-subagents-adapter" \
   "$@"
 EOF
     substituteInPlace "$out/bin/pi" \
