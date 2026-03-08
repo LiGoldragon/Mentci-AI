@@ -11,4 +11,9 @@
    :type :report
    :topic :subagent-command-runner-research
    :solar "5919.12.18.50.15"
+   :programming "3wyybz4j"}
+  {:path "591912185045_report_json_vs_markdown_research_tool-log.md"
+   :type :report
+   :topic :json-vs-markdown-reliability
+   :solar "5919.12.18.50.45"
    :programming "3wyybz4j"}]}
