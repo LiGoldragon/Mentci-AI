@@ -48,7 +48,11 @@ EOF
 #!/usr/bin/env bash
 set -euo pipefail
 
-export PI_PACKAGE_DIR="__PI_PACKAGE_DIR__"
+if [ -n "$PI_SOURCE_STABLE_LINK" ] && [ -d "$PI_SOURCE_STABLE_LINK" ]; then
+  export PI_PACKAGE_DIR="$PI_SOURCE_STABLE_LINK"
+else
+  export PI_PACKAGE_DIR="__PI_PACKAGE_DIR__"
+fi
 
 export NODE_PATH="''${PI_PACKAGE_DIR}/node_modules''${NODE_PATH:+:$NODE_PATH}"
 export PATH="__JCODEMUNCH_BIN__:$PATH"
