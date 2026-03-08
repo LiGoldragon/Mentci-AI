@@ -1,0 +1,9 @@
+{:kind :index
+ :title "Session Context Persistence"
+ :summary "Durable handoff artifacts for recent implementation and debugging sessions"
+ :entries
+ [{:path "591912184853_report_lsp_nix_runtime_and_chronos_lib_migration_handover.md"
+   :type :report
+   :topic :lsp-nix-runtime-and-repo-boundary
+   :solar "5919.12.18.48.53"
+   :programming "3wyybz4j"}]}
