@@ -2,18 +2,16 @@
 
 pkgs.buildNpmPackage {
   pname = "lsp-pi-extension";
-  version = "1.0.3";
+  version = "1.0.3-mentci.1";
 
-  src = pkgs.fetchurl {
-    url = "https://registry.npmjs.org/lsp-pi/-/lsp-pi-1.0.3.tgz";
-    hash = "sha256-hJIF5hjO7/FNkCXEKuI56W59V86oxQp+Wm8myUkOi5I=";
+  src = pkgs.fetchFromGitHub {
+    owner = "LiGoldragon";
+    repo = "lsp-pi";
+    rev = "b8b9982f5a3ebab003b4231647097efe95f6eca3";
+    hash = "sha256-+P6XVoWcfFZb/oPSpNarBKrOUlWjFQW9YtJ+QKbloBE=";
   };
 
-  npmDepsHash = "sha256-i/qd5QYj/afHCOvwV0MjI/yNnXs98YxDYCX2Oh+UMGY=";
-
-  postPatch = ''
-    cp ${./lsp-pi-package-lock.json} package-lock.json
-  '';
+  npmDepsHash = "sha256-TDx8/utCoX1yJmR+58DL/0bBJgjtMUcEmQCM8Wd2anE=";
 
   dontNpmBuild = true;
 
