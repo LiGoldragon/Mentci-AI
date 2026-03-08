@@ -23,9 +23,18 @@ pkgs.mkShell {
     export MENTCI_REPO_ROOT="$(pwd)"
     export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
 
-    # Keep pi mutable state inside the repo (no global ~/.pi/agent installs/state)
+    # Keep pi mutable state inside the repo
     export PI_CODING_AGENT_DIR="$(pwd)/.pi/agent"
     mkdir -p "$PI_CODING_AGENT_DIR"/{prompts,skills,themes,tools,sessions,agents,commands,extensions}
+
+    # Share OAuth auth across repos so login is not required per-repo
+    # (sessions/tools stay repo-local; auth remains user-global)
+    export PI_SHARED_AUTH_FILE="$HOME/.pi/agent/auth.json"
+    mkdir -p "$(dirname "$PI_SHARED_AUTH_FILE")"
+    if [ -e "$PI_CODING_AGENT_DIR/auth.json" ] && [ ! -L "$PI_CODING_AGENT_DIR/auth.json" ]; then
+      mv "$PI_CODING_AGENT_DIR/auth.json" "$PI_CODING_AGENT_DIR/auth.json.bak.$(date +%s)"
+    fi
+    ln -sfn "$PI_SHARED_AUTH_FILE" "$PI_CODING_AGENT_DIR/auth.json"
 
     # Canonical mentci-user setup pointer from component source input
     # (works for both local and remote flake-based `nix develop`)

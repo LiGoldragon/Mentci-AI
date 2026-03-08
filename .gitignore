@@ -25,5 +25,7 @@ Outputs/
 /.vtcode/
 /vtcode.toml
 /.pi/npm/
+/.pi/agent/
+/.pi/pi-source
 .samskara
 /.gemini/
