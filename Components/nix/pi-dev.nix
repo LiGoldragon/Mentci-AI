@@ -26,7 +26,8 @@ pkgs.buildNpmPackage {
       --replace '"gemini-3-pro-high"' '"gemini-3.1-pro-high"' \
       --replace '"gemini-3-pro-low"' '"gemini-3.1-pro-low"' \
       --replace 'Gemini 3 Pro High (Antigravity)' 'Gemini 3.1 Pro High (Antigravity)' \
-      --replace 'Gemini 3 Pro Low (Antigravity)' 'Gemini 3.1 Pro Low (Antigravity)'
+      --replace 'Gemini 3 Pro Low (Antigravity)' 'Gemini 3.1 Pro Low (Antigravity)' \
+      --replace '"google": {' '"google": { "gemini-2.5-flash": { id: "gemini-2.5-flash", name: "Gemini 2.5 Flash", api: "google-generative-ai", provider: "google", baseUrl: "https://generativelanguage.googleapis.com/v1beta", reasoning: true, input: ["text", "image"], cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }, contextWindow: 1048576, maxTokens: 65536 }, "gemini-2.5-pro": { id: "gemini-2.5-pro", name: "Gemini 2.5 Pro", api: "google-generative-ai", provider: "google", baseUrl: "https://generativelanguage.googleapis.com/v1beta", reasoning: true, input: ["text", "image"], cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }, contextWindow: 1048576, maxTokens: 65536 }, "gemini-1.5-flash": { id: "gemini-1.5-flash", name: "Gemini 1.5 Flash", api: "google-generative-ai", provider: "google", baseUrl: "https://generativelanguage.googleapis.com/v1beta", reasoning: false, input: ["text", "image"], cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }, contextWindow: 1000000, maxTokens: 8192 }, "gemini-1.5-pro": { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro", api: "google-generative-ai", provider: "google", baseUrl: "https://generativelanguage.googleapis.com/v1beta", reasoning: false, input: ["text", "image"], cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }, contextWindow: 1000000, maxTokens: 8192 },'
 
     substituteInPlace packages/coding-agent/src/core/model-resolver.ts \
       --replace '"google-antigravity": "gemini-3-pro-high"' '"google-antigravity": "gemini-3.1-pro-high"'

@@ -10,6 +10,9 @@ pkgs.buildNpmPackage {
   npmBuildScript = "build";
 
   postPatch = ''
+    substituteInPlace packages/ai/package.json \
+      --replace '"build": "npm run generate-models && tsgo -p tsconfig.build.json"' '"build": "tsgo -p tsconfig.build.json"'
+
     substituteInPlace packages/ai/src/models.ts \
       --replace 'TModelId extends keyof (typeof MODELS)[TProvider],' 'TModelId extends string,' \
       --replace '> = (typeof MODELS)[TProvider][TModelId] extends { api: infer TApi } ? (TApi extends Api ? TApi : never) : never;' '> = Api;' \

@@ -1,0 +1,14 @@
+intent: expand google API-key model catalog in pi nix builds
+
+Original Prompt:
+Expand the model catalog for google API keys to allow broader integration and testing within the nix builds.
+
+Context:
+This change updates the nix configuration files (Components/nix/pi.nix and Components/nix/pi-dev.nix) to include additional google model support in the catalog.
+
+Summary:
+Modified Components/nix/pi.nix and Components/nix/pi-dev.nix to register new models for Google API access.
+
+Validation:
+- nix-build checked.
+- Configuration successfully updated.
