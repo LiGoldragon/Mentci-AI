@@ -192,6 +192,7 @@
           piDev = namespace.pi_dev;
           piWithExtensions = namespace.pi_with_extensions;
           piLinkupExtension = namespace.pi_linkup_extension;
+          piSubagentsExtension = namespace.pi_subagents_extension;
           unifiedLlm = namespace.unified_llm;
           piRust = namespace.pi_rust;
           vtcode = namespace.vtcode;

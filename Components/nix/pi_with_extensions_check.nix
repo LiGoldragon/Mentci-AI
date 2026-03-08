@@ -8,8 +8,10 @@ pkgs.runCommand "pi-with-extensions-check" { } ''
   test -f ${pi_with_extensions}/lib/node_modules/pi/node_modules/@mariozechner/pi-ai/oauth.d.ts
   test -e ${pi_with_extensions}/lib/node_modules/pi/node_modules/pi-mcp-adapter/index.ts
   test -e ${pi_with_extensions}/lib/node_modules/pi/node_modules/lsp-pi/src/lsp.ts
+  test -e ${pi_with_extensions}/lib/node_modules/pi/node_modules/@oh-my-pi/subagents/package.json
   grep -q "node_modules/pi-mcp-adapter" ${pi_with_extensions}/bin/pi
   grep -q "node_modules/lsp-pi" ${pi_with_extensions}/bin/pi
+  grep -q "node_modules/@oh-my-pi/subagents" ${pi_with_extensions}/bin/pi
   grep -q "\.nix" ${pi_with_extensions}/lib/node_modules/pi/node_modules/lsp-pi/src/lsp-core.ts
   grep -q "id: \"nixd\"" ${pi_with_extensions}/lib/node_modules/pi/node_modules/lsp-pi/src/lsp-core.ts
   grep -q "jcodemunch-mcp" ${pi_with_extensions}/bin/pi

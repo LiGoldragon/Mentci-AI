@@ -1,4 +1,4 @@
-{ pkgs, pi, pi_linkup_extension, pi_mcp_adapter_extension, lsp_pi_extension, jcodemunch_mcp }:
+{ pkgs, pi, pi_linkup_extension, pi_mcp_adapter_extension, lsp_pi_extension, pi_subagents_extension, jcodemunch_mcp }:
 
 pkgs.stdenvNoCC.mkDerivation {
   pname = "pi-with-extensions";
@@ -13,9 +13,11 @@ pkgs.stdenvNoCC.mkDerivation {
     chmod -R u+w "$out/lib/node_modules/pi"
 
     mkdir -p "$out/lib/node_modules/pi/node_modules/@aliou"
+    mkdir -p "$out/lib/node_modules/pi/node_modules/@oh-my-pi"
     ln -s "${pi_linkup_extension}" "$out/lib/node_modules/pi/node_modules/@aliou/pi-linkup"
     ln -s "${pi_mcp_adapter_extension}" "$out/lib/node_modules/pi/node_modules/pi-mcp-adapter"
     ln -s "${lsp_pi_extension}" "$out/lib/node_modules/pi/node_modules/lsp-pi"
+    ln -s "${pi_subagents_extension}" "$out/lib/node_modules/pi/node_modules/@oh-my-pi/subagents"
 
     mkdir -p "$out/bin"
     cat > "$out/bin/pi" <<'EOF'
@@ -32,6 +34,7 @@ exec ${pkgs.nodejs}/bin/node "''${PI_PACKAGE_DIR}/dist/cli.js" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/@aliou/pi-linkup" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/pi-mcp-adapter" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/lsp-pi" \
+  --extension "''${PI_PACKAGE_DIR}/node_modules/@oh-my-pi/subagents" \
   "$@"
 EOF
     substituteInPlace "$out/bin/pi" \

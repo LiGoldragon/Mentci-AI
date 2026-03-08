@@ -4,4 +4,5 @@
  :developmentPath "../../../Development/medium/Pi-Extensions"
  :entries ["591912072100_answer_pi-pro-extensions-research.md"
            "591912185015_report_subagent_command_runner_signal_first_strategy.md"
-           "591912185045_report_json_vs_markdown_output_reliability_for_llm_command_lanes.md"]}
+           "591912185045_report_json_vs_markdown_output_reliability_for_llm_command_lanes.md"
+           "591912185147_report_subagents_extension_nix_install_and_function-scoped_usage.md"]}
