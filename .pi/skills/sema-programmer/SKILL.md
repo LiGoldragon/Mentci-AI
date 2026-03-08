@@ -57,6 +57,22 @@ Before editing code:
 - **Actor-First Concurrency:** All multi-step symbolic transformations and concurrent tasks must be implemented as supervised actors using the `ractor` framework.
 - **Component Boundaries:** Treat every component as a strict boundary. They must interact only through schema-validated channels (symbolic messaging).
 
+### 3.1) Nix Object Rules (Migrated Canonical Guidance)
+When working in Nix files (`flake.nix`, `Components/nix/**`, module trees), apply these structural rules:
+
+- **Single Attrset In/Out:** Reusable Nix functions take one attrset argument and return one attrset. Avoid positional argument APIs for domain logic.
+- **Attrsets Exist; Flows Occur:** Use noun-like names for static entities, flow-like names for functions/processes.
+- **Naming Declares Role:**
+  - `camelCase` for flow/functions/relations.
+  - `kebab-case` for static package/attribute identities.
+  - Avoid redundant suffixes (`Package`, `Module`, `Attrset`) and repeated context in names.
+- **Group Related Functions by Namespace:** Prefer cohesive attrset namespaces over many disconnected one-function files.
+- **Standard Library Domain Rule:** If behavior belongs to `lib` semantics (merge/map/filter/etc.), use nixpkgs `lib` instead of re-implementing.
+- **Direction Encodes Action:** Prefer directional names (`from*`, `to*`) over vague verbs (`read`, `write`, `load`, `save`) when direction is sufficient.
+- **Logic-Data Separation via Structured Attrs:** For derivations/scripts that need structured config, prefer `__structuredAttrs = true` and consume `.attrs.json` rather than ad-hoc env var payload routing.
+- **Init Envelope Purity:** Environment variables are process-layer plumbing, not domain-state truth. Domain initialization should flow through one schema-backed init object.
+- **Nix as Consumer, Not Derivation Authority:** Keep primary domain derivation in Rust/Cozo/schema lanes; Nix should consume already-structured outputs.
+
 ### 4) Verify in Full Workspace Context
 - Run targeted checks first, then `cargo check --workspace`.
 - Validate warning hygiene and generated-code boundaries.

@@ -100,6 +100,14 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 4. **Confident Mutation:** An Independent Developer makes changes when confident about their usefulness and logical integrity. If a change is logically sound and cannot break existing functionality, proceed with implementation.
 5. **Implement & Verify:** Use appropriate tools (`edit`, `write`) and self-verify via the Mirror Hook.
 
+### 5.1 Nix Basics (High-Level Guardrails)
+- Treat Nix as infrastructure/repro surface; keep domain logic in Rust + schema lanes.
+- If you add or patch a runtime-integrated tool (LSP server, MCP server, CLI extension), ensure its runtime binary is present in dev shell packages (not just referenced in config).
+- For Nix/runtime changes, verify with concrete shell evidence before claiming done:
+  - `nix develop . --command bash -lc 'which <binary>'`
+  - one targeted behavior check (`nix build .#checks.<system>.<check>` or equivalent).
+- If behavior is wired but runtime is missing (PATH/tool not found), treat as incomplete implementation, not a user-environment issue.
+
 ### 6. History as the Primary Debugging Surface
 - **Never give up before auditing history.** The answer to a failing tool or a logic error is most often lying in the commit log (`jj log -p`) or the operation log (`jj op log`).
 - **Research the past:** If a tool was working yesterday but fails today, use `jj diff -r @--` to isolate what changed in the environment or configuration.
