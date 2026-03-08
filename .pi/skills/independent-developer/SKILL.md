@@ -82,7 +82,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
     3. Push `main` bookmark and push the release tag.
     4. Verify `main == main@origin` and verify tag presence/signature.
 - **Phantom Intent Avoidance:** Never create "Phantom Commits" (descriptions without diffs). If a squash or rebase results in an empty described commit, it must be squashed into its neighbor or deleted.
-- **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`). This ensures the next prompt or agent invocation begins with a clean, empty working copy ready for fresh intent.
+- **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`). This action itself creates the clean handoff state for `@` (empty working copy on a fresh commit); do not add extra no-op graph operations (for example, rebasing that empty commit) unless explicitly required.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
 
 - **Basic Rebase and Push Workflow:**
