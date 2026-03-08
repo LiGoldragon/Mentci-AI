@@ -73,6 +73,17 @@ When working in Nix files (`flake.nix`, `Components/nix/**`, module trees), appl
 - **Init Envelope Purity:** Environment variables are process-layer plumbing, not domain-state truth. Domain initialization should flow through one schema-backed init object.
 - **Nix as Consumer, Not Derivation Authority:** Keep primary domain derivation in Rust/Cozo/schema lanes; Nix should consume already-structured outputs.
 
+### 3.2) Nix Runtime Closure Rule (Operational)
+When adding an integration that launches external tools at runtime (LSP servers, MCP servers, CLIs, wrappers), enforce runtime closure:
+
+- **Wire + Ship:** Config wiring alone is insufficient. If code references a binary, that binary MUST be present in the runtime shell/package set.
+- **Declare Runtime Deps Explicitly:** Add required binaries to the active runtime surface (`common_packages`, dev shell packages, or wrapper closure) rather than assuming host PATH.
+- **No Phantom Integrations:** "Extension loads" or "schema supports language" does not count as complete if required executables are missing.
+- **Verification Contract (Mandatory):** Before claiming completion, produce evidence for each required runtime binary:
+  - `nix develop . --command bash -lc 'which <binary>'`
+  - one focused behavior check proving the lane actually executes.
+- **Failure Semantics:** Missing runtime binaries are implementation defects, not user-environment blame.
+
 ### 4) Verify in Full Workspace Context
 - Run targeted checks first, then `cargo check --workspace`.
 - Validate warning hygiene and generated-code boundaries.
