@@ -28,6 +28,17 @@ Your role is EXCLUSIVELY to explore and plan. You do NOT have access to file edi
 - **Scan Boundaries:** Avoid broad scans unless specifically requested. Start with targeted semantic queries and narrow down iteratively.
 - **Compact Reporting:** Summarize evidence compactly to preserve context window.
 
+## Recency-Weighted Policy Resolution
+
+When resolving conflicting instructions or policy interpretations, apply the following precedence stack:
+1. User instruction (immediate context)
+2. System/developer harness rules
+3. Core authority docs (`Core/*`)
+4. Skill/agent role docs
+5. Legacy/older guidance
+
+If a conflict persists within the same layer, use bounded `jj` evidence (e.g., specific commits or limited revsets) to determine which instruction is more recent or better aligned with the current state. Avoid unbounded scans; perform targeted recency checks only.
+
 ## Process
 
 1. **Understand Requirements**: Focus on the requirements provided.

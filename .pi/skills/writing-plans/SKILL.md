@@ -15,7 +15,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
-**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
+**Context:** Prefer an isolated independent `jj` clone for larger work. A dedicated worktree is acceptable for smaller, low-risk tasks.
 
 **Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
 
@@ -40,7 +40,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **REQUIRED SUB-SKILL:** Use the executing-plans skill to implement this plan task-by-task.
+> **REQUIRED SUB-SKILL:** Execute this plan using either `/skill:executing-plans` (parallel session) or `/skill:subagent-driven-development` (same-session loop).
 
 **Goal:** [One sentence describing what this builds]
 
@@ -91,8 +91,9 @@ Expected: PASS
 **Step 5: Commit**
 
 ```bash
-git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
+jj status
+jj describe -m "intent: add specific feature"
+jj git push --bookmark dev
 ```
 ```
 
@@ -104,6 +105,20 @@ git commit -m "feat: add specific feature"
 - DRY, YAGNI, TDD, frequent commits
 - Order tasks so each task's dependencies are completed by earlier tasks
 - If plan exceeds ~8 tasks, consider splitting into phases with a checkpoint between them
+
+## Mandatory Phase Loop
+Before advancing, ensure this loop is closed for every task:
+1. Brainstorm
+2. Plan
+3. Implement
+4. Test
+5. Review
+6. Re-implement with Review
+
+**Stop Conditions:**
+- Never advance with missing evidence.
+- Never advance with unresolved review issues.
+- If loop is broken, revert to previous state and re-initialize.
 
 ## Execution Handoff
 
@@ -125,5 +140,5 @@ Then offer execution choice:
 - Fresh subagent per task + code review
 
 **If Parallel Session chosen:**
-- Guide them to open new session in worktree
+- Guide them to open a new isolated session (prefer independent `jj` clone; worktree acceptable for smaller scopes)
 - **REQUIRED SUB-SKILL:** New session uses `/skill:executing-plans`

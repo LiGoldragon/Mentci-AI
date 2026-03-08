@@ -68,8 +68,8 @@ digraph process {
 
     "Read plan, extract all tasks with full text, note context, initialize plan_tracker tool" [shape=box];
     "More tasks remain?" [shape=diamond];
-    "Dispatch final code reviewer subagent for entire implementation" [shape=box];
-    "Use /skill:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    "Report completion and wait for user confirmation" [shape=box];
+    "On confirmation: use /skill:requesting-code-review then /skill:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "Read plan, extract all tasks with full text, note context, initialize plan_tracker tool" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
@@ -87,8 +87,8 @@ digraph process {
     "Code quality reviewer subagent approves?" -> "Mark task complete via plan_tracker tool" [label="yes"];
     "Mark task complete via plan_tracker tool" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
-    "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
-    "Dispatch final code reviewer subagent for entire implementation" -> "Use /skill:finishing-a-development-branch";
+    "More tasks remain?" -> "Report completion and wait for user confirmation" [label="no"];
+    "Report completion and wait for user confirmation" -> "On confirmation: use /skill:requesting-code-review then /skill:finishing-a-development-branch";
 }
 ```
 
@@ -184,8 +184,8 @@ Code reviewer: ✅ Approved
 ...
 
 [After all tasks]
-[Dispatch final code-reviewer]
-Final reviewer: All requirements met, ready to merge
+[Report completion to user and wait for confirmation]
+[On confirmation, dispatch requesting-code-review + finishing-a-development-branch flows]
 
 Done!
 ```
@@ -221,8 +221,33 @@ Done!
 - See **"When a Subagent Fails"** below — never code directly, always re-dispatch or escalate
 
 ## Subagent Reliability & Raw Evidence Contract
-- **Reliability:** If a task tool returns "Unknown agent ... Available: none", stop chain execution and report blocked state. Run minimal JJ preflight evidence (`jj status`, bounded `jj log`) before retrying. Do not fabricate success from partial/empty agent outputs.
-- **Evidence:** For claims about push/build/test/model availability, include raw command output snippets. Summary-only reports are not acceptable for final verification.
+
+- **Reliability:** If a task tool returns "Unknown agent ... Available: none":
+    1. Stop chain execution immediately.
+    2. Report blocked state.
+    3. Run minimal JJ preflight: `jj status`, `jj log -r 'dev|@|@-' --no-graph`.
+    4. Provide raw evidence output.
+    5. Do not fabricate success from partial/empty agent outputs.
+- **Raw Evidence Packet:**
+    - For all completion claims, provide a `## Raw Evidence Packet` section.
+    - Include:
+        - `jj status`
+        - Relevant `jj log` (bounded)
+        - Verification command output (tests/build/etc)
+
+## Mandatory Phase Loop
+Before advancing, ensure this loop is closed for every task:
+1. Brainstorm
+2. Plan
+3. Implement
+4. Test
+5. Review
+6. Re-implement with Review
+
+**Stop Conditions:**
+- Never advance with missing evidence.
+- Never advance with unresolved review issues.
+- If loop is broken, revert to previous state and re-initialize.
 
 ## After All Tasks Complete
 
@@ -237,7 +262,7 @@ Do NOT automatically dispatch final review or start the finishing skill. The use
 ## Integration
 
 **Required workflow skills:**
-- **`/skill:using-git-worktrees`** - Recommended: Set up isolated workspace before starting. For small changes, branching in the current directory is acceptable with human approval.
+- **`/skill:using-git-worktrees`** - For isolation workflows. Prefer independent `jj` clones for larger/multi-session efforts; worktrees are acceptable for smaller scoped changes with human approval.
 - **`/skill:writing-plans`** - Creates the plan this skill executes
 - **`/skill:requesting-code-review`** - Code review template for reviewer subagents
 - **`/skill:finishing-a-development-branch`** - Complete development after all tasks

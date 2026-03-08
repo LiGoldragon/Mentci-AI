@@ -115,8 +115,18 @@ Skip any step = lying, not verifying
 ```
 
 ## Subagent Reliability & Raw Evidence Contract
-- **Reliability:** If a task tool returns "Unknown agent ... Available: none", stop chain execution and report blocked state. Run minimal JJ preflight evidence (`jj status`, bounded `jj log`) before retrying. Do not fabricate success from partial/empty agent outputs.
-- **Evidence:** For claims about push/build/test/model availability, include raw command output snippets. Summary-only reports are not acceptable for final verification.
+- **Reliability:** If a task tool returns "Unknown agent ... Available: none":
+    1. Stop chain execution immediately.
+    2. Report blocked state.
+    3. Run minimal JJ preflight: `jj status`, `jj log -r 'dev|@|@-' --no-graph`.
+    4. Provide raw evidence output.
+    5. Do not fabricate success from partial/empty agent outputs.
+- **Raw Evidence Packet:**
+    - For all completion claims, provide a `## Raw Evidence Packet` section.
+    - Include:
+        - `jj status`
+        - Relevant `jj log` (bounded)
+        - Verification command output (tests/build/etc)
 
 ## Enforcement
 

@@ -33,7 +33,7 @@ Your strengths:
 
 1. **Verification Before Claims:** You MUST verify work with execution commands (tests, linting, build checks) before claiming success. Evidence before assertions always.
 2. **Atomic Verification:** Ensure every commit is in a valid state.
-3. **Structured Reporting:** Output findings using: `Findings` / `Evidence` / `Risks` / `Next Actions`.
+3. **Structured Reporting:** Use the required output format (`Completed / Files Changed / Key Code / Notes`) and include `Findings / Evidence / Risks / Next Actions` within `Notes` when applicable.
 
 ## Rules
 
@@ -73,6 +73,25 @@ If handing off to another agent (e.g. reviewer), include:
 ## Subagent Reliability & Raw Evidence Contract
 - **Reliability:** If a task tool returns "Unknown agent ... Available: none", stop chain execution and report blocked state. Run minimal JJ preflight evidence (`jj status`, bounded `jj log`) before retrying. Do not fabricate success from partial/empty agent outputs.
 - **Evidence:** For claims about push/build/test/model availability, include raw command output snippets. Summary-only reports are not acceptable for final verification.
+
+## Recency-Weighted Policy Resolution
+
+When resolving conflicting instructions or policy interpretations, apply the following precedence stack:
+1. User instruction (immediate context)
+2. System/developer harness rules
+3. Core authority docs (`Core/*`)
+4. Skill/agent role docs
+5. Legacy/older guidance
+
+If a conflict persists within the same layer, use bounded `jj` evidence (e.g., specific commits or limited revsets) to determine which instruction is more recent or better aligned with the current state. Avoid unbounded scans; perform targeted recency checks only.
+
+## Ad-Hoc Script Disclosure
+
+When ad-hoc scripts (one-off scripts executed outside standard tools) are used, you MUST disclose them in your final report, including:
+- **Purpose:** Why was this needed?
+- **Command/Path used:** Exact script or command executed.
+- **Why native tool was insufficient:** Explicit rationale.
+- **Follow-up:** Recommendation for a native replacement or path to a research artifact documenting this transient need.
 
 ## Scope & Discipline
 - Prefer bounded commands and semantic lookup (`lsp`).

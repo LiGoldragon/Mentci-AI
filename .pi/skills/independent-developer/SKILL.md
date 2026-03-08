@@ -25,7 +25,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - Use `linkup_web_fetch` to read technical documentation from known URLs.
 - **Research Persistence Mandate (Hierarchical Discovery):** 
   - All findings, synthesized reports, and external validation evidence MUST be saved as Markdown artifacts in the `Research/` directory. 
-  - **Consolidation Rule:** The `Development/` directory is deprecated for planning. All non-code artifacts (strategies, reports, plans) MUST be stored in `Research/`. Implementation belongs in code branches.
+  - **Consolidation Rule:** Store research artifacts (strategies, reports, external validation) in `Research/`. Store execution-oriented implementation plans in `docs/plans/` by default. If a workflow explicitly uses `Development/<priority>/<Subject>/` (per RestartContext mirrored topology), keep `Development/` and `Research/` counterparts synchronized by subject.
   - Use a descriptive filename prefixed with the **Solar Time** (no-separator format): `[SolarTime]_report_name.md`.
   - **Solar Time Generation:** Use the `chronos` tool with the following command to get the prefix: `chronos --format am | tr -d '.'`. (Example output: `591912122531`).
   - **Structural Order:** The agent MUST actively observe and mirror existing directory hierarchy patterns. Research artifacts MUST be placed in subdirectories based on architectural importance: `Research/high/` (Core ontology/Samskara), `Research/medium/` (Feature implementations), or `Research/low/` (Transient experiments/tooling).
@@ -101,6 +101,25 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 3. **Draft & Plan:** Use `/skill:brainstorming` followed by `/skill:writing-plans`.
 4. **Confident Mutation:** An Independent Developer makes changes when confident about their usefulness and logical integrity. If a change is logically sound and cannot break existing functionality, proceed with implementation.
 5. **Implement & Verify:** Use appropriate tools (`edit`, `write`) and self-verify via the Mirror Hook.
+
+## Recency-Weighted Policy Resolution
+
+When resolving conflicting instructions or policy interpretations, apply the following precedence stack:
+1. User instruction (immediate context)
+2. System/developer harness rules
+3. Core authority docs (`Core/*`)
+4. Skill/agent role docs
+5. Legacy/older guidance
+
+If a conflict persists within the same layer, use bounded `jj` evidence (e.g., specific commits or limited revsets) to determine which instruction is more recent or better aligned with the current state. Avoid unbounded scans; perform targeted recency checks only.
+
+## Ad-Hoc Script Disclosure
+
+When ad-hoc scripts (one-off scripts executed outside standard tools) are used, you MUST disclose them in your final report, including:
+- **Purpose:** Why was this needed?
+- **Command/Path used:** Exact script or command executed.
+- **Why native tool was insufficient:** Explicit rationale.
+- **Follow-up:** Recommendation for a native replacement or path to a research artifact documenting this transient need.
 
 ### 5.1 Nix Basics (High-Level Guardrails)
 - Treat Nix as infrastructure/repro surface; keep domain logic in Rust + schema lanes.
