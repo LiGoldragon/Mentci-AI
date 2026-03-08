@@ -1,0 +1,9 @@
+{:kind :index
+ :title "Tool Usage Documentation"
+ :summary "Session-level logs of structured query usage, edit actions, and tooling shortcomings"
+ :entries
+ [{:path "591912184950_report_skill-refresh_structured-query_and_lcp_tool-log.md"
+   :type :report
+   :topic :skill-refresh-and-tooling-audit
+   :solar "5919.12.18.49.50"
+   :programming "3wyybz4j"}]}

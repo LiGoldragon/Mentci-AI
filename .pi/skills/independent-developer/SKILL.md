@@ -34,6 +34,8 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 
 ### 2. Logical Mastery
 - Prioritize `logical_run_query` and `logical_get_ast` for understanding code.
+- **Structured Query Fallback Rule:** If `logical_*` tools are unavailable in the active harness, use bounded structured queries via repository tools (`lsp`, MCP search/outline tools, or tightly-scoped `rg`) instead of ad-hoc broad scans.
+- **Shortcoming Documentation Rule:** If a requested structured-query path is unavailable or returns partial coverage (for example, language or file-type gaps), document the limitation in a Research tooling log artifact, including command/scope/outcome.
 - **Mirror Verification:** After any UI or code change, read `.mentci/ui_mirror.txt` to confirm the machine's output matches the intended design.
 
 ### 3. DVCS Rigor (Jujutsu)

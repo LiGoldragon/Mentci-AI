@@ -59,6 +59,15 @@ Follow the **Aski-FS Ontology** (`Library/specs/AskiFsSpec.md`) when choosing a 
 - Paths must be **relative** for portability.
 - (Nascent LFS): Once the `logical_index_repo` tool is available, run it to sync the SQLite shadow index (`.mentci/logical_fs.db`).
 
+### 2.1) Tool Usage Ledger (Mandatory for Tool-Heavy Sessions)
+- For sessions that depend on structured queries, LSP/MCP inspection, or tool-behavior debugging, persist a tooling log artifact under `Research/medium/Tool-Usage-Documentation/`.
+- The log must include:
+  - tool name and bounded scope,
+  - purpose of each query/action,
+  - observed outcomes,
+  - explicit shortcomings/coverage gaps.
+- Update the local `index.edn` in that subject directory alongside the log file.
+
 ### 3) Protocol-Compliant Commits
 - Commit each artifact atomically.
 - Include mandatory context headers in the commit message:
