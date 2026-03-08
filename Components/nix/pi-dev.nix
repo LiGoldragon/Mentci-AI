@@ -1,11 +1,11 @@
-{ pkgs, src }:
+{ pkgs, src, lib }:
 
 pkgs.buildNpmPackage {
   pname = "pi-dev";
-  version = "0.55.0-antigravity-3.1";
+  version = "0.57.1";
   src = src;
 
-  npmDepsHash = "sha256-CG6iLtu0VKAd5ynSQnKyCXFXP7JXctkE+R9zop83nCE=";
+  npmDepsHash = lib.fakeHash;
 
   npmBuildScript = "build";
 

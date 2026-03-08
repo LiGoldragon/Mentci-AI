@@ -2,10 +2,10 @@
 
 pkgs.buildNpmPackage {
   pname = "pi";
-  version = "0.57.0";
+  version = "0.57.1";
   src = src;
 
-  npmDepsHash = "sha256-ow7wNZov4hovcWGgLRF42x1Ho8hXz6toWWLOpTkzI6w=";
+  npmDepsHash = "sha256-pNNY10RizBmLdUIqh1s+8eH/UjyvY0gwk+uRDLAx0iY=";
 
   npmBuildScript = "build";
 

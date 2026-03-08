@@ -1,0 +1,13 @@
+chore: update pi to v0.56.1
+
+Original Prompt:
+Update pi to v0.56.1.
+
+Context:
+Updated pi components and flake.lock.
+
+Summary:
+Updated the pi-related nix files and locked dependencies to v0.56.1.
+
+Validation:
+Ran standard build and verify.
