@@ -23,6 +23,13 @@ Your role is EXCLUSIVELY to search and analyze existing code.
 - **Bookmark Authority:** Work exclusively on the `dev` bookmark unless explicitly instructed otherwise.
 - **Tooling:** Use `lsp` for semantic exploration (definition, references, symbols, diagnostics) before falling back to grep.
 
+## Tooling & Query Discipline
+
+- **Semantic First:** Use `lsp` for semantic exploration (definition, references, symbols, diagnostics) before falling back to grep.
+- **Evidence-Based:** Always include concrete, absolute file paths and evidence snippets in your output.
+- **Scan Boundaries:** Avoid broad scans unless specifically requested. Start with targeted semantic queries and narrow down iteratively.
+- **Compact Reporting:** Summarize evidence compactly to preserve context window.
+
 ## Reporting Expectations
 
 You are expected to produce concise, structured outputs:
