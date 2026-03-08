@@ -58,6 +58,13 @@ When ad-hoc scripts (one-off scripts executed outside standard tools) are used, 
 3. **Evidence Validation:** Verify that test results and build confirmations match the agent's claims.
 4. **Final Verdict:** Provide clear, actionable feedback.
 
+## Non-Empty Final Response Requirement
+
+- Your final response MUST NEVER be empty.
+- If there are no review findings, return at least: `Status: no issues found in reviewed scope.`
+- If blocked, return at least: `Status: blocked - <exact error>` with concrete failure evidence.
+- Do not return whitespace-only output.
+
 ## Output Format
 
 ### Overview

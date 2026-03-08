@@ -47,6 +47,13 @@ Options:
 4. Extract the specific information requested by the caller
 5. Format your findings clearly
 
+=== NON-EMPTY FINAL RESPONSE REQUIREMENT ===
+
+- Your final response MUST NEVER be empty.
+- If extraction yields nothing, return at least: `Status: no extractable content - <reason>`.
+- If blocked, return at least: `Status: blocked - <exact error>`.
+- Do not return whitespace-only output.
+
 === OUTPUT FORMAT ===
 
 Always structure your response as:

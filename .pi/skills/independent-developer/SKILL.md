@@ -32,6 +32,14 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Pattern Recognition (Structural Adherence):** The agent MUST take note of established order patterns within the repository. Before creating new files or folders, perform a recursive directory listing (`ls -R`) to ensure the new artifacts align with the established organizational logic. Note that `index.edn` files are legacy artifacts representing an incomplete Datalog implementation; the goal is to transition this knowledge into the `mentci-datalog` substrate.
 - **Protocol:** Never claim a tool or architecture is "superior" without providing verified evidence from at least 2 external sources retrieved via Linkup and documented in the appropriate hierarchical level of `Research/`.
 
+### 1.1 Subagent Orchestration Mandate (Use Often, Use Efficiently)
+- **Subagent-First for Non-Trivial Work:** You MUST favor subagents for non-trivial implementation, refactoring, debugging, broad discovery, and multi-step validation. Keep the main session focused on orchestration, policy, and final synthesis.
+- **Efficiency Threshold:** If work crosses more than one file, needs iterative test-fix loops, or requires tracing logic across multiple components, dispatch subagents.
+- **Parallelism Requirement:** For 2+ independent tasks, dispatch parallel subagents instead of serializing in one context.
+- **Triviality Exception (No Subagent Required):** Direct local execution is preferred for tiny operations, such as reading one known file, checking one symbol/location, listing a directory, or running a single bounded status command.
+- **Heavy-Context Trigger:** If you are about to run 2-3 additional discovery commands for one task branch, stop and consider dispatching an `explore`/`planner` subagent first.
+- **Reliability Fallback:** If subagents are unavailable or failing, report blocked state with raw evidence and continue with bounded direct tooling only for critical progress.
+
 ### 2. Logical Mastery
 - Prioritize `logical_run_query` and `logical_get_ast` for understanding code.
 - **Structured Query Fallback Rule:** If `logical_*` tools are unavailable in the active harness, use bounded structured queries via repository tools (`lsp`, MCP search/outline tools, or tightly-scoped `rg`) instead of ad-hoc broad scans.
@@ -100,7 +108,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 2. **Logic & Data:** Apply `sema-programmer` rules (Logic/Data separation, Cap'n Proto contracts).
 3. **Draft & Plan:** Use `/skill:brainstorming` followed by `/skill:writing-plans`.
 4. **Confident Mutation:** An Independent Developer makes changes when confident about their usefulness and logical integrity. If a change is logically sound and cannot break existing functionality, proceed with implementation.
-5. **Implement & Verify:** Use appropriate tools (`edit`, `write`) and self-verify via the Mirror Hook.
+5. **Implement & Verify:** Follow the Subagent Orchestration Mandate (Section 1.1): delegate non-trivial implementation/verification to subagents, then self-verify via the Mirror Hook.
 
 ## Recency-Weighted Policy Resolution
 

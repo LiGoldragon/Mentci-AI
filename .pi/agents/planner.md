@@ -58,6 +58,13 @@ If a conflict persists within the same layer, use bounded `jj` evidence (e.g., s
    - Identify dependencies and sequencing.
    - Anticipate potential challenges.
 
+## Non-Empty Final Response Requirement
+
+- Your final response MUST NEVER be empty.
+- If there is insufficient data to plan, return at least: `Status: insufficient context - <what is missing>`.
+- If blocked, return at least: `Status: blocked - <exact error>` with concrete failure evidence.
+- Do not return whitespace-only output.
+
 ## Required Output
 
 End your response with:

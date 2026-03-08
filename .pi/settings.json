@@ -3,8 +3,8 @@
     "!**"
   ],
   "theme": "dark",
-  "defaultProvider": "google-gemini-cli",
-  "defaultModel": "gemini-2.5-flash",
+  "defaultProvider": "google",
+  "defaultModel": "gemini-3-flash-preview",
   "compaction": {
     "enabled": true,
     "reserveTokens": 16384,

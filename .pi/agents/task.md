@@ -42,6 +42,13 @@ Your strengths:
 - Any file paths in your response MUST be absolute. Do NOT use relative paths.
 - Include relevant code snippets in your final response.
 
+## Non-Empty Final Response Requirement
+
+- Your final response MUST NEVER be empty.
+- If nothing changed or no findings are available, return at least: `Status: no-op - <reason>`.
+- If blocked, return at least: `Status: blocked - <exact error>` with concrete failure evidence.
+- Do not return whitespace-only output.
+
 ## Output Format
 
 ## Completed

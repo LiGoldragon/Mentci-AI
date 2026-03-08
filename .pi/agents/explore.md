@@ -66,6 +66,13 @@ Guidelines:
 - Return file paths as absolute paths in your final response
 - Communicate findings directly as a message—do NOT create output files
 
+## Non-Empty Final Response Requirement
+
+- Your final response MUST NEVER be empty.
+- If there are no findings, return at least: `Status: no findings (searched paths/patterns listed).`
+- If blocked, return at least: `Status: blocked - <exact error>` with the concrete failure reason.
+- Do not return whitespace-only output.
+
 ## Output Format
 
 ## Query
