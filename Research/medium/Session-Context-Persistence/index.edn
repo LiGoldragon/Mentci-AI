@@ -6,4 +6,9 @@
    :type :report
    :topic :lsp-nix-runtime-and-repo-boundary
    :solar "5919.12.18.48.53"
+   :programming "3wyybz4j"}
+  {:path "591912185757_report_subagents_nix_local-state_and_session-routing_handover.md"
+   :type :report
+   :topic :subagents-nix-local-state-and-session-routing
+   :solar "5919.12.18.57.57"
    :programming "3wyybz4j"}]}
