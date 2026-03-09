@@ -23,6 +23,20 @@ pkgs.mkShell {
     export MENTCI_REPO_ROOT="$(pwd)"
     export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
 
+    # Short-term dynamic target bookmark contract (session-local, not VC-backed)
+    # Priority: explicit env > directory-name inference > safe default.
+    if [ -z "${MENTCI_TARGET_BOOKMARK:-}" ]; then
+      _repo_base="$(basename "$(pwd)" | tr '[:upper:]' '[:lower:]')"
+      if [[ "$_repo_base" == *"--"* ]]; then
+        export MENTCI_TARGET_BOOKMARK="${_repo_base##*--}"
+      elif [ "$_repo_base" = "mentci-ai" ]; then
+        export MENTCI_TARGET_BOOKMARK="main"
+      else
+        export MENTCI_TARGET_BOOKMARK="dev"
+      fi
+      unset _repo_base
+    fi
+
     # Keep pi mutable state inside the repo
     export PI_CODING_AGENT_DIR="$(pwd)/.pi/agent"
     mkdir -p "$PI_CODING_AGENT_DIR"/{prompts,skills,themes,tools,sessions,agents,commands,extensions}

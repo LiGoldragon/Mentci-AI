@@ -20,7 +20,7 @@ Primary goals:
 ## Preconditions
 
 Before persisting context:
-1. Run `jj status` to ensure you are on the correct `dev` bookmark.
+1. Run `jj status` to ensure you are on the correct runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`).
 2. Verify the **Semantic Category** of the context you are about to save (Research, Library, Component, or Core).
 3. Ensure you have the `solar` timestamp and `programming` version for commit metadata.
 
@@ -87,4 +87,4 @@ Follow the **Aski-FS Ontology** (`Library/specs/AskiFsSpec.md`) when choosing a 
 - [ ] Local `index.edn` updated with relative path.
 - [ ] (Future) `logical_index_repo` executed to sync shadow DB.
 - [ ] Atomic commit with full Prompt/Context/Summary headers.
-- [ ] `jj bookmark set dev -r @-` and `jj git push -b dev` completed.
+- [ ] `jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @-` and `jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"` completed.

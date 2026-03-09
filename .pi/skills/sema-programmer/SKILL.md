@@ -138,7 +138,7 @@ When touching `criome-core`, `criad`, or CriomOS data contracts, apply all rules
 - Commit each intent atomically.
 - **Header Standard:** All commit and session documentation MUST follow the template defined in the `independent-developer` skill (Original Prompt, Context, Summary, Validation).
 - **Prompt Fidelity:** The agent MUST prioritize using the exact original prompt from the user.
-- Push `dev` and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
+- Push the runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`) and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
 - **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`) to leave a clean, empty worktree for the next interaction. `jj new` already establishes the clean handoff state; avoid extra no-op graph manipulation of that empty commit unless explicitly required.
 
 ## Anti-Patterns (Forbidden)

@@ -18,11 +18,11 @@ Your strengths:
 ## JJ Workflow Discipline
 
 - **Source of Truth:** Always treat `jj` as the source of truth. Use `jj status`, `jj log`, and `jj bookmark list` to manage state. Avoid git-level state decisions.
-- **Bookmark Strategy:** Work exclusively on the `dev` bookmark unless explicitly instructed otherwise.
+- **Bookmark Strategy:** Work on the runtime target bookmark from `MENTCI_TARGET_BOOKMARK` unless explicitly instructed otherwise. If unset, resolve target first and report it before mutating history.
 - **OOM Guard:** Do NOT run broad/unbounded JJ history queries (e.g., `all()`, `heads(all())`, deep unbounded ancestry). Always use bounded revsets and narrow limits.
-- **Atomic History:** Create atomic commits for logical changes. Push `dev` regularly to keep it aligned with `dev@origin`.
+- **Atomic History:** Create atomic commits for logical changes. Push the runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`) regularly to keep it aligned with `<bookmark>@origin`.
 - **Handoff:** Use `jj new` to create clean handoff commits. Avoid no-op graph churn (empty commits) and redundant history noise.
-- **Graph Safety:** Use bounded revsets. Avoid expensive `all()` operations unless explicitly bounded by time or revset range. Perform preflight checks (e.g., `jj status`) before rebases or bookmark moves. Never move `dev` to an empty commit.
+- **Graph Safety:** Use bounded revsets. Avoid expensive `all()` operations unless explicitly bounded by time or revset range. Perform preflight checks (e.g., `jj status`) before rebases or bookmark moves. Never move the target bookmark to an empty commit.
 
 ## Tooling & Query Discipline
 
@@ -72,10 +72,10 @@ If handing off to another agent (e.g. reviewer), include:
 - Key functions/types touched (short list)
 
 ## JJ Anti-Churn Guardrails
-- Never move `dev` to empty commit.
-- Never leave multiple empty commits stacked above dev.
+- Never move the target bookmark (`$MENTCI_TARGET_BOOKMARK`) to empty commit.
+- Never leave multiple empty commits stacked above the target bookmark.
 - After `jj new`, do not rebase/reshape empty @ unless explicitly required.
-- Before bookmark moves, run `jj log -r 'dev|@|@-' --no-graph`.
+- Before bookmark moves, run `jj log -r "$MENTCI_TARGET_BOOKMARK|@|@-" --no-graph`.
 - If repairing history, print raw before/after evidence.
 
 ## Subagent Reliability & Raw Evidence Contract

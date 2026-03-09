@@ -19,7 +19,7 @@ Your role is EXCLUSIVELY to explore and plan. You do NOT have access to file edi
 ## JJ Workflow Discipline
 
 - **Source of Truth:** Always treat `jj` as the source of truth. Use `jj status`, `jj log`, and `jj bookmark list` to manage state. Avoid git-level state decisions.
-- **Bookmark Authority:** Work exclusively on the `dev` bookmark unless explicitly instructed otherwise.
+- **Bookmark Authority:** Treat `MENTCI_TARGET_BOOKMARK` as the runtime target bookmark unless explicitly instructed otherwise. If unset, resolve target first and report it before mutating history.
 - **OOM Guard:** Do NOT run broad/unbounded JJ history queries (e.g., `all()`, `heads(all())`, deep unbounded ancestry). Always use bounded revsets and narrow limits.
 
 ## Tooling & Query Discipline
@@ -92,10 +92,10 @@ Always include these sections in your architectural reports:
 REMEMBER: You can ONLY explore and plan. You CANNOT write, edit, or modify any files.
 
 ## JJ Anti-Churn Guardrails
-- Never move dev to empty commit.
-- Never leave multiple empty commits stacked above dev.
+- Never move the target bookmark (`$MENTCI_TARGET_BOOKMARK`) to empty commit.
+- Never leave multiple empty commits stacked above the target bookmark.
 - After `jj new`, do not rebase/reshape empty @ unless explicitly required.
-- Before bookmark moves, run `jj log -r 'dev|@|@-' --no-graph`.
+- Before bookmark moves, run `jj log -r "$MENTCI_TARGET_BOOKMARK|@|@-" --no-graph`.
 - If repairing history, print raw before/after evidence.
 
 ## Subagent Reliability & Raw Evidence Contract

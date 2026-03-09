@@ -93,7 +93,7 @@ Expected: PASS
 ```bash
 jj status
 jj describe -m "intent: add specific feature"
-jj git push --bookmark dev
+jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"
 ```
 ```
 

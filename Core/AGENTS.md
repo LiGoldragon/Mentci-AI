@@ -62,7 +62,7 @@ These are the highest-order rules for all languages, scripts, and agent behavior
 *   **EDN/Lojix Authority:** Favor Lojix (advanced ASCII data) for all data storage and state persistence. Use the `aski-cli` tools for transformations.
 *   **Sema Object Style:** Strictly follow the ontology defined in `Components/schema/*.capnp`.
 *   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers.
-*   **Source Control:** Atomic, concise commits to the `dev` bookmark using `jj`. Follow the per-prompt dirty-tree auto-commit rule in `Core/VersionControlProtocol.md`.
+*   **Source Control:** Atomic, concise commits using `jj` to the runtime target bookmark (`MENTCI_TARGET_BOOKMARK`). Follow the per-prompt dirty-tree auto-commit rule in `Core/VersionControlProtocol.md`.
 
 ## 2. Environment & Isolation
 
@@ -70,7 +70,7 @@ Agents execute within a **Mentci-Box** (Nix Jail). All operations must be perfor
 
 ## 3. Audit Trail (MANDATORY AUTO-COMMIT)
 
-**EVERY PROMPT SESSION MUST END WITH A PUSH TO THE `dev` BOOKMARK.** 
+**EVERY PROMPT SESSION MUST END WITH A PUSH TO THE runtime target bookmark (`MENTCI_TARGET_BOOKMARK`).** 
 
 *   **Atomic Intent:** Every single modification MUST result in an `intent:` commit. Do not bundle independent changes.
 *   **Dirty Tree Rule:** Never finish a response with a dirty working copy. Use `jj commit` before finalizing.

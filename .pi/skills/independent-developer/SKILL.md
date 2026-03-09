@@ -49,6 +49,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 ### 3. DVCS Rigor (Jujutsu)
 - Treat every component as a future independent `jj` repository.
 - **State Authority Rule (JJ over Git):** Repository state authority is `jj` (`jj status`, `jj log`, `jj bookmark list`). `git` is only a storage/transport backend for Jujutsu synchronization; do not use `git status`/`git log` as the source of truth for workflow decisions.
+- **Runtime Bookmark Contract:** Determine target bookmark from runtime context (`MENTCI_TARGET_BOOKMARK`) before any commit/bookmark move/push. If unset, resolve target explicitly and report it. Treat hardcoded `dev` examples as placeholders, not authority.
 - **Commit Protocol (Standard Intent Header):** Every commit message MUST follow this template. The agent MUST use the exact original prompt from the interaction; if the prompt is lost, it must be synthesized from session intent.
   ```markdown
   intent: <Short, one-line summary of the change>
@@ -75,7 +76,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   - **Directive Commits:** If a commit exists only with a message (pre-setting intention), it is a "Directive Commit." If a description exists on a clean worktree, treat it as critical "context"—it represents a quantifiable intent left by a predecessor. In such cases, you should still create a NEW child commit (`jj new`) to perform the actual work, preserving the directive as a distinct node in the history.
   - **Atomic Finalization:** Only describe the commit once the physical changes are staged in that commit. This ensures that every described node in the history is a non-empty, atomic logical unit.
 - **Bookmark Movement Protocol:** 
-  - Never move a bookmark (like `dev`) to an "actively edited" or undescribed commit. 
+  - Never move the target bookmark (`$MENTCI_TARGET_BOOKMARK`) to an "actively edited" or undescribed commit. 
   - Always finalize the work into a described commit, then move the bookmark to that immutable state: `jj bookmark set <name> -r <finalized_revision>`.
   - **Worktree Alignment:** The primary development bookmark of the current repository is considered the authoritative head. You MUST ensure your working copy is always based on this active bookmark. If the active bookmark is moved (by you or an external process, such as a rebase by a master agent), your working copy MUST follow it to maintain alignment. In most cases, this will involve rebasing your working copy onto the new location of the bookmark. If in doubt on how to align, ask for clarification.
 - **Mandatory Pushing:** Always push the bookmark you are currently working on (`jj git push --bookmark <name>`). If in doubt about which bookmark to push, ask for clarification. Verify local/remote bookmark alignment.
@@ -148,10 +149,10 @@ When ad-hoc scripts (one-off scripts executed outside standard tools) are used, 
 - **Record failures:** If you encounter an extension-loading error, don't just retry; document the exact state of `.pi/extensions.edn` and the process environment in a Research artifact.
 
 ## JJ Anti-Churn Guardrails
-- Never move dev to empty commit.
-- Never leave multiple empty commits stacked above dev.
+- Never move the target bookmark (`$MENTCI_TARGET_BOOKMARK`) to empty commit.
+- Never leave multiple empty commits stacked above the target bookmark.
 - After `jj new`, do not rebase/reshape empty @ unless explicitly required.
-- Before bookmark moves, run `jj log -r 'dev|@|@-' --no-graph`.
+- Before bookmark moves, run `jj log -r "$MENTCI_TARGET_BOOKMARK|@|@-" --no-graph`.
 - If repairing history, print raw before/after evidence.
 
 ## Subagent Reliability & Raw Evidence Contract
