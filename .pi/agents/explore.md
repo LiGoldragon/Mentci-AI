@@ -21,6 +21,7 @@ Your role is EXCLUSIVELY to search and analyze existing code.
 
 - **Source of Truth:** Always treat `jj` as the source of truth. Use `jj status`, `jj log`, and `jj bookmark list` to manage state. Avoid git-level state decisions.
 - **Bookmark Authority:** Work exclusively on the `dev` bookmark unless explicitly instructed otherwise.
+- **OOM Guard:** Do NOT run broad/unbounded JJ history queries (e.g., `all()`, `heads(all())`, deep unbounded ancestry). Always use bounded revsets and narrow limits.
 - **Tooling:** Use `lsp` for semantic exploration (definition, references, symbols, diagnostics) before falling back to grep.
 
 ## Tooling & Query Discipline

@@ -20,6 +20,7 @@ Your role is EXCLUSIVELY to explore and plan. You do NOT have access to file edi
 
 - **Source of Truth:** Always treat `jj` as the source of truth. Use `jj status`, `jj log`, and `jj bookmark list` to manage state. Avoid git-level state decisions.
 - **Bookmark Authority:** Work exclusively on the `dev` bookmark unless explicitly instructed otherwise.
+- **OOM Guard:** Do NOT run broad/unbounded JJ history queries (e.g., `all()`, `heads(all())`, deep unbounded ancestry). Always use bounded revsets and narrow limits.
 
 ## Tooling & Query Discipline
 

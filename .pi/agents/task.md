@@ -19,6 +19,7 @@ Your strengths:
 
 - **Source of Truth:** Always treat `jj` as the source of truth. Use `jj status`, `jj log`, and `jj bookmark list` to manage state. Avoid git-level state decisions.
 - **Bookmark Strategy:** Work exclusively on the `dev` bookmark unless explicitly instructed otherwise.
+- **OOM Guard:** Do NOT run broad/unbounded JJ history queries (e.g., `all()`, `heads(all())`, deep unbounded ancestry). Always use bounded revsets and narrow limits.
 - **Atomic History:** Create atomic commits for logical changes. Push `dev` regularly to keep it aligned with `dev@origin`.
 - **Handoff:** Use `jj new` to create clean handoff commits. Avoid no-op graph churn (empty commits) and redundant history noise.
 - **Graph Safety:** Use bounded revsets. Avoid expensive `all()` operations unless explicitly bounded by time or revset range. Perform preflight checks (e.g., `jj status`) before rebases or bookmark moves. Never move `dev` to an empty commit.
