@@ -23,7 +23,7 @@ Run relevant checks for the change. Do not proceed if failing.
 
 ### Step 2: Identify Target
 
-Default integration target is `main` unless the user says otherwise.
+Default integration target is the runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`) unless the user says otherwise. Use `main` only for explicit release/integration flows.
 
 ### Step 3: Present Options
 
@@ -39,9 +39,9 @@ Present exactly these options:
 #### Option 1: Move bookmark (no tag)
 
 - Finalize commit description.
-- `jj bookmark set main -r <finalized-rev>`
-- `jj git push --bookmark main`
-- Verify with `jj log -r main -r 'main@origin' --no-graph`
+- `jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r <finalized-rev>`
+- `jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"`
+- Verify with `jj log -r "$MENTCI_TARGET_BOOKMARK" -r "$MENTCI_TARGET_BOOKMARK@origin" --no-graph`
 
 #### Option 2: Tagged main release (required release path)
 
@@ -79,4 +79,4 @@ Confirm intent, then abandon target revisions with `jj abandon <revset>`.
 - Release integration target is `main`.
 - Release tags must use the original version style (`v0.12.x.x.x` in current-era shorthand).
 - Do not claim release completion without tag verification.
-- End with clean handover commit (`jj new main`) when flow is complete.
+- End with clean handover commit (`jj new "$MENTCI_TARGET_BOOKMARK"`) when flow is complete.

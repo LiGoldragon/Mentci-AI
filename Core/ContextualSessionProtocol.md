@@ -95,6 +95,7 @@ Canonical command shape:
 execute report \
   --prompt "<raw prompt>" \
   --answer "<final response>" \
+  --subject "<SubjectName>" \
   --kind <answer|draft|question> \
   --change-scope <modified-files|no-files> \
   --title "<short-summary>"
@@ -105,22 +106,22 @@ execute report \
 ## 6. Post-Synthesis Working Copy Hygiene
 After final session synthesis is complete (single or multi mode), push and verify the finalized session commit first. Only then create a fresh child working commit so the finalized session commit is left immutable and the tree stays clean for the next prompt.
 
-Verification gate before `jj new dev`:
+Verification gate before `jj new "$MENTCI_TARGET_BOOKMARK"`:
 ```
-jj bookmark set dev -r @- --allow-backwards
-jj git push --bookmark dev
-jj log -r 'bookmarks(dev) | remote_bookmarks(dev@origin)' --no-graph
+jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @- --allow-backwards
+jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"
+jj log -r "bookmarks($MENTCI_TARGET_BOOKMARK) | remote_bookmarks($MENTCI_TARGET_BOOKMARK@origin)" --no-graph
 ```
 
 Canonical command:
 ```
-jj new dev
+jj new "$MENTCI_TARGET_BOOKMARK"
 ```
 
 ## 7. Completion Invariants
 Prompt completion is valid only when all of the following hold:
-1. The prompt's finalized commit is a `session:` commit with full context sections (`## Original Prompt`, `## Agent Context`, `## Logical Changes`) in the pushed `dev` lineage.
+1. The prompt's finalized commit is a `session:` commit with full context sections (`## Original Prompt`, `## Agent Context`, `## Logical Changes`) in the pushed target-bookmark lineage (`$MENTCI_TARGET_BOOKMARK`).
 2. A research artifact exists for the prompt in `Research/<priority>/<Subject>/` (new research file or update under existing subject).
 3. Freshness-linked workflows that use prior intel must record and verify the referenced parent change ID before execution.
-4. The finalized session head is pushed at end-of-session (default push target: `dev`; release flows default to `main`).
-5. If `jj new dev` is created, it is a next-session child and does not replace the requirement that the pushed finalized commit is the session closure point.
+4. The finalized session head is pushed at end-of-session to `$MENTCI_TARGET_BOOKMARK` (release flows may target `main` when explicitly invoked).
+5. If `jj new "$MENTCI_TARGET_BOOKMARK"` is created, it is a next-session child and does not replace the requirement that the pushed finalized commit is the session closure point.

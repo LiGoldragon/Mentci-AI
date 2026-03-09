@@ -56,8 +56,9 @@ The strict separation of "logic" (code) and "data" (variables, paths, regexes, c
 
 **Commit structural changes atomically and frequently.**
 
-*   **Branch:** All active development occurs on the **`dev`** bookmark.
-*   **Push Cadence:** Every structural change must be immediately committed and pushed to `dev`.
+*   **Branch:** All active development occurs on the runtime target bookmark (`MENTCI_TARGET_BOOKMARK`).
+*   **Push Cadence:** Every structural change must be immediately committed and pushed to the runtime target bookmark.
+*   **Release Lane Clarification:** `main` is reserved for explicit release/integration flows; do not treat `main` as the default active development bookmark.
 *   **Commit-Every-Intent (Level 5):** The Mentci Engine must automatically execute a `jj` commit after **every single atomic modification** (e.g., one file write, one replacement). Each commit represents exactly one intention. Combining multiple unrelated modifications into a single "success" commit is forbidden.
 *   **Authority:** Li Goldragon is the highest authority (Top Admin).
 *   **Protocol Correction Persistence (Higher-Order Rule):** When a user corrects workflow/protocol behavior, that correction must be encoded in the authoritative `Core/*.md` guidance files in the same prompt session and committed; commit-message-only corrections are insufficient.

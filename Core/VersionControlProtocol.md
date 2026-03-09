@@ -3,8 +3,8 @@
 This document is the source of truth for Jujutsu workflows, commit discipline, and push cadence. **Jujutsu (jj) is the mandatory primary interface for all VCS operations in this repository; Git exists solely as the underlying storage backend.**
 
 ## 1. Core Rules (BOOMING MANDATE)
-1. **TARGET BOOKMARK:** All active development targets the `dev` bookmark.
-2. **END-OF-FLOW PUSH:** Every completed prompt session **MUST** end with a push to `dev` on the `origin` remote.
+1. **TARGET BOOKMARK:** All active development targets the runtime bookmark from `MENTCI_TARGET_BOOKMARK` (default fallback may be `dev` when unresolved).
+2. **END-OF-FLOW PUSH:** Every completed prompt session **MUST** end with a push to the runtime target bookmark on the `origin` remote.
 3. **COMMIT EVERY INTENT:** One atomic modification per commit. No bundling.
 4. **NO DIRTY TREES:** Finishing a turn with uncommitted changes is a protocol violation.
 5. **ATOMIC MESSAGES + CONTEXT TRAILER:** Use `intent: <short description>` for intermediate commits, and include commit-context sections for every commit (see Rule 5.1).
@@ -54,17 +54,17 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 7. Before declaring the prompt complete, run `execute session-guard`; non-zero exit means session synthesis is missing or malformed.
 8. Run `execute root-guard`; non-zero exit means top-level FS contract drift.
 9. Advance and push once:
-   - `jj bookmark set dev -r @- --allow-backwards`
-   - `jj git push --bookmark dev`
-10. This push-to-`dev` step is the default end-of-flow requirement for every prompt-complete execution.
+   - `jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @- --allow-backwards`
+   - `jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"`
+10. This push-to-target-bookmark step is the default end-of-flow requirement for every prompt-complete execution.
 11. Verify push landed before declaring completion:
-   - `jj log -r 'bookmarks(dev) | remote_bookmarks(dev@origin)' --no-graph`
-   - completion is invalid until local `dev` and remote `dev@origin` point to the finalized session lineage.
+   - `jj log -r "bookmarks($MENTCI_TARGET_BOOKMARK) | remote_bookmarks($MENTCI_TARGET_BOOKMARK@origin)" --no-graph`
+   - completion is invalid until local and remote target bookmarks point to the finalized session lineage.
 12. Only after successful push verification, optionally create a fresh child working commit for the next prompt:
-   - `jj new dev`
+   - `jj new "$MENTCI_TARGET_BOOKMARK"`
    - this new child is **next-session preparation**, not part of the completed session.
 13. Do not abandon commits that are referenced by retained `session:` commit metadata (for example entries under `## Squashed Change IDs`), unless you also rewrite the referencing `session:` commit in the same rewrite sequence.
-14. Every completed prompt must end with a finalized `session:` commit in the pushed `dev` lineage; leaving trailing `intent:` commits at prompt completion is a protocol violation.
+14. Every completed prompt must end with a finalized `session:` commit in the pushed target-bookmark lineage (`$MENTCI_TARGET_BOOKMARK`); leaving trailing `intent:` commits at prompt completion is a protocol violation.
 14.1. Final `session:` commit message must include full context sections:
    - `## Original Prompt`
    - `## Agent Context`
@@ -77,7 +77,7 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
      2) numeric protocol version string (for example `v0.12.9.59.28`).
    - release/version tags use cycle offset where `5919 AM -> 0`, `5920 AM -> 1`, etc.
 15. Every completed prompt must emit/update a research artifact in `Research/<priority>/<Subject>/` (new file or existing subject update); prompts are not complete without research coverage.
-16. Session push invariant: prompt completion is invalid until the finalized `session:` commit is pushed (default `dev`) and verified.
+16. Session push invariant: prompt completion is invalid until the finalized `session:` commit is pushed to the runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`) and verified.
 
 ## 4. Dirty Tree Intent Separation
 When the working copy is dirty and multiple change-intents may be present:
@@ -87,15 +87,15 @@ When the working copy is dirty and multiple change-intents may be present:
    - Isolate the group so only that change remains.
    - Commit the isolated group: `mentci-jj commit "intent: <short description>"`
 4. After the final intent commit is ready, advance and push once:
-   - `jj bookmark set dev -r @`
-   - `jj git push --bookmark dev`
+   - `jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @`
+   - `jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"`
 
 If splitting cannot be done safely, stop and request direction.
 
 Empty working changes:
 - Do not abandon or close empty JJ working changes by default; they may belong to another agent or worktree.
 
-## 5. Jailed Shipping (Workspace -> dev)
+## 5. Jailed Shipping (Workspace -> target bookmark)
 When operating in the jailed workspace, always use `mentci-commit` to advance the target bookmark:
 
 ```
@@ -106,6 +106,8 @@ This uses `MENTCI_WORKSPACE`, `MENTCI_REPO_ROOT`, and `MENTCI_COMMIT_TARGET` to 
 
 ## 6. History Inspection
 Use `mentci-jj log` to prefer `--no-signing` and avoid GPG failures.
+
+**OOM Guard:** Never run unbounded JJ revsets in this repository (for example `all()`, `heads(all())`, or deep unbounded ancestry). Always start with bounded revsets and explicit limits.
 
 ## 7. Related References
 - Conceptual model: `Library/architecture/JailCommitProtocol.md`

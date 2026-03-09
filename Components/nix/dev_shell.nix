@@ -25,10 +25,10 @@ pkgs.mkShell {
 
     # Short-term dynamic target bookmark contract (session-local, not VC-backed)
     # Priority: explicit env > directory-name inference > safe default.
-    if [ -z "${MENTCI_TARGET_BOOKMARK:-}" ]; then
+    if [ -z "''${MENTCI_TARGET_BOOKMARK:-}" ]; then
       _repo_base="$(basename "$(pwd)" | tr '[:upper:]' '[:lower:]')"
       if [[ "$_repo_base" == *"--"* ]]; then
-        export MENTCI_TARGET_BOOKMARK="${_repo_base##*--}"
+        export MENTCI_TARGET_BOOKMARK="''${_repo_base##*--}"
       elif [ "$_repo_base" = "mentci-ai" ]; then
         export MENTCI_TARGET_BOOKMARK="main"
       else
