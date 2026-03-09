@@ -23,7 +23,7 @@ Before editing code:
 1. Run `jj status`.
 2. If tree is dirty, isolate and commit existing intent first.
 3. Confirm data authority artifact exists (`.edn` and/or `.bin` sidecar) before coding defaults.
-4. For external tooling/ecosystem claims, run quick Linkup validation (`linkup_web_search`/`linkup_web_answer`) before asserting status or maturity.
+4. For external tooling/ecosystem claims, delegate quick validation to the `web-search` agent before asserting status or maturity. Use direct web tools only if the `web-search` agent is unavailable and the fallback is explicitly bounded.
 5. If structured tooling is part of the task, record tool usage and gaps in a Research tooling log (queries attempted, bounded scope, outcomes, shortcomings).
 
 ## Sema Implementation Flow

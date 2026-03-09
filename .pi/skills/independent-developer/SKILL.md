@@ -14,15 +14,14 @@ This skill defines the high-level operational mindset of a Mentci-AI developer w
 An Independent Developer does not guess; they verify. They don't work in raw text; they work in structure. They prioritize the **Logical Plane** and **External Validation** over LLM internal weights.
 
 ### 0. Data Weighting Mandate (Inquiry over Action)
-- **Prioritize Evidence:** In a weight-driven system like an LLM, the probability of a "correct" answer increases with the density of relevant context. You MUST favor gathering more data (via `logical_run_query`, `linkup_web_search`, or `jj log`) before initiating a mutation.
+- **Prioritize Evidence:** In a weight-driven system like an LLM, the probability of a "correct" answer increases with the density of relevant context. You MUST favor gathering more data (via `logical_run_query`, the `web-search` agent, or `jj log`) before initiating a mutation.
 - **The "Right Answer" Bias:** Treat implementation as a side effect of high-fidelity research. If the solution is not immediately obvious from the current context, execute 2-3 additional discovery tool calls to "weight" your internal reasoning toward the architectural truth.
 - **Post-Report Inquiry:** When delivering a research report or analysis, you MUST conclude by explicitly asking questions. This invites the human operator to efficiently guide your next steps and ensures strict alignment with their original intent. If you refer to specific strategies or implementation plans (e.g., "Strategy 1" vs "Strategy 2"), you MUST provide a concise summary of each strategy within the inquiry to ensure the context remains immediate and readable.
 
-### 1. Mandatory External Validation (Linkup)
-Before asserting anything about external ecosystems, benchmarks, or library maturity, you **MUST** use Linkup tools. 
-- Use `linkup_web_search` for broad discovery.
-- Use `linkup_web_answer` for synthesizing specific facts.
-- Use `linkup_web_fetch` to read technical documentation from known URLs.
+### 1. Mandatory External Validation (web-search agent)
+Before asserting anything about external ecosystems, benchmarks, or library maturity, you **MUST** delegate external web research to the `web-search` agent.
+- Use the `web-search` agent for broad discovery, fact synthesis, and technical documentation lookup.
+- Treat direct `linkup_*` tool usage in the main session as a bounded fallback only when subagents are unavailable or demonstrably failing.
 - **Research Persistence Mandate (Hierarchical Discovery):** 
   - All findings, synthesized reports, and external validation evidence MUST be saved as Markdown artifacts in the `Research/` directory. 
   - **Consolidation Rule:** Store research artifacts (strategies, reports, external validation) in `Research/`. Store execution-oriented implementation plans in `docs/plans/` by default. If a workflow explicitly uses `Development/<priority>/<Subject>/` (per RestartContext mirrored topology), keep `Development/` and `Research/` counterparts synchronized by subject.
@@ -30,7 +29,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   - **Solar Time Generation:** Use the `chronos` tool with the following command to get the prefix: `chronos --format am | tr -d '.'`. (Example output: `591912122531`).
   - **Structural Order:** The agent MUST actively observe and mirror existing directory hierarchy patterns. Research artifacts MUST be placed in subdirectories based on architectural importance: `Research/high/` (Core ontology/Samskara), `Research/medium/` (Feature implementations), or `Research/low/` (Transient experiments/tooling).
 - **Pattern Recognition (Structural Adherence):** The agent MUST take note of established order patterns within the repository. Before creating new files or folders, perform a recursive directory listing (`ls -R`) to ensure the new artifacts align with the established organizational logic. Note that `index.edn` files are legacy artifacts representing an incomplete Datalog implementation; the goal is to transition this knowledge into the `mentci-datalog` substrate.
-- **Protocol:** Never claim a tool or architecture is "superior" without providing verified evidence from at least 2 external sources retrieved via Linkup and documented in the appropriate hierarchical level of `Research/`.
+- **Protocol:** Never claim a tool or architecture is "superior" without providing verified evidence from at least 2 external sources retrieved via the `web-search` agent and documented in the appropriate hierarchical level of `Research/`.
 
 ### 1.1 Subagent Orchestration Mandate (Use Often, Use Efficiently)
 - **Primary Context-Protection Rule:** The main agent context is for orchestration, policy, synthesis, and final decisions. It MUST be protected from noisy exploratory shell transcripts. To minimize context pollution, non-trivial shell work should be delegated to subagents whenever possible.
@@ -130,7 +129,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **$EDITOR and Saṃskāra:** The `$EDITOR` problem is effectively fixed by Saṃskāra before it even exists. Backburner any manual/legacy `$EDITOR` fixes.
 
 ### 5. Implementation Flow
-1. **Research & Verify:** Use `linkup_web_search` for broad discovery, then use Linkup to validate assumptions.
+1. **Research & Verify:** Delegate broad external discovery and validation to the `web-search` agent.
 2. **Logic & Data:** Apply `sema-programmer` rules (Logic/Data separation, Cap'n Proto contracts).
 3. **Draft & Plan:** Use `/skill:brainstorming` followed by `/skill:writing-plans`.
 4. **Confident Mutation:** An Independent Developer makes changes when confident about their usefulness and logical integrity. If a change is logically sound and cannot break existing functionality, proceed with implementation.
@@ -194,7 +193,7 @@ When ad-hoc scripts (one-off scripts executed outside standard tools) are used, 
 - **Database Initialization:** We maintain a database to give an importance rating to every major component of the repo, and to store agent skills and protocols. Ensure that as new components or skills are developed, they are tracked and rated in this Datalog/CozoDB substrate.
 
 ## Completion Checklist
-- [ ] Linkup validation performed and documented in Research.
+- [ ] External validation performed via the `web-search` agent and documented in Research.
 - [ ] Sema-grade Logic/Data separation achieved.
 - [ ] Changes verified via Mirror.
 - [ ] History audited for clues before declaring an impasse.
