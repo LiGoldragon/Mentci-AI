@@ -2,21 +2,25 @@
 
 pkgs.stdenvNoCC.mkDerivation {
   pname = "pi-subagents-extension";
-  version = "1.3.3710";
+  version = "1.3.3710-mentci.1";
 
-  src = pkgs.fetchurl {
-    url = "https://registry.npmjs.org/@oh-my-pi/subagents/-/subagents-1.3.3710.tgz";
-    hash = "sha256-h8U37eSRnTn/eXFg2NpkAs64u4eObwdrJeqTbwUxyaE=";
+  src = pkgs.fetchFromGitHub {
+    owner = "LiGoldragon";
+    repo = "oh-my-pi";
+    rev = "2ba8670cb";
+    hash = "sha256-9J8tKD+vYX8dXEF0f7Iip9+Zm/HnBuJw1Jeelcov+s4=";
   };
 
-  nativeBuildInputs = [ pkgs.gnutar ];
+  sourceRoot = "source/plugins/subagents";
+
   dontConfigure = true;
   dontBuild = true;
 
   installPhase = ''
     runHook preInstall
     mkdir -p "$out"
-    tar -xzf "$src" --strip-components=1 -C "$out"
+    cp -R ./. "$out"/
+    chmod -R u+w "$out"
     runHook postInstall
   '';
 }

@@ -18,5 +18,6 @@ pkgs.runCommand "pi-with-extensions-check" { } ''
   grep -q "jcodemunch-mcp" ${pi_with_extensions}/bin/pi
   grep -q "async waitForEventProcessing()" ${pi_with_extensions}/lib/node_modules/pi/dist/core/agent-session.js
   grep -q "await session.waitForEventProcessing();" ${pi_with_extensions}/lib/node_modules/pi/dist/modes/print-mode.js
+  grep -q "completed without final text output" ${pi_with_extensions}/lib/node_modules/pi/node_modules/@oh-my-pi/subagents/tools/index.ts
   touch "$out"
 ''
