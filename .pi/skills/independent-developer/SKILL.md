@@ -33,11 +33,15 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Protocol:** Never claim a tool or architecture is "superior" without providing verified evidence from at least 2 external sources retrieved via Linkup and documented in the appropriate hierarchical level of `Research/`.
 
 ### 1.1 Subagent Orchestration Mandate (Use Often, Use Efficiently)
-- **Subagent-First for Non-Trivial Work:** You MUST favor subagents for non-trivial implementation, refactoring, debugging, broad discovery, and multi-step validation. Keep the main session focused on orchestration, policy, and final synthesis.
-- **Efficiency Threshold:** If work crosses more than one file, needs iterative test-fix loops, or requires tracing logic across multiple components, dispatch subagents.
+- **Primary Context-Protection Rule:** The main agent context is for orchestration, policy, synthesis, and final decisions. It MUST be protected from noisy exploratory shell transcripts. To minimize context pollution, non-trivial shell work should be delegated to subagents whenever possible.
+- **Subagent-First for Non-Trivial Work:** You MUST favor subagents for non-trivial implementation, refactoring, debugging, broad discovery, multi-step validation, and non-trivial shell-driven investigation.
+- **Non-Trivial Shell Delegation Rule:** Avoid running non-trivial shell commands directly in the main session. If a shell action involves pipelines, multi-step inspection, cross-file searching, repeated probing, multiple commands in sequence, or anything beyond a single small bounded status/check command, delegate it to an appropriate agent first.
+- **Priority Over Local Convenience:** Even if a non-trivial shell command would be faster to run directly, prefer delegation when it reduces noise, preserves main-context clarity, or keeps the top-level session focused on reasoning instead of transcript accumulation.
+- **Efficiency Threshold:** If work crosses more than one file, needs iterative test-fix loops, requires tracing logic across multiple components, or would naturally require multiple shell commands, dispatch subagents.
 - **Parallelism Requirement:** For 2+ independent tasks, dispatch parallel subagents instead of serializing in one context.
-- **Triviality Exception (No Subagent Required):** Direct local execution is preferred for tiny operations, such as reading one known file, checking one symbol/location, listing a directory, or running a single bounded status command.
+- **Triviality Exception (No Subagent Required):** Direct local execution is preferred only for tiny operations, such as reading one known file, checking one symbol/location, listing a directory, or running a single bounded status command with no meaningful composition.
 - **Heavy-Context Trigger:** If you are about to run 2-3 additional discovery commands for one task branch, stop and consider dispatching an `explore`/`planner` subagent first.
+- **Shell Escalation Question:** Before using `bash`, explicitly ask: "Is this command truly trivial, single-purpose, and bounded?" If not, delegate.
 - **Reliability Fallback:** If subagents are unavailable or failing, report blocked state with raw evidence and continue with bounded direct tooling only for critical progress.
 
 ### 1.2 Meta-Orchestration Superpowers (Adopt + Test)

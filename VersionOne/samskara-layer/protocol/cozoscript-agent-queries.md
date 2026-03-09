@@ -179,3 +179,69 @@ MVP constraint operators:
   *agent_constraint{msg_id, field, op, value}
 :order msg_id, field
 ```
+
+## 8) Message-First Intent Contract (UI-visible first)
+
+This shape mirrors the markdown-style sections users and agents read first.
+Technical protocol facts can be attached later without requiring immediate UI exposure.
+
+### 8.1 Relations
+
+```cozoscript
+:create message_goal {
+  message_id: String,
+  goal: String
+}
+
+:create message_restraint {
+  message_id: String,
+  restraint: String
+}
+
+:create message_scope {
+  message_id: String,
+  path: String
+}
+
+:create message_out_of_scope {
+  message_id: String,
+  item: String
+}
+
+:create message_verify {
+  message_id: String,
+  cmd: String
+}
+```
+
+### 8.2 Complete message-first example
+
+```cozoscript
+:put message_goal {
+  ["msg-ui-001", "stabilize parallel subagent orchestration"],
+  ["msg-ui-001", "preserve deterministic evidence packets"]
+}
+
+:put message_restraint {
+  ["msg-ui-001", "avoid unbounded jj revsets such as all()"],
+  ["msg-ui-001", "do not mutate extension runtime internals during investigation"]
+}
+
+:put message_scope {
+  ["msg-ui-001", "/home/li/git/Mentci-AI--dev/.pi/skills/subagent-driven-development/SKILL.md"]
+}
+
+:put message_out_of_scope {
+  ["msg-ui-001", "provider API key rotation"]
+}
+
+:put message_verify {
+  ["msg-ui-001", "cargo test -p mentci-cozo"]
+}
+```
+
+### 8.3 Deferred technical attachment
+
+Technical constraints can be attached later through `agent_constraint` or `handoff_constraint`
+when machine-checkable enforcement is needed, without requiring those low-level fields to be
+visible in the primary UI markdown view.

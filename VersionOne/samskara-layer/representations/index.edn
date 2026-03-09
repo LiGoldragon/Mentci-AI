@@ -3,5 +3,6 @@
  :entries ["aski-datalog.md"
            "capnp-cahash.md"
            "projection-equivalence.md"
-           "agent-operational-init.md"]
+           "agent-operational-init.md"
+           "agent-basic-language-v0.md"]
  :status :active}

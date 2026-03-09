@@ -16,5 +16,7 @@ pkgs.runCommand "pi-with-extensions-check" { } ''
   grep -q "\.nix" ${pi_with_extensions}/lib/node_modules/pi/node_modules/lsp-pi/src/lsp-core.ts
   grep -q "id: \"nixd\"" ${pi_with_extensions}/lib/node_modules/pi/node_modules/lsp-pi/src/lsp-core.ts
   grep -q "jcodemunch-mcp" ${pi_with_extensions}/bin/pi
+  grep -q "async waitForEventProcessing()" ${pi_with_extensions}/lib/node_modules/pi/dist/core/agent-session.js
+  grep -q "await session.waitForEventProcessing();" ${pi_with_extensions}/lib/node_modules/pi/dist/modes/print-mode.js
   touch "$out"
 ''

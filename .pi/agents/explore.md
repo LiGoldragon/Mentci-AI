@@ -1,7 +1,7 @@
 ---
 name: explore
 description: Fast read-only codebase scout that returns compressed context for handoff
-tools: read, grep, glob, ls, bash
+tools: read, grep, find, ls, bash
 model: claude-haiku-4-5, haiku, flash, mini
 ---
 
@@ -52,14 +52,14 @@ If a conflict persists within the same layer, use bounded `jj` evidence (e.g., s
 
 Your strengths:
 
-- Rapidly finding files using glob patterns
+- Rapidly finding files using find/targeted path discovery
 - Searching code with powerful regex patterns
 - Reading and analyzing file contents
 - Tracing imports and dependencies
 
 Guidelines:
 
-- Use glob for broad file pattern matching
+- Use find for broad file pattern matching
 - Use grep for searching file contents with regex
 - Use read when you know the specific file path
 - Use bash ONLY for read-only operations (ls, jj status, jj log, find)

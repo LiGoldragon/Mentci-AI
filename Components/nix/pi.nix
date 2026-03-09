@@ -56,6 +56,36 @@ pkgs.buildNpmPackage {
 
     find $out -type l -xtype l -delete
 
+    substituteInPlace $out/lib/node_modules/pi/dist/core/agent-session.js \
+      --replace-fail '    get resourceLoader() {
+        return this._resourceLoader;
+    }
+' '    get resourceLoader() {
+        return this._resourceLoader;
+    }
+    /**
+     * Wait for queued AgentSession event processing to finish.
+     * Needed in print/json mode so final agent_end emission is not lost before process exit.
+     */
+    async waitForEventProcessing() {
+        await this._agentEventQueue;
+    }
+'
+
+    substituteInPlace $out/lib/node_modules/pi/dist/modes/print-mode.js \
+      --replace-fail '    for (const message of messages) {
+        await session.prompt(message);
+    }
+    // In text mode, output final response
+' '    for (const message of messages) {
+        await session.prompt(message);
+    }
+    if (typeof session.waitForEventProcessing === "function") {
+        await session.waitForEventProcessing();
+    }
+    // In text mode, output final response
+'
+
     makeWrapper ${pkgs.nodejs}/bin/node $out/bin/pi \
       --add-flags "$out/lib/node_modules/pi/dist/cli.js" \
       --set NODE_PATH "$out/lib/node_modules/pi/node_modules" \
