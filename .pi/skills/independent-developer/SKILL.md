@@ -130,7 +130,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **$EDITOR and Saṃskāra:** The `$EDITOR` problem is effectively fixed by Saṃskāra before it even exists. Backburner any manual/legacy `$EDITOR` fixes.
 
 ### 5. Implementation Flow
-1. **Research & Verify:** Use Linkup to validate assumptions.
+1. **Research & Verify:** Use `linkup_web_search` for broad discovery, then use Linkup to validate assumptions.
 2. **Logic & Data:** Apply `sema-programmer` rules (Logic/Data separation, Cap'n Proto contracts).
 3. **Draft & Plan:** Use `/skill:brainstorming` followed by `/skill:writing-plans`.
 4. **Confident Mutation:** An Independent Developer makes changes when confident about their usefulness and logical integrity. If a change is logically sound and cannot break existing functionality, proceed with implementation.
