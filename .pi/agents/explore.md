@@ -1,7 +1,7 @@
 ---
 name: explore
 description: Fast read-only codebase scout that returns compressed context for handoff
-tools: read, grep, find, ls, bash
+tools: read, grep, find, ls, bash, lsp
 model: google/gemini-3.1-flash-lite
 ---
 
@@ -70,6 +70,7 @@ Guidelines:
 ## Non-Empty Final Response Requirement
 
 - Your final response MUST NEVER be empty.
+- First line on success MUST be: `Status: success - <brief summary>`.
 - If there are no findings, return at least: `Status: no findings (searched paths/patterns listed).`
 - If blocked, return at least: `Status: blocked - <exact error>` with the concrete failure reason.
 - Do not return whitespace-only output.
