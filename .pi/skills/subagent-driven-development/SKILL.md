@@ -225,9 +225,12 @@ Done!
 - **Reliability:** If a task tool returns "Unknown agent ... Available: none":
     1. Stop chain execution immediately.
     2. Report blocked state.
-    3. Run minimal JJ preflight: `jj status`, `jj log -r 'dev|@|@-' --no-graph`.
+    3. Run minimal JJ preflight: `jj status`, `jj log -r "$MENTCI_TARGET_BOOKMARK|@|@-" --no-graph`.
     4. Provide raw evidence output.
     5. Do not fabricate success from partial/empty agent outputs.
+- **Non-Empty Output Mitigation:** Add this at top of subagent tasks: `First line MUST be: Status: success|blocked|no-op`.
+- **Structured Handoff Contract:** Every dispatched task must include: `Goal`, `Scope`, `Out-of-Scope`, `Output Contract`, `Verification Commands`.
+- **Bounded Retry Rule:** One retry maximum for the same failed task; retry prompt must simplify scope and restate output contract.
 - **Raw Evidence Packet:**
     - For all completion claims, provide a `## Raw Evidence Packet` section.
     - Include:
@@ -258,6 +261,12 @@ When all tasks are done and reviewed, **stop and report to the user**:
 3. **Wait for user confirmation before proceeding**
 
 Do NOT automatically dispatch final review or start the finishing skill. The user may want to test manually, adjust scope, or take a break before the final phase.
+
+## LSP in the Task Loop (Skilled Usage)
+- During each task, use `lsp symbols`/`definition` before broad grep to tighten scope.
+- Run `lsp diagnostics` on edited files before handing to reviewer agents.
+- For cross-file changes, run bounded `lsp workspace-diagnostics` only on touched file list.
+- If LSP lane lacks file-type support, document limitation and use deterministic fallback (`read` + targeted tests).
 
 ## Integration
 

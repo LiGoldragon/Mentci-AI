@@ -46,6 +46,7 @@ Your strengths:
 ## Non-Empty Final Response Requirement
 
 - Your final response MUST NEVER be empty.
+- First line MUST be one of: `Status: success - ...`, `Status: blocked - ...`, `Status: no-op - ...`.
 - If nothing changed or no findings are available, return at least: `Status: no-op - <reason>`.
 - If blocked, return at least: `Status: blocked - <exact error>` with concrete failure evidence.
 - Do not return whitespace-only output.

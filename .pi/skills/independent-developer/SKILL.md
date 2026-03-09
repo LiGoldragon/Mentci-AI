@@ -40,11 +40,27 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Heavy-Context Trigger:** If you are about to run 2-3 additional discovery commands for one task branch, stop and consider dispatching an `explore`/`planner` subagent first.
 - **Reliability Fallback:** If subagents are unavailable or failing, report blocked state with raw evidence and continue with bounded direct tooling only for critical progress.
 
+### 1.2 Meta-Orchestration Superpowers (Adopt + Test)
+- **Contracted Handoff Payloads:** Every non-trivial subagent delegation should include explicit `Goal`, `Scope`, `Out-of-Scope`, `Output Contract`, and `Evidence Requirements` fields. Avoid free-form handoffs when correctness matters.
+- **Sentinel Non-Empty Contract:** Require the first response line to be a sentinel status (`Status: success|blocked|no-op`) to reduce empty-output ambiguity in adapters.
+- **Bounded Retry Ladder:** For subagent failure, retry at most 1 time with simplified scope; on second failure, fail closed and continue with direct bounded tooling.
+- **Deterministic Post-Gates:** Before accepting subagent completion, run deterministic checks (targeted tests/diagnostics/status) in main session.
+- **Conflict-First Parallelism:** Use parallel subagents only for independent scopes; if path overlap is likely, force serialized execution or explicit merge checkpoints.
+- **Trace Packet Requirement:** Preserve delegation packet + outcome packet in Research notes when orchestration is experimental or unstable.
+
 ### 2. Logical Mastery
 - Prioritize `logical_run_query` and `logical_get_ast` for understanding code.
 - **Structured Query Fallback Rule:** If `logical_*` tools are unavailable in the active harness, use bounded structured queries via repository tools (`lsp`, MCP search/outline tools, or tightly-scoped `rg`) instead of ad-hoc broad scans.
 - **Shortcoming Documentation Rule:** If a requested structured-query path is unavailable or returns partial coverage (for example, language or file-type gaps), document the limitation in a Research tooling log artifact, including command/scope/outcome.
 - **Mirror Verification:** After any UI or code change, read `.mentci/ui_mirror.txt` to confirm the machine's output matches the intended design.
+
+### 2.1 LSP Skilled-Usage Playbook
+- **Use `symbols` first** to map local topology in a file before deep references.
+- **Use `definition`/`references`** for semantic navigation instead of regex when symbol identity matters.
+- **Use `diagnostics` before and after edits** on touched files to verify local semantic correctness quickly.
+- **Use `workspace-diagnostics` sparingly** for a bounded set of edited files (not broad repo sweeps).
+- **Use `codeAction` only after diagnostics** to avoid blind auto-fix behavior.
+- **Known Limitation Handling:** If LSP reports unsupported language/file type (for example `No LSP for .ts` in some lanes), document the gap and fall back to bounded `read`/`rg`/tests.
 
 ### 3. DVCS Rigor (Jujutsu)
 - Treat every component as a future independent `jj` repository.
