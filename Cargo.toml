@@ -10,6 +10,7 @@ members = [
     "Components/mentci-box-lib",
     "Components/mentci-execute",
     "Components/mentci-launch",
+    "Components/mentci-cozo",
     "Components/mentci-mcp",
     "Components/mentci-mcp/core",
     "Components/mentci-mcp/jj",

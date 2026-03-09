@@ -14,6 +14,7 @@
   {:id "mentci-policy-engine" :path "mentci-policy-engine" :interfaces ["rust.policy.engine" "rust.admission.control"] :status :draft}
   {:id "mentci-mcp-gateway" :path "mentci-mcp-gateway" :interfaces ["mcp.gateway" "mcp.admission.routing"] :status :prototype}
   {:id "mentci-vcs" :path "mentci-vcs" :interfaces ["rust.vcs.wrapper"] :status :prototype}
+  {:id "mentci-cozo" :path "mentci-cozo" :interfaces ["rust.cozoscript.dialect" "rust.handoff.constraints"] :status :prototype}
   {:id "mentci-datalog" :path "mentci-datalog" :interfaces ["rust.datalog.world" "rust.eav.substrate"] :status :active}
   {:id "nix" :path "nix" :interfaces ["nix.namespace"] :status :active}
   {:id "schema" :path "schema" :interfaces ["schema.capnp" "schema.edn"] :status :active}

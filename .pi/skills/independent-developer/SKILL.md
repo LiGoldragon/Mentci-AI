@@ -47,6 +47,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Deterministic Post-Gates:** Before accepting subagent completion, run deterministic checks (targeted tests/diagnostics/status) in main session.
 - **Conflict-First Parallelism:** Use parallel subagents only for independent scopes; if path overlap is likely, force serialized execution or explicit merge checkpoints.
 - **Trace Packet Requirement:** Preserve delegation packet + outcome packet in Research notes when orchestration is experimental or unstable.
+- **CozoScript Preference (MVP):** For agent-to-agent logical constraints, prefer the `mentci-cozo` CozoScript dialect over ad-hoc prose/EDN when feasible.
 
 ### 2. Logical Mastery
 - Prioritize `logical_run_query` and `logical_get_ast` for understanding code.

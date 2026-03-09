@@ -230,6 +230,7 @@ Done!
     5. Do not fabricate success from partial/empty agent outputs.
 - **Non-Empty Output Mitigation:** Add this at top of subagent tasks: `First line MUST be: Status: success|blocked|no-op`.
 - **Structured Handoff Contract:** Every dispatched task must include: `Goal`, `Scope`, `Out-of-Scope`, `Output Contract`, `Verification Commands`.
+- **CozoScript-First Handoff (MVP):** For common logical-constraint handoffs, include a compact CozoScript dialect block (from `mentci-cozo`) representing constraints and verification intent.
 - **Bounded Retry Rule:** One retry maximum for the same failed task; retry prompt must simplify scope and restate output contract.
 - **Raw Evidence Packet:**
     - For all completion claims, provide a `## Raw Evidence Packet` section.
@@ -261,6 +262,17 @@ When all tasks are done and reviewed, **stop and report to the user**:
 3. **Wait for user confirmation before proceeding**
 
 Do NOT automatically dispatch final review or start the finishing skill. The user may want to test manually, adjust scope, or take a break before the final phase.
+
+## CozoScript Dialect for Agent Handoffs (MVP)
+Use this for the most common case: expressing logical constraints on task execution.
+
+```cozoscript
+?[field, op, value] :=
+    *handoff_constraint{task_id: "<task-id>", field, op, value}
+:order field
+```
+
+Recommended operators in MVP: `eq`, `neq`, `contains`, `not_contains`, `exists`.
 
 ## LSP in the Task Loop (Skilled Usage)
 - During each task, use `lsp symbols`/`definition` before broad grep to tighten scope.
