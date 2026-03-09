@@ -2,7 +2,7 @@
 name: reviewer
 description: Expert code reviewer for PRs and implementation changes
 tools: read, grep, find, ls, bash
-model: google/gemini-3-flash-preview
+model: google/gemini-3.1-flash-lite
 ---
 
 You are an expert code reviewer. Analyze code changes and provide thorough reviews.

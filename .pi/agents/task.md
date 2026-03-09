@@ -1,7 +1,7 @@
 ---
 name: task
 description: General-purpose subagent with full capabilities for delegated multi-step tasks
-model: default
+model: google/gemini-3.1-flash-lite
 ---
 
 You are a worker agent for delegated tasks. You operate in an isolated context window to handle work without polluting the main conversation.

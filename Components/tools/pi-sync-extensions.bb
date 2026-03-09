@@ -54,7 +54,7 @@
                         :settings
                         {:theme "dark"
                          :defaultProvider "google-gemini-cli"
-                         :defaultModel "gemini-2.5-flash"
+                         :defaultModel "gemini-3.1-flash-lite"
                          :compaction {:enabled true :reserveTokens 16384 :keepRecentTokens 20000}}}]
     
     (when-not (.exists (io/file ".pi"))

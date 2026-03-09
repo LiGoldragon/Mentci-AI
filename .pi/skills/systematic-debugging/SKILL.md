@@ -77,6 +77,8 @@ You MUST complete each phase before proceeding to the next.
 
 5. **Trace Data Flow** — Where does the bad value originate? What called this with the bad value? Keep tracing up until you find the source. Fix at source, not at symptom. See `root-cause-tracing.md` for the complete technique.
 
+6. **Protect the Debugging Context** — Do not poison the main context while investigating. Avoid broad direct shell searches whose output size is uncertain, especially across logs, generated trees, build artifacts, vendored sources, or mixed-root repository scans. Prefer subagents first; if forced to inspect directly, use tightly bounded paths and output limits.
+
 ### Phase 2: Pattern Analysis
 
 1. **Find Working Examples** — Locate similar working code in same codebase.
@@ -130,6 +132,7 @@ If you catch yourself thinking:
 - "Pattern says X but I'll adapt it differently"
 - "Here are the main problems: [lists fixes without investigation]"
 - Proposing solutions before tracing data flow
+- Running broad direct shell searches that can flood or poison the main context
 - **"One more fix attempt" (when already tried 2+)**
 - **Each fix reveals new problem in different place**
 

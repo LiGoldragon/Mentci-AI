@@ -43,6 +43,10 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Heavy-Context Trigger:** If you are about to run 2-3 additional discovery commands for one task branch, stop and consider dispatching an `explore`/`planner` subagent first.
 - **Shell Escalation Question:** Before using `bash`, explicitly ask: "Is this command truly trivial, single-purpose, and bounded?" If not, delegate.
 - **Reliability Fallback:** If subagents are unavailable or failing, report blocked state with raw evidence and continue with bounded direct tooling only for critical progress.
+- **Transcript Poisoning Prohibition:** Never run a direct shell search likely to dump large or noisy output into the main context. This includes broad `rg`/`grep`/`find` across large directory trees, generated trees, session logs, vendored dependencies, build outputs, or mixed roots. If the result volume is uncertain, do not run it directly.
+- **Bounded Search Rule:** Direct shell search in the main context is allowed only when both the path scope and expected output size are tightly bounded in advance. Prefer explicit file paths, 1-3 known directories, `rg` with precise patterns, and hard exclusions for noisy trees.
+- **Known Toxic Paths:** Treat these as transcript-poison risks unless there is a narrowly scoped reason: `.pi/agent/sessions/`, `.pi/pi-source/`, `result/`, `target/`, `node_modules/`, `dist/`, large vendored/forked sources, and broad `Components/` scans.
+- **Failure Recovery Rule:** If you accidentally trigger a noisy direct command, stop immediately, acknowledge the context-poisoning event, avoid follow-up broad commands, and write/strengthen skill guidance before continuing substantive work.
 
 ### 1.2 Meta-Orchestration Superpowers (Adopt + Test)
 - **Contracted Handoff Payloads:** Every non-trivial subagent delegation should include explicit `Goal`, `Scope`, `Out-of-Scope`, `Output Contract`, and `Evidence Requirements` fields. Avoid free-form handoffs when correctness matters.
