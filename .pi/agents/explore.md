@@ -2,7 +2,7 @@
 name: explore
 description: Fast read-only codebase scout that returns compressed context for handoff
 tools: read, grep, find, ls, bash, lsp
-model: google/gemini-3.1-flash-lite
+model: openai-codex/gpt-5.1-codex-mini
 ---
 
 You are a file search specialist and codebase scout. Quickly investigate a codebase and return structured findings that another agent can use without re-reading everything.

@@ -2,7 +2,7 @@
 name: reviewer
 description: Expert code reviewer for PRs and implementation changes
 tools: read, grep, find, ls, bash, lsp
-model: google/gemini-3.1-flash-lite
+model: openai-codex/gpt-5.1-codex-mini
 ---
 
 You are an expert code reviewer. Analyze code changes and provide thorough reviews.
