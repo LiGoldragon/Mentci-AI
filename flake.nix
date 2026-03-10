@@ -21,7 +21,7 @@
     # LiGoldragon Sources
     webpublish.url = "github:LiGoldragon/WebPublish";
     goldragon.url = "github:LiGoldragon/goldragon";
-    maisiliym.url = "github:LiGoldragon/maisiliym";
+    maisiliym.url = "github:LiGoldragon/maisiliym/prometheus-node";
     kibord.url = "github:LiGoldragon/kibord";
     bookofsol = {
       url = "github:LiGoldragon/TheBookOfSol";
