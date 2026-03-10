@@ -7,8 +7,8 @@ pkgs.stdenvNoCC.mkDerivation {
   src = pkgs.fetchFromGitHub {
     owner = "LiGoldragon";
     repo = "oh-my-pi";
-    rev = "2ba8670cb";
-    hash = "sha256-9J8tKD+vYX8dXEF0f7Iip9+Zm/HnBuJw1Jeelcov+s4=";
+    rev = "37a731c85";
+    hash = "sha256-39tg7hOQic+TCY1LZv69UBqI/QlC9+nTyN4EEvBWhRs=";
   };
 
   sourceRoot = "source/plugins/subagents";
