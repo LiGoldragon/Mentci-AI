@@ -36,12 +36,15 @@ Present exactly these options:
 
 ### Step 4: Execute Choice
 
+All non-trivial JJ/git handling in this skill MUST go through the `jj-expert` agent. This skill defines the completion policy and option selection; `jj-expert` performs the bounded JJ/git execution and reports raw evidence.
+
 #### Option 1: Move bookmark (no tag)
 
-- Finalize commit description.
-- `jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r <finalized-rev>`
-- `jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"`
-- Verify with `jj log -r "$MENTCI_TARGET_BOOKMARK" -r "$MENTCI_TARGET_BOOKMARK@origin" --no-graph`
+Ask `jj-expert` to:
+- finalize the current intent into the correct described revision,
+- move `$MENTCI_TARGET_BOOKMARK` to that finalized revision,
+- push the bookmark,
+- return bounded verification showing `$MENTCI_TARGET_BOOKMARK` and `$MENTCI_TARGET_BOOKMARK@origin`.
 
 #### Option 2: Tagged main release (required release path)
 
@@ -52,16 +55,11 @@ For release flows, use the original zodiac-ordinal version style:
 
 Required sequence:
 
-1. Ensure release commit is on `main`.
-2. Create a **signed** git tag on that commit:
-   - `git tag -s v0.12.<degree>.<minute>.<second> -m "release: v0.12.<degree>.<minute>.<second>"`
-   - Or full canonical form when not in current-era shorthand: `v<cycle>.<sign>.<degree>.<minute>.<second>`
-3. Push bookmark and tag:
-   - `jj git push --bookmark main`
-   - `git push origin <tag>`
-4. Verify:
-   - `jj log -r main -r 'main@origin' --no-graph`
-   - `git tag -v <tag>`
+Ask `jj-expert` to:
+1. ensure the release commit is on `main`,
+2. create the signed release tag with the required version style,
+3. push `main` and the tag,
+4. return bounded verification for `main`, `main@origin`, and tag presence/signature.
 
 Release notes/commit body should summarize major changes and include the solar date line.
 
@@ -71,7 +69,7 @@ Report current bookmark/revision and stop.
 
 #### Option 4: Discard
 
-Confirm intent, then abandon target revisions with `jj abandon <revset>`.
+Confirm intent, then ask `jj-expert` to abandon the target revisions with bounded before/after evidence.
 
 ## Rules
 
@@ -79,4 +77,4 @@ Confirm intent, then abandon target revisions with `jj abandon <revset>`.
 - Release integration target is `main`.
 - Release tags must use the original version style (`v0.12.x.x.x` in current-era shorthand).
 - Do not claim release completion without tag verification.
-- End with clean handover commit (`jj new "$MENTCI_TARGET_BOOKMARK"`) when flow is complete.
+- End with a clean handover state via `jj-expert` after push verification.

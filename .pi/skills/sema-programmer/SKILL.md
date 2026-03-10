@@ -20,8 +20,8 @@ Primary goals:
 ## Preconditions
 
 Before editing code:
-1. Run `jj status`.
-2. If tree is dirty, isolate and commit existing intent first.
+1. Ask the `jj-expert` agent for a bounded JJ state check.
+2. If tree is dirty, use `jj-expert` to isolate and finalize existing intent before editing code.
 3. Confirm data authority artifact exists (`.edn` and/or `.bin` sidecar) before coding defaults.
 4. For external tooling/ecosystem claims, delegate quick validation to the `web-search` agent before asserting status or maturity. Use direct web tools only if the `web-search` agent is unavailable and the fallback is explicitly bounded.
 5. If structured tooling is part of the task, record tool usage and gaps in a Research tooling log (queries attempted, bounded scope, outcomes, shortcomings).
@@ -138,8 +138,8 @@ When touching `criome-core`, `criad`, or CriomOS data contracts, apply all rules
 - Commit each intent atomically.
 - **Header Standard:** All commit and session documentation MUST follow the template defined in the `independent-developer` skill (Original Prompt, Context, Summary, Validation).
 - **Prompt Fidelity:** The agent MUST prioritize using the exact original prompt from the user.
-- Push the runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`) and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
-- **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`) to leave a clean, empty worktree for the next interaction. `jj new` already establishes the clean handoff state; avoid extra no-op graph manipulation of that empty commit unless explicitly required.
+- Use `jj-expert` to push the runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`) and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
+- **Session Handover:** Use `jj-expert` to leave the clean, empty handoff worktree for the next interaction after push verification. `jj new` remains the target handoff state, but the main agent should orchestrate it through `jj-expert`.
 
 ## Anti-Patterns (Forbidden)
 - Hardcoding configuration data into Rust logic.

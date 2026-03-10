@@ -20,12 +20,11 @@ Start by understanding the current project context, then ask questions one at a 
 
 ## The Process
 
-**Before anything else — check git state:**
-- Run `git status` and `git log --oneline -5`
-- If on a feature branch with uncommitted or unmerged work, ask the user:
-  - "You're on `<branch>` with uncommitted changes. Want to finish/merge that first, stash it, or continue here?"
-- Require exactly one of: finish prior work, stash, or explicitly continue here
-- If the topic is new, suggest creating a new branch before brainstorming
+**Before anything else — check repository state via `jj-expert`:**
+- Delegate a bounded current-state report to the `jj-expert` agent.
+- Ask it to establish the runtime bookmark, working-copy cleanliness, and nearby lineage before brainstorming.
+- If the repo has uncommitted or unmerged work, ask the user whether to finish prior work, isolate it, or explicitly continue here.
+- If the topic is new, suggest creating an isolated JJ clone or other user-approved workspace strategy before brainstorming.
 
 **Understanding the idea:**
 - Check out the current project state first (files, docs, recent commits)
@@ -51,12 +50,12 @@ Start by understanding the current project context, then ask questions one at a 
 
 **Documentation:**
 - Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Commit the design document to git
+- If the design artifact should be committed now, ask `jj-expert` to finalize and push that planning intent
 - Mark the brainstorm phase complete: call `plan_tracker` with `{action: "update", status: "complete"}` for the current phase
 
 **Implementation (if continuing):**
 - Ask: "Ready to set up for implementation?"
-- Set up isolated workspace — `/skill:using-git-worktrees` for larger work, or just create a branch for small changes
+- Set up isolated workspace — `/skill:using-git-worktrees` for larger work, or another user-approved JJ/bookmark-isolation strategy for smaller changes
 - Use `/skill:writing-plans` to create detailed implementation plan
 
 ## Key Principles

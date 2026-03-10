@@ -53,7 +53,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 ## Task Structure
 
-```markdown
+````markdown
 ### Task N: [Component Name]
 
 **TDD scenario:** [New feature — full TDD cycle | Modifying tested code — run existing tests first | Trivial change — use judgment]
@@ -88,14 +88,14 @@ def function(input):
 Run: `pytest tests/path/test.py::test_name -v`
 Expected: PASS
 
-**Step 5: Commit**
+**Step 5: Finalize via `jj-expert`**
 
-```bash
-jj status
-jj describe -m "intent: add specific feature"
-jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"
-```
-```
+Ask the `jj-expert` agent to:
+- establish bounded JJ state,
+- finalize the current intent into the correct described revision,
+- push the runtime target bookmark,
+- verify local/remote bookmark alignment.
+````
 
 ## Remember
 - Exact file paths always

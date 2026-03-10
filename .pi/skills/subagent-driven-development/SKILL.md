@@ -14,7 +14,7 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 If a tool result contains a ⚠️ workflow warning, stop immediately and address it before continuing.
 
 ## Prerequisites
-- Active branch (not main) or user-confirmed intent to work on main
+- Active runtime bookmark confirmed, ideally via `jj-expert`, or user-confirmed intent to work on `main`
 - Approved plan or clear task scope
 
 ## When to Use
@@ -142,7 +142,7 @@ Implementer: "Got it. Implementing now..."
 [Dispatch spec compliance reviewer]
 Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
 
-[Get git SHAs, dispatch code quality reviewer]
+[Ask `jj-expert` for the bounded review range, then dispatch code quality reviewer]
 Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
 
 [Mark Task 1 complete]
@@ -170,7 +170,7 @@ Implementer: Removed --json flag, added progress reporting
 [Spec reviewer reviews again]
 Spec reviewer: ✅ Spec compliant now
 
-[Dispatch code quality reviewer]
+[Ask `jj-expert` for the bounded review range, then dispatch code quality reviewer]
 Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
 
 [Implementer fixes]
@@ -225,7 +225,7 @@ Done!
 - **Reliability:** If a task tool returns "Unknown agent ... Available: none":
     1. Stop chain execution immediately.
     2. Report blocked state.
-    3. Run minimal JJ preflight: `jj status`, `jj log -r "$MENTCI_TARGET_BOOKMARK|@|@-" --no-graph`.
+    3. Run direct local bounded JJ preflight (`jj status`, bounded `jj log`) and include the raw evidence packet.
     4. Provide raw evidence output.
     5. Do not fabricate success from partial/empty agent outputs.
 - **Non-Empty Output Mitigation:** Add this at top of subagent tasks: `First line MUST be: Status: success|blocked|no-op`.

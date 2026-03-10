@@ -8,12 +8,12 @@ Use this template when dispatching a code quality reviewer subagent.
 
 ```
 Dispatch a subagent with the code-reviewer template:
-  Use the template at ./code-reviewer.md (in the requesting-code-review skill directory)
+  Use the template at ../requesting-code-review/code-reviewer.md
 
   WHAT_WAS_IMPLEMENTED: [from implementer's report]
   PLAN_OR_REQUIREMENTS: Task N from [plan-file]
-  BASE_SHA: [commit before task]
-  HEAD_SHA: [current commit]
+  BASE_REV: [bounded base revision from jj-expert]
+  HEAD_REV: [bounded head revision from jj-expert]
   DESCRIPTION: [task summary]
 ```
 

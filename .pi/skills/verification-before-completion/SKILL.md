@@ -118,7 +118,7 @@ Skip any step = lying, not verifying
 - **Reliability:** If a task tool returns "Unknown agent ... Available: none":
     1. Stop chain execution immediately.
     2. Report blocked state.
-    3. Run minimal JJ preflight: `jj status`, `jj log -r 'dev|@|@-' --no-graph`.
+    3. Run direct local bounded JJ preflight (`jj status`, bounded `jj log`) and include the raw evidence packet.
     4. Provide raw evidence output.
     5. Do not fabricate success from partial/empty agent outputs.
 - **Raw Evidence Packet:**

@@ -25,11 +25,8 @@ Dispatch a subagent with the code-reviewer prompt template to catch issues befor
 
 ## How to Request
 
-**1. Get git SHAs:**
-```bash
-BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
-HEAD_SHA=$(git rev-parse HEAD)
-```
+**1. Get the review range via `jj-expert`:**
+Ask the `jj-expert` agent for the bounded review range or comparable revisions for the code review request. Do not compute Git SHAs directly in the main session.
 
 **2. Dispatch code-reviewer subagent:**
 
@@ -46,8 +43,8 @@ subagent({ agent: "code-reviewer", task: "... filled template ..." })
 **Placeholders:**
 - `{WHAT_WAS_IMPLEMENTED}` - What you just built
 - `{PLAN_OR_REQUIREMENTS}` - What it should do
-- `{BASE_SHA}` - Starting commit
-- `{HEAD_SHA}` - Ending commit
+- `{BASE_REV}` - Starting revision prepared by `jj-expert`
+- `{HEAD_REV}` - Ending revision prepared by `jj-expert`
 - `{DESCRIPTION}` - Brief summary
 
 **3. Act on feedback:**
@@ -63,14 +60,15 @@ subagent({ agent: "code-reviewer", task: "... filled template ..." })
 
 You: Let me request code review before proceeding.
 
-BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')
-HEAD_SHA=$(git rev-parse HEAD)
+[Ask `jj-expert` for bounded review revisions]
+  BASE_REV: <jj-expert-provided-base-revision>
+  HEAD_REV: <jj-expert-provided-head-revision>
 
 [Dispatch code-reviewer subagent]
   WHAT_WAS_IMPLEMENTED: Verification and repair functions for conversation index
   PLAN_OR_REQUIREMENTS: Task 2 from docs/plans/deployment-plan.md
-  BASE_SHA: a7981ec
-  HEAD_SHA: 3df7661
+  BASE_REV: <jj-expert-provided-base-revision>
+  HEAD_REV: <jj-expert-provided-head-revision>
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
 
 [Subagent returns]:

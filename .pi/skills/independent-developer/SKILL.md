@@ -34,6 +34,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 ### 1.1 Subagent Orchestration Mandate (Use Often, Use Efficiently)
 - **Primary Context-Protection Rule:** The main agent context is for orchestration, policy, synthesis, and final decisions. It MUST be protected from noisy exploratory shell transcripts. To minimize context pollution, non-trivial shell work should be delegated to subagents whenever possible.
 - **Subagent-First for Non-Trivial Work:** You MUST favor subagents for non-trivial implementation, refactoring, debugging, broad discovery, multi-step validation, and non-trivial shell-driven investigation.
+- **JJ/Git Delegation Rule:** The main agent MUST treat `jj-expert` as the default execution lane for non-trivial JJ/git handling. Orchestrate, dispatch, and verify; do not perform multi-step JJ/git work directly in the main session. Only trivial bounded checks may remain local. Fall back to direct JJ tooling only when subagents are unavailable or demonstrably failing, and include raw evidence of that failure.
 - **Non-Trivial Shell Delegation Rule:** Avoid running non-trivial shell commands directly in the main session. If a shell action involves pipelines, multi-step inspection, cross-file searching, repeated probing, multiple commands in sequence, or anything beyond a single small bounded status/check command, delegate it to an appropriate agent first.
 - **Priority Over Local Convenience:** Even if a non-trivial shell command would be faster to run directly, prefer delegation when it reduces noise, preserves main-context clarity, or keeps the top-level session focused on reasoning instead of transcript accumulation.
 - **Efficiency Threshold:** If work crosses more than one file, needs iterative test-fix loops, requires tracing logic across multiple components, or would naturally require multiple shell commands, dispatch subagents.
@@ -100,28 +101,28 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   - **Directive Commits:** If a commit exists only with a message (pre-setting intention), it is a "Directive Commit." If a description exists on a clean worktree, treat it as critical "context"—it represents a quantifiable intent left by a predecessor. In such cases, you should still create a NEW child commit (`jj new`) to perform the actual work, preserving the directive as a distinct node in the history.
   - **Atomic Finalization:** Only describe the commit once the physical changes are staged in that commit. This ensures that every described node in the history is a non-empty, atomic logical unit.
 - **Bookmark Movement Protocol:** 
-  - Never move the target bookmark (`$MENTCI_TARGET_BOOKMARK`) to an "actively edited" or undescribed commit. 
-  - Always finalize the work into a described commit, then move the bookmark to that immutable state: `jj bookmark set <name> -r <finalized_revision>`.
-  - **Worktree Alignment:** The primary development bookmark of the current repository is considered the authoritative head. You MUST ensure your working copy is always based on this active bookmark. If the active bookmark is moved (by you or an external process, such as a rebase by a master agent), your working copy MUST follow it to maintain alignment. In most cases, this will involve rebasing your working copy onto the new location of the bookmark. If in doubt on how to align, ask for clarification.
-- **Mandatory Pushing:** Always push the bookmark you are currently working on (`jj git push --bookmark <name>`). If in doubt about which bookmark to push, ask for clarification. Verify local/remote bookmark alignment.
-  - **Two-Step Interaction:** Note that `jj git push` may first stage the movement (showing "Changes to push to origin") and then require a subsequent identical command to actually perform the network push. Always verify with `jj log -r <name>@origin` or a repeated push command.
+  - Never move the target bookmark (`$MENTCI_TARGET_BOOKMARK`) to an "actively edited" or undescribed commit.
+  - Use `jj-expert` to finalize work into a described immutable revision, move the bookmark to that revision, and return bounded verification evidence.
+  - **Worktree Alignment:** Treat the primary development bookmark as authoritative. If it moves, use `jj-expert` to establish the new state and recommend or perform the safe alignment path.
+- **Mandatory Pushing:** Use `jj-expert` to push the active runtime bookmark and verify local/remote bookmark alignment.
+  - **Two-Step Interaction:** `jj-expert` should account for JJ's staged push interaction and return the bounded verification evidence showing whether `<bookmark>` and `<bookmark>@origin` now align.
 - **Commit-Then-Validate Rule (Nix-heavy flows):** For rebuild-sensitive Nix work, create a small logical commit *before* running expensive `nix build`/`nix develop` validation. If validation fails, apply the fix as a new follow-up commit (do not rewrite the previous logical step). Continue in small commits until green.
 - **Chain-of-Intent Preference:** Favor a sequence of small atomic intent commits over one large mutation. End the sequence with a final `session` commit summarizing outcomes and evidence.
 - **Tagged Release Mode (Main-Only):** When creating a release, the release commit MUST be on `main` and MUST be tagged using the original zodiac-ordinal style.
   - **Required tag style:** `v0.12.x.x.x` (current-era shorthand of `v<cycle>.<sign>.<degree>.<minute>.<second>`)
-  - **Required release flow:**
-    1. Create/verify release commit on `main`.
-    2. Create signed or annotated git tag with the same version.
-    3. Push `main` bookmark and push the release tag.
-    4. Verify `main == main@origin` and verify tag presence/signature.
+  - **Required release flow:** Use `jj-expert` to:
+    1. create/verify the release commit on `main`,
+    2. create the signed release tag,
+    3. push `main` and the release tag,
+    4. return bounded verification showing `main == main@origin` and valid tag presence/signature.
 - **Phantom Intent Avoidance:** Never create "Phantom Commits" (descriptions without diffs). If a squash or rebase results in an empty described commit, it must be squashed into its neighbor or deleted.
-- **Session Handover:** Always end the interaction by creating a new empty commit (`jj new`). This action itself creates the clean handoff state for `@` (empty working copy on a fresh commit); do not add extra no-op graph operations (for example, rebasing that empty commit) unless explicitly required.
+- **Session Handover:** Use `jj-expert` to leave the clean handoff state after push verification. The handoff should end with a fresh empty working copy via `jj new`, but the main agent should orchestrate this through `jj-expert` rather than performing non-trivial JJ handling directly.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
 
 - **Basic Rebase and Push Workflow:**
-    1.  **Fetch latest from remote:** `jj git fetch` (updates local view of remote bookmarks like `main@origin`).
-    2.  **Rebase your bookmark onto `main`:** `jj rebase -b <your-bookmark-name> -d main@origin` (moves your commits on top of the latest `main` from remote).
-    3.  **Push your rebased bookmark:** `jj git push --bookmark <your-bookmark-name>` (publishes your updated bookmark to the remote).
+    1.  Ask `jj-expert` to fetch bounded remote state and report the relevant bookmark positions.
+    2.  Ask `jj-expert` to perform or propose the safe rebase onto the intended integration bookmark with bounded before/after evidence.
+    3.  Ask `jj-expert` to push the rebased bookmark and verify `<bookmark> == <bookmark>@origin`.
 
 ### 4. Resolving Version Bugs & Tooling Issues
 - **Version Bumps Allowed:** Always look for a newer trusted release when hitting a version-related bug. Bumping the version is allowed and encouraged to resolve issues.
