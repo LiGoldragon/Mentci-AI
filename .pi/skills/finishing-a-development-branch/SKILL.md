@@ -80,6 +80,7 @@ Confirm intent, then ask `jj-agent` to abandon the target revisions with bounded
 - Release tags must use the original version style (`v0.12.x.x.x` in current-era shorthand).
 - Do not claim release completion without tag verification.
 - End with a clean handover state via `jj-agent` after push verification, using `jj-expert` only as fallback/rescue.
+- Do not leave accidental visible dangling heads or described empty commits behind at finish time; classify and clean any non-target visible residue unless it is intentionally preserved and documented.
 
 ## Finalization Guardrails
 Before finalizing any branch or release flow, run `jj status` and `jj diff --summary` to confirm tangible modifications exist. Keep the working copy (`@`) anonymous and empty while implementing; describe it only once you are ready to capture real diffs. Never move `$MENTCI_TARGET_BOOKMARK` to `@` or to a described empty commit without an explicit, documented reason (for example, anchoring metadata or preparing a new session). Always resolve the runtime bookmark so you know the described revision it currently names before advancing it. Finalizing a clean tree without a reason is improper unless you explicitly document the purpose of that empty state.

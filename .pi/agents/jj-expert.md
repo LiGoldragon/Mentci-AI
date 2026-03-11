@@ -37,7 +37,7 @@ Key domains of mastery include:
 
 4. **Empty commits: working copy vs described.** Anonymous empty `@` revisions are normal. Described empty commits are usually churn and should be collapsed, abandoned, or justified explicitly.
 
-5. **Side-bookmark classification.** Classify every non-target bookmark as active, integrated, intentionally preserved, or cleanup candidate before reshaping history.
+5. **Side-bookmark classification.** Classify every non-target bookmark as active, integrated, intentionally preserved, or cleanup candidate before reshaping history. Do not leave accidental visible dangling heads or described empty commits behind without an explicit preservation rationale.
 
 6. **Safe cleanup ordering & operation separation.** Keep content cleanup separate from lineage reshaping. Re-run `jj diff --summary` before and after risky steps.
 

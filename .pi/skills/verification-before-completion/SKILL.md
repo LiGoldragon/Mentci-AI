@@ -114,6 +114,12 @@ Skip any step = lying, not verifying
 ❌ Trust "agent says success"
 ```
 
+**JJ completion hygiene:**
+```
+✅ Verify the final bounded JJ state has no accidental visible dangling heads or described empty debris beyond the intended empty `@`
+❌ Declare completion while extra visible empty session heads or unclassified side histories remain
+```
+
 **Contradictory agent/tool reports:**
 ```
 ✅ If a report mixes success and failure claims, run direct bounded post-gates immediately
