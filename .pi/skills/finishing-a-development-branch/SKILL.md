@@ -5,6 +5,13 @@ description: Use when implementation is complete, tests pass, and you need to in
 
 > **Related skills:** Verify tests first with `/skill:verification-before-completion`. Consider `/skill:requesting-code-review` before release.
 
+## Repo-Local Nix Purity Rule
+- Treat every repository as a self-contained world during Nix evaluation.
+- Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
+- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains Git-backed JJ.
+- Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
+
+
 # Finishing a Development Branch
 
 ## Overview
@@ -76,6 +83,8 @@ Confirm intent, then ask `jj-agent` to abandon the target revisions with bounded
 ## Rules
 
 - JJ is primary; do not switch to git-branch workflows for normal integration.
+- Direct Git workflow usage is heresy; Git is backend transport only.
+- Bookmark movement and push are one atomic completion moment. If the push has not landed on `origin`, the commit does not count as finished Mentci-AI history.
 - This prohibition includes nested component repos such as `Components/CriomOS`: finish them with JJ in that repo, not with direct Git commits/branches because a `.git` directory is visible.
 - Release integration target is `main`.
 - Release tags must use the original version style (`v0.12.x.x.x` in current-era shorthand).

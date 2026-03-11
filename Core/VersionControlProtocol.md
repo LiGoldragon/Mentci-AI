@@ -2,9 +2,13 @@
 
 This document is the source of truth for Jujutsu workflows, commit discipline, and push cadence. **Jujutsu (jj) is the mandatory primary interface for all VCS operations in this repository; Git exists solely as the underlying storage backend.** This applies equally to nested/component repositories such as `Components/CriomOS`: the presence of a `.git` directory or submodule boundary does not authorize direct Git state decisions or direct Git commit workflows there.
 
+**ORIGIN IS TRUTH:** A local commit is not considered real, complete, or meaningfully existent for Mentci-AI workflow purposes until the runtime target bookmark has been moved to the finalized revision and that bookmark has been pushed to `origin` and verified there. Bookmark movement and push are one atomic completion moment; if the push has not happened, the work is incomplete.
+
+**GIT IS HERESY:** Direct Git workflow usage inside Mentci-AI and all of its component repositories is heresy. Git is backend transport only. Do not use direct `git status`, `git log`, `git branch`, `git commit`, `git merge`, or `git push` as workflow authority when `jj` can answer the question. If Git backend state appears because of transport or a past mistake, recover and continue with JJ.
+
 ## 1. Core Rules (BOOMING MANDATE)
 1. **TARGET BOOKMARK:** All active development targets the runtime bookmark from `MENTCI_TARGET_BOOKMARK`, but that bookmark must resolve in the current repository context before bookmark-specific mutation. If it does not resolve locally (including in nested JJ repos such as `Components/CriomOS`), stop and establish the correct bookmark for that repo instead of falling back to Git branches or assuming `dev`.
-2. **END-OF-FLOW PUSH:** Every completed prompt session **MUST** end with a push to the runtime target bookmark on the `origin` remote.
+2. **ATOMIC BOOKMARK+PUSH COMPLETION:** Every completed prompt session **MUST** end with one atomic completion moment: move the runtime target bookmark to the finalized revision, push that bookmark to the `origin` remote immediately, and verify remote alignment. If the push has not landed on `origin`, the commit does not count as complete Mentci-AI history.
 3. **COMMIT EVERY INTENT:** One atomic modification per commit. No bundling.
 4. **NO DIRTY TREES:** Finishing a turn with uncommitted changes is a protocol violation.
 5. **ATOMIC MESSAGES + CONTEXT TRAILER:** Use `intent: <short description>` for intermediate commits, and include commit-context sections for every commit (see Rule 5.1).
@@ -30,7 +34,7 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 ## 2. Preconditions
 1. Prefer working in the dev shell so `MENTCI_*` variables and the jail workspace are active.
 2. Use `mentci-jj` for status/log/commit to ensure consistent workspace targeting.
-2.1. **NO DIRECT GIT IN JJ REPOS:** In any JJ repo, including nested component repos, do not use `git status`, `git log`, `git branch`, or direct `git commit` / `git push` as authoritative workflow operations when `jj` can answer the question. If a mistaken Git action already occurred, treat it as imported backend state to recover from with JJ; do not continue the workflow in Git.
+2.1. **DIRECT GIT IS HERESY IN JJ REPOS:** In any JJ repo, including nested component repos, direct Git workflow usage is heresy. Do not use `git status`, `git log`, `git branch`, `git checkout`, `git commit`, `git merge`, or `git push` as authoritative workflow operations when `jj` can answer the question. If a mistaken Git action already occurred, treat it as imported backend state to recover from with JJ; do not continue the workflow in Git.
 3. Run a pre-edit status check (`mentci-jj status` or `jj status`) before any file read/write intended to change code or docs.
 
 If `MENTCI_*` variables are missing, use `jj` directly from the repository root and do not attempt jail shipping.
@@ -57,10 +61,10 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 
 7. Before declaring the prompt complete, run `execute session-guard`; non-zero exit means session synthesis is missing or malformed.
 8. Run `execute root-guard`; non-zero exit means top-level FS contract drift.
-9. Advance and push once:
+9. Advance and push as one indivisible completion action:
    - `jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @- --allow-backwards`
    - `jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"`
-10. This push-to-target-bookmark step is the default end-of-flow requirement for every prompt-complete execution.
+10. This bookmark-move-plus-push step is the default end-of-flow requirement for every prompt-complete execution. Do not pause between these commands to treat the local commit as if it already exists in authoritative history.
 11. Verify push landed before declaring completion:
    - `jj log -r "bookmarks($MENTCI_TARGET_BOOKMARK) | remote_bookmarks($MENTCI_TARGET_BOOKMARK@origin)" --no-graph`
    - completion is invalid until local and remote target bookmarks point to the finalized session lineage.

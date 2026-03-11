@@ -3,6 +3,13 @@ name: independent-developer
 description: Operates as a self-sufficient, tool-dense, and architecturally rigorous Mentci-AI developer.
 ---
 
+## Repo-Local Nix Purity Rule
+- Treat every repository as a self-contained world during Nix evaluation.
+- Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
+- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains Git-backed JJ.
+- Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
+
+
 # Independent Developer
 
 ## Overview
@@ -75,6 +82,8 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 ### 3. DVCS Rigor (Jujutsu)
 - Treat every component as a future independent `jj` repository.
 - **State Authority Rule (JJ over Git):** Repository state authority is `jj` (`jj status`, `jj log`, `jj bookmark list`). `git` is only a storage/transport backend for Jujutsu synchronization; do not use `git status`/`git log` as the source of truth for workflow decisions.
+- **Git Heresy Rule:** Direct Git workflow usage is heresy in Mentci-AI and all component repos. Do not use direct Git commands as workflow authority when JJ can answer the question.
+- **Origin Truth Rule:** A commit does not meaningfully exist for Mentci-AI workflow purposes until the runtime target bookmark has been moved to it, pushed to `origin`, and verified there. Bookmark move and push are one atomic completion moment.
 - **Runtime Bookmark Contract:** Determine target bookmark from runtime context (`MENTCI_TARGET_BOOKMARK`) before any commit/bookmark move/push. If unset, resolve target explicitly and report it. Treat hardcoded `dev` examples as placeholders, not authority.
 - **Commit Protocol (Standard Intent Header):** Every commit message MUST follow this template. The agent MUST use the exact original prompt from the interaction; if the prompt is lost, it must be synthesized from session intent.
   ```markdown

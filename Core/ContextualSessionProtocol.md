@@ -107,6 +107,11 @@ execute report \
 After final session synthesis is complete (single or multi mode), push and verify the finalized session commit first. Only then create a fresh child working commit so the finalized session commit is left immutable and the tree stays clean for the next prompt.
 
 Verification gate before `jj new "$MENTCI_TARGET_BOOKMARK"`:
+
+A finalized commit is not considered real/completed session history until the runtime target bookmark has been moved to it, pushed to `origin`, and verified on `origin`. Treat bookmark movement and push as one atomic completion moment; if the push has not landed, the session is incomplete.
+
+Direct Git workflow usage is heresy here as well: Git is backend transport only, while JJ and `origin` verification remain the authoritative workflow surfaces.
+
 ```
 jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @- --allow-backwards
 jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"

@@ -27,6 +27,15 @@ structural. Violations indicate category error, not style.
    lossless generated equivalent) as the domain-state handoff object. Environment
    variables are process-layer plumbing, not configuration truth.
 
+6. **Repository Self-Containment Rule (Critical)**
+   During Nix evaluation, each repository is a self-contained world. Nix code must
+   never reach into a parent repository, sibling checkout, undeclared local path,
+   or ad-hoc absolute filesystem path to obtain package/module code. If reusable
+   code is needed, it must live inside the active repository or arrive through a
+   declared flake input. Deep modules must not escape repo boundaries with `../`
+   traversal to find package code; instead, expose shared derivations from the
+   active repo root and pass them down structurally.
+
 ## Naming and Ontology
 
 *   `camelCase` denotes functions, relations, flow.

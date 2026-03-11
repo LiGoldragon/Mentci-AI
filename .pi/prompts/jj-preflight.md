@@ -4,6 +4,8 @@ description: Run bounded JJ preflight checks and return raw state evidence
 
 Set `TARGET_BOOKMARK=${MENTCI_TARGET_BOOKMARK:-dev}` before running the commands below so the preflight reflects the runtime target bookmark. Paste raw output blocks only.
 
+Treat `origin` as the authoritative completion truth: a local commit does not count as real/completed until the target bookmark has been pushed and verified on `origin`. Direct Git workflow usage is heresy; Git is backend transport only.
+
 - `jj status`
 - `jj log -r "${TARGET_BOOKMARK}|${TARGET_BOOKMARK}@origin|@|@-" --no-graph`
 - `jj log -r 'unresolved()' --no-graph`

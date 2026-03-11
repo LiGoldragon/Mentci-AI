@@ -57,6 +57,8 @@ Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable 
 - Require `jj status` + `jj diff --summary` before `jj describe`/finalization.
 - Forbid describing/committing a clean tree except when intentionally leaving anonymous `@` empty.
 - Forbid moving bookmarks to empty commits.
+- State explicitly that bookmark movement and push to `origin` are one atomic completion moment and that a local-only commit does not count as completed history.
+- State explicitly that direct Git workflow usage is heresy and Git is backend transport only.
 - Clarify when to abandon/merge/rebase dangling side bookmarks.
 - Reinforce `execute session-guard` / `execute root-guard` and research-artifact requirements.
 
