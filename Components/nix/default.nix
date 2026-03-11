@@ -113,7 +113,9 @@ let
     inherit pkgs;
   };
 
-  agentic_jujutsu = pkgs.callPackage ./agentic-jujutsu.nix { };
+  agentic_jujutsu = pkgs.callPackage ./agentic-jujutsu.nix {
+    fetchurlPkg = pkgs.fetchurl;
+  };
 
   pi_with_extensions = import ./pi-with-extensions.nix {
     inherit pkgs;

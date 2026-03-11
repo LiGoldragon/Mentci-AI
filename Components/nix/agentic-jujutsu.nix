@@ -1,6 +1,6 @@
 { lib
 , buildNpmPackage
-, fetchurl
+, fetchurlPkg
 , makeWrapper
 , nodejs_22
 }:
@@ -10,7 +10,7 @@ buildNpmPackage rec {
   version = "2.3.6";
   nodejs = nodejs_22;
 
-  src = fetchurl {
+  src = fetchurlPkg {
     url = "https://registry.npmjs.org/agentic-jujutsu/-/agentic-jujutsu-${version}.tgz";
     hash = "sha256-4dBobHx8fwmzv/laKG/AWEUVVWnjGqAb4GC91oLkExo=";
   };
@@ -43,11 +43,11 @@ buildNpmPackage rec {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Agent-oriented Jujutsu CLI wrapper";
     homepage = "https://github.com/ruvnet/agentic-flow/tree/main/packages/agentic-jujutsu";
-    license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    license = lib.licenses.mit;
+    maintainers = [ ];
     mainProgram = "agentic-jujutsu";
   };
 }

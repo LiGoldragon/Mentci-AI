@@ -24,7 +24,7 @@ impl NodeSpecies {
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Center => "center",
-            Self::LargeAi => "largeAI",
+            Self::LargeAI => "largeAI",
             Self::Hybrid => "hybrid",
             Self::Edge => "edge",
             Self::EdgeTesting => "edge_testing",
@@ -50,7 +50,7 @@ impl UserSpecies {
 pub enum NodeSpecies {
     Center,
     #[serde(rename = "largeAI", alias = "large_ai")]
-    LargeAi,
+    LargeAI,
     Hybrid,
     Edge,
     EdgeTesting,

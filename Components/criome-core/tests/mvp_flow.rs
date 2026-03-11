@@ -100,7 +100,7 @@ fn horizon_handles_large_ai_species() {
                 cluster: "atlas".to_string(),
                 nodes: vec![CrioNodeProposal {
                     name: "atlas-large".to_string(),
-                    species: NodeSpecies::LargeAi,
+                    species: NodeSpecies::LargeAI,
                     size: Magnitude::Max,
                     trust: Magnitude::Max,
                 }],
@@ -118,5 +118,5 @@ fn horizon_handles_large_ai_species() {
         })
         .expect("horizon should be returned");
 
-    assert_eq!(horizon.horizon.node.species, NodeSpecies::LargeAi);
+    assert_eq!(horizon.horizon.node.species, NodeSpecies::LargeAI);
 }
