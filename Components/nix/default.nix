@@ -113,6 +113,10 @@ let
     inherit pkgs;
   };
 
+  litellm_proxy = import ./litellm-proxy.nix {
+    inherit pkgs;
+  };
+
   agentic_jujutsu = pkgs.callPackage ./agentic-jujutsu.nix {
     fetchurlPkg = pkgs.fetchurl;
   };
@@ -182,6 +186,7 @@ let
     inherit gemini_cli gemini_tui;
     pi_dev = pi_with_extensions;
     inherit unified_llm vtcode mentci_bootstrap chronos execute mentci_stt mentci_user mentci_mcp jcodemunch_mcp agentic_jujutsu;
+    inherit litellm_proxy;
   };
 
   jail_sources = import ./jail_sources.nix {
@@ -209,6 +214,6 @@ let
   };
 in
 {
-  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute chronos_lib mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_with_extensions pi_linkup_extension pi_mcp_adapter_extension lsp_pi_extension pi_subagents_extension jcodemunch_mcp agentic_jujutsu pi_check pi_with_extensions_check components_index_check unified_llm pi_rust vtcode;
+  inherit mentci_ai mentci_box mentci_box_default mentci_launch mentci_vcs execute chronos_lib mentci_bootstrap chronos mentci_stt mentci_user mentci_mcp execute_check attractor common_packages jail_sources gemini_cli gemini_tui dev_shell pi pi_dev pi_with_extensions pi_linkup_extension pi_mcp_adapter_extension lsp_pi_extension pi_subagents_extension jcodemunch_mcp agentic_jujutsu pi_check pi_with_extensions_check components_index_check unified_llm pi_rust vtcode litellm_proxy;
   mk_shell = import ./mk-shell.nix { inherit pkgs; };
 }

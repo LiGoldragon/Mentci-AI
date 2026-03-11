@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, pi_dev, unified_llm, vtcode, mentci_bootstrap, chronos, execute, mentci_stt, mentci_user, mentci_mcp, jcodemunch_mcp, agentic_jujutsu }:
+{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, pi_dev, unified_llm, vtcode, mentci_bootstrap, chronos, execute, mentci_stt, mentci_user, mentci_mcp, jcodemunch_mcp, agentic_jujutsu, litellm_proxy }:
 
 [
   pkgs.babashka
@@ -15,7 +15,7 @@
   pkgs.valgrind
   pkgs.bubblewrap
   pkgs.rsync
-  
+
   # AI Assistants & Agents
   codex_cli_nix.packages.${system}.default
   gemini_cli
@@ -23,7 +23,7 @@
   pi_dev
   unified_llm
   vtcode
-  
+
   # Mentci Internal Utilities
   mentci_bootstrap
   chronos
@@ -33,12 +33,13 @@
   mentci_mcp
   jcodemunch_mcp
   agentic_jujutsu
-  
+  litellm_proxy
+
   # Runtime dependencies
   pkgs.nodejs
   pkgs.sqlite
   pkgs.nixd
-  
+
   # Wrapper Scripts
   (pkgs.writeShellScriptBin "mentci-commit" ''
     mentci-vcs commit "$@"

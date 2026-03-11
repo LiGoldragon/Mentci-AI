@@ -198,6 +198,7 @@
           vtcode = namespace.vtcode;
           gemini-cli = namespace.gemini_cli;
           agenticJujutsu = namespace.agentic_jujutsu;
+          litellm_proxy = namespace.litellm_proxy;
         };
 
         checks = {
