@@ -89,3 +89,34 @@ fn rejects_duplicate_nodes_in_same_cluster_proposal() {
         .iter()
         .any(|r| r.reason.contains("duplicate node")));
 }
+
+#[test]
+fn horizon_handles_large_ai_species() {
+    let mut engine = CrioCoreEngine::from_memory().expect("engine should initialize");
+
+    let request = ApproveBatchRequest {
+        batch: CrioProposalBatch {
+            proposals: vec![CrioProposal {
+                cluster: "atlas".to_string(),
+                nodes: vec![CrioNodeProposal {
+                    name: "atlas-large".to_string(),
+                    species: NodeSpecies::LargeAi,
+                    size: Magnitude::Max,
+                    trust: Magnitude::Max,
+                }],
+                users: vec![],
+            }],
+        },
+    };
+
+    engine.approve_batch(request).expect("approval should succeed");
+
+    let horizon = engine
+        .horizon_from_request(HorizonRequest {
+            cluster: "atlas".to_string(),
+            node: "atlas-large".to_string(),
+        })
+        .expect("horizon should be returned");
+
+    assert_eq!(horizon.horizon.node.species, NodeSpecies::LargeAi);
+}
