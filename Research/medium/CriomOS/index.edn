@@ -8,5 +8,7 @@
     "59191221483_report_prometheus_largeai_ollama_and_local-pi_handoff.md"
     "59191222233_report_ouranos_litellm_mvp_handoff_and_main-context-shell-violation.md"
     "591912221118_report_ouranos_litellm_mvp_verification_and_jj-recovery.md"
+    "591912221149_report_compaction-handoff_ouranos-litellm-mvp_and_nested-jj-state.md"
+    "591912221233_report_ouranos_runtime-state_litellm-gateway_and_prometheus-reachability.md"
   ]
 })
