@@ -106,6 +106,12 @@ Side bookmarks and dangling-looking histories are normal artifacts of parallel w
 - **Cleanup candidate:** The bookmark is stale, abandoned, or no longer needed. Coordinate with `jj-expert` (or the owner) to prune or squash it safely, supplying before/after evidence so its removal does not confuse downstream readers.
 Record each classification explicitly and verify whether downstream commit IDs or change IDs depend on the bookmark before merging or dropping it. When inspecting these histories, avoid running broad unbounded `jj log` revsets; prefer targeted revsets (for example `bookmarks(<name>)` or `@-` neighbors) and only expand once you understand the classification. This workflow keeps the runtime history manageable while still surfacing the purpose of each side bookmark.
 
+### Time-Window Cleanup Scope
+If the user asks to clean history within a time window (for example "last day" or "last 3 days"), do not limit the audit to the active target lineage alone. You must also inspect bounded detached visible heads, rewrite debris, duplicate-change remnants, and side bookmarks whose timestamps fall inside that window. Classify each candidate as preserved milestone, active side line, or cleanup candidate before acting. A cleanup is incomplete if obvious detached heads from the requested time window remain visible and continue polluting `jj log`/`visible_heads()`.
+
+### Guard Failure Recording
+If `execute session-guard` or `execute root-guard` fails because of a missing prerequisite, missing sidecar, malformed metadata, or other environmental blocker, record that blocker in a Research artifact before treating the session as complete. Do not let a contradictory subagent summary hide the failure; run direct bounded post-gates and report whether the bookmark actually moved, whether the push actually landed, and what guard remains unsatisfied.
+
 ## 5. Jailed Shipping (Workspace -> target bookmark)
 When operating in the jailed workspace, always use `mentci-commit` to advance the target bookmark:
 

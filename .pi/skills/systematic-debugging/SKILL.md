@@ -79,6 +79,10 @@ You MUST complete each phase before proceeding to the next.
 
 6. **Protect the Debugging Context** — Do not poison the main context while investigating. Avoid broad direct shell searches whose output size is uncertain, especially across logs, generated trees, build artifacts, vendored sources, or mixed-root repository scans. Prefer subagents first; if forced to inspect directly, use tightly bounded paths and output limits.
 
+7. **Respect Exact Evidence Challenges** — If the user disputes a claim with an exact command, exact token, or literal search result (for example `rg LargeAI`), reproduce that exact check before arguing from semantic equivalence. Distinguish clearly between exact-token absence and feature absence. If the code uses a different spelling or casing (for example `LargeAi` or `largeAI`), say so explicitly instead of treating the user’s literal search as mistaken.
+
+8. **Resolve Contradictory Tool Reports with Direct Post-Gates** — If a subagent/tool report contains mixed signals (for example `Status: blocked` but also claims push success, or a cleanup report conflicts with a direct log), stop interpretation and run direct bounded post-gates yourself. Treat raw current-state evidence as authoritative over the summary prose.
+
 ### Phase 2: Pattern Analysis
 
 1. **Find Working Examples** — Locate similar working code in same codebase.

@@ -114,6 +114,24 @@ Skip any step = lying, not verifying
 ❌ Trust "agent says success"
 ```
 
+**Contradictory agent/tool reports:**
+```
+✅ If a report mixes success and failure claims, run direct bounded post-gates immediately
+❌ Paraphrase the optimistic half and ignore the contradictory evidence
+```
+
+**Preservation claims:**
+```
+✅ When claiming a change was preserved, verify the current surviving file contents in the visible target lineage
+❌ Infer preservation only from older commits or historical presence elsewhere in the graph
+```
+
+**User-provided exact command output:**
+```
+✅ Reproduce the exact check first, then explain any naming/casing mismatch
+❌ Override the user's literal evidence with a broader semantic claim without reproducing it
+```
+
 ## Subagent Reliability & Raw Evidence Contract
 - **Reliability:** If a task tool returns "Unknown agent ... Available: none":
     1. Stop chain execution immediately.

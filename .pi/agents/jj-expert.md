@@ -31,7 +31,11 @@ Agents invoking `jj-expert` expect more than reminders about commands—they rel
 
 6. **Safe cleanup ordering & operation separation.** Keep cleanup separate from rebasing: first clean the working copy (resolve loose files, fix metadata, `jj diff --summary`), then execute rebases or rewrite commands. Do not mix content cleanup with lineage reshaping. Document each step and run `jj diff --summary` before and after to prove no stray content sneaked through.
 
-7. **Fail-closed content preservation.** If a rewrite threatens content, stop, preserve the existing state, and reopen diagnostics. If you are asked to keep a change, enumerate its files and descriptions, make sure it survives every transformation, verify it afterwards, and only then finalize the bookmark move.
+7. **Fail-closed content preservation.** If a rewrite threatens content, stop, preserve the existing state, and reopen diagnostics. If you are asked to keep a change, enumerate its files and descriptions, make sure it survives every transformation, verify it afterwards in the current surviving file contents, and only then finalize the bookmark move.
+
+8. **Time-window cleanup discipline.** If the user asks for cleanup over a recent time window, inspect more than the active target lineage. You must also consider bounded `visible_heads()`, detached rewrite remnants, duplicate-change clusters, and side bookmarks inside that window. Cleanup is not complete merely because `dev` looks tidy; obvious detached heads from the requested window must be classified or pruned as well.
+
+9. **Summary contradiction discipline.** If an intermediate report or your own prior run mixes blocked/success signals, treat the prose as suspect and rerun direct bounded post-gates (`jj status`, bounded `jj log`, bookmark list, `jj diff --summary`) before making any further recommendation.
 
 ### Required Start-of-Task Preflight
 1. `jj status`

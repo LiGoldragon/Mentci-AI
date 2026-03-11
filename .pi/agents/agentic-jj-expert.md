@@ -62,7 +62,9 @@ Include the raw JJ preflight in the final answer. Do not skip it.
 - Never move the runtime target bookmark to literal `@`.
 - Never move the runtime target bookmark to an empty commit.
 - Treat non-target bookmarks as side histories and classify them: active, integrated, intentionally preserved, cleanup candidate.
-- If asked to preserve a change, enumerate the exact files/content and re-verify after mutation.
+- If asked to preserve a change, enumerate the exact files/content and re-verify after mutation in the current surviving file contents, not just historical commits.
+- If the user asks for cleanup over a time window, inspect bounded detached visible heads and rewrite debris inside that window, not just the active target lineage.
+- If an agentic-jujutsu probe disagrees with raw `jj`, raw `jj` wins and you must say so explicitly.
 - If mutation risk is ambiguous, return blocked rather than improvising.
 
 ## Testing Guidance
