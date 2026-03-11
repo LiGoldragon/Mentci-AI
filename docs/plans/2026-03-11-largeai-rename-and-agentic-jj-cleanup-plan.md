@@ -1,10 +1,10 @@
-# LargeAI Rename and agentic-jj Cleanup Plan
+# LargeAI Rename and jj-agent Cleanup Plan
 
 > **REQUIRED SUB-SKILL:** Execute this plan using either `/skill:executing-plans` (parallel session) or `/skill:subagent-driven-development` (same-session loop).
 
-**Goal:** Rename the Rust symbol from `LargeAi` to `LargeAI` while preserving the serialized `largeAI` wire format, create and validate a new `agentic-jj-expert` agent lane, and then use bounded JJ expertise to abandon genuinely dangling commits from the last three days.
+**Goal:** Rename the Rust symbol from `LargeAi` to `LargeAI` while preserving the serialized `largeAI` wire format, create and validate a new primary `jj-agent` lane (with `agentic-jj-expert` retained only as a compatibility alias), and then use bounded JJ expertise to abandon genuinely dangling commits from the last three days.
 
-**Architecture:** Split the work into four stages: (1) stabilize the working copy by either finalizing or intentionally carrying the two pending Nix fixes, (2) apply the Rust naming correction with existing-test verification, (3) create and test an `agentic-jj-expert` prompt that combines agentic-jujutsu command surfaces with current Mentci JJ guardrails, and (4) only after the agent proves reliable, use it under post-gates to help clean dangling last-three-days history.
+**Architecture:** Split the work into four stages: (1) stabilize the working copy by either finalizing or intentionally carrying the two pending Nix fixes, (2) apply the Rust naming correction with existing-test verification, (3) create and test a `jj-agent` prompt that combines agentic-jujutsu command surfaces with current Mentci JJ guardrails while keeping `agentic-jj-expert` as a compatibility alias, and (4) only after the agent proves reliable, use it under post-gates to help clean dangling last-three-days history.
 
 **Tech Stack:** Rust (`criome-core`), JJ workflows, project-local agent prompt files, `agentic-jujutsu` CLI in Nix dev shell, bounded JJ inspection.
 
@@ -51,12 +51,13 @@ Run the existing `criome-core` tests covering the species/horizon path.
 **Step 3: Re-run targeted tests**
 Prove the rename compiles and the behavior remains intact.
 
-### Task 3: Create `agentic-jj-expert`
+### Task 3: Create `jj-agent`
 
 **TDD scenario:** Trivial change — use judgment
 
 **Files:**
-- Create: `.pi/agents/agentic-jj-expert.md`
+- Create: `.pi/agents/jj-agent.md`
+- Modify: `.pi/agents/agentic-jj-expert.md`
 - Optionally update a high-level index/context file only if needed to make the lane discoverable
 
 **Step 1: Draft the new agent prompt**
@@ -71,7 +72,7 @@ The prompt must combine:
 **Step 2: Keep the lane narrow**
 It should be JJ-only, read-only except for explicit JJ operations, and fail closed on ambiguous history or content-preservation risk.
 
-### Task 4: Validate `agentic-jj-expert`
+### Task 4: Validate `jj-agent`
 
 **TDD scenario:** Verification phase
 
@@ -129,5 +130,5 @@ Confirm:
 - agentic-jujutsu still runnable in dev shell
 - history cleanup result verified
 
-**Step 2: Finalize via `jj-expert`**
-Push the runtime target bookmark and leave exactly one empty working copy above the final revision.
+**Step 2: Finalize via `jj-agent`**
+Push the runtime target bookmark and leave exactly one empty working copy above the final revision. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.

@@ -103,7 +103,7 @@ Side bookmarks and dangling-looking histories are normal artifacts of parallel w
 - **Active:** The bookmark represents work still in-flight. Leave it where it is, coordinate with the current owner, and avoid rebasing or pruning it until the owner seals their intent.
 - **Integrated:** The bookmark’s changes have already merged into `$MENTCI_TARGET_BOOKMARK` or another canonical line. Treat it as historical evidence and do not reapply it unless you have new intent.
 - **Intentionally preserved:** Release candidates, research snapshots, or emergency patches that are kept aside on purpose. Document the preservation rationale, responsible agent, and whether it needs periodic maintenance.
-- **Cleanup candidate:** The bookmark is stale, abandoned, or no longer needed. Coordinate with `jj-expert` (or the owner) to prune or squash it safely, supplying before/after evidence so its removal does not confuse downstream readers.
+- **Cleanup candidate:** The bookmark is stale, abandoned, or no longer needed. Coordinate with `jj-agent` (or the owner) to prune or squash it safely, supplying before/after evidence so its removal does not confuse downstream readers. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 Record each classification explicitly and verify whether downstream commit IDs or change IDs depend on the bookmark before merging or dropping it. When inspecting these histories, avoid running broad unbounded `jj log` revsets; prefer targeted revsets (for example `bookmarks(<name>)` or `@-` neighbors) and only expand once you understand the classification. This workflow keeps the runtime history manageable while still surfacing the purpose of each side bookmark.
 
 ### Time-Window Cleanup Scope

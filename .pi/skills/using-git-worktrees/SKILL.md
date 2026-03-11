@@ -10,7 +10,7 @@ This skill governs the creation of isolated workspaces. It has been upgraded fro
 
 ## Protocol: Independent Clones
 
-All non-trivial JJ/git handling in this skill MUST go through the `jj-expert` agent. This skill defines the isolation policy; `jj-expert` performs and verifies the clone/setup VCS steps.
+All non-trivial JJ/git handling in this skill MUST go through the `jj-agent` agent by default. This skill defines the isolation policy; `jj-agent` performs and verifies the clone/setup VCS steps. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 1. **No Shared Op-Logs**: You must not use `jj workspace add` for parallel agent flows, as this creates a shared operation log that leads to `stale working copy` races during concurrent rebases.
 2. **Full Clones**: To isolate work, perform a full `jj git clone` of the target repository into a new, distinct directory.
@@ -21,7 +21,7 @@ All non-trivial JJ/git handling in this skill MUST go through the `jj-expert` ag
 ## Execution Flow
 
 1. Determine the path for the new clone: `../Mentci-AI--<intent>`
-2. Ask `jj-expert` to perform the bounded clone/setup VCS steps and return evidence for the created workspace state.
+2. Ask `jj-agent` to perform the bounded clone/setup VCS steps and return evidence for the created workspace state. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 3. Set up the local environment (e.g., `direnv allow`).
 4. Switch to the newly created directory.
 5. Create the root non-writable `authority.bin` (or equivalent Cap'n Proto `MentciCommit` message) asserting the `ownedSpacename`.

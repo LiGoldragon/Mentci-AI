@@ -88,13 +88,14 @@ def function(input):
 Run: `pytest tests/path/test.py::test_name -v`
 Expected: PASS
 
-**Step 5: Finalize via `jj-expert`**
+**Step 5: Finalize via `jj-agent`**
 
-Ask the `jj-expert` agent to:
+Ask the `jj-agent` agent to:
 - establish bounded JJ state,
 - finalize the current intent into the correct described revision,
 - push the runtime target bookmark,
 - verify local/remote bookmark alignment.
+Use `jj-expert` only if the `jj-agent` lane is unavailable or misbehaving.
 ````
 
 ## Remember

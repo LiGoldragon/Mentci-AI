@@ -30,12 +30,13 @@ Run bounded checks that confirm:
 - local examples are tied to bounded JJ evidence already gathered,
 - the new report path is indexed correctly.
 
-**Step 3: Finalize via `jj-expert`**
-Ask `jj-expert` to:
+**Step 3: Finalize via `jj-agent`**
+Ask `jj-agent` to:
 - establish bounded JJ state,
 - finalize the current intent into a non-empty described revision,
 - push the runtime target bookmark,
 - verify local/remote bookmark alignment.
+Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ### Task 2: Strengthen canonical JJ policy in Core + primary skills
 
@@ -62,8 +63,8 @@ Ask `jj-expert` to:
 **Step 3: Verify wording consistency**
 Run bounded text checks ensuring the same key rules appear across the canonical docs without contradiction.
 
-**Step 4: Finalize via `jj-expert`**
-Ask `jj-expert` to finalize/push with bounded proof.
+**Step 4: Finalize via `jj-agent`**
+Ask `jj-agent` to finalize/push with bounded proof. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ### Task 3: Retrain JJ-facing agents and commands
 
@@ -96,8 +97,8 @@ Ask `jj-expert` to finalize/push with bounded proof.
 **Step 4: Review**
 Use a reviewer subagent to assess the JJ training edits for correctness and consistency.
 
-**Step 5: Finalize via `jj-expert`**
-Ask `jj-expert` to finalize/push with bounded proof.
+**Step 5: Finalize via `jj-agent`**
+Ask `jj-agent` to finalize/push with bounded proof. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ### Task 4: Correct old plan/examples that currently teach bad JJ habits
 
@@ -119,8 +120,8 @@ Ask `jj-expert` to finalize/push with bounded proof.
 **Step 3: Verify no stale bad examples remain in touched plan files**
 Run bounded text checks against these files.
 
-**Step 4: Finalize via `jj-expert`**
-Ask `jj-expert` to finalize/push with bounded proof.
+**Step 4: Finalize via `jj-agent`**
+Ask `jj-agent` to finalize/push with bounded proof. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ### Task 5: Final verification and report
 
@@ -137,9 +138,10 @@ Ask `jj-expert` to finalize/push with bounded proof.
 **Step 2: Persist final report context**
 - Summarize root causes, guards added, files updated, and any remaining unresolved tree cleanup recommendations.
 
-**Step 3: Finalize via `jj-expert`**
-Ask `jj-expert` to:
+**Step 3: Finalize via `jj-agent`**
+Ask `jj-agent` to:
 - finalize the final non-empty revision or session summary,
 - push the runtime target bookmark,
 - verify `<bookmark> == <bookmark>@origin`,
 - leave exactly one empty working copy above the final revision.
+Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.

@@ -20,8 +20,8 @@ Start by understanding the current project context, then ask questions one at a 
 
 ## The Process
 
-**Before anything else — check repository state via `jj-expert`:**
-- Delegate a bounded current-state report to the `jj-expert` agent.
+**Before anything else — check repository state via `jj-agent`:**
+- Delegate a bounded current-state report to the `jj-agent` agent. Use `jj-expert` only if the `jj-agent` lane is unavailable or misbehaving.
 - Ask it to establish the runtime bookmark, working-copy cleanliness, and nearby lineage before brainstorming.
 - If the repo has uncommitted or unmerged work, ask the user whether to finish prior work, isolate it, or explicitly continue here.
 - If the topic is new, suggest creating an isolated JJ clone or other user-approved workspace strategy before brainstorming.
@@ -50,7 +50,7 @@ Start by understanding the current project context, then ask questions one at a 
 
 **Documentation:**
 - Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- If the design artifact should be committed now, ask `jj-expert` to finalize and push that planning intent
+- If the design artifact should be committed now, ask `jj-agent` to finalize and push that planning intent. Fall back to `jj-expert` only if the `jj-agent` lane is unavailable or misbehaving.
 - Mark the brainstorm phase complete: call `plan_tracker` with `{action: "update", status: "complete"}` for the current phase
 
 **Implementation (if continuing):**

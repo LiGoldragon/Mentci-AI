@@ -14,7 +14,7 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 If a tool result contains a ⚠️ workflow warning, stop immediately and address it before continuing.
 
 ## Prerequisites
-- Active runtime bookmark confirmed, ideally via `jj-expert`, or user-confirmed intent to work on `main`
+- Active runtime bookmark confirmed, ideally via `jj-agent`, or user-confirmed intent to work on `main`. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 - Approved plan or clear task scope
 
 ## When to Use
@@ -142,7 +142,7 @@ Implementer: "Got it. Implementing now..."
 [Dispatch spec compliance reviewer]
 Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
 
-[Ask `jj-expert` for the bounded review range, then dispatch code quality reviewer]
+[Ask `jj-agent` for the bounded review range, then dispatch code quality reviewer. Use `jj-expert` only as fallback/rescue if the `jj-agent` lane misbehaves.]
 Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
 
 [Mark Task 1 complete]
@@ -170,7 +170,7 @@ Implementer: Removed --json flag, added progress reporting
 [Spec reviewer reviews again]
 Spec reviewer: ✅ Spec compliant now
 
-[Ask `jj-expert` for the bounded review range, then dispatch code quality reviewer]
+[Ask `jj-agent` for the bounded review range, then dispatch code quality reviewer. Use `jj-expert` only as fallback/rescue if the `jj-agent` lane misbehaves.]
 Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
 
 [Implementer fixes]
@@ -222,11 +222,11 @@ Done!
 
 ## Subagent Reliability & Raw Evidence Contract
 
-- **Reliability:** If a task tool returns "Unknown agent ... Available: none":
+- **Reliability:** If a task tool returns "Unknown agent ... Available: none" or the primary `jj-agent` lane is clearly misbehaving:
     1. Stop chain execution immediately.
     2. Report blocked state.
-    3. Run direct local bounded JJ preflight (`jj status`, bounded `jj log`) and include the raw evidence packet.
-    4. Provide raw evidence output.
+    3. Retry once with `jj-expert` as explicit fallback/rescue.
+    4. If fallback is also unavailable, run direct local bounded JJ preflight (`jj status`, bounded `jj log`) and include the raw evidence packet.
     5. Do not fabricate success from partial/empty agent outputs.
 - **Non-Empty Output Mitigation:** Add this at top of subagent tasks: `First line MUST be: Status: success|blocked|no-op`.
 - **Structured Handoff Contract:** Every dispatched task must include: `Goal`, `Scope`, `Out-of-Scope`, `Output Contract`, `Verification Commands`.

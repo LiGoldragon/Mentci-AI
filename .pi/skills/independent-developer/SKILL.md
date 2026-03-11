@@ -34,7 +34,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 ### 1.1 Subagent Orchestration Mandate (Use Often, Use Efficiently)
 - **Primary Context-Protection Rule:** The main agent context is for orchestration, policy, synthesis, and final decisions. It MUST be protected from noisy exploratory shell transcripts. To minimize context pollution, non-trivial shell work should be delegated to subagents whenever possible.
 - **Subagent-First for Non-Trivial Work:** You MUST favor subagents for non-trivial implementation, refactoring, debugging, broad discovery, multi-step validation, and non-trivial shell-driven investigation.
-- **JJ/Git Delegation Rule:** The main agent MUST treat `jj-expert` as the default execution lane for non-trivial JJ/git handling. Orchestrate, dispatch, and verify; do not perform multi-step JJ/git work directly in the main session. Only trivial bounded checks may remain local. Fall back to direct JJ tooling only when subagents are unavailable or demonstrably failing, and include raw evidence of that failure.
+- **JJ/Git Delegation Rule:** The main agent MUST treat `jj-agent` as the default execution lane for non-trivial JJ/git handling. Orchestrate, dispatch, and verify; do not perform multi-step JJ/git work directly in the main session. Only trivial bounded checks may remain local. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or demonstrably misbehaving, and include raw evidence of that fallback decision.
 - **Non-Trivial Shell Delegation Rule:** Avoid running non-trivial shell commands directly in the main session. If a shell action involves pipelines, multi-step inspection, cross-file searching, repeated probing, multiple commands in sequence, or anything beyond a single small bounded status/check command, delegate it to an appropriate agent first.
 - **Priority Over Local Convenience:** Even if a non-trivial shell command would be faster to run directly, prefer delegation when it reduces noise, preserves main-context clarity, or keeps the top-level session focused on reasoning instead of transcript accumulation.
 - **Efficiency Threshold:** If work crosses more than one file, needs iterative test-fix loops, requires tracing logic across multiple components, or would naturally require multiple shell commands, dispatch subagents.
@@ -102,27 +102,28 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
   - **Atomic Finalization:** Only describe the commit once the physical changes are staged in that commit. This ensures that every described node in the history is a non-empty, atomic logical unit.
 - **Bookmark Movement Protocol:** 
   - Never move the target bookmark (`$MENTCI_TARGET_BOOKMARK`) to an "actively edited" or undescribed commit.
-  - Use `jj-expert` to finalize work into a described immutable revision, move the bookmark to that revision, and return bounded verification evidence.
-  - **Worktree Alignment:** Treat the primary development bookmark as authoritative. If it moves, use `jj-expert` to establish the new state and recommend or perform the safe alignment path.
-- **Mandatory Pushing:** Use `jj-expert` to push the active runtime bookmark and verify local/remote bookmark alignment.
-  - **Two-Step Interaction:** `jj-expert` should account for JJ's staged push interaction and return the bounded verification evidence showing whether `<bookmark>` and `<bookmark>@origin` now align.
+  - Use `jj-agent` to finalize work into a described immutable revision, move the bookmark to that revision, and return bounded verification evidence. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
+  - **Worktree Alignment:** Treat the primary development bookmark as authoritative. If it moves, use `jj-agent` to establish the new state and recommend or perform the safe alignment path; use `jj-expert` only as fallback/rescue.
+- **Mandatory Pushing:** Use `jj-agent` to push the active runtime bookmark and verify local/remote bookmark alignment.
+  - **Two-Step Interaction:** `jj-agent` should account for JJ's staged push interaction and return the bounded verification evidence showing whether `<bookmark>` and `<bookmark>@origin` now align. Use `jj-expert` only as fallback/rescue.
 - **Commit-Then-Validate Rule (Nix-heavy flows):** For rebuild-sensitive Nix work, create a small logical commit *before* running expensive `nix build`/`nix develop` validation. If validation fails, apply the fix as a new follow-up commit (do not rewrite the previous logical step). Continue in small commits until green.
 - **Chain-of-Intent Preference:** Favor a sequence of small atomic intent commits over one large mutation. End the sequence with a final `session` commit summarizing outcomes and evidence.
 - **Tagged Release Mode (Main-Only):** When creating a release, the release commit MUST be on `main` and MUST be tagged using the original zodiac-ordinal style.
   - **Required tag style:** `v0.12.x.x.x` (current-era shorthand of `v<cycle>.<sign>.<degree>.<minute>.<second>`)
-  - **Required release flow:** Use `jj-expert` to:
+  - **Required release flow:** Use `jj-agent` to:
     1. create/verify the release commit on `main`,
     2. create the signed release tag,
     3. push `main` and the release tag,
     4. return bounded verification showing `main == main@origin` and valid tag presence/signature.
 - **Phantom Intent Avoidance:** Never create "Phantom Commits" (descriptions without diffs). If a squash or rebase results in an empty described commit, it must be squashed into its neighbor or deleted.
-- **Session Handover:** Use `jj-expert` to leave the clean handoff state after push verification. The handoff should end with a fresh empty working copy via `jj new`, but the main agent should orchestrate this through `jj-expert` rather than performing non-trivial JJ handling directly.
+- **Session Handover:** Use `jj-agent` to leave the clean handoff state after push verification. The handoff should end with a fresh empty working copy via `jj new`, but the main agent should orchestrate this through `jj-agent` rather than performing non-trivial JJ handling directly. Use `jj-expert` only as fallback/rescue.
 - **Generalization Rule:** Keep specific implementation details or transient commit hashes out of formal documentation/skills unless they are being used as a demonstrable example of a low-level technical property.
 
 - **Basic Rebase and Push Workflow:**
-    1.  Ask `jj-expert` to fetch bounded remote state and report the relevant bookmark positions.
-    2.  Ask `jj-expert` to perform or propose the safe rebase onto the intended integration bookmark with bounded before/after evidence.
-    3.  Ask `jj-expert` to push the rebased bookmark and verify `<bookmark> == <bookmark>@origin`.
+    1.  Ask `jj-agent` to fetch bounded remote state and report the relevant bookmark positions.
+    2.  Ask `jj-agent` to perform or propose the safe rebase onto the intended integration bookmark with bounded before/after evidence.
+    3.  Ask `jj-agent` to push the rebased bookmark and verify `<bookmark> == <bookmark>@origin`.
+       Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ### 4. Resolving Version Bugs & Tooling Issues
 - **Version Bumps Allowed:** Always look for a newer trusted release when hitting a version-related bug. Bumping the version is allowed and encouraged to resolve issues.

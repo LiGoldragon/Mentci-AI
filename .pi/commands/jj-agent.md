@@ -1,10 +1,10 @@
 ---
-description: Delegate JJ/version-control work to the jj-agent subagent first, using jj-expert only as fallback/deep-debug rescue
+description: Delegate JJ/version-control work to the jj-agent subagent first, using jj-expert only as fallback/rescue
 ---
 
 Before calling this command, gather the JJ context: identify the question you expect the expert to answer, note visible symptoms, and summarize your reasoning. Do not treat this command as a blind relay—explicitly explain why you need JJ judgment and which bookmarks or revisions you intend to inspect or rewrite.
 
-Use the subagent tool with the `jj-agent` agent for this request. If that lane is unavailable or misbehaving, retry with `jj-expert` as explicit fallback/deep-debug rescue:
+Use the subagent tool with the `jj-agent` agent for this request. If that lane is unavailable or misbehaving, retry with `jj-expert` as explicit fallback:
 
 $@
 

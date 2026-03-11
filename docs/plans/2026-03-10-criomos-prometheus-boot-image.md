@@ -74,7 +74,7 @@ Run a focused flake output/projection check against the fork branch.
 **Expected result:**
 CriomOS can later consume the fork branch as a real `inputs.prometheus` source.
 
-**Step 6: Finalize via `jj-expert` in the external repo if that repo uses JJ; otherwise use that repo’s native VCS workflow**
+**Step 6: Finalize via `jj-agent` in the external repo if that repo uses JJ; otherwise use that repo’s native VCS workflow**
 
 Record the exact branch/ref that local CriomOS will pin.
 
@@ -116,7 +116,7 @@ Run a focused eval proving that `inputs.prometheus.NodeProposal` is now visible 
 
 **Step 6: Commit this local wiring as its own intent**
 
-Use `jj-expert` to finalize and push a small atomic commit for the new flake/input topology wiring.
+Use `jj-agent` to finalize and push a small atomic commit for the new flake/input topology wiring. Use `jj-expert` only as fallback/deep-debug rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ---
 
@@ -258,7 +258,7 @@ A bootable live ISO/USB artifact exists for the new node.
 
 **Step 5: Commit the image-path/build-target enablement as its own intent**
 
-Use `jj-expert` to finalize the build-target milestone once the artifact exists.
+Use `jj-agent` to finalize the build-target milestone once the artifact exists. Use `jj-expert` only as fallback/deep-debug rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ---
 

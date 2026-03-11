@@ -4,7 +4,7 @@
 
 **Goal:** Clean up the bounded last day of JJ history, expand JJ training across all agents/prompts with expert escalation for VCS lanes, and persist research plus planning for a safer Rust JJ workflow binary under `mentci-vcs`.
 
-**Architecture:** Treat the work as four layers: (1) bounded history cleanup of genuinely empty/noise side state, (2) propagation of basic JJ mental models to all agents/prompts, (3) deeper expert-grade JJ mastery in `jj-expert` and VCS-facing lanes, and (4) durable research + plan artifacts for a `mentci-vcs`-hosted sane-JJ binary that wraps the CLI with typed, guarded workflows.
+**Architecture:** Treat the work as four layers: (1) bounded history cleanup of genuinely empty/noise side state, (2) propagation of basic JJ mental models to all agents/prompts, (3) a primary `jj-agent` operational lane with `jj-expert` retained as fallback/deep-debug rescue, and (4) durable research + plan artifacts for a `mentci-vcs`-hosted sane-JJ binary that wraps the CLI with typed, guarded workflows.
 
 **Tech Stack:** Jujutsu, repository skill/agent markdown, bounded JJ inspection, Rust CLI architecture research, `mentci-vcs` component surface.
 
@@ -30,8 +30,8 @@
 **Step 3: Verify artifact placement**
 Run bounded checks confirming the new files exist and index references are correct.
 
-**Step 4: Finalize via `jj-expert`**
-Ask `jj-expert` to finalize the non-empty revision, push the runtime target bookmark, and verify remote alignment.
+**Step 4: Finalize via `jj-agent`**
+Ask `jj-agent` to finalize the non-empty revision, push the runtime target bookmark, and verify remote alignment. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ### Task 2: Expand JJ training to all remaining agents/prompts
 
@@ -49,7 +49,7 @@ Ask `jj-expert` to finalize the non-empty revision, push the runtime target book
   - `jj` is authoritative,
   - remain read-only,
   - do not give bookmark-move advice casually,
-  - escalate repo-history questions to `jj-expert`.
+  - escalate repo-history questions to `jj-agent` first, using `jj-expert` only as fallback/rescue.
 
 **Step 2: Fix prompt hard-coding and add runtime-bookmark awareness**
 - Replace `dev` hard-codes with `$MENTCI_TARGET_BOOKMARK` logic.
@@ -58,8 +58,8 @@ Ask `jj-expert` to finalize the non-empty revision, push the runtime target book
 **Step 3: Verify text-level consistency**
 Run bounded searches to ensure the touched prompt files no longer hardcode `dev` where runtime bookmark logic is required.
 
-**Step 4: Finalize via `jj-expert`**
-Ask `jj-expert` to finalize/push with bounded evidence.
+**Step 4: Finalize via `jj-agent`**
+Ask `jj-agent` to finalize/push with bounded evidence. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ### Task 3: Deepen expert JJ mastery and VCS-lane escalation
 
@@ -70,7 +70,7 @@ Ask `jj-expert` to finalize/push with bounded evidence.
 - Modify: `.pi/commands/jj-expert.md`
 - Modify any additional VCS-facing training files if needed from the audit
 
-**Step 1: Expand `jj-expert` substantially**
+**Step 1: Establish `jj-agent` as primary and deepen `jj-expert` as fallback**
 - Add richer diagnostics for:
   - duplicate visible change IDs,
   - hidden vs visible revisions,
@@ -81,13 +81,13 @@ Ask `jj-expert` to finalize/push with bounded evidence.
   - fail-closed rules on content preservation.
 
 **Step 2: Strengthen VCS-lane expert escalation**
-- Ensure prompts/commands explicitly state that VCS-touching agents must acquire `jj-expert` mental model before making repo-history recommendations.
+- Ensure prompts/commands explicitly state that VCS-touching agents must acquire the `jj-agent` mental model first, with `jj-expert` reserved for fallback/deep-debug rescue before making repo-history recommendations.
 
 **Step 3: Review**
 Run reviewer pass on the JJ-expert/VCS-lane wording.
 
-**Step 4: Finalize via `jj-expert`**
-Ask `jj-expert` to finalize/push with bounded evidence.
+**Step 4: Finalize via `jj-agent`**
+Ask `jj-agent` to finalize/push with bounded evidence. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 ### Task 4: Clean up bounded last-day JJ history
 
@@ -100,8 +100,8 @@ Ask `jj-expert` to finalize/push with bounded evidence.
 - Re-run bounded JJ preflight.
 - Confirm `roomkzpy` remains an empty/noise bookmark and that `pzsskzpy` remains a preserved audit milestone.
 
-**Step 2: Execute cleanup via `jj-expert`**
-- Remove or hide only the confirmed-noise side bookmark/history.
+**Step 2: Execute cleanup via `jj-agent`**
+- Remove or hide only the confirmed-noise side bookmark/history. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 - Preserve runtime bookmark, preserved milestones, and one empty `@` above target.
 
 **Step 3: Verify**
@@ -121,11 +121,11 @@ Ask `jj-expert` to finalize/push with bounded evidence.
 - Confirm touched docs/research exist and contain the expected runtime-bookmark/JJ training changes.
 - Confirm history cleanup result.
 
-**Step 2: Finalize the content work via `jj-expert`**
-- Push runtime target bookmark with bounded alignment proof.
+**Step 2: Finalize the content work via `jj-agent`**
+- Push runtime target bookmark with bounded alignment proof. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 
 **Step 3: Separate rebase operation**
-- Ask `jj-expert` to fetch bounded remote state, then rebase the current runtime target bookmark from `$MENTCI_TARGET_BOOKMARK` onto latest `main`, and push.
+- Ask `jj-agent` to fetch bounded remote state, then rebase the current runtime target bookmark from `$MENTCI_TARGET_BOOKMARK` onto latest `main`, and push. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 - Treat this as a distinct JJ operation after the content/history cleanup work is safely finalized.
 
 **Step 4: Leave clean handoff**

@@ -20,8 +20,9 @@ Primary goals:
 ## Preconditions
 
 Before editing code:
-1. Ask the `jj-expert` agent for a bounded JJ state check.
-2. If tree is dirty, use `jj-expert` to isolate and finalize existing intent before editing code.
+1. Ask the `jj-agent` agent for a bounded JJ state check.
+2. If tree is dirty, use `jj-agent` to isolate and finalize existing intent before editing code.
+   Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
 3. Confirm data authority artifact exists (`.edn` and/or `.bin` sidecar) before coding defaults.
 4. For external tooling/ecosystem claims, delegate quick validation to the `web-search` agent before asserting status or maturity. Use direct web tools only if the `web-search` agent is unavailable and the fallback is explicitly bounded.
 5. If structured tooling is part of the task, record tool usage and gaps in a Research tooling log (queries attempted, bounded scope, outcomes, shortcomings).
@@ -138,8 +139,8 @@ When touching `criome-core`, `criad`, or CriomOS data contracts, apply all rules
 - Commit each intent atomically.
 - **Header Standard:** All commit and session documentation MUST follow the template defined in the `independent-developer` skill (Original Prompt, Context, Summary, Validation).
 - **Prompt Fidelity:** The agent MUST prioritize using the exact original prompt from the user.
-- Use `jj-expert` to push the runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`) and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**.
-- **Session Handover:** Use `jj-expert` to leave the clean, empty handoff worktree for the next interaction after push verification. `jj new` remains the target handoff state, but the main agent should orchestrate it through `jj-expert`.
+- Use `jj-agent` to push the runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`) and verify local/remote bookmark alignment using the **Bookmark Movement Protocol**. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
+- **Session Handover:** Use `jj-agent` to leave the clean, empty handoff worktree for the next interaction after push verification. `jj new` remains the target handoff state, but the main agent should orchestrate it through `jj-agent`. Use `jj-expert` only as fallback/rescue.
 
 ## Anti-Patterns (Forbidden)
 - Hardcoding configuration data into Rust logic.

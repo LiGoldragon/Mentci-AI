@@ -20,7 +20,7 @@ Primary goals:
 ## Preconditions
 
 Before persisting context:
-1. Ask the `jj-expert` agent for a bounded JJ state check to confirm the correct runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`).
+1. Ask the `jj-agent` agent for a bounded JJ state check to confirm the correct runtime target bookmark (`$MENTCI_TARGET_BOOKMARK`). Use `jj-expert` only if the `jj-agent` lane is unavailable or misbehaving.
 2. Verify the **Semantic Category** of the context you are about to save (Research, Library, Component, or Core).
 3. Ensure you have the `solar` timestamp and `programming` version for commit metadata.
 
@@ -87,4 +87,4 @@ Follow the **Aski-FS Ontology** (`Library/specs/AskiFsSpec.md`) when choosing a 
 - [ ] Local `index.edn` updated with relative path.
 - [ ] (Future) `logical_index_repo` executed to sync shadow DB.
 - [ ] Atomic commit with full Prompt/Context/Summary headers.
-- [ ] `jj-expert` confirmed bookmark movement/push for the persisted artifact with bounded evidence.
+- [ ] `jj-agent` confirmed bookmark movement/push for the persisted artifact with bounded evidence (or `jj-expert` acted as explicit fallback/rescue).
