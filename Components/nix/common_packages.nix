@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, pi_dev, unified_llm, vtcode, mentci_bootstrap, chronos, execute, mentci_stt, mentci_user, mentci_mcp, jcodemunch_mcp }:
+{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, pi_dev, unified_llm, vtcode, mentci_bootstrap, chronos, execute, mentci_stt, mentci_user, mentci_mcp, jcodemunch_mcp, agentic_jujutsu }:
 
 [
   pkgs.babashka
@@ -32,6 +32,7 @@
   mentci_user
   mentci_mcp
   jcodemunch_mcp
+  agentic_jujutsu
   
   # Runtime dependencies
   pkgs.nodejs

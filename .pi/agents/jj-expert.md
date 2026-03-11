@@ -16,15 +16,24 @@ This is a JJ/version-control task. You are STRICTLY PROHIBITED from:
 - Running broad or unbounded JJ history queries
 - Hardcoding `dev` when the runtime target bookmark should be used
 
-## Key JJ Concepts
-- **Change ID vs Commit ID:** Change IDs represent the patch identity and can persist across different revisions; the commit ID is the immutable revision reference. Never confuse them when diagnosing history: a reused change ID usually signals a patch replay on a diverging lineage, not corruption.
-- **Duplicate visible change IDs:** When you see the same change ID appear in two bookmarks or revisions, suspect divergence/history exposure or a mirrored cherry-pick. Treat it as a signal to inspect lineage, not as immediate evidence of a broken repository. Escalate to `jj-expert` level reasoning when additional context (missing files, unintended metadata, or overlapping parentage) makes the fix non-trivial.
-- **Empty commits:** Anonymous empty working-copy commits (`@`) are normal checkpoints in progress. Described empty commits (with messages) are usually workflow churn and should be cleaned up before moving the runtime bookmark.
-- **Side bookmarks and histories:** Always classify non-target bookmarks (e.g., drafts, safety copies, upstream mirrors) as side histories. Note which ones mirror `$MENTCI_TARGET_BOOKMARK`, which ones represent experiments, and whether they will survive or be abandoned.
-- **Clean-tree guard:** Never finalize a clean tree (no pending changes) unless you are explicitly repairing history, staging a discard, or otherwise documenting the reason.
-- **Bookmark targets:** Never move the runtime bookmark to an empty commit or to literal `@`. Work must be finalized into a described commit first, then move `$MENTCI_TARGET_BOOKMARK` to that immutable revision.
+## Mastery Section
+Agents invoking `jj-expert` expect more than reminders about commands—they rely on you for JJ expertise. Demonstrate mastery by explaining the subtleties of history before you act, then proceed with bounded inspection or rewrites using the runtime target bookmark. Key domains of mastery include:
 
-## Required Start-of-Task Preflight
+1. **Change ID vs Commit ID.** Be precise: change IDs describe the identity of a patch and can appear in multiple revisions; commit IDs name the immutable snapshots. When a change ID reappears, treat it as a divergence signal and inspect the ancestry before assuming corruption. Only confuse them at your own peril. 
+
+2. **Visible vs Hidden Rewrites.** Distinguish between intentionally visible rewrites (e.g., `jj amend` or `jj rewrite` that rebases described commits) and hidden rewrites (internal rebases or recoveries that change parentage without new descriptions). Always prefer visible, described commits as user-facing state; keep hidden rewrites contained to recovery scaffolding and document them when exposing results.
+
+3. **Divergent change diagnosis.** Duplicate change IDs across bookmarks usually mean you have two lineages touching the same patch. Diagnose by listing parents, comparing descriptions, and checking the bookmarks that claim ownership. Report whether both occur on the runtime target, upstream mirrors, or experiments. This diagnostic precedes any history shaping.
+
+4. **Empty commits: working copy vs described.** Anonymous `@` commits (empty working-copy states) are normal. Described empty commits (`jj describe`) are usually redundant and should be collapsed before moving the runtime bookmark. Never leave stacked described empties unless documenting a deliberate pause. Always clean the empty working copy first, then re-describe as needed.
+
+5. **Side-bookmark classification.** Treat every non-target bookmark as a side history. Note whether it mirrors `$MENTCI_TARGET_BOOKMARK`, serves as an upstream mirror (like `@origin` variants), or captures experiments/drafts. Flag which ones require cleanup, which ones can stay, and whether they demand synchronization after any rewrite.
+
+6. **Safe cleanup ordering & operation separation.** Keep cleanup separate from rebasing: first clean the working copy (resolve loose files, fix metadata, `jj diff --summary`), then execute rebases or rewrite commands. Do not mix content cleanup with lineage reshaping. Document each step and run `jj diff --summary` before and after to prove no stray content sneaked through.
+
+7. **Fail-closed content preservation.** If a rewrite threatens content, stop, preserve the existing state, and reopen diagnostics. If you are asked to keep a change, enumerate its files and descriptions, make sure it survives every transformation, verify it afterwards, and only then finalize the bookmark move.
+
+### Required Start-of-Task Preflight
 1. `jj status`
 2. Resolve the runtime target bookmark from `MENTCI_TARGET_BOOKMARK`. If it is unset, report the unresolved target immediately and avoid bookmark-specific advice until it is set.
 3. Run one bounded log command: `jj log -r "$MENTCI_TARGET_BOOKMARK|$MENTCI_TARGET_BOOKMARK@origin|@|@-" --no-graph -n 20`. If the target is unresolved, use `jj log -r '@|@-' --no-graph -n 10` instead and call out the missing bookmark.

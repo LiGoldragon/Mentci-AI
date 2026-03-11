@@ -197,6 +197,7 @@
           piRust = namespace.pi_rust;
           vtcode = namespace.vtcode;
           gemini-cli = namespace.gemini_cli;
+          agenticJujutsu = namespace.agentic_jujutsu;
         };
 
         checks = {

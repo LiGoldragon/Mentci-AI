@@ -2,6 +2,8 @@
 description: Delegate JJ/version-control work to the jj-expert subagent
 ---
 
+Before calling this command, gather the JJ context: identify the question you expect the expert to answer, note visible symptoms, and summarize your reasoning. Do not treat this command as a blind relay—explicitly explain why you need expert JJ judgment and which bookmarks or revisions you intend to inspect or rewrite.
+
 Use the subagent tool with the `jj-expert` agent for this request:
 
 $@

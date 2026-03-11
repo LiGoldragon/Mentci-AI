@@ -2,11 +2,11 @@
 description: Build a raw verification packet before completion claims
 ---
 
-Produce a `## Raw Evidence Packet` with raw outputs for:
+Set `TARGET_BOOKMARK=${MENTCI_TARGET_BOOKMARK:-dev}` so every verification packet is bound to the runtime target bookmark. Produce a `## Raw Evidence Packet` with raw outputs for:
 
 1. `jj status`
-2. `jj log -r 'dev|@|@-' --no-graph`
-3. The relevant verification command(s) for this task (tests/build/checks)
+2. `jj log -r "${TARGET_BOOKMARK}|${TARGET_BOOKMARK}@origin|@|@-" --no-graph`
+3. `jj log -r 'unresolved()' --no-graph`
+4. The relevant verification command(s) for this task (tests/build/checks)
 
-If output is truncated, add a bounded follow-up command that proves pass/fail state.
-No completion claim without this packet.
+If `jj log -r 'unresolved()'` reports unresolved bookmarks, include their raw output block and explain how you addressed them before completion. If any output is truncated, add a bounded follow-up command (e.g., add `--limit 20`) to prove pass or fail. No completion claim is allowed without this packet.
