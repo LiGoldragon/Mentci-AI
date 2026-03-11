@@ -23,6 +23,7 @@ Before editing code:
 1. Ask the `jj-agent` agent for a bounded JJ state check.
 2. If tree is dirty, use `jj-agent` to isolate and finalize existing intent before editing code.
    Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
+2.1. If the work happens inside a nested component repo (for example `Components/CriomOS`), perform that preflight inside the nested JJ repo itself. Do not switch to direct Git just because the component is also a submodule/backend repo.
 3. Confirm data authority artifact exists (`.edn` and/or `.bin` sidecar) before coding defaults.
 4. For external tooling/ecosystem claims, delegate quick validation to the `web-search` agent before asserting status or maturity. Use direct web tools only if the `web-search` agent is unavailable and the fallback is explicitly bounded.
 5. If structured tooling is part of the task, record tool usage and gaps in a Research tooling log (queries attempted, bounded scope, outcomes, shortcomings).

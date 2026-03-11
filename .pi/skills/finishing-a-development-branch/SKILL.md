@@ -76,6 +76,7 @@ Confirm intent, then ask `jj-agent` to abandon the target revisions with bounded
 ## Rules
 
 - JJ is primary; do not switch to git-branch workflows for normal integration.
+- This prohibition includes nested component repos such as `Components/CriomOS`: finish them with JJ in that repo, not with direct Git commits/branches because a `.git` directory is visible.
 - Release integration target is `main`.
 - Release tags must use the original version style (`v0.12.x.x.x` in current-era shorthand).
 - Do not claim release completion without tag verification.

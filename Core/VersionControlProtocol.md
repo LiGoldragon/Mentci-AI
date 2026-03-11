@@ -1,9 +1,9 @@
 # Version Control Protocol (JJ)
 
-This document is the source of truth for Jujutsu workflows, commit discipline, and push cadence. **Jujutsu (jj) is the mandatory primary interface for all VCS operations in this repository; Git exists solely as the underlying storage backend.**
+This document is the source of truth for Jujutsu workflows, commit discipline, and push cadence. **Jujutsu (jj) is the mandatory primary interface for all VCS operations in this repository; Git exists solely as the underlying storage backend.** This applies equally to nested/component repositories such as `Components/CriomOS`: the presence of a `.git` directory or submodule boundary does not authorize direct Git state decisions or direct Git commit workflows there.
 
 ## 1. Core Rules (BOOMING MANDATE)
-1. **TARGET BOOKMARK:** All active development targets the runtime bookmark from `MENTCI_TARGET_BOOKMARK` (default fallback may be `dev` when unresolved).
+1. **TARGET BOOKMARK:** All active development targets the runtime bookmark from `MENTCI_TARGET_BOOKMARK`, but that bookmark must resolve in the current repository context before bookmark-specific mutation. If it does not resolve locally (including in nested JJ repos such as `Components/CriomOS`), stop and establish the correct bookmark for that repo instead of falling back to Git branches or assuming `dev`.
 2. **END-OF-FLOW PUSH:** Every completed prompt session **MUST** end with a push to the runtime target bookmark on the `origin` remote.
 3. **COMMIT EVERY INTENT:** One atomic modification per commit. No bundling.
 4. **NO DIRTY TREES:** Finishing a turn with uncommitted changes is a protocol violation.
@@ -30,6 +30,7 @@ This document is the source of truth for Jujutsu workflows, commit discipline, a
 ## 2. Preconditions
 1. Prefer working in the dev shell so `MENTCI_*` variables and the jail workspace are active.
 2. Use `mentci-jj` for status/log/commit to ensure consistent workspace targeting.
+2.1. **NO DIRECT GIT IN JJ REPOS:** In any JJ repo, including nested component repos, do not use `git status`, `git log`, `git branch`, or direct `git commit` / `git push` as authoritative workflow operations when `jj` can answer the question. If a mistaken Git action already occurred, treat it as imported backend state to recover from with JJ; do not continue the workflow in Git.
 3. Run a pre-edit status check (`mentci-jj status` or `jj status`) before any file read/write intended to change code or docs.
 
 If `MENTCI_*` variables are missing, use `jj` directly from the repository root and do not attempt jail shipping.

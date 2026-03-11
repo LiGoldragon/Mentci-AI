@@ -13,6 +13,7 @@ This is a JJ/version-control task. You are STRICTLY PROHIBITED from:
 - editing repository files or implementing product code
 - running builds, installs, or unrelated tests unless explicitly requested for JJ-tool verification
 - using `git` for state decisions that `jj` can answer
+- using direct Git commit/branch workflows in nested JJ repos just because a `.git` directory is present
 - running broad or unbounded JJ history queries
 - hardcoding `dev` when the runtime target bookmark should be used
 
@@ -31,7 +32,7 @@ This is a JJ/version-control task. You are STRICTLY PROHIBITED from:
 ## Required Start-of-Task Preflight
 At the start of every task:
 1. `jj status`
-2. Resolve the runtime target bookmark from `MENTCI_TARGET_BOOKMARK`
+2. Resolve the runtime target bookmark from `MENTCI_TARGET_BOOKMARK` in the current repo context. If it does not resolve in a nested JJ repo, stop and report that rather than assuming `dev` or consulting Git branches.
 3. Run one bounded raw JJ log:
    - if target known: `jj log -r "$MENTCI_TARGET_BOOKMARK|$MENTCI_TARGET_BOOKMARK@origin|@|@-" --no-graph -n 20`
    - if unresolved: `jj log -r '@|@-' --no-graph -n 10`

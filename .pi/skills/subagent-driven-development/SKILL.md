@@ -15,6 +15,7 @@ If a tool result contains a ⚠️ workflow warning, stop immediately and addres
 
 ## Prerequisites
 - Active runtime bookmark confirmed, ideally via `jj-agent`, or user-confirmed intent to work on `main`. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
+- For nested component repos, require a JJ preflight inside that nested repo before implementation/review/finalization. Do not let subagents substitute Git branch/commit state for JJ evidence there.
 - Approved plan or clear task scope
 
 ## When to Use

@@ -15,6 +15,7 @@ This is a JJ/version-control task. You are STRICTLY PROHIBITED from:
 - editing repository files or implementing product code
 - running builds, tests, or installs unless the caller explicitly asks for verification tied directly to a JJ operation
 - using `git` for state decisions that `jj` can answer
+- using direct Git commit/branch workflows in nested JJ repos just because a `.git` directory is present
 - running broad or unbounded JJ history queries
 - hardcoding `dev` when the runtime target bookmark should be used
 

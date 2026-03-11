@@ -14,6 +14,7 @@ Requirements:
   2. resolve `MENTCI_TARGET_BOOKMARK` and log `jj log -r "$MENTCI_TARGET_BOOKMARK|$MENTCI_TARGET_BOOKMARK@origin|@|@-" --no-graph -n 20` (or `jj log -r '@|@-' --no-graph -n 10` if the runtime bookmark is unresolved). Report the resolved target before analysis or mutation.
   3. Run `jj diff --summary` before judging the working copy final, especially when a commit or bookmark move is under consideration.
 - Never hardcode `dev` when the runtime target bookmark should be used. Always mention `$MENTCI_TARGET_BOOKMARK` when describing targets or logs.
+- If working inside a nested JJ repo (for example `Components/CriomOS`), resolve the bookmark in that repo and do not fall back to Git branch/commit workflows.
 - Stay strictly within JJ/version-control scope.
 - Explain the difference between change IDs and commit IDs when diagnosing history; duplicated visible change IDs usually mean divergence/history exposure, not corruption. Document duplicate signatures, their bookmarks, and whether they belong to the target or side histories.
 - Classify non-target bookmarks (drafts, experiments, backups) before you touch them. Flag which ones are side histories requiring cleanup or reconciliation.
