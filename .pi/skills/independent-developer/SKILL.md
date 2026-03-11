@@ -136,6 +136,13 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 4. **Confident Mutation:** An Independent Developer makes changes when confident about their usefulness and logical integrity. If a change is logically sound and cannot break existing functionality, proceed with implementation.
 5. **Implement & Verify:** Follow the Subagent Orchestration Mandate (Section 1.1): delegate non-trivial implementation/verification to subagents, then self-verify via the Mirror Hook.
 
+## JJ Guardrails & Research Obligations
+Before finalizing any work, run `jj status` and `jj diff --summary` so you can confirm tangible changes exist. The working copy (`@`) is intentionally anonymous and may stay empty while the edit process is running; only describe that revision once you are ready to capture real diffs. Finalizing a clean tree should only happen when there is an explicit reason (for example, sealing metadata or preparing a new session), because moving `$MENTCI_TARGET_BOOKMARK` to an empty or undescribed node otherwise disconnects runtime history. Always resolve the runtime bookmark before repointing it—know which commit it currently names before advancing it. 
+
+JJ exposes both change IDs and commit IDs. Change IDs describe the logical intent and remain stable despite rewrites, while commit IDs uniquely identify the specific revision you are looking at. When a change ID surfaces multiple times, treat it as a divergence/rewrite exposure cue and use the commit IDs to understand which branches or bookmarks host those appearances. 
+
+After describing the work, run `execute session-guard` and `execute root-guard` to certify session synthesis and filesystem invariants before pushing or reporting completion. Confirm that a research artifact resides in `Research/<priority>/<Subject>/` for the current prompt or intent, since completion is not valid without documenting the investigation or discovery. If you encounter side bookmarks or dangling histories, explicitly classify them (active, integrated, intentionally preserved, or cleanup candidate) before you merge, drop, or retarget them, so downstream agents know why that branch was preserved or pruned.
+
 ## Recency-Weighted Policy Resolution
 
 When resolving conflicting instructions or policy interpretations, apply the following precedence stack:

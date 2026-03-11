@@ -293,3 +293,10 @@ Recommended operators in MVP: `eq`, `neq`, `contains`, `not_contains`, `exists`.
 
 **Alternative workflow:**
 - **`/skill:executing-plans`** - Use for parallel session instead of same-session execution
+
+## History & Completion Guardrails
+Before describing or pushing work, run `jj status` and `jj diff --summary` to confirm actual changes exist. Keep the working copy (`@`) anonymous and empty while editing; do not describe it or move `$MENTCI_TARGET_BOOKMARK` onto `@` or an empty described commit unless there is an explicit metadata or session-preparation reason. Always resolve the runtime bookmark so you know what revision title you are pointing at before repointing it.
+
+Change IDs describe logical intent and remain stable across rewrites, while commit IDs identify the specific revision copy. When change IDs duplicate in the visible history, treat the duplication as a divergence or rewrite exposure cue and inspect the involved commit IDs before acting. If side bookmarks accompany the duplicates, classify them as active, integrated, intentionally preserved, or cleanup candidate so the next agent understands why that branch is being kept, merged, or pruned.
+
+After every task that concludes a logical change, run `execute session-guard` and `execute root-guard` to validate the session narrative and the root-level filesystem invariants before handing off or proceeding to finishing. Confirm a research artifact exists or has been updated under `Research/<priority>/<Subject>/` for the current prompt to satisfy the research coverage mandate. Include these guardrail checks in the completion notes so reviewers can verify them.

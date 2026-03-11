@@ -24,6 +24,14 @@ Your strengths:
 - **Handoff:** Use `jj new` to create clean handoff commits. Avoid no-op graph churn (empty commits) and redundant history noise.
 - **Graph Safety:** Use bounded revsets. Avoid expensive `all()` operations unless explicitly bounded by time or revset range. Perform preflight checks (e.g., `jj status`) before rebases or bookmark moves. Never move the target bookmark to an empty commit.
 
+## JJ Context Cues
+- **Change ID vs Commit ID:** Change IDs track the patch across revisions; commit IDs name the immutable revision. When tracking history, do not conflate a reused change ID with a single commit; reuse often indicates the same patch applied on parallel lineages.
+- **Duplicate Change IDs:** Seeing the same change ID twice usually signals divergence or history exposure, not corruption. Treat it as an invitation to inspect adjacent bookmarks and parents and to escalate to `jj-expert` whenever a safe resolution is unclear.
+- **Empty commits:** Anonymous empty snapshots under `@` are normal work-in-progress states. Described empty commits are typically churn; avoid leaving them near the runtime bookmark or the final history unless explicitly documenting why they exist.
+- **Clean-tree guard:** Never finalize a clean tree unless you are explicitly repairing history or documenting a no-op. Before moving bookmarks or claiming completion, run `jj diff --summary` to confirm the working copy is intended to be empty.
+- **Side bookmarks:** Always classify non-target bookmarks (drafts, experiments, safety copies) before any rewrite. Note which ones mirror the runtime target, which ones are abandoned, and whether they need special handling.
+- **Bookmark movement:** Never move the runtime bookmark to literal `@`. Require the work to be committed (described revision) before moving `$MENTCI_TARGET_BOOKMARK` or recommending it to the user.
+
 ## Tooling & Query Discipline
 
 - **Semantic First:** Use `lsp` for semantic exploration (definition, references, symbols, diagnostics) before falling back to grep.

@@ -10,6 +10,15 @@
 
 ---
 
+### JJ Mechanics Reminder
+
+- Target the resolved runtime bookmark in `$MENTCI_TARGET_BOOKMARK` for asserts, commits, and pushes; `main` is reserved for release-only flows and should not be used in routine development steps. When a side history is required, name it explicitly (for example `side/jcodemunch-design`) so its intent is clear.
+- Reference change IDs as the durable work identifier; commit IDs flow from them. Seeing duplicate visible change IDs usually indicates intentional divergence or history exposure, not corruption, so describe them accurately instead of assuming a broken graph.
+- Anonymous empty working-copy commits are the normal handoff state for the next prompt. Avoid publishing described empty commits or bookmarks anchored on empty revisions, and never move the runtime bookmark to `@` or another empty commit unless there is a compelling reason.
+- Do not finalize a clean tree without an explicit reason. Always verify the runtime bookmark points to a meaningful change and avoid `jj describe`/`jj push` commands that would leave the bookmark on an empty commit.
+
+---
+
 ### Task 1: Add failing runtime expectation check
 
 **TDD scenario:** New feature — full TDD cycle.
@@ -73,7 +82,7 @@
 
 **Step 2:** Verify JSON validity and existence in tree.
 
-### Task 5: Validate and ship on main
+### Task 5: Validate and ship on the runtime bookmark
 
 **TDD scenario:** Verification phase.
 
@@ -88,6 +97,6 @@
 **Step 2:** Runtime smoke:
 - `${result}/bin/pi --help` (or equivalent built output check)
 
-**Step 3:** Commit with protocol-complete message and push `main`.
+**Step 3:** Commit with a protocol-complete message and push `"$MENTCI_TARGET_BOOKMARK"` (only lift `main` directly if this iteration becomes an explicit release).
 
-**Step 4:** End session with clean empty commit (`jj new main`).
+**Step 4:** Leave the working copy clean, note the validation evidence, and prepare the next handoff by running `jj new "$MENTCI_TARGET_BOOKMARK"` so the runtime bookmark remains on the verified change instead of an empty commit.

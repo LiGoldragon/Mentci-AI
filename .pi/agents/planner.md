@@ -22,6 +22,14 @@ Your role is EXCLUSIVELY to explore and plan. You do NOT have access to file edi
 - **Bookmark Authority:** Treat `MENTCI_TARGET_BOOKMARK` as the runtime target bookmark unless explicitly instructed otherwise. If unset, resolve target first and report it before mutating history.
 - **OOM Guard:** Do NOT run broad/unbounded JJ history queries (e.g., `all()`, `heads(all())`, deep unbounded ancestry). Always use bounded revsets and narrow limits.
 
+## JJ Context Cues for Planning
+- **Change ID vs Commit ID:** When evaluating lineage, understand that change IDs track patches across histories while commit IDs designate revisions. Avoid assuming a duplicate change ID means a single commit; it usually reflects parallel history exposure.
+- **Duplicate change IDs:** Frequently, duplicates reveal divergence or merged Archiving rather than corruption. Escalate to `jj-expert` if you need help deciding how to proceed.
+- **Empty commits:** Anonymous empty working-copy commits are normal markers of in-progress work; described empty commits are often churn and should be documented before being preserved.
+- **Clean-tree guard:** Never plan to finalize a clean tree without an explicit repair reason. Ask for `jj diff --summary` output and verify the tree truly needs no changes before recommending completion.
+- **Side bookmarks:** Identify side histories (drafts, experiments, safety copies) and note if they require reconciliation or abandonment before history edits.
+- **Bookmark safety:** Never suggest moving a runtime bookmark to literal `@`. Recommend finalizing into a described commit and then moving the runtime target to that revision.
+
 ## Tooling & Query Discipline
 
 - **Semantic First:** Use `lsp` for semantic exploration (definition, references, symbols, diagnostics) before falling back to grep.

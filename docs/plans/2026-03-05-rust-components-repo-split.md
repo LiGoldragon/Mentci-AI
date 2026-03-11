@@ -10,6 +10,15 @@
 
 ---
 
+### JJ Mechanics Reminder
+
+- Resolve and target the runtime bookmark in `$MENTCI_TARGET_BOOKMARK` before describing or pushing work. When parallel intent branches are required, create explicitly named side bookmarks (e.g., `side/feature-repo-split`) so that the mainline remains distinguished from side histories.
+- Treat change IDs as the durable reference for work; commit IDs are derived from them. Duplicate visible change IDs usually signal divergence or history exposure rather than corruption, so describe them accurately when they appear in logs.
+- Anonymous empty working-copy commits are the normal handoff state for the next agent. Described empty commits or a bookmark pointing to an empty revision are usually churn and should not be pushed; avoid moving the runtime bookmark to `@` or any empty commit.
+- Do not finalize a tree that is already clean without an explicit reason. Only push when the working copy contains intentional changes, and keep the runtime bookmark away from empty commits.
+
+---
+
 ### Task 1: Add split-authority data manifest
 
 **TDD scenario:** New feature — full TDD cycle
@@ -34,8 +43,9 @@ Expected: PASS.
 **Step 5: Commit**
 ```bash
 jj describe -m "intent: Add Rust component split manifest and policy scaffold"
-jj bookmark set dev -r @
-jj git push --bookmark dev
+# after describing, the finalized non-empty revision is the target; do not point the bookmark at literal @
+jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @-
+jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"
 ```
 
 ### Task 2: Implement Rust policy checker in mentci-vcs
@@ -72,8 +82,9 @@ Expected: PASS.
 **Step 5: Commit**
 ```bash
 jj describe -m "intent: Add mentci-vcs split-status checker for submodule and flake-lock policy"
-jj bookmark set dev -r @
-jj git push --bookmark dev
+# after describing, move the runtime bookmark to the finalized non-empty revision, not the anonymous working copy
+jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @-
+jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"
 ```
 
 ### Task 3: Document migration + promotion protocol
@@ -87,7 +98,7 @@ jj git push --bookmark dev
 - Explain dual-truth model:
   - submodules for local co-development
   - flake.lock for LKG
-- Define promotion gate: tests on dev before lock update.
+- Define promotion gate: run tests while on the runtime target bookmark before updating `flake.lock`.
 
 **Step 2: Verify references and commands**
 Run:
@@ -98,8 +109,9 @@ Expected: command executes and reports actionable status.
 **Step 3: Commit**
 ```bash
 jj describe -m "intent: Document component split governance and promotion protocol"
-jj bookmark set dev -r @
-jj git push --bookmark dev
+# push the finalized described revision rather than the anonymous working copy
+jj bookmark set "$MENTCI_TARGET_BOOKMARK" -r @-
+jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"
 ```
 
 ### Task 4: Workspace verification and handover
@@ -119,7 +131,7 @@ Run:
 
 **Step 3: Push and handover**
 ```bash
-jj bookmark set dev -r @
-jj git push --bookmark dev
-jj new
+# if Task 4 produced no new diff, keep the runtime bookmark on the already-finalized non-empty revision
+jj git push --bookmark "$MENTCI_TARGET_BOOKMARK"
+jj new "$MENTCI_TARGET_BOOKMARK"
 ```

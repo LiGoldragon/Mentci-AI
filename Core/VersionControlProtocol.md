@@ -51,6 +51,9 @@ If `MENTCI_*` variables are missing, use `jj` directly from the repository root 
 6.2 Preferred automation for every intent commit:
    - Store commit metadata in `.mentci/commit-context.json` with keys `prompt`, `context`, and `summary`.
    - Generate commit messages from this metadata so every commit persists Prompt/Context/Summary without omission.
+
+**Clean-Tree Preflight & Bookmark Safety:** Before finalizing any intent (including `session:` commits), run `jj status` and `jj diff --summary` so you can verify that tangible changes exist. Treat the working copy (`@`) as a deliberately anonymous, empty edit node; only describe it once there is actual content to capture. Finalizing a clean tree should happen only when there is an explicit reason (for example, sealing a metadata-only intent or preparing a new session), because moving `$MENTCI_TARGET_BOOKMARK` onto `@` or any described empty commit otherwise disconnects runtime history. Always resolve the runtime bookmark before repointing it—don’t leave the target bookmark floating on an undescribed empty node. As part of this preflight, confirm a research artifact lives in `Research/<priority>/<Subject>/` for the current prompt or intent, since completion is invalid without that coverage. After the physical work is described, invoke `execute session-guard` and `execute root-guard` to certify that the session synthesis and filesystem invariants are satisfied before pushing or reporting completion.
+
 7. Before declaring the prompt complete, run `execute session-guard`; non-zero exit means session synthesis is missing or malformed.
 8. Run `execute root-guard`; non-zero exit means top-level FS contract drift.
 9. Advance and push once:
@@ -95,6 +98,14 @@ If splitting cannot be done safely, stop and request direction.
 Empty working changes:
 - Do not abandon or close empty JJ working changes by default; they may belong to another agent or worktree.
 
+## Handling Side Bookmarks & Dangling Histories
+Side bookmarks and dangling-looking histories are normal artifacts of parallel workstreams, rewrites, and intentional snapshots. When you encounter one, classify it into one of the following buckets before acting:
+- **Active:** The bookmark represents work still in-flight. Leave it where it is, coordinate with the current owner, and avoid rebasing or pruning it until the owner seals their intent.
+- **Integrated:** The bookmark’s changes have already merged into `$MENTCI_TARGET_BOOKMARK` or another canonical line. Treat it as historical evidence and do not reapply it unless you have new intent.
+- **Intentionally preserved:** Release candidates, research snapshots, or emergency patches that are kept aside on purpose. Document the preservation rationale, responsible agent, and whether it needs periodic maintenance.
+- **Cleanup candidate:** The bookmark is stale, abandoned, or no longer needed. Coordinate with `jj-expert` (or the owner) to prune or squash it safely, supplying before/after evidence so its removal does not confuse downstream readers.
+Record each classification explicitly and verify whether downstream commit IDs or change IDs depend on the bookmark before merging or dropping it. When inspecting these histories, avoid running broad unbounded `jj log` revsets; prefer targeted revsets (for example `bookmarks(<name>)` or `@-` neighbors) and only expand once you understand the classification. This workflow keeps the runtime history manageable while still surfacing the purpose of each side bookmark.
+
 ## 5. Jailed Shipping (Workspace -> target bookmark)
 When operating in the jailed workspace, always use `mentci-commit` to advance the target bookmark:
 
@@ -108,6 +119,12 @@ This uses `MENTCI_WORKSPACE`, `MENTCI_REPO_ROOT`, and `MENTCI_COMMIT_TARGET` to 
 Use `mentci-jj log` to prefer `--no-signing` and avoid GPG failures.
 
 **OOM Guard:** Never run unbounded JJ revsets in this repository (for example `all()`, `heads(all())`, or deep unbounded ancestry). Always start with bounded revsets and explicit limits.
+
+### Change ID vs Commit ID
+Jujutsu reports both a change ID and a commit ID for every revision. The change ID captures the logical content of the change and survives history rewrites, while the commit ID is the unique revision handle that changes whenever you rebase, reword, or replay that change elsewhere. When reasoning about shared work, focus on change IDs to understand which logical intent you are revisiting and use commit IDs when you need to reference the exact copy of that intent. Having this split in mind prevents erroneous assumptions about what bookmarks, push logs, or verification scripts are pointing to. Always resolve the runtime bookmark first so you know which identifier you should be aligning before moving it.
+
+### Duplicate Change IDs
+If you ever see the same change ID appearing on more than one visible revision, it usually means the same logical change was rewritten or replayed into multiple branches—this is a divergence/rewrite exposure signal, not corruption. Use it as a clue: inspect both revisions (parents, bookmarks, whether `$MENTCI_TARGET_BOOKMARK` touched them) and classify each path (active, integrated, preserved, cleanup candidate). After understanding the duplication, decide whether to merge the branch, drop the extra copy, or leave both as historical evidence. Duplicates silently confirm that multiple viewpoints exist for the same intent; they do not mean your repository is broken, but they might mean two sequences still need reconciliation.
 
 ## 7. Related References
 - Conceptual model: `Library/architecture/JailCommitProtocol.md`

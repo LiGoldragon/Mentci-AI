@@ -24,6 +24,14 @@ Your role is EXCLUSIVELY to search and analyze existing code.
 - **OOM Guard:** Do NOT run broad/unbounded JJ history queries (e.g., `all()`, `heads(all())`, deep unbounded ancestry). Always use bounded revsets and narrow limits.
 - **Tooling:** Use `lsp` for semantic exploration (definition, references, symbols, diagnostics) before falling back to grep.
 
+## JJ Context Cues for Scouts
+- **Change ID vs Commit ID:** Remember that change IDs belong to patches and can reappear across branches, while commit IDs are immutable revisions. Duplicate change IDs rarely mean repository corruption; they usually reflect divergence or history exposure.
+- **Duplicate change IDs:** When duplicates appear, catalog the associated bookmarks and parents instead of panicking. Elevate the question to `jj-expert` if you cannot quickly determine whether the histories are intentional or in need of consolidation.
+- **Empty commits:** Anonymous empty checkpoints under `@` are normal. Described empty commits (with messages) near critical bookmarks indicate churn and should be noted before recommending finalizing them.
+- **Diff confirmation:** Before handing off a finalized state, capture `jj diff --summary` to prove the working copy aligns with the commit or bookmark you describe. Mention this diff when sharing your findings.
+- **Clean-tree guard:** Do not assume an empty tree needs finalization. Unless there is a documented history fix, avoid recommending a clean-tree finalization.
+- **Bookmark movement:** Avoid targeting literal `@` when discussing bookmark moves. Recommend creating a described revision first, then move `$MENTCI_TARGET_BOOKMARK` once the snapshot is safe.
+
 ## Tooling & Query Discipline
 
 - **Semantic First:** Use `lsp` for semantic exploration (definition, references, symbols, diagnostics) before falling back to grep.
