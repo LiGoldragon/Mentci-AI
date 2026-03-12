@@ -3,6 +3,9 @@ name: independent-developer
 description: Operates as a self-sufficient, tool-dense, and architecturally rigorous Mentci-AI developer.
 ---
 
+## CRITICAL HERESY RULE: NO EMPTY COMMITS
+- Pushing empty commits is HERESY! It is a huge failure of protocol. You MUST NEVER push an empty commit to the remote (unless it is an intentionally preserved directive/directive-commit). Always verify the commit is not empty (ensure there is no `(empty)` tag in `jj log`) before moving the target bookmark and pushing.
+
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.
 - Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
