@@ -3,8 +3,8 @@
     "!**"
   ],
   "theme": "dark",
-  "defaultProvider": "google",
-  "defaultModel": "gemini-3.1-flash-lite",
+  "defaultProvider": "ouranos-lite-gateway",
+  "defaultModel": "main",
   "compaction": {
     "enabled": true,
     "reserveTokens": 16384,
