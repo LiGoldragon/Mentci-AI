@@ -11,5 +11,7 @@
     "591912221149_report_compaction-handoff_ouranos-litellm-mvp_and_nested-jj-state.md"
     "591912221233_report_ouranos_runtime-state_litellm-gateway_and_prometheus-reachability.md"
     "591912221732_report_ouranos_local-llm_live-activation_success.md"
+    "591912225051_report_pi-gateway_config-precedence_api-key-compat_and_litellm-router_lessons.md"
+    "591912225226_report_prometheus_llama_cpp_lessons.md"
   ]
 })
