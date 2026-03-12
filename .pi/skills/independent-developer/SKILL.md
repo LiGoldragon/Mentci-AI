@@ -139,6 +139,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 ### 4. Resolving Version Bugs & Tooling Issues
 - **Version Bumps Allowed:** Always look for a newer trusted release when hitting a version-related bug. Bumping the version is allowed and encouraged to resolve issues.
 - **Forking as Fallback:** If the version bump doesn't work, fork the dependency into `Sources/` and use our fork (use `gh` or `hub` for forking).
+- **Behavioral Changes Require Forks:** When an upstream dependency (for example, Pi) needs behavior updates, create and consume the forked copy instead of patching the upstream source in place. Document the fork path and the behavioral rationale for the change within the same work session.
 - **$EDITOR and Saṃskāra:** The `$EDITOR` problem is effectively fixed by Saṃskāra before it even exists. Backburner any manual/legacy `$EDITOR` fixes.
 
 ### 5. Implementation Flow

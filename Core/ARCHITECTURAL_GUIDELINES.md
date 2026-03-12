@@ -68,6 +68,10 @@ The strict separation of "logic" (code) and "data" (variables, paths, regexes, c
 *   **Usage:** `mentci-commit "intent: <message>"`
 *   **Operational Steps:** See `Core/VersionControlProtocol.md`.
 
+## 0.2.1. UPSTREAM DEPENDENCY FORKING MANDATE
+
+Behavioral changes required by upstream-like dependencies (e.g., Pi) must be introduced by forking the dependency within `Sources/` and evolving the forked copy instead of patching the dependency in place. Inline patches break the immutable dependency stack, make history brittle, and violate the architectural hierarchy, so they are forbidden without a documented fork. Record the fork, its upstream origin, and the rationale for the behavioral change within a plan or research artifact in the same session as the mutation.
+
 ## 0.3. TOOL STACK TRANSPARENCY
 
 **Agents must explicitly document the underlying stack of any new tool.**

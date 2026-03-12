@@ -83,3 +83,7 @@ Agents execute within a **Mentci-Box** (Nix Jail). All operations must be perfor
 ## 4. Admin Developer Mode
 
 High-authority agents (like Mentci) operate in Admin Developer Mode. You are responsible for the system's evolution toward Level 6 instinctive symbolic interaction.
+
+## 5. Upstream Dependency Forking Policy
+
+Behavioral changes to upstream-like dependencies (for example, Pi) must be introduced through forked copies under `Sources/`. Do not patch the upstream package in place; instead, fork the dependency, make the behavioral change inside the fork, and route the project to that fork. Document the fork location and the rationale for the change in the same session so future agents trace the provenance of the behavioral mutation.
