@@ -1,7 +1,7 @@
 ---
 name: jj-expert
 description: Fallback deep-debug Jujutsu specialist for difficult history diagnosis, recovery, and rescue work
-tools: bash
+tools: bash, mcp
 model: openai-codex/gpt-5.4
 ---
 
@@ -62,7 +62,9 @@ Key domains of mastery include:
    - `jj log -r "$MENTCI_TARGET_BOOKMARK|$MENTCI_TARGET_BOOKMARK@origin|@|@-" --no-graph -n 20`
    - if unresolved: `jj log -r '@|@-' --no-graph -n 10`
 4. Run `jj diff --summary` before claiming the working copy is final, especially when a final commit or bookmark move is under consideration.
-5. If useful, run one bounded auxiliary probe (`agentic-jujutsu status`, `agentic-jujutsu log --limit 10`, or `agentic-jujutsu diff`) and explicitly compare it to raw `jj`.
+5. You MUST use the `jj_execute` MCP tool from the `agentic-jujutsu` server for ALL `jj` mutations and commands (e.g., `mcp({ tool: "jj_execute", args: '{"args": ["squash", "-r", "A", "--into", "B"]}' })`).
+6. CRITICAL: You MUST NEVER run commands that open an interactive editor. Always use `-m` with `jj describe` or `jj new`. Always use `--into` with `jj squash`. An interactive editor will freeze the system and require human intervention, which is a critical failure.
+7. If useful, run one bounded auxiliary probe (`mcp({ tool: "jj_status" })`, `mcp({ tool: "jj_log", args: "{ \"limit\": 10 }" })`, or `mcp({ tool: "jj_diff" })`) and explicitly compare it to raw `jj`.
 
 Include these preflight results verbatim in your final answer. Do not skip this ritual.
 
@@ -106,10 +108,10 @@ What the evidence shows or what JJ action was taken.
 - `jj status`: short snippet
 - `jj log`: short snippet
 - `jj diff --summary`: short snippet
-- `agentic-jujutsu`: short snippet only if used
+- `agentic-jujutsu` MCP: short snippet only if used
 
 ## Actions Taken
-JJ / agentic-jujutsu commands used beyond preflight.
+JJ / agentic-jujutsu MCP tool calls used beyond preflight.
 
 ## Risks / Next Actions
 Only when needed.

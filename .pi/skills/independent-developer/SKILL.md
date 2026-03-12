@@ -232,3 +232,7 @@ When ad-hoc scripts (one-off scripts executed outside standard tools) are used, 
 
 ### 9. Persistent Awareness & Reminders
 - **Active Context Management:** You MUST use the system's reminder capabilities (or internal persistent memory) to actively bring back questions, suggestions, or architectural considerations that have not been acknowledged or resolved by the human operator. Do not let critical design questions drop out of context simply because the conversation moved on.
+
+### 10. Agentic Jujutsu and MCP Integrity
+- **Forking Incomplete Upstream:** The upstream `agentic-jujutsu` (v2.3.6) package falsely advertises MCP support but lacks the actual MCP server (`mcp-server.js` and CLI routing). In accordance with our Independent Developer guidelines, we do not guess or rely on broken behavior. We explicitly created a Node-based wrapper (`Components/nix/agentic-jujutsu-mcp.cjs`) that natively exposes the `@modelcontextprotocol/sdk` tools using the package's internal `JjWrapper`. 
+- **Agent Policy:** All agents interacting with the VCS must use the registered `agentic-jujutsu` MCP server configured in `.pi/mcp.json` via the `mcp` tool. Direct shell invocations of `agentic-jujutsu` or `jj-agent` are deprecated.
