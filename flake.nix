@@ -198,6 +198,8 @@
           vtcode = namespace.vtcode;
           gemini-cli = namespace.gemini_cli;
           agenticJujutsu = namespace.agentic_jujutsu;
+          favaTrails = namespace.fava_trails;
+          favaTrailsMcp = namespace.fava_trails_mcp_server;
           litellm_proxy = namespace.litellm_proxy;
         };
 
