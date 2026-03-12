@@ -1,4 +1,4 @@
-{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, pi_dev, unified_llm, vtcode, mentci_bootstrap, chronos, execute, mentci_stt, mentci_user, mentci_mcp, jcodemunch_mcp, agentic_jujutsu, litellm_proxy }:
+{ pkgs, codex_cli_nix, system, rust_toolchain, rust_analyzer, gemini_cli, gemini_tui, pi_dev, unified_llm, vtcode, mentci_bootstrap, chronos, execute, mentci_stt, mentci_user, mentci_mcp, jcodemunch_mcp, agentic_jujutsu, litellm_proxy, fava_trails, fava_trails_mcp_server }:
 
 [
   pkgs.babashka
@@ -23,6 +23,8 @@
   pi_dev
   unified_llm
   vtcode
+  fava_trails
+  fava_trails_mcp_server
 
   # Mentci Internal Utilities
   mentci_bootstrap

@@ -233,7 +233,7 @@ let
     inherit codex_cli_nix;
     inherit gemini_cli gemini_tui;
     pi_dev = pi_with_extensions;
-    inherit unified_llm vtcode mentci_bootstrap chronos execute mentci_stt mentci_user mentci_mcp jcodemunch_mcp agentic_jujutsu;
+    inherit unified_llm vtcode mentci_bootstrap chronos execute mentci_stt mentci_user mentci_mcp jcodemunch_mcp agentic_jujutsu fava_trails fava_trails_mcp_server;
     inherit litellm_proxy;
   };
 
