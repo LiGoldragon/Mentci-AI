@@ -92,6 +92,77 @@ pkgs.buildNpmPackage {
     // In text mode, output final response
 '
 
+    substituteInPlace $out/lib/node_modules/pi/dist/core/model-registry.js \
+      --replace-fail '    baseUrl: Type.Optional(Type.String({ minLength: 1 })),
+    apiKey: Type.Optional(Type.String({ minLength: 1 })),
+    api: Type.Optional(Type.String({ minLength: 1 })),
+    headers: Type.Optional(Type.Record(Type.String(), Type.String())),
+    authHeader: Type.Optional(Type.Boolean()),
+    models: Type.Optional(Type.Array(ModelDefinitionSchema)),
+    modelOverrides: Type.Optional(Type.Record(Type.String(), ModelOverrideSchema)),
+});' '    baseUrl: Type.Optional(Type.String({ minLength: 1 })),
+    apiKey: Type.Optional(Type.String()),
+    api: Type.Optional(Type.String({ minLength: 1 })),
+    headers: Type.Optional(Type.Record(Type.String(), Type.String())),
+    authHeader: Type.Optional(Type.Boolean()),
+    authRequired: Type.Optional(Type.Boolean()),
+    models: Type.Optional(Type.Array(ModelDefinitionSchema)),
+    modelOverrides: Type.Optional(Type.Record(Type.String(), ModelOverrideSchema)),
+});' \
+      --replace-fail '    customProviderApiKeys = new Map();
+    registeredProviders = new Map();
+    loadError = undefined;' '    customProviderApiKeys = new Map();
+    authOptionalProviders = new Set();
+    registeredProviders = new Map();
+    loadError = undefined;' \
+      --replace-fail '        this.authStorage.setFallbackResolver((provider) => {
+            const keyConfig = this.customProviderApiKeys.get(provider);
+            if (keyConfig) {
+                return resolveConfigValue(keyConfig);
+            }
+            return undefined;
+        });' '        this.authStorage.setFallbackResolver((provider) => {
+            const keyConfig = this.customProviderApiKeys.get(provider);
+            if (keyConfig !== undefined) {
+                return resolveConfigValue(keyConfig);
+            }
+            return undefined;
+        });' \
+      --replace-fail '        this.customProviderApiKeys.clear();
+        this.loadError = undefined;' '        this.customProviderApiKeys.clear();
+        this.authOptionalProviders.clear();
+        this.loadError = undefined;' \
+      --replace-fail '                if (providerConfig.apiKey) {
+                    this.customProviderApiKeys.set(providerName, providerConfig.apiKey);
+                }' '                if (providerConfig.authRequired === false) {
+                    this.authOptionalProviders.add(providerName);
+                }
+                if (providerConfig.apiKey) {
+                    this.customProviderApiKeys.set(providerName, providerConfig.apiKey);
+                }' \
+      --replace-fail '                if (!providerConfig.apiKey) {
+                    throw new Error(`Provider ''${providerName}: "apiKey" is required when defining custom models.`);
+                }' '                if (providerConfig.authRequired !== false && !providerConfig.apiKey) {
+                    throw new Error("Provider " + providerName + ": \"apiKey\" is required when defining custom models unless authRequired=false.");
+                }' \
+      --replace-fail '        return this.models.filter((m) => this.authStorage.hasAuth(m.provider));' '        return this.models.filter((m) => this.authStorage.hasAuth(m.provider) || this.authOptionalProviders.has(m.provider));' \
+      --replace-fail '        if (config.apiKey) {
+            this.customProviderApiKeys.set(providerName, config.apiKey);
+        }' '        if (config.authRequired === false) {
+            this.authOptionalProviders.add(providerName);
+        }
+        if (config.apiKey) {
+            this.customProviderApiKeys.set(providerName, config.apiKey);
+        }' \
+      --replace-fail '            if (!config.apiKey && !config.oauth) {
+                throw new Error(`Provider ''${providerName}: "apiKey" or "oauth" is required when defining models.`);
+            }' '            if (config.authRequired !== false && !config.apiKey && !config.oauth) {
+                throw new Error("Provider " + providerName + ": \"apiKey\" or \"oauth\" is required when defining models unless authRequired=false.");
+            }'
+
+    substituteInPlace $out/lib/node_modules/pi/dist/modes/interactive/components/model-selector.js \
+      --replace-fail '            const hintText = "Only showing models with configured API keys (see README for details)";' '            const hintText = "Only showing models with configured access (API key, OAuth, or authless local provider)";'
+
     makeWrapper ${pkgs.nodejs}/bin/node $out/bin/pi \
       --add-flags "$out/lib/node_modules/pi/dist/cli.js" \
       --set NODE_PATH "$out/lib/node_modules/pi/node_modules" \
