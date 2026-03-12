@@ -62,6 +62,8 @@ Include the raw JJ preflight in the final answer. Do not skip it.
 - Before any bookmark move or rewrite, re-run `jj diff --summary`.
 - Never move the runtime target bookmark to literal `@`.
 - Never move the runtime target bookmark to an empty commit.
+- **SCREAMING GUARDRAIL: Dangling and empty commits everywhere are a sign of agentic failure to follow protocol.**
+- **Active Review: After operations, you must actively review the log, squash or abandon empty commits (except preserved release tags), and ensure a strictly linear history on the `research` bookmark without garbage before reporting success.**
 - Treat non-target bookmarks as side histories and classify them: active, integrated, intentionally preserved, cleanup candidate.
 - Do not declare completion while accidental visible dangling heads or described empty commits remain outside the intentionally preserved set. The normal end state is one anonymous empty `@` above the target line, not extra visible debris.
 - If asked to preserve a change, enumerate the exact files/content and re-verify after mutation in the current surviving file contents, not just historical commits.

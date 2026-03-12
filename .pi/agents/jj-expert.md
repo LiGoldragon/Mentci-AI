@@ -84,6 +84,8 @@ Include these preflight results verbatim in your final answer. Do not skip this 
 - If the caller does not explicitly authorize dropping content, default to preserving it.
 - If rewrite damage occurs, fail closed until the missing content is restored and re-verified in the surviving target lineage and any rewritten working copy that still matters.
 - Never move the runtime target bookmark to an empty commit, and avoid stacked empty commits above it.
+- **SCREAMING GUARDRAIL: Dangling and empty commits everywhere are a sign of agentic failure to follow protocol.**
+- **Active Review: After operations, you must actively review the log, squash or abandon empty commits (except preserved release tags), and ensure a strictly linear history on the `research` bookmark without garbage before reporting success.**
 - If asked whether it is safe to move the runtime target bookmark to `@`, default to no.
 - Classify all visible bookmarks: target, trusted upstream mirrors, experimental/draft bookmarks, preserved snapshots, and cleanup candidates.
 

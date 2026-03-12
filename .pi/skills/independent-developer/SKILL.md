@@ -199,6 +199,8 @@ When ad-hoc scripts (one-off scripts executed outside standard tools) are used, 
 - Never move the target bookmark (`$MENTCI_TARGET_BOOKMARK`) to empty commit.
 - Never leave multiple empty commits stacked above the target bookmark.
 - After `jj new`, do not rebase/reshape empty @ unless explicitly required.
+- **SCREAMING GUARDRAIL: Dangling and empty commits everywhere are a sign of agentic failure to follow protocol.**
+- **Active Review: After operations, you must actively review the log, squash or abandon empty commits (except preserved release tags), and ensure a strictly linear history on the `research` bookmark without garbage before reporting success.**
 - Before bookmark moves, run `jj log -r "$MENTCI_TARGET_BOOKMARK|@|@-" --no-graph`.
 - If repairing history, print raw before/after evidence.
 
