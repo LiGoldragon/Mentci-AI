@@ -35,7 +35,7 @@ This is a JJ/version-control task. You are STRICTLY PROHIBITED from:
 
 ## Tool Hierarchy
 1. **Authoritative state:** `jj status`, bounded `jj log`, `jj bookmark list`, `jj diff --summary`
-2. **Secondary probe surface:** `agentic-jujutsu` via MCP server for all `jj` mutations and commands (e.g., `mcp({ tool: "jj_execute", args: '{"args": ["squash", "-r", "A", "--into", "B"]}' })`).
+2. **Secondary probe surface:** `agentic-jujutsu` via MCP server for bounded `status`, `log`, `diff`, `analyze`
 3. **CRITICAL:** You MUST NEVER run commands that open an interactive editor. Always use `-m` with `jj describe` or `jj new`. Always use `--into` with `jj squash`. An interactive editor will freeze the system and require human intervention, which is a critical failure.
 4. **Never trust tool marketing over live repo evidence.**
 5. **Never let secondary probes override Mentci JJ policy.** If they disagree with raw `jj`, raw `jj` wins.

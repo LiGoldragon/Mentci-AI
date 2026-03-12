@@ -39,14 +39,6 @@ server.tool("jj_diff", "Show changes", { revision: z.string().optional() }, asyn
   }
 });
 
-server.tool("jj_execute", "Execute any jj command", { args: z.array(z.string()) }, async ({ args }) => {
-  try {
-    const result = await jj.execute(args);
-    return { content: [{ type: "text", text: result.stdout || result.stderr }] };
-  } catch (e) {
-    return { content: [{ type: "text", text: e.message }], isError: true };
-  }
-});
 
 server.tool("jj_analyze", "Analyze repository for AI", {}, async () => {
   try {

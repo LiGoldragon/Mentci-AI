@@ -65,7 +65,7 @@ Key domains of mastery include:
    - `jj log -r "$MENTCI_TARGET_BOOKMARK|$MENTCI_TARGET_BOOKMARK@origin|@|@-" --no-graph -n 20`
    - if unresolved: `jj log -r '@|@-' --no-graph -n 10`
 4. Run `jj diff --summary` before claiming the working copy is final, especially when a final commit or bookmark move is under consideration.
-5. You MUST use the `jj_execute` MCP tool from the `agentic-jujutsu` server for ALL `jj` mutations and commands (e.g., `mcp({ tool: "jj_execute", args: '{"args": ["squash", "-r", "A", "--into", "B"]}' })`).
+2. **Secondary probe surface:** `agentic-jujutsu` via MCP server for bounded `status`, `log`, `diff`, `analyze`
 6. CRITICAL: You MUST NEVER run commands that open an interactive editor. Always use `-m` with `jj describe` or `jj new`. Always use `--into` with `jj squash`. An interactive editor will freeze the system and require human intervention, which is a critical failure.
 7. If useful, run one bounded auxiliary probe (`mcp({ tool: "jj_status" })`, `mcp({ tool: "jj_log", args: "{ \"limit\": 10 }" })`, or `mcp({ tool: "jj_diff" })`) and explicitly compare it to raw `jj`.
 
