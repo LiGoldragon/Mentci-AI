@@ -5,6 +5,7 @@
   {:id "chronos" :path "chronos" :interfaces ["rust.time.tool"] :status :active}
   {:id "chronos-lib" :path "chronos-lib" :interfaces ["rust.time.library"] :status :prototype}
   {:id "criome-core" :path "criome-core" :interfaces ["rust.criad.contract" "rust.quorum.verifier" "rust.criosphere.state"] :status :unstable-mvp}
+  {:id "maisiliym" :path "maisiliym" :interfaces ["data.node-truth" "nix.crio.horizon"] :status :active}
   {:id "mentci-aid" :path "mentci-aid" :interfaces ["rust.engine" "rust.daemon" "execute.orchestrator"] :status :active}
   {:id "mentci-box" :path "mentci-box" :interfaces ["rust.jail.cli"] :status :experimental}
   {:id "mentci-box-lib" :path "mentci-box-lib" :interfaces ["rust.jail.lib"] :status :experimental}

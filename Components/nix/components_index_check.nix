@@ -3,7 +3,7 @@
 pkgs.runCommand "components-index-check" { } ''
   cd ${repo_root}
 
-  mapfile -t index_paths < <(sed -n 's/.*:path "\(.*\)".*/\1/p' Components/index.edn | sort -u)
+  mapfile -t index_paths < <(grep -o ':path "[^"]*"' Components/index.edn | sed 's/:path "//; s/"$//' | sort -u)
   mapfile -t fs_paths < <(find Components -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort -u)
 
   printf '%s\n' "Index paths:"
