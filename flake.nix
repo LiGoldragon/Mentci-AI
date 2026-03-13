@@ -2,6 +2,7 @@
   description = "Mentci-AI Rust Daemon";
 
   inputs = {
+    self.submodules = true;
     nixpkgs.url = "github:NixOS/nixpkgs/fb7944c166a3b630f177938e478f0378e64ce108";
     flake-utils.url = "github:numtide/flake-utils";
     crane.url = "github:ipetkov/crane";
@@ -37,26 +38,26 @@
     };
 
     # Rust component split sources (submodule + flake lock dual authority)
-    mentci-aid-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-aid.git"; flake = false; };
-    mentci-datalog-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-datalog.git"; flake = false; };
-    chronos-src = { url = "git+ssh://git@github.com/LiGoldragon/chronos.git"; flake = false; };
-    chronos-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/chronos-lib.git"; flake = false; };
-    mentci-fs-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-fs.git"; flake = false; };
+    mentci-aid-src = { url = "github:LiGoldragon/mentci-aid"; flake = false; };
+    mentci-datalog-src = { url = "github:LiGoldragon/mentci-datalog"; flake = false; };
+    chronos-src = { url = "github:LiGoldragon/chronos"; flake = false; };
+    chronos-lib-src = { url = "github:LiGoldragon/chronos-lib"; flake = false; };
+    mentci-fs-src = { url = "github:LiGoldragon/mentci-fs"; flake = false; };
     mentci-box-src = { url = "github:LiGoldragon/mentci-box"; flake = false; };
-    mentci-box-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-box-lib.git"; flake = false; };
+    mentci-box-lib-src = { url = "github:LiGoldragon/mentci-box-lib"; flake = false; };
     mentci-launch-src = { url = "github:LiGoldragon/mentci-launch"; flake = false; };
     mentci-execute-src = { url = "github:LiGoldragon/mentci-execute"; flake = false; };
     mentci-stt-src = { url = "github:LiGoldragon/mentci-stt"; flake = false; };
     mentci-user-src = { url = "github:LiGoldragon/mentci-user"; flake = false; };
-    samskara-src = { url = "git+ssh://git@github.com/LiGoldragon/samskara.git"; flake = false; };
-    mentci-dig-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-dig.git"; flake = false; };
+    samskara-src = { url = "github:LiGoldragon/samskara"; flake = false; };
+    mentci-dig-src = { url = "github:LiGoldragon/mentci-dig"; flake = false; };
     mentci-mcp-src = { url = "github:LiGoldragon/mentci-mcp"; flake = false; };
-    mentci-policy-engine-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-policy-engine.git"; flake = false; };
-    mentci-mcp-gateway-src = { url = "git+ssh://git@github.com/LiGoldragon/mentci-mcp-gateway.git"; flake = false; };
-    aski-lib-src = { url = "git+ssh://git@github.com/LiGoldragon/aski-lib.git"; flake = false; };
-    aski-cli-src = { url = "git+ssh://git@github.com/LiGoldragon/aski-cli.git"; flake = false; };
-    nix-hash-patcher-src = { url = "git+ssh://git@github.com/LiGoldragon/nix-hash-patcher.git"; flake = false; };
-    ai-src = { url = "git+ssh://git@github.com/LiGoldragon/AI.git"; flake = false; };
+    mentci-policy-engine-src = { url = "github:LiGoldragon/mentci-policy-engine"; flake = false; };
+    mentci-mcp-gateway-src = { url = "github:LiGoldragon/mentci-mcp-gateway"; flake = false; };
+    aski-lib-src = { url = "github:LiGoldragon/aski-lib"; flake = false; };
+    aski-cli-src = { url = "github:LiGoldragon/aski-cli"; flake = false; };
+    nix-hash-patcher-src = { url = "github:LiGoldragon/nix-hash-patcher"; flake = false; };
+    ai-src = { url = "github:LiGoldragon/AI"; flake = false; };
 
     # External Collaborations
     attractor = {
@@ -127,8 +128,8 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        attractorSrc = inputs.attractor;
-        attractorDocsSrc = inputs."attractor-docs";
+        attractorSrc = inputs.attractor.outPath;
+        attractorDocsSrc = inputs."attractor-docs".outPath;
         pkgs = import nixpkgs { inherit system; };
         rustToolchain = fenix.packages.${system}.latest.toolchain;
         rustAnalyzer = fenix.packages.${system}.rust-analyzer;

@@ -1,0 +1,62 @@
+{
+  "models": {
+    "providers": {
+      "prometheus": {
+        "api": "openai-completions",
+        "authRequired": false,
+        "baseUrl": "http://prometheus.maisiliym.criome:11434/v1",
+        "apiKey": "sk-no-key-required",
+        "models": [
+          {
+            "id": "main-deepseek",
+            "name": "prometheus/main-deepseek (Prometheus LiteLLM Canonical)",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 131072,
+            "maxTokens": 32768,
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            }
+          },
+          {
+            "id": "llama-backup",
+            "name": "prometheus/llama-backup (llama.cpp Fallback)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 65536,
+            "maxTokens": 32768,
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            }
+          }
+        ]
+      }
+    }
+  },
+  "settings": {
+    "theme": "dark",
+    "defaultProvider": "prometheus",
+    "defaultModel": "main-deepseek",
+    "enabledModels": [
+      "prometheus/main-deepseek",
+      "prometheus/llama-backup"
+    ],
+    "hideThinkingBlock": false,
+    "defaultThinkingLevel": "medium",
+    "compaction": {
+      "enabled": true,
+      "reserveTokens": 16384,
+      "keepRecentTokens": 20000
+    }
+  }
+}

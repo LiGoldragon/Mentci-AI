@@ -61,3 +61,6 @@
 [submodule "Components/chronos-lib"]
 	path = Components/chronos-lib
 	url = git@github.com:LiGoldragon/chronos-lib.git
+[submodule "Components/maisiliym"]
+	path = Components/maisiliym
+	url = git@github.com:LiGoldragon/maisiliym.git

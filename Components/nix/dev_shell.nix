@@ -1,5 +1,11 @@
 { pkgs, common_packages, jail, repo_root, pi, mentci_user_src }:
 
+let
+  prometheusAgentConfigPath = repo_root + "/config/pi/prometheus-agent-settings.json";
+  prometheusAgentConfig = builtins.fromJSON (builtins.readFile prometheusAgentConfigPath);
+  prometheusAgentModelsJson = pkgs.writeText "prometheus-pi-models.json" (builtins.toJSON prometheusAgentConfig.models);
+  prometheusAgentSettingsJson = pkgs.writeText "prometheus-pi-settings.json" (builtins.toJSON prometheusAgentConfig.settings);
+in
 pkgs.mkShell {
   name = "mentci-ai-dev";
   packages = common_packages;
@@ -8,6 +14,8 @@ pkgs.mkShell {
     MENTCI_RO_INDICATOR = "RW (Admin)";
     RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
     jailConfig = builtins.toJSON jail.jailConfig;
+    PROMETHEUS_AGENT_MODELS_JSON = prometheusAgentModelsJson;
+    PROMETHEUS_AGENT_SETTINGS_JSON = prometheusAgentSettingsJson;
 
     # Non-interactive overrides to prevent agents from getting stuck
     CI = "true";
@@ -41,6 +49,9 @@ pkgs.mkShell {
     export PI_CODING_AGENT_DIR="$(pwd)/.pi/agent"
     mkdir -p "$PI_CODING_AGENT_DIR"/{prompts,skills,themes,tools,sessions,agents,commands,extensions}
 
+    ln -sfn "$PROMETHEUS_AGENT_MODELS_JSON" "$PI_CODING_AGENT_DIR/models.json"
+    ln -sfn "$PROMETHEUS_AGENT_SETTINGS_JSON" "$PI_CODING_AGENT_DIR/settings.json"
+
     # Share OAuth auth across repos so login is not required per-repo
     # (sessions/tools stay repo-local; auth remains user-global)
     export PI_SHARED_AUTH_FILE="$HOME/.pi/agent/auth.json"
@@ -50,9 +61,10 @@ pkgs.mkShell {
     fi
     ln -sfn "$PI_SHARED_AUTH_FILE" "$PI_CODING_AGENT_DIR/auth.json"
 
-    # Canonical mentci-user setup pointer from component source input
-    # (works for both local and remote flake-based `nix develop`)
-    export MENTCI_USER_SETUP_BIN="${mentci_user_src}/data/setup.bin"
+    # Canonical mentci-user setup pointer from the checked-out component tree.
+    # This keeps the dev shell repo-local and avoids relying on fetcher-specific
+    # path coercion for flake=false source inputs.
+    export MENTCI_USER_SETUP_BIN="${repo_root}/Components/mentci-user/data/setup.bin"
 
     # Initialize user-specific extension secrets (Logic-Data Separation)
     # mentci-user resolves default setup source from MENTCI_USER_SETUP_BIN / canonical paths.

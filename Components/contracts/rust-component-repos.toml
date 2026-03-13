@@ -172,8 +172,8 @@ required_flake_lock = true
 id = "maisiliym"
 path = "Components/maisiliym"
 flake_input = "maisiliym"
-repo = "github:LiGoldragon/maisiliym"
-required_submodule = false
+repo = "git@github.com:LiGoldragon/maisiliym.git"
+required_submodule = true
 required_flake_lock = true
 
 [[components]]

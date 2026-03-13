@@ -1,10 +1,14 @@
 {:version 1
  :components
- [{:id "aski-cli" :path "aski-cli" :interfaces ["rust.aski.cli"] :status :experimental}
+ [{:id "AI" :path "AI" :interfaces ["rust.ai.agent"] :status :prototype}
+  {:id "contracts" :path "contracts" :interfaces ["config.contracts"] :status :utility}
+  {:id "criome-contract" :path "criome-contract" :interfaces ["capnp.criome.init"] :status :prototype}
+  {:id "aski-cli" :path "aski-cli" :interfaces ["rust.aski.cli"] :status :experimental}
   {:id "aski-lib" :path "aski-lib" :interfaces ["rust.aski.lib"] :status :experimental}
   {:id "chronos" :path "chronos" :interfaces ["rust.time.tool"] :status :active}
   {:id "chronos-lib" :path "chronos-lib" :interfaces ["rust.time.library"] :status :prototype}
   {:id "criome-core" :path "criome-core" :interfaces ["rust.criad.contract" "rust.quorum.verifier" "rust.criosphere.state"] :status :unstable-mvp}
+  {:id "criomos" :path "CriomOS" :interfaces ["nix.criome.os"] :status :active}
   {:id "maisiliym" :path "maisiliym" :interfaces ["data.node-truth" "nix.crio.horizon"] :status :active}
   {:id "mentci-aid" :path "mentci-aid" :interfaces ["rust.engine" "rust.daemon" "execute.orchestrator"] :status :active}
   {:id "mentci-box" :path "mentci-box" :interfaces ["rust.jail.cli"] :status :experimental}
@@ -14,11 +18,19 @@
   {:id "mentci-execute" :path "mentci-execute" :interfaces ["rust.execute.orchestrator"] :status :experimental}
   {:id "mentci-policy-engine" :path "mentci-policy-engine" :interfaces ["rust.policy.engine" "rust.admission.control"] :status :draft}
   {:id "mentci-mcp-gateway" :path "mentci-mcp-gateway" :interfaces ["mcp.gateway" "mcp.admission.routing"] :status :prototype}
+  {:id "mentci-mcp" :path "mentci-mcp" :interfaces ["rust.mcp"] :status :prototype}
+  {:id "mentci-stt" :path "mentci-stt" :interfaces ["rust.stt"] :status :prototype}
+  {:id "mentci-user" :path "mentci-user" :interfaces ["rust.user"] :status :active}
+  {:id "samskara" :path "samskara" :interfaces ["rust.samskara"] :status :prototype}
   {:id "mentci-vcs" :path "mentci-vcs" :interfaces ["rust.vcs.wrapper"] :status :prototype}
   {:id "mentci-cozo" :path "mentci-cozo" :interfaces ["rust.cozoscript.dialect" "rust.handoff.constraints"] :status :prototype}
   {:id "mentci-datalog" :path "mentci-datalog" :interfaces ["rust.datalog.world" "rust.eav.substrate"] :status :active}
+  {:id "mentci-dig" :path "mentci-dig" :interfaces ["rust.dig"] :status :prototype}
+  {:id "mentci-intel" :path "mentci-intel" :interfaces ["capnp.intelligence"] :status :prototype}
   {:id "nix" :path "nix" :interfaces ["nix.namespace"] :status :active}
+  {:id "nix-hash-patcher" :path "nix-hash-patcher" :interfaces ["nix.hash.patcher"] :status :prototype}
   {:id "schema" :path "schema" :interfaces ["schema.capnp" "schema.edn"] :status :active}
   {:id "tasks" :path "tasks" :interfaces ["task.checklists"] :status :active}
   {:id "tools" :path "tools" :interfaces ["editor.integration" "formatting"] :status :active}
+  {:id "scripts" :path "scripts" :interfaces ["scripts.session"] :status :utility}
   {:id "workflows" :path "workflows" :interfaces ["workflow.definitions"] :status :active}]}
