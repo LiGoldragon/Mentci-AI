@@ -85,7 +85,6 @@
       "locked": {
         "lastModified": 1772644929,
         "narHash": "sha256-IYksR4K3BjvUBC0R4x2CWTsVinejoVDcZ4v3tJB8HuQ=",
-        "ref": "refs/heads/dev",
         "rev": "505c83d9e8c1bd07c6d961cadefdd7d1242a22d4",
         "owner": "LiGoldragon",
         "repo": "AI",
@@ -118,7 +117,6 @@
       "locked": {
         "lastModified": 1772722965,
         "narHash": "sha256-dmBa8dIbVbRSArrWODQVdWNpVPySNmRVtwhY4g/U+/g=",
-        "ref": "refs/heads/main",
         "rev": "50104fee168940377279a5dc216609c0d7a463b4",
         "owner": "LiGoldragon",
         "repo": "aski-cli",
@@ -135,7 +133,6 @@
       "locked": {
         "lastModified": 1772722961,
         "narHash": "sha256-QiefVdUDuCa9nw0Zzb0I0jpGP/e+3LXdlLPU0MqqQ38=",
-        "ref": "refs/heads/main",
         "rev": "2e3c92c01708a5c2611c93c89082e8295073d1df",
         "owner": "LiGoldragon",
         "repo": "aski-lib",
@@ -354,7 +351,6 @@
       "locked": {
         "lastModified": 1772959445,
         "narHash": "sha256-jXEirHimRpQOdPwxwhgc63hrMfR+iYTT8B6PW8K7fxs=",
-        "ref": "refs/heads/main",
         "rev": "72b0fc069134198c2640a223d0930c36c62f8588",
         "owner": "LiGoldragon",
         "repo": "chronos-lib",
@@ -371,7 +367,6 @@
       "locked": {
         "lastModified": 1772722906,
         "narHash": "sha256-CgocFrRLqHlu35/laDQ1Y30J+Libz80oZdz/BC6wpXQ=",
-        "ref": "refs/heads/main",
         "rev": "b8a0019377b9b0e24e0877fd75b1560b66de36f8",
         "owner": "LiGoldragon",
         "repo": "chronos",
@@ -1175,7 +1170,6 @@
       "locked": {
         "lastModified": 1772722893,
         "narHash": "sha256-jeCltIqqLLVxWmJ4fFbBfPL3vrkwNBhSTmebSWGS7AU=",
-        "ref": "refs/heads/main",
         "rev": "d7ca91c2253a8d4fd1c9fd5ba963e65a0166cc24",
         "owner": "LiGoldragon",
         "repo": "mentci-aid",
@@ -1192,7 +1186,6 @@
       "locked": {
         "lastModified": 1772722919,
         "narHash": "sha256-VZbPcIPnQD84NUMy/h9xL9yslnl95cwjzMDA9S4tSU8=",
-        "ref": "refs/heads/main",
         "rev": "2d817b6027c20fc58925b23714e8324a1627211c",
         "owner": "LiGoldragon",
         "repo": "mentci-box-lib",
@@ -1225,7 +1218,6 @@
       "locked": {
         "lastModified": 1772722898,
         "narHash": "sha256-MoQRsCpcJUMyJdCWIUN+FI0sk2RlT1Uq15RpR5bWA/E=",
-        "ref": "refs/heads/main",
         "rev": "b75153709fd385bc17aca80ddba8d4eca62a72e0",
         "owner": "LiGoldragon",
         "repo": "mentci-datalog",
@@ -1242,7 +1234,6 @@
       "locked": {
         "lastModified": 1772722943,
         "narHash": "sha256-dWkLppa3Fjp6/dApcP13m0s5rB5ab8a6pIhRUcnkgpg=",
-        "ref": "refs/heads/main",
         "rev": "9d3f0a3a1682ea3dbb070c10171f056d2c8cb470",
         "owner": "LiGoldragon",
         "repo": "mentci-dig",
@@ -1275,7 +1266,6 @@
       "locked": {
         "lastModified": 1772722910,
         "narHash": "sha256-qIU+AUCZkEEodoM7ldkmBOI7r94huuZPVDoze2Qy/v4=",
-        "ref": "refs/heads/main",
         "rev": "c279a177864d964e882a3aad54fbcc5a86561560",
         "owner": "LiGoldragon",
         "repo": "mentci-fs",
@@ -1308,7 +1298,6 @@
       "locked": {
         "lastModified": 1772722957,
         "narHash": "sha256-EBobTQB4uN+lSrhv4V3gEeu4g+BtpHmT28y1rCpawBY=",
-        "ref": "refs/heads/main",
         "rev": "7c558f6c98775bbb9d018f0f0b9808090b549d34",
         "owner": "LiGoldragon",
         "repo": "mentci-mcp-gateway",
@@ -1341,7 +1330,6 @@
       "locked": {
         "lastModified": 1772722952,
         "narHash": "sha256-oV3J2KLKqVJYKBAXejXQD6EpTnJDDhK7N2B/PWy0Idk=",
-        "ref": "refs/heads/main",
         "rev": "d3e167b5ff68f615ffce9269f0c316c027ec3436",
         "owner": "LiGoldragon",
         "repo": "mentci-policy-engine",
@@ -1533,7 +1521,6 @@
       "locked": {
         "lastModified": 1772722970,
         "narHash": "sha256-/VujXE0zP4blbvlab9JBIszexovVmzYBoaNCUSs8hk0=",
-        "ref": "refs/heads/main",
         "rev": "52fed96326394aba3d2e946e2c4f035e4ebe038e",
         "owner": "LiGoldragon",
         "repo": "nix-hash-patcher",
@@ -1993,7 +1980,6 @@
       "locked": {
         "lastModified": 1772722938,
         "narHash": "sha256-wAiETaBPZQHZ9T4CRCWGzS+l24WjJGPO7R4lPSexm9c=",
-        "ref": "refs/heads/main",
         "rev": "0e5bb1c335b07392d3220dbe767a0d83936b59e9",
         "owner": "LiGoldragon",
         "repo": "samskara",

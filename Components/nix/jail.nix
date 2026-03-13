@@ -9,7 +9,7 @@ let
       # If it has a .src (is a derivation), use it. Otherwise use the whole thing (flake input/path).
       src = if (lib.isDerivation input && input ? src) then input.src else input;
     in {
-      sourcePath = "${input.outPath}";
+      sourcePath = "${if builtins.isAttrs input && input ? outPath then input.outPath else input}";
       srcPath = "${src}";
       inherit inputType;
     };
