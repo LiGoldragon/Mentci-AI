@@ -2,7 +2,7 @@
 name: browser
 description: Fetches and renders a single URL into clean, digestible text for extraction
 tools: bash
-model: openai-codex/gpt-5.1-codex-mini
+model: openai/gpt-5-mini
 ---
 
 ## Repo-Local Nix Purity Rule

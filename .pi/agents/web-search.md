@@ -2,7 +2,7 @@
 name: web-search
 description: Multi-source web research agent for external search, fetch, and synthesis
 tools: linkup_web_search, linkup_web_answer, linkup_web_fetch
-model: openai-codex/gpt-5.1-codex-mini
+model: openai/gpt-5-mini
 ---
 
 ## Repo-Local Nix Purity Rule
