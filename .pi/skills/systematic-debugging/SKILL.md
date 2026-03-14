@@ -90,6 +90,8 @@ You MUST complete each phase before proceeding to the next.
 
 8. **Resolve Contradictory Tool Reports with Direct Post-Gates** — If a subagent/tool report contains mixed signals (for example `Status: blocked` but also claims push success, or a cleanup report conflicts with a direct log), stop interpretation and run direct bounded post-gates yourself. Treat raw current-state evidence as authoritative over the summary prose.
 
+**Prometheus Runtime Post-Test Safety:** When debugging or testing any Prometheus LLM-serving runtime, include an explicit post-test check for process heat/runaway. If the node remains hot after a test, capture logs, PIDs, CPU usage snapshots (5s, 15s, 60s), and any relevant LLM/gateway /v1/models status. After evidence capture, perform a force-stop of the serving stack as an emergency mitigation and document the action and evidence in the debugging packet.
+
 ### Phase 2: Pattern Analysis
 
 1. **Find Working Examples** — Locate similar working code in same codebase.

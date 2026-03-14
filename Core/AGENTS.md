@@ -22,9 +22,6 @@ Enforcement requirements:
 
 *   **Preemptive Context Acquisition:** If these files are not in the agent's active context, it must stop and acquire them immediately.
 *   **No-Edit Without Architecture Context:** Any change made without having processed these guidelines is a violation of the Enforcement Contract.
-*   **Programming Version Signature:** Every agent response **must** end with its current "Programming Version"—a content-addressed hash of the `Core/` directory. 
-    *   Format: `programming: <version_hash>` (on its own line at the very end of the response).
-    *   Acquire via: `execute version`.
 *   **Solar Baseline Prefix:** Every prompt-handling response (including intermediary updates and final response) must begin with the current ordinal solar baseline line.
     *   Format: `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
     *   Canonical acquisition: `chronos --format am --precision second`

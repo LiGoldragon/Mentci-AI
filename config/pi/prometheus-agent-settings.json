@@ -8,14 +8,14 @@
         "apiKey": "sk-no-key-required",
         "models": [
           {
-            "id": "main-deepseek",
-            "name": "prometheus/main-deepseek (Prometheus LiteLLM Canonical)",
-            "reasoning": true,
+            "id": "llama-3.2-1b-instruct",
+            "name": "llama-3.2-1b-instruct (Prometheus canonical)",
+            "reasoning": false,
             "input": [
               "text"
             ],
-            "contextWindow": 131072,
-            "maxTokens": 32768,
+            "contextWindow": 4096,
+            "maxTokens": 2048,
             "cost": {
               "input": 0,
               "output": 0,
@@ -24,14 +24,15 @@
             }
           },
           {
-            "id": "deepseek-r1-distill-llama-70b",
-            "name": "prometheus/deepseek-r1-distill-llama-70b (DeepSeek-R1 Distill Llama 70B)",
-            "reasoning": true,
+            "id": "main-sanity",
+            "name": "main-sanity (Prometheus Sanity Lane alias for llama-3.2-1b-instruct)",
+            "aliasOf": "llama-3.2-1b-instruct",
+            "reasoning": false,
             "input": [
               "text"
             ],
-            "contextWindow": 128000,
-            "maxTokens": 32768,
+            "contextWindow": 4096,
+            "maxTokens": 2048,
             "cost": {
               "input": 0,
               "output": 0,
@@ -46,13 +47,12 @@
   "settings": {
     "theme": "dark",
     "defaultProvider": "prometheus",
-    "defaultModel": "main-deepseek",
+    "defaultModel": "main-sanity",
     "enabledModels": [
-      "prometheus/main-deepseek",
-      "prometheus/deepseek-r1-distill-llama-70b"
+      "prometheus/main-sanity"
     ],
     "hideThinkingBlock": false,
-    "defaultThinkingLevel": "medium",
+    "defaultThinkingLevel": "low",
     "compaction": {
       "enabled": true,
       "reserveTokens": 16384,
