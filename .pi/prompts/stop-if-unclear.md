@@ -2,7 +2,7 @@ When a task or instruction is unclear, ambiguous, or underspecified the agent (o
 
 Operator rules:
 
-- If the available instructions are insufficient to act safely, respond with: `Status: blocked - instructions unclear` and include the minimal evidence of what is missing. When operating under a harness that inserts a user-facing `solar:` baseline line, subagents and sentinels MUST place their sentinel status as the first non-solar line (i.e., immediately after the `solar:` line or the required blank line following it) so that the `solar:` convention is preserved while still providing a clear machine-readable sentinel.
+- If the available instructions are insufficient to act safely, respond with: `Status: blocked - instructions unclear` and include the minimal evidence of what is missing. Subagents and sentinels MUST place that status as the first meaningful line of the response so adapters can detect it reliably.
 - Do not attempt layered heuristics or repeated hypothesis generation to guess intent; asking the operator for clarification is required.
 - If operating as a subagent, stop further investigation and return a concise failure packet with:
   - what was tried,

@@ -1,4 +1,4 @@
-{ pkgs, pi, pi_linkup_extension, pi_mcp_adapter_extension, lsp_pi_extension, pi_subagents_extension, jcodemunch_mcp }:
+{ pkgs, pi, pi_linkup_extension, pi_mcp_adapter_extension, lsp_pi_extension, pi_subagents_extension }:
 
 pkgs.stdenvNoCC.mkDerivation {
   pname = "pi-with-extensions";
@@ -55,7 +55,6 @@ else
 fi
 
 export NODE_PATH="''${PI_PACKAGE_DIR}/node_modules''${NODE_PATH:+:$NODE_PATH}"
-export PATH="__JCODEMUNCH_BIN__:$PATH"
 
 exec ${pkgs.nodejs}/bin/node "''${PI_PACKAGE_DIR}/dist/cli.js" \
   --extension "''${PI_PACKAGE_DIR}/node_modules/@aliou/pi-linkup" \
@@ -65,8 +64,7 @@ exec ${pkgs.nodejs}/bin/node "''${PI_PACKAGE_DIR}/dist/cli.js" \
   "$@"
 EOF
     substituteInPlace "$out/bin/pi" \
-      --replace-fail "__PI_PACKAGE_DIR__" "$out/lib/node_modules/pi" \
-      --replace-fail "__JCODEMUNCH_BIN__" "${jcodemunch_mcp}/bin"
+      --replace-fail "__PI_PACKAGE_DIR__" "$out/lib/node_modules/pi"
     chmod +x "$out/bin/pi"
 
     runHook postInstall

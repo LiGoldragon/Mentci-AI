@@ -22,11 +22,6 @@ Enforcement requirements:
 
 *   **Preemptive Context Acquisition:** If these files are not in the agent's active context, it must stop and acquire them immediately.
 *   **No-Edit Without Architecture Context:** Any change made without having processed these guidelines is a violation of the Enforcement Contract.
-*   **Solar Baseline Prefix:** Every prompt-handling response (including intermediary updates and final response) must begin with the current ordinal solar baseline line.
-    *   Format: `solar: <AnnoMundi>.<zodiac>.<degree>.<minute>.<second>`
-    *   Canonical acquisition: `chronos --format am --precision second`
-    *   Purpose: establish a true-solar reference timestamp for comparison with other time systems.
-
 *   **Architecture Gate:** Any change conflicting with the hierarchy in `Core/ARCHITECTURAL_GUIDELINES.md` is forbidden.
 *   **Version-Control Gate:** `Core/VersionControlProtocol.md` is mandatory procedure, not guidance.
 *   **Commit Context Gate:** Every commit must persist Prompt/Context/Summary metadata in the commit message.

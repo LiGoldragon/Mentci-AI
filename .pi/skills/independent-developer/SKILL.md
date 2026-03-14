@@ -35,8 +35,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 - **Research Persistence Mandate (Hierarchical Discovery):** 
   - All findings, synthesized reports, and external validation evidence MUST be saved as Markdown artifacts in the `Research/` directory. 
   - **Consolidation Rule:** Store research artifacts (strategies, reports, external validation) in `Research/`. Store execution-oriented implementation plans in `docs/plans/` by default. If a workflow explicitly uses `Development/<priority>/<Subject>/` (per RestartContext mirrored topology), keep `Development/` and `Research/` counterparts synchronized by subject.
-  - Use a descriptive filename prefixed with the **Solar Time** (no-separator format): `[SolarTime]_report_name.md`.
-  - **Solar Time Generation:** Use the `chronos` tool with the following command to get the prefix: `chronos --format am | tr -d '.'`. (Example output: `591912122531`).
+  - Use a descriptive filename that mirrors the timestamping and naming convention already established in the target directory; do not introduce a new timestamp scheme just for this session.
   - **Structural Order:** The agent MUST actively observe and mirror existing directory hierarchy patterns within the repo.
 - **Pattern Recognition (Structural Adherence):** The agent MUST take note of established order patterns within the repository. Before creating new files or folders, inspect the relevant target directory with a bounded listing (for example `ls <target-dir>` or reading the nearest local `index.edn`) so the new artifacts align with the established organizational logic without poisoning the main context. Note that `index.edn` files are legacy artifacts representing an incomplete Datalog implementation; the goal is to transition this knowledge into the `mentci-datalog` substrate.
 - **Protocol:** Never claim a tool or architecture is "superior" without providing verified evidence from at least 2 external sources retrieved via the `web-search` agent and documented in the appropriate hierarchical level of `Research/`.
@@ -67,7 +66,7 @@ Before asserting anything about external ecosystems, benchmarks, or library matu
 
 ## 1.2 Meta-Orchestration Superpowers (Adopt + Test)
 - **Contracted Handoff Payloads:** Every non-trivial subagent delegation should include explicit `Goal`, `Scope`, `Out-of-Scope`, `Output Contract`, and `Evidence Requirements` fields. Avoid free-form handoffs when correctness matters.
-- **Sentinel Non-Empty Contract:** Preserve the user-facing harness convention that main responses begin with `solar:`. For sentinel/subagent responses, the sentinel status line (for example: `Status: success|blocked|no-op`) MUST appear as the first non-solar line — i.e., immediately after the mandatory `solar:` line (or the mandated blank line after it if the harness requires one). This preserves the `solar:` baseline for user-facing outputs while ensuring subagents provide an explicit sentinel status for adapters and automated handlers.
+- **Sentinel Non-Empty Contract:** For sentinel/subagent responses, the sentinel status line (for example: `Status: success|blocked|no-op`) MUST appear as the first meaningful line so adapters and automated handlers can detect it reliably.
 - **Bounded Retry Ladder:** For subagent failure, retry at most 1 time with simplified scope; on second failure, fail closed and continue with direct bounded tooling.
 - **Deterministic Post-Gates:** Before accepting subagent completion, run deterministic checks (targeted tests/diagnostics/status) in main session.
 - **Conflict-First Parallelism:** Use parallel subagents only for independent scopes; if path overlap is likely, force serialized execution or explicit merge checkpoints.
