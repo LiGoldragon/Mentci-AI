@@ -9,7 +9,7 @@
         "models": [
           {
             "id": "llama-3.2-1b-instruct",
-            "name": "llama-3.2-1b-instruct (Prometheus canonical)",
+            "name": "llama-3.2-1b-instruct (Prometheus sanity lane)",
             "reasoning": false,
             "input": [
               "text"
@@ -25,7 +25,7 @@
           },
           {
             "id": "main-sanity",
-            "name": "main-sanity (Prometheus Sanity Lane alias for llama-3.2-1b-instruct)",
+            "name": "main-sanity (alias for Llama 3.2 1B Instruct)",
             "aliasOf": "llama-3.2-1b-instruct",
             "reasoning": false,
             "input": [
@@ -33,6 +33,39 @@
             ],
             "contextWindow": 8192,
             "maxTokens": 2048,
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            }
+          },
+          {
+            "id": "qwen3.5-35b-a3b",
+            "name": "qwen3.5-35b-a3b (Prometheus reasoning lane)",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 32768,
+            "maxTokens": 4096,
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            }
+          },
+          {
+            "id": "main-reasoning",
+            "name": "main-reasoning (alias for Qwen 3.5 35B A3B)",
+            "aliasOf": "qwen3.5-35b-a3b",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 32768,
+            "maxTokens": 4096,
             "cost": {
               "input": 0,
               "output": 0,
@@ -47,9 +80,10 @@
   "settings": {
     "theme": "dark",
     "defaultProvider": "prometheus",
-    "defaultModel": "main-sanity",
+    "defaultModel": "main-reasoning",
     "enabledModels": [
-      "prometheus/main-sanity"
+      "prometheus/main-sanity",
+      "prometheus/main-reasoning"
     ],
     "hideThinkingBlock": false,
     "defaultThinkingLevel": "low",
