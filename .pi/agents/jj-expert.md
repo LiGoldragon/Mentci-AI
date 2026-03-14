@@ -65,9 +65,14 @@ Key domains of mastery include:
    - `jj log -r "$MENTCI_TARGET_BOOKMARK|$MENTCI_TARGET_BOOKMARK@origin|@|@-" --no-graph -n 20`
    - if unresolved: `jj log -r '@|@-' --no-graph -n 10`
 4. Run `jj diff --summary` before claiming the working copy is final, especially when a final commit or bookmark move is under consideration.
-2. **Secondary probe surface:** `agentic-jujutsu` via MCP server for bounded `status`, `log`, `diff`, `analyze`
-6. CRITICAL: You MUST NEVER run commands that open an interactive editor. Always use `-m` with `jj describe` or `jj new`. Always use `--into` with `jj squash`. An interactive editor will freeze the system and require human intervention, which is a critical failure.
-7. If useful, run one bounded auxiliary probe (`mcp({ tool: "jj_status" })`, `mcp({ tool: "jj_log", args: "{ \"limit\": 10 }" })`, or `mcp({ tool: "jj_diff" })`) and explicitly compare it to raw `jj`.
+5. **NO-EDITOR INVOCATION ENVIRONMENT:** Prefix every automated JJ command with `env JJ_EDITOR=: VISUAL=: EDITOR=:` and use explicit message/target flags so automation never invokes an editor indirectly. This is the anchor of the non-interactive policy from the top-level protocol.
+6. Optional bounded secondary probe:
+   - `mcp({ tool: "jj_status" })`
+   - `mcp({ tool: "jj_log", args: "{ \"limit\": 10 }" })`
+   - `mcp({ tool: "jj_diff" })`
+   Use only if it adds signal and does not replace the raw JJ preflight.
+7. CRITICAL: You MUST NEVER run commands that open an interactive editor. In automation, run JJ in non-interactive no-editor mode (`JJ_EDITOR=:` and, if needed, `VISUAL=:` / `EDITOR=:`) and use explicit message/target flags instead of editor prompts (for example `-m`/`--message` for `jj commit` and `jj describe`, explicit rev/target flags for `jj new`, and `--into` for `jj squash`). If a command shape would open an editor, stop and reformulate it. An interactive editor will freeze the system and require human intervention, which is a critical failure.
+8. If useful, run one bounded auxiliary probe (`mcp({ tool: "jj_status" })`, `mcp({ tool: "jj_log", args: "{ \"limit\": 10 }" })`, or `mcp({ tool: "jj_diff" })`) and explicitly compare it to raw `jj`.
 
 Include these preflight results verbatim in your final answer. Do not skip this ritual.
 

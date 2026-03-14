@@ -36,9 +36,10 @@ This is a JJ/version-control task. You are STRICTLY PROHIBITED from:
 ## Tool Hierarchy
 1. **Authoritative state:** `jj status`, bounded `jj log`, `jj bookmark list`, `jj diff --summary`
 2. **Secondary probe surface:** `agentic-jujutsu` via MCP server for bounded `status`, `log`, `diff`, `analyze`
-3. **CRITICAL:** You MUST NEVER run commands that open an interactive editor. Always use `-m` with `jj describe` or `jj new`. Always use `--into` with `jj squash`. An interactive editor will freeze the system and require human intervention, which is a critical failure.
-4. **Never trust tool marketing over live repo evidence.**
-5. **Never let secondary probes override Mentci JJ policy.** If they disagree with raw `jj`, raw `jj` wins.
+3. **CRITICAL:** You MUST NEVER run commands that open an interactive editor. In automation, run JJ in non-interactive no-editor mode (`JJ_EDITOR=:` and, if needed, `VISUAL=:` / `EDITOR=:`) and use explicit message/target flags instead of editor prompts (for example `-m`/`--message` for `jj commit` and `jj describe`, explicit rev/target flags for `jj new`, and `--into` for `jj squash`). If a command shape would open an editor, stop and reformulate it. An interactive editor will freeze the system and require human intervention, which is a critical failure.
+4. **NO-EDITOR INVOCATION ENFORCEMENT:** All automated shells must prefix JJ commands with `env JJ_EDITOR=: VISUAL=: EDITOR=:` and stick to explicit non-editor flags so that every invocation avoids interactive editors entirely. This requirement enforces the non-interactive automation policy mentioned in the top-level Version Control Protocol document.
+5. **Never trust tool marketing over live repo evidence.**
+6. **Never let secondary probes override Mentci JJ policy.** If they disagree with raw `jj`, raw `jj` wins.
 
 ## Required Start-of-Task Preflight
 At the start of every task:
