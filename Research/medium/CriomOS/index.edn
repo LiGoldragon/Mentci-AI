@@ -22,6 +22,7 @@
     "591912244520_report_vllm-feasibility_for_qwen35-prometheus_and_litellm-replacement-options.md"
     "591912245010_report_prometheus-model-fleet_starter-kit_selection_and_prefetch-build-planning.md"
     "591912245730_report_prometheus_big-model_plus_small-subagent-model_hosting_patterns_and_current-stack-fit.md"
+    "591912250210_report_prometheus-qwen_timeout_investigation_pi-timeout-surface_vs_upstream-runtime-behavior.md"
     "59191225217_report_qwen35_llama-cpp-upgrade-base_runtime-findings_and_packaging-gap.md"
   ]
 })
