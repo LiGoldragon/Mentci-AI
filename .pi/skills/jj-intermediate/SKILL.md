@@ -22,6 +22,7 @@ Use this skill for normal JJ work: bounded inspection, intent commits, bookmark-
 - **Prefer `jj commit -m` on the intended non-empty revision.** Avoid pre-emptive `jj describe` on `@`, on a working-copy wrapper, or on an empty node.
 - **Keep the working copy anonymous while work is still in progress.** Anonymous here means: bounded inspection (`jj status`, bounded `jj log`, `jj diff --summary`) is fine, but do not name/describe the working-copy node before real content is ready to be captured.
 - **Never move a runtime bookmark to an empty commit by accident.** A normal empty working-copy node is not permission to target or push an empty commit.
+- **A description does not make an empty commit valid.** What matters is whether the revision carries real content changes.
 
 ## Routine Preflight
 Before non-trivial JJ work:

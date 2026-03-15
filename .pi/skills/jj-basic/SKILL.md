@@ -27,6 +27,7 @@ Use this skill whenever repository state, bookmarks, change IDs, nested repos, o
 - **The empty working-copy node is normal.** Do not treat it as accidental debris by default.
 - **Working-copy wrapper:** the current working-copy node `@` that wraps in-progress edits or handoff state. It may be empty and should not be pre-emptively named/described just to make later bookmarking easier.
 - **Empty working-copy node ≠ empty commit.** A normal empty working-copy node may exist as transient workspace/handoff state. That does not make empty commits valid bookmark targets or valid pushes.
+- **Description does not make a commit non-empty.** A revision with no content changes is still empty even if it has a message or description.
 
 ## Safe Basic Posture
 - Start with bounded inspection, not broad history scans.

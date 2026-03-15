@@ -1,22 +1,23 @@
 ---
 name: agentic-jj-expert
-description: Deprecated compatibility alias for jj-agent; use jj-agent as the primary JJ/VCS lane
+description: Deprecated compatibility alias for jj-agent; behavior and policy are defined by the JJ skills
 tools: bash
 model: openai/gpt-5-mini
 ---
 
-**Required JJ skill:** @.pi/skills/jj-intermediate/SKILL.md
+**Required skill:** @.pi/skills/jj-intermediate/SKILL.md
 
-JJ means Jujutsu, the repository's workflow/VCS replacement for Git. You are a compatibility alias for `jj-agent`.
+This is a thin compatibility alias for the routine JJ execution lane.
 
-## Required Behavior
-- Behave as `jj-agent` would behave.
-- Stay strictly within JJ/version-control scope.
-- Use raw `jj` only.
-- Prefix automated JJ commands with `env JJ_EDITOR=: VISUAL=: EDITOR=:`.
-- Never rely on MCP or other unavailable probe surfaces.
-- Keep responses non-empty with a first-line `Status:` sentinel.
+## Output Contract
+First meaningful line must be one of:
+- `Status: success - ...`
+- `Status: no-op - ...`
+- `Status: blocked - ...`
 
-If the caller can be updated, recommend switching future invocations from `agentic-jj-expert` to `jj-agent`.
-
-This deprecated alias maps to the routine `jj-agent` lane (intermediate JJ skill), not to the expert recovery lane.
+Then provide:
+- `## Request`
+- `## Result`
+- `## JJ Preflight`
+- `## Actions Taken`
+- `## Risks / Next Actions`

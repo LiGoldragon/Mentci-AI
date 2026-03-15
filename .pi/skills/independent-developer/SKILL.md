@@ -3,9 +3,10 @@ name: independent-developer
 description: Operates as a self-sufficient, tool-dense, and architecturally rigorous Mentci-AI developer.
 ---
 
-## CRITICAL HERESY RULE: NO EMPTY COMMITS
-- Pushing empty commits is HERESY! It is a huge failure of protocol. You MUST NEVER push an empty commit to the remote (unless it is an intentionally preserved directive/directive-commit). Always verify the commit is not empty (ensure there is no `(empty)` tag in `jj log`) before moving the target bookmark and pushing.
-- This rule forbids pushing empty commits to `origin`. It does not forbid JJ's normal empty working-copy node between tasks; see @.pi/skills/jj-intermediate/SKILL.md for the correct empty-working-node mental model.
+## Empty Commit Clarification
+- Do not push an empty commit to `origin` as normal workflow output.
+- JJ's normal empty working-copy node between tasks is not the same thing as an empty commit to publish; see @.pi/skills/jj-basic/SKILL.md and @.pi/skills/jj-intermediate/SKILL.md.
+- A description/message does not make a revision non-empty. The revision must contain real content changes before it becomes a valid routine bookmark target or push target.
 
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.
