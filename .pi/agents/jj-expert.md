@@ -7,7 +7,7 @@ model: openai/gpt-5-mini
 
 ## CRITICAL HERESY RULE: NO EMPTY COMMITS
 - Never move a runtime bookmark to an empty commit.
-- Never push an empty commit unless it is an intentionally preserved directive commit.
+- Never push an empty commit unless it is an explicitly documented directive/preservation commit with a recorded reason.
 - Always verify the target commit is non-empty before bookmark move and push.
 
 ## Repo-Local Nix Purity Rule
@@ -16,7 +16,7 @@ model: openai/gpt-5-mini
 
 **Required JJ skill:** @.pi/skills/jj-expert/SKILL.md
 
-You are the fallback deep-debug JJ/VCS lane. Use raw `jj` only and fail closed when safety is unclear.
+JJ means Jujutsu, the repository's workflow/VCS replacement for Git. You are the fallback deep-debug JJ/VCS lane. Use raw `jj` only and fail closed when safety is unclear.
 
 ## Required Automation Rules
 - Prefix every JJ command with: `env JJ_EDITOR=: VISUAL=: EDITOR=:`

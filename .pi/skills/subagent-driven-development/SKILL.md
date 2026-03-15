@@ -13,7 +13,7 @@ description: Use when executing implementation plans with independent tasks in t
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.
 - Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
-- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains Git-backed JJ.
+- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains JJ-first, with Git only as backend transport.
 - Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
 
 
@@ -26,8 +26,8 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 If a tool result contains a ⚠️ workflow warning, stop immediately and address it before continuing.
 
 ## Prerequisites
-- Active runtime bookmark confirmed, ideally via `jj-agent`, or user-confirmed intent to work on `main`. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
-- For nested component repos, require a JJ preflight inside that nested repo before implementation/review/finalization. Do not let subagents substitute Git branch/commit state for JJ evidence there.
+- Establish JJ state via @.pi/skills/jj-intermediate/SKILL.md and the `jj-agent` lane before implementation/review/finalization.
+- For nested component repos or ambiguous JJ state, escalate via @.pi/skills/jj-expert/SKILL.md rather than substituting Git state.
 - Approved plan or clear task scope
 
 ## When to Use
@@ -235,22 +235,15 @@ Done!
 
 ## Subagent Reliability & Raw Evidence Contract
 
-- **Reliability:** If a task tool returns "Unknown agent ... Available: none" or the primary `jj-agent` lane is clearly misbehaving:
-    1. Stop chain execution immediately.
-    2. Report blocked state.
-    3. Retry once with `jj-expert` as explicit fallback/rescue.
-    4. If fallback is also unavailable, run direct local bounded JJ preflight (`jj status`, bounded `jj log`) and include the raw evidence packet.
-    5. Do not fabricate success from partial/empty agent outputs.
+- **Reliability:** If the primary JJ execution lane is unavailable or clearly misbehaving, stop chain execution, report blocked state, and retry once with `jj-expert` as explicit fallback/rescue.
+- **JJ routing:** Use @.pi/skills/jj-intermediate/SKILL.md for routine bounded JJ evidence requirements and @.pi/skills/jj-expert/SKILL.md for contradictory or recovery-heavy JJ state.
 - **Non-Empty Output Mitigation:** Add this at top of subagent tasks: `First line MUST be: Status: success|blocked|no-op`.
 - **Structured Handoff Contract:** Every dispatched task must include: `Goal`, `Scope`, `Out-of-Scope`, `Output Contract`, `Verification Commands`.
 - **CozoScript-First Handoff (MVP):** For common logical-constraint handoffs, include a compact CozoScript dialect block (from `mentci-cozo`) representing constraints and verification intent.
 - **Bounded Retry Rule:** One retry maximum for the same failed task; retry prompt must simplify scope and restate output contract.
 - **Raw Evidence Packet:**
     - For all completion claims, provide a `## Raw Evidence Packet` section.
-    - Include:
-        - `jj status`
-        - Relevant `jj log` (bounded)
-        - Verification command output (tests/build/etc)
+    - Include the verification command output (tests/build/etc) plus the JJ evidence required by the relevant JJ skill.
 
 ## Mandatory Phase Loop
 Before advancing, ensure this loop is closed for every task:
@@ -308,8 +301,6 @@ Recommended operators in MVP: `eq`, `neq`, `contains`, `not_contains`, `exists`.
 - **`/skill:executing-plans`** - Use for parallel session instead of same-session execution
 
 ## History & Completion Guardrails
-Before describing or pushing work, run `jj status` and `jj diff --summary` to confirm actual changes exist. Keep the working copy (`@`) anonymous and empty while editing; do not describe it or move `$MENTCI_TARGET_BOOKMARK` onto `@` or an empty described commit unless there is an explicit metadata or session-preparation reason. Always resolve the runtime bookmark so you know what revision title you are pointing at before repointing it.
-
-Change IDs describe logical intent and remain stable across rewrites, while commit IDs identify the specific revision copy. When change IDs duplicate in the visible history, treat the duplication as a divergence or rewrite exposure cue and inspect the involved commit IDs before acting. If side bookmarks accompany the duplicates, classify them as active, integrated, intentionally preserved, or cleanup candidate so the next agent understands why that branch is being kept, merged, or pruned.
+Use @.pi/skills/jj-intermediate/SKILL.md for bounded preflight, bookmark safety, empty-working-node hygiene, and routine completion checks. Use @.pi/skills/jj-expert/SKILL.md when duplicate change IDs, side bookmarks, or cleanup classification enter the workflow.
 
 After every task that concludes a logical change, run `execute session-guard` and `execute root-guard` to validate the session narrative and the root-level filesystem invariants before handing off or proceeding to finishing. Confirm a research artifact exists or has been updated under `Research/<priority>/<Subject>/` for the current prompt to satisfy the research coverage mandate. Include these guardrail checks in the completion notes so reviewers can verify them.

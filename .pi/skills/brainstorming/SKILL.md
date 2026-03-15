@@ -13,7 +13,7 @@ description: "You MUST use this before any creative work - creating features, bu
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.
 - Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
-- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains Git-backed JJ.
+- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains JJ-first, with Git only as backend transport.
 - Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
 
 
@@ -32,11 +32,11 @@ Start by understanding the current project context, then ask questions one at a 
 
 ## The Process
 
-**Before anything else — check repository state via `jj-agent`:**
-- Delegate a bounded current-state report to the `jj-agent` agent. Use `jj-expert` only if the `jj-agent` lane is unavailable or misbehaving.
-- Ask it to establish the runtime bookmark, working-copy cleanliness, and nearby lineage before brainstorming.
-- If the repo has uncommitted or unmerged work, ask the user whether to finish prior work, isolate it, or explicitly continue here.
-- If the topic is new, suggest creating an isolated JJ clone or other user-approved workspace strategy before brainstorming.
+**Before anything else — establish repository context via JJ:**
+- Follow @.pi/skills/jj-intermediate/SKILL.md and ask `jj-agent` for the bounded current-state report.
+- Use `jj-expert` only for rescue or ambiguous JJ state.
+- If prior work is unresolved, ask the user whether to finish it, isolate it, or explicitly continue here.
+- If the topic is new and needs isolation, defer to `/skill:using-git-worktrees`.
 
 **Understanding the idea:**
 - Check out the current project state first (files, docs, recent commits)

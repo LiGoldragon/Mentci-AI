@@ -13,7 +13,7 @@ description: Use when implementing or refactoring Rust/Nix/Cap'n Proto work unde
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.
 - Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
-- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains Git-backed JJ.
+- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains JJ-first, with Git only as backend transport.
 - Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
 
 
@@ -32,10 +32,8 @@ Primary goals:
 ## Preconditions
 
 Before editing code:
-1. Ask the `jj-agent` agent for a bounded JJ state check.
-2. If tree is dirty, use `jj-agent` to isolate and finalize existing intent before editing code.
-   Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
-2.1. If the work happens inside a nested component repo (for example `Components/CriomOS`), perform that preflight inside the nested JJ repo itself. Do not switch to direct Git just because the component is also a submodule/backend repo.
+1. Follow @.pi/skills/jj-intermediate/SKILL.md for bounded JJ preflight and ask `jj-agent` to execute it.
+2. If the JJ situation is ambiguous, nested, or rescue-heavy, escalate via @.pi/skills/jj-expert/SKILL.md and `jj-expert`.
 3. Confirm data authority artifact exists (`.edn` and/or `.bin` sidecar) before coding defaults.
 4. For external tooling/ecosystem claims, delegate quick validation to the `web-search` agent before asserting status or maturity. Use direct web tools only if the `web-search` agent is unavailable and the fallback is explicitly bounded.
 5. If structured tooling is part of the task, record tool usage and gaps in a Research tooling log (queries attempted, bounded scope, outcomes, shortcomings).
@@ -167,4 +165,4 @@ When touching `criome-core`, `criad`, or CriomOS data contracts, apply all rules
 - [ ] `cargo check --workspace` clean.
 - [ ] Research artifact updated for non-trivial findings.
 - [ ] Intent commits + final session metadata committed and pushed.
-- [ ] Empty commit created at the end of the session (`jj new`).
+- [ ] If a fresh next-session working node is needed after verified completion, have `jj-agent` prepare it according to @.pi/skills/jj-intermediate/SKILL.md; do not treat an empty working node as a completed commit.

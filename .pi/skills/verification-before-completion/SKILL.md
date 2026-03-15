@@ -13,7 +13,7 @@ description: Use when about to claim work is complete, fixed, or passing, before
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.
 - Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
-- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains Git-backed JJ.
+- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains JJ-first, with Git only as backend transport.
 - Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
 
 
@@ -128,8 +128,8 @@ Skip any step = lying, not verifying
 
 **JJ completion hygiene:**
 ```
-✅ Verify the final bounded JJ state has no accidental visible dangling heads or described empty debris beyond the intended empty `@`
-❌ Declare completion while extra visible empty session heads or unclassified side histories remain
+✅ Follow @.pi/skills/jj-intermediate/SKILL.md for routine completion-state checks and @.pi/skills/jj-expert/SKILL.md for dangling-head or side-history classification
+❌ Declare completion while unresolved JJ state still requires those checks
 ```
 
 **Contradictory agent/tool reports:**
@@ -151,18 +151,11 @@ Skip any step = lying, not verifying
 ```
 
 ## Subagent Reliability & Raw Evidence Contract
-- **Reliability:** If a task tool returns "Unknown agent ... Available: none":
-    1. Stop chain execution immediately.
-    2. Report blocked state.
-    3. Run direct local bounded JJ preflight (`jj status`, bounded `jj log`) and include the raw evidence packet.
-    4. Provide raw evidence output.
-    5. Do not fabricate success from partial/empty agent outputs.
+- **Reliability:** If the JJ execution lane is unavailable or misbehaving, stop and report blocked state rather than fabricating success from partial/empty outputs.
+- **JJ evidence routing:** Use @.pi/skills/jj-intermediate/SKILL.md for the canonical routine JJ evidence requirements and @.pi/skills/jj-expert/SKILL.md when the state is contradictory or rescue-heavy.
 - **Raw Evidence Packet:**
     - For all completion claims, provide a `## Raw Evidence Packet` section.
-    - Include:
-        - `jj status`
-        - Relevant `jj log` (bounded)
-        - Verification command output (tests/build/etc)
+    - Include the verification command output (tests/build/etc) plus the JJ evidence required by the relevant JJ skill.
 
 ## Enforcement
 

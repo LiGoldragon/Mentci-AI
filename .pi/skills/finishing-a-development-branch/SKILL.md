@@ -13,7 +13,7 @@ description: Use when implementation is complete, tests pass, and you need to in
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.
 - Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
-- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains Git-backed JJ.
+- If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input; if we create that code, it belongs in a repository and our repository workflow remains JJ-first, with Git only as backend transport.
 - Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
 
 
@@ -48,7 +48,7 @@ Present exactly these options:
 
 ### Step 4: Execute Choice
 
-All non-trivial JJ/git handling in this skill MUST go through the `jj-agent` agent by default. This skill defines the completion policy and option selection; `jj-agent` performs the bounded JJ/git execution and reports raw evidence. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving.
+Follow @.pi/skills/jj-intermediate/SKILL.md for routine finalization mechanics and @.pi/skills/jj-expert/SKILL.md for recovery/cleanup judgment. This skill defines the completion policy and option selection; `jj-agent` performs the bounded JJ execution and reports raw evidence. Use `jj-expert` only as fallback/rescue when the JJ state is ambiguous or recovery-heavy.
 
 #### Option 1: Move bookmark (no tag)
 
@@ -87,19 +87,15 @@ Confirm intent, then ask `jj-agent` to abandon the target revisions with bounded
 
 ## Rules
 
-- JJ is primary; do not switch to git-branch workflows for normal integration.
-- Direct Git workflow usage is heresy; Git is backend transport only.
-- Bookmark movement and push are one atomic completion moment. If the push has not landed on `origin`, the commit does not count as finished Mentci-AI history.
-- This prohibition includes nested component repos such as `Components/CriomOS`: finish them with JJ in that repo, not with direct Git commits/branches because a `.git` directory is visible.
+- Follow @.pi/skills/jj-basic/SKILL.md for JJ authority and Git prohibition.
+- Follow @.pi/skills/jj-intermediate/SKILL.md for bookmark movement, push verification, empty-working-node hygiene, and routine completion mechanics.
+- Follow @.pi/skills/jj-expert/SKILL.md for duplicate change IDs, side-bookmark classification, cleanup judgment, or recovery.
 - Release integration target is `main`.
 - Release tags must use the original version style (`v0.12.x.x.x` in current-era shorthand).
 - Do not claim release completion without tag verification.
 - End with a clean handover state via `jj-agent` after push verification, using `jj-expert` only as fallback/rescue.
-- Do not leave accidental visible dangling heads or described empty commits behind at finish time; classify and clean any non-target visible residue unless it is intentionally preserved and documented.
 
 ## Finalization Guardrails
-Before finalizing any branch or release flow, run `jj status` and `jj diff --summary` to confirm tangible modifications exist. Keep the working copy (`@`) anonymous and empty while implementing; describe it only once you are ready to capture real diffs. Never move `$MENTCI_TARGET_BOOKMARK` to `@` or to a described empty commit without an explicit, documented reason (for example, anchoring metadata or preparing a new session). Always resolve the runtime bookmark so you know the described revision it currently names before advancing it. Finalizing a clean tree without a reason is improper unless you explicitly document the purpose of that empty state.
+Use @.pi/skills/jj-intermediate/SKILL.md for bounded preflight, bookmark safety, and empty-working-node hygiene before finalizing. Use @.pi/skills/jj-expert/SKILL.md when duplicate change IDs, side bookmarks, or cleanup classification enter the flow.
 
-Remember the mental model: change IDs describe logical intent and persist through rewrites, while commit IDs track the precise revision records. Duplicate change IDs are usually a signal of divergence or rewrite exposure; inspect the associated commit IDs and any side bookmarks that share them before deciding whether to merge, preserve, or prune those lines. When side bookmarks appear to be dangling, classify them as active work, integrated evidence, intentionally preserved snapshots, or cleanup candidates so downstream agents understand the historical decision.
-
-After the work is described, run `execute session-guard` and `execute root-guard` through `jj-agent` to certify the session narrative and filesystem invariants. Use `jj-expert` only as fallback/rescue when the `jj-agent` lane is unavailable or misbehaving. Confirm that a research artifact has been created or updated in `Research/<priority>/<Subject>/` for the completed prompt, because prompts without research coverage are not complete. Include this verification in your completion notes and relay any outstanding bookmark classifications before the final handoff.
+After the work is described, run `execute session-guard` and `execute root-guard` through `jj-agent` to certify the session narrative and filesystem invariants. Use `jj-expert` only as fallback/rescue when the JJ state is ambiguous or recovery-heavy. Confirm that a research artifact has been created or updated in `Research/<priority>/<Subject>/` for the completed prompt, because prompts without research coverage are not complete. Include this verification in your completion notes and relay any outstanding bookmark classifications before the final handoff.
