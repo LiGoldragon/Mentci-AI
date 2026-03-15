@@ -12,11 +12,11 @@ description: Advanced JJ recovery, rewrite, cleanup, and rescue judgment for dif
 ## Purpose
 Use this skill when JJ work is no longer routine: history repair, rewrite/rebase judgment, duplicate change IDs, side-bookmark classification, cleanup of visible residue, nested-repo edge cases, or recovery from mistaken workflow actions.
 
-**JJ means Jujutsu.** Even in rescue or recovery situations, JJ remains the workflow authority and Git does not become permitted as the decision surface.
+**JJ means Jujutsu.** Even in rescue or recovery situations, we still only use Git through JJ; JJ remains the workflow authority and direct Git does not become the decision surface.
 
 ## Expert Rules
 - **Fail closed when safety is unclear.** Do not improvise risky history mutation.
-- **Direct Git workflow usage is forbidden.** Do not switch to Git because JJ state is confusing.
+- **We only use Git through JJ.** Do not switch to direct Git because JJ state is confusing.
 - **Keep all evidence bounded and current.** Do not rely on stale assumptions.
 - **Prefer explanation before risky mutation.** Make the danger and intended recovery legible.
 

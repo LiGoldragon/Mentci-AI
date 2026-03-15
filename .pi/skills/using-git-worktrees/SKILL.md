@@ -22,7 +22,7 @@ This skill governs the creation of isolated workspaces. It has been upgraded fro
 For JJ doctrine, Git prohibition, and routine bounded execution, follow @.pi/skills/jj-basic/SKILL.md and @.pi/skills/jj-intermediate/SKILL.md. This skill focuses on workspace-isolation strategy; use `jj-agent` for the bounded clone/setup execution and `jj-expert` only for rescue.
 
 1. **No Shared Op-Logs**: You must not use `jj workspace add` for parallel agent flows, as this creates a shared operation log that leads to `stale working copy` races during concurrent rebases.
-2. **Full Clones**: To isolate work, create a full separate clone in a new, distinct directory via the JJ-aware clone/setup flow handled by `jj-agent`. Do not fall back to Git-first workflow decisions just because cloning uses backend transport.
+2. **Full Clones**: To isolate work, create a full separate clone in a new, distinct directory via the JJ-aware clone/setup flow handled by `jj-agent`. We only use Git through JJ here, so cloning transport does not justify Git-first workflow decisions.
 3. **Spacename Ownership**:
     - The new clone MUST be assigned an `ownedSpacename` (a designated bookmark or bookmark-prefix it has exclusive rights to mutate).
     - You must write this claim to the root before commencing work.

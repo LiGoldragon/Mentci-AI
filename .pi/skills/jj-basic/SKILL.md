@@ -12,11 +12,11 @@ description: Mandatory baseline JJ mental model for Mentci-AI agents and skills 
 ## Purpose
 Use this skill whenever repository state, bookmarks, change IDs, nested repos, or completion claims enter the conversation.
 
-**JJ means Jujutsu.** In Mentci-AI, JJ is the repository workflow/VCS replacement for Git. Git may exist as backend storage/transport, but it is forbidden as workflow authority.
+**JJ means Jujutsu.** In Mentci-AI, JJ is the repository workflow/VCS replacement for Git. We only use Git through JJ: Git may exist as backend storage/transport, but JJ is the workflow authority.
 
 ## Non-Negotiable Rules
 - **JJ is workflow authority.** Use `jj` as the source of truth for repository workflow decisions.
-- **Direct Git workflow usage is forbidden.** Git is backend transport only. Do not use Git as workflow authority when JJ can answer the question.
+- **We only use Git through JJ.** Do not use Git directly as workflow authority when JJ can answer the question.
 - **Origin is truth.** A local commit does not count as complete history until the relevant bookmark has been pushed to `origin` and verified there.
 - **Nested JJ repos are still JJ repos.** A visible `.git` directory or submodule boundary does not authorize Git-first reasoning.
 

@@ -56,7 +56,7 @@ These are the highest-order rules for all languages, scripts, and agent behavior
 *   **Context-Local Naming Rule:** Avoid repeating enclosing context in identifiers.
 *   **Source Control:** Atomic, concise commits using `jj` to the runtime target bookmark (`MENTCI_TARGET_BOOKMARK`). Follow the per-prompt dirty-tree auto-commit rule in `Core/VersionControlProtocol.md`.
 *   **Origin Truth Rule:** A commit does not count as real/completed Mentci-AI history until the runtime target bookmark has been moved to it, pushed to `origin`, and verified on `origin`. Bookmark move and push are one atomic completion moment.
-*   **Git Heresy Rule:** Direct Git workflow usage is heresy in Mentci-AI and all of its components. Git is backend transport only and must never replace JJ as workflow authority.
+*   **Git Through JJ Rule:** In Mentci-AI and all of its components, we only use Git through JJ. Git may exist as backend transport/storage, but it must never replace JJ as workflow authority.
 
 ## 2. Environment & Isolation
 

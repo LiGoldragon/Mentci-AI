@@ -59,7 +59,7 @@ The strict separation of "logic" (code) and "data" (variables, paths, regexes, c
 *   **Branch:** All active development occurs on the runtime target bookmark (`MENTCI_TARGET_BOOKMARK`).
 *   **Push Cadence:** Every structural change must be immediately committed and pushed to the runtime target bookmark.
 *   **Origin Truth Rule:** A commit is not considered real or complete until the runtime target bookmark has been moved to that finalized revision, pushed to `origin`, and verified there. Bookmark movement and push are one atomic completion moment.
-*   **Git Heresy Rule:** Direct Git workflow usage is heresy. Git exists only as transport/storage under JJ and must never be used as workflow authority when JJ can answer the question.
+*   **Git Through JJ Rule:** We only use Git through JJ. Git exists only as transport/storage under JJ and must never be used as workflow authority when JJ can answer the question.
 *   **Release Lane Clarification:** `main` is reserved for explicit release/integration flows; do not treat `main` as the default active development bookmark.
 *   **Commit-Every-Intent (Level 5):** The Mentci Engine must automatically execute a `jj` commit after **every single atomic modification** (e.g., one file write, one replacement). Each commit represents exactly one intention. Combining multiple unrelated modifications into a single "success" commit is forbidden.
 *   **Authority:** Li Goldragon is the highest authority (Top Admin).

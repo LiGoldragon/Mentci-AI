@@ -12,10 +12,10 @@ description: Routine bounded JJ workflow for day-to-day Mentci-AI development, b
 ## Purpose
 Use this skill for normal JJ work: bounded inspection, intent commits, bookmark-safe finalization, push verification, review-range preparation, and everyday completion hygiene.
 
-**JJ means Jujutsu.** This is the normal day-to-day VCS/workflow lane in this repository. Do not fall back to Git for routine workflow questions or operations.
+**JJ means Jujutsu.** This is the normal day-to-day VCS/workflow lane in this repository. We only use Git through JJ, so do not fall back to direct Git for routine workflow questions or operations.
 
 ## Routine Rules
-- **Direct Git workflow usage is forbidden.** Git is backend transport only.
+- **We only use Git through JJ.** Git may be present as backend transport, but JJ is the operational interface.
 - **Use no-editor JJ automation.** Prefix automated JJ shell commands with `env JJ_EDITOR=: VISUAL=: EDITOR=:`.
 - **Keep revsets bounded.** Use explicit anchors and limits.
 - **Treat bookmark move + push as one completion moment.** Local completion claims are invalid without remote verification.

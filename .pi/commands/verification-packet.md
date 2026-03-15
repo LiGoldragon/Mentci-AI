@@ -4,7 +4,7 @@ description: Build a raw verification packet before completion claims
 
 Set `TARGET_BOOKMARK=${MENTCI_TARGET_BOOKMARK:-dev}` so the packet tracks the runtime target bookmark. Generate a `## Raw Evidence Packet` with raw command output blocks for:
 
-Treat `origin` as the authoritative completion truth: a local commit does not count as real/completed until the target bookmark has been pushed and verified on `origin`. Direct Git workflow usage is heresy; Git is backend transport only.
+Treat `origin` as the authoritative completion truth: a local commit does not count as real/completed until the target bookmark has been pushed and verified on `origin`. We only use Git through JJ; Git may be backend transport, but JJ is the workflow authority.
 
 1. `jj status`
 2. `jj log -r "${TARGET_BOOKMARK}|${TARGET_BOOKMARK}@origin|@|@-" --no-graph`
