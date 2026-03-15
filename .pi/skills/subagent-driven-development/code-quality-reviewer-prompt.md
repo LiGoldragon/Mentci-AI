@@ -12,8 +12,8 @@ Dispatch a subagent with the code-reviewer template:
 
   WHAT_WAS_IMPLEMENTED: [from implementer's report]
   PLAN_OR_REQUIREMENTS: Task N from [plan-file]
-  BASE_REV: [bounded base revision from jj-expert]
-  HEAD_REV: [bounded head revision from jj-expert]
+  BASE_REV: [bounded base revision from jj-agent per @.pi/skills/jj-intermediate/SKILL.md]
+  HEAD_REV: [bounded head revision from jj-agent per @.pi/skills/jj-intermediate/SKILL.md]
   DESCRIPTION: [task summary]
 ```
 

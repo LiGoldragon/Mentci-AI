@@ -26,7 +26,7 @@ You are reviewing code changes for production readiness.
 
 ## Review Range to Review
 
-Prepared upstream by `jj-expert`:
+Prepared upstream by the JJ review-range provider (`jj-agent` by default; `jj-expert` only for rescue):
 
 **Base Revision:** {BASE_REV}
 **Head Revision:** {HEAD_REV}

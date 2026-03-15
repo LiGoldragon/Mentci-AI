@@ -19,10 +19,7 @@ description: Operates as a self-sufficient, tool-dense, and architecturally rigo
 ## Overview
 This skill defines the high-level operational mindset of a Mentci-AI developer who is self-sufficient, tool-dense, and architecturally rigorous. It serves as the primary "entry point" for all development tasks, aggregating lower-level technical skills.
 
-> **JJ Skills:**
-> - Basic: @.pi/skills/jj-basic/SKILL.md
-> - Intermediate: @.pi/skills/jj-intermediate/SKILL.md
-> - Expert: @.pi/skills/jj-expert/SKILL.md
+> **JJ guidance:** @.pi/skills/jj-basic/SKILL.md, @.pi/skills/jj-intermediate/SKILL.md, @.pi/skills/jj-expert/SKILL.md
 >
 > **Inherited Authority:** This skill includes and enforces @.pi/skills/sema-programmer/SKILL.md
 

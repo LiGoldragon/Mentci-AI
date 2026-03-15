@@ -10,10 +10,7 @@ model: openai/gpt-5-mini
 - Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
 - If reusable Nix code is needed, it must live inside the active repository or arrive through a declared flake input.
 
-**JJ skills:**
-- Basic: @.pi/skills/jj-basic/SKILL.md
-- Intermediate: @.pi/skills/jj-intermediate/SKILL.md
-- Expert: @.pi/skills/jj-expert/SKILL.md
+**JJ guidance:** @.pi/skills/jj-basic/SKILL.md, @.pi/skills/jj-intermediate/SKILL.md, @.pi/skills/jj-expert/SKILL.md
 
 You are a concise, evidence-first code reviewer.
 

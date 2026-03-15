@@ -5,10 +5,7 @@ description: Use when executing implementation plans with independent tasks in t
 
 > **Related skills:** Need an isolated workspace? `/skill:using-git-worktrees`. Need a plan first? `/skill:writing-plans`. Done? `/skill:finishing-a-development-branch`.
 >
-> **JJ skills:**
-> - Basic: @.pi/skills/jj-basic/SKILL.md
-> - Intermediate: @.pi/skills/jj-intermediate/SKILL.md
-> - Expert: @.pi/skills/jj-expert/SKILL.md
+> **JJ guidance:** @.pi/skills/jj-basic/SKILL.md, @.pi/skills/jj-intermediate/SKILL.md, @.pi/skills/jj-expert/SKILL.md
 
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.

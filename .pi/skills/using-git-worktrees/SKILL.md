@@ -10,10 +10,7 @@ description: Use when starting feature work that needs isolation from current wo
 - Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
 
 
-> **JJ skills:**
-> - Basic: @.pi/skills/jj-basic/SKILL.md
-> - Intermediate: @.pi/skills/jj-intermediate/SKILL.md
-> - Expert: @.pi/skills/jj-expert/SKILL.md
+> **JJ guidance:** @.pi/skills/jj-basic/SKILL.md, @.pi/skills/jj-intermediate/SKILL.md, @.pi/skills/jj-expert/SKILL.md
 
 # Using Git Worktrees (Updated for Fractal DVCS)
 

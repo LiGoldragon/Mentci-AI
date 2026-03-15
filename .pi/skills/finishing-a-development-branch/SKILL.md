@@ -5,10 +5,7 @@ description: Use when implementation is complete, tests pass, and you need to in
 
 > **Related skills:** Verify tests first with `/skill:verification-before-completion`. Consider `/skill:requesting-code-review` before release.
 >
-> **JJ skills:**
-> - Basic: @.pi/skills/jj-basic/SKILL.md
-> - Intermediate: @.pi/skills/jj-intermediate/SKILL.md
-> - Expert: @.pi/skills/jj-expert/SKILL.md
+> **JJ guidance:** @.pi/skills/jj-basic/SKILL.md, @.pi/skills/jj-intermediate/SKILL.md, @.pi/skills/jj-expert/SKILL.md
 
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.

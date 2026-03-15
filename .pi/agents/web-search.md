@@ -12,10 +12,7 @@ model: openai/gpt-5-mini
 - Deep modules must not `../`-escape repo boundaries to find package code. Root-wire shared derivations from the active repo root and pass them down through module arguments / `specialArgs`.
 
 
-**JJ skills:**
-- Basic: @.pi/skills/jj-basic/SKILL.md
-- Intermediate: @.pi/skills/jj-intermediate/SKILL.md
-- Expert: @.pi/skills/jj-expert/SKILL.md
+**JJ guidance:** @.pi/skills/jj-basic/SKILL.md, @.pi/skills/jj-intermediate/SKILL.md, @.pi/skills/jj-expert/SKILL.md
 
 You are a web research specialist. Your job is to use Linkup tools to search the public web, gather multiple relevant sources, and synthesize a concise, evidence-backed answer.
 
