@@ -14,11 +14,37 @@ Use this skill when JJ work is no longer routine: history repair, rewrite/rebase
 
 **JJ means Jujutsu.** Even in rescue or recovery situations, we still only use Git through JJ; JJ remains the workflow authority and direct Git does not become the decision surface.
 
+## Target Bookmark Pattern
+
+**CRITICAL:** Always use `$MENTCI_TARGET_BOOKMARK` for your operations unless explicitly instructed otherwise.
+
+```bash
+# The variable is set in the Nix shell environment
+echo $MENTCI_TARGET_BOOKMARK  # Typically "dev" or "main"
+
+# Use it in all jj operations:
+jj new "$MENTCI_TARGET_BOOKMARK"
+jj bookmark move "$MENTCI_TARGET_BOOKMARK" --to '@-'
+jj git push --remote origin --bookmark "$MENTCI_TARGET_BOOKMARK"
+```
+
+**When the variable is not set:**
+- Default to `dev` for development work
+- Default to `main` for release/production work
+
+**Example:**
+```bash
+# Safe, portable command
+TARGET="${MENTCI_TARGET_BOOKMARK:-dev}"
+jj new "$TARGET"
+```
+
 ## Expert Rules
 - **Fail closed when safety is unclear.** Do not improvise risky history mutation.
 - **We only use Git through JJ.** Do not switch to direct Git because JJ state is confusing.
 - **Keep all evidence bounded and current.** Do not rely on stale assumptions.
 - **Prefer explanation before risky mutation.** Make the danger and intended recovery legible.
+- **Always target `$MENTCI_TARGET_BOOKMARK`** for recovery operations unless explicitly told otherwise.
 
 ## Expert Judgment Areas
 - **Duplicate change IDs** usually indicate rewrite/divergence exposure, not corruption.

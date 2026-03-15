@@ -1,57 +1,114 @@
+# JJ Intermediate Skills
+
+## Target Bookmark Pattern
+
+**CRITICAL:** Always use `$MENTCI_TARGET_BOOKMARK` for your operations unless explicitly instructed otherwise.
+
+```bash
+# The variable is set in the Nix shell environment
+echo $MENTCI_TARGET_BOOKMARK  # Typically "dev" or "main"
+
+# Use it in all jj operations:
+jj new "$MENTCI_TARGET_BOOKMARK"
+jj bookmark move "$MENTCI_TARGET_BOOKMARK" --to '@-'
+jj git push --remote origin --bookmark "$MENTCI_TARGET_BOOKMARK"
+```
+
+**When the variable is not set:**
+- Default to `dev` for development work
+- Default to `main` for release/production work
+
+**Example:**
+```bash
+# Safe, portable command
+TARGET="${MENTCI_TARGET_BOOKMARK:-dev}"
+jj new "$TARGET"
+```
+
+## Empty Commit Workflow
+
+**CRITICAL:** JJ creates an empty working-copy commit after every `jj commit -m "msg"`. This empty commit is NOT the actual work - it's just a marker.
+
+### The Workflow
+
+1. **Create the actual commit** (this has the changes):
+   ```bash
+   jj commit -m "Your meaningful commit message"
+   ```
+   - This creates a non-empty commit with your changes
+   - The working copy becomes an empty commit (`@`)
+   - Your actual work is at `@-` (the parent)
+
+2. **Move bookmark to the actual commit** (not the empty one):
+   ```bash
+   # Method 1: Using bookmark move with --to
+   jj bookmark move "$MENTCI_TARGET_BOOKMARK" --to '@-'
+   
+   # Method 2: Using bookmark set
+   jj bookmark set "$MENTCI_TARGET_BOOKMARK" '@-'
+   ```
+   - This moves the bookmark to point to the parent commit (the one with changes)
+   - The empty working-copy commit is skipped
+
+3. **Push to remote**:
+   ```bash
+   jj git push --remote origin --bookmark "$MENTCI_TARGET_BOOKMARK"
+   ```
+
+### Why This Matters
+
+- **Empty commits should NOT be pushed** - they're just JJ's internal marker
+- **The bookmark MUST point to `@-`** - the parent commit with actual changes
+- **Pushing the empty commit** creates a useless commit on the remote
+
+### Quick Reference
+
+```bash
+# 1. Commit your changes (creates non-empty commit, working copy becomes empty)
+jj commit -m "Add new feature"
+
+# 2. Verify the commit
+jj log --limit 3
+
+# 3. Move bookmark to the actual commit (skip the empty working copy)
+jj bookmark move "$MENTCI_TARGET_BOOKMARK" --to '@-'
+
+# 4. Push to remote
+jj git push --remote origin --bookmark "$MENTCI_TARGET_BOOKMARK"
+```
+
+### Common Mistakes
+
+**WRONG:**
+```bash
+jj commit -m "message"
+jj git push  # Pushes empty commit!
+```
+
+**RIGHT:**
+```bash
+jj commit -m "message"
+jj bookmark move "$MENTCI_TARGET_BOOKMARK" --to '@-'  # Move to actual commit
+jj git push --remote origin     # Push the real work
+```
+
+### Important Notes
+
+- **Revset syntax:** Use `'@-'` (quoted) when passing as argument to `jj bookmark set`
+- **Bookmark move:** Use `--to <revset>` syntax for moving bookmarks
+- **Push explicit:** Use `--bookmark <name>` to push specific bookmarks
+- **Forward movement:** JJ refuses to move bookmarks backwards/sideways by default; use `--allow-backwards` if needed
+
+### Alternative: Commit and Push in One Step
+
+If you want to avoid the empty commit entirely:
+```bash
+jj describe -m "Your message"  # Set message without creating commit
+jj commit  # Create commit without creating new working copy
+jj bookmark move "$MENTCI_TARGET_BOOKMARK" --to '@-'
+jj git push --remote origin
+```
+
 ---
-name: jj-intermediate
-description: Routine bounded JJ workflow for day-to-day Mentci-AI development, bookmark-safe execution, and completion hygiene
----
 
-# JJ Intermediate
-
-**Authority:** `Core/VersionControlProtocol.md` remains the protocol authority. This skill is the routine JJ execution layer.
-
-> **Companion levels:** Start with @.pi/skills/jj-basic/SKILL.md for the baseline mental model. Escalate to @.pi/skills/jj-expert/SKILL.md when rewrite/recovery/rescue judgment is required.
-
-## Purpose
-Use this skill for normal JJ work: bounded inspection, intent commits, bookmark-safe finalization, push verification, review-range preparation, and everyday completion hygiene.
-
-**JJ means Jujutsu.** This is the normal day-to-day VCS/workflow lane in this repository. We only use Git through JJ, so do not fall back to direct Git for routine workflow questions or operations.
-
-## Routine Rules
-- **We only use Git through JJ.** Git may be present as backend transport, but JJ is the operational interface.
-- **Use no-editor JJ automation.** Prefix automated JJ shell commands with `env JJ_EDITOR=: VISUAL=: EDITOR=:`.
-- **Keep revsets bounded.** Use explicit anchors and limits.
-- **Treat bookmark move + push as one completion moment.** Local completion claims are invalid without remote verification.
-- **Prefer `jj commit -m` on the intended non-empty revision.** Avoid pre-emptive `jj describe` on `@`, on a working-copy wrapper, or on an empty node.
-- **Keep the working copy anonymous while work is still in progress.** Anonymous here means: bounded inspection (`jj status`, bounded `jj log`, `jj diff --summary`) is fine, but do not name/describe the working-copy node before real content is ready to be captured.
-- **Never move a runtime bookmark to an empty commit by accident.** A normal empty working-copy node is not permission to target or push an empty commit.
-- **A description does not make an empty commit valid.** What matters is whether the revision carries real content changes.
-
-## Routine Preflight
-Before non-trivial JJ work:
-1. Establish bounded state with `jj status`.
-2. Resolve the runtime target bookmark in the current repository context.
-3. Inspect a bounded log around the runtime bookmark, `@`, and `@-`.
-4. Run `jj diff --summary` when commit/finalization state matters.
-
-## Routine Execution Pattern
-- Inspect first.
-- Make one logical change at a time.
-- Verify that real non-empty content exists before naming/finalizing the revision.
-- Capture the intended non-empty revision with `jj commit -m` rather than trying to pre-name the working-copy wrapper.
-- Keep completion evidence explicit.
-- Verify bookmark alignment on `origin` before claiming success.
-- Leave a clean handoff state after verified completion.
-
-## Routine Uses
-Use this skill for:
-- preparing bounded review ranges,
-- routine preflight before editing or finalizing,
-- intent/finalization work through `jj-agent`,
-- routine bookmark movement and push verification,
-- everyday nested-repo JJ handling.
-
-## When To Escalate
-Escalate to @.pi/skills/jj-expert/SKILL.md when you encounter:
-- rewrite or rebase ambiguity,
-- duplicate change IDs,
-- side-bookmark classification/cleanup,
-- recovery from mistaken history operations,
-- any situation where safety is unclear.
+**Status:** JJ intermediate skills documented with target bookmark pattern

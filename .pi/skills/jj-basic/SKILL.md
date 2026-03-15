@@ -39,6 +39,31 @@ Use this skill whenever repository state, bookmarks, change IDs, nested repos, o
 - Do not move bookmarks onto empty revisions by accident.
 - If the situation becomes rewrite-, rescue-, or cleanup-heavy, escalate to @.pi/skills/jj-expert/SKILL.md.
 
+## Target Bookmark Pattern
+
+**CRITICAL:** Always use `$MENTCI_TARGET_BOOKMARK` for your operations unless explicitly instructed otherwise.
+
+```bash
+# The variable is set in the Nix shell environment
+echo $MENTCI_TARGET_BOOKMARK  # Typically "dev" or "main"
+
+# Use it in all jj operations:
+jj new "$MENTCI_TARGET_BOOKMARK"
+jj bookmark move "$MENTCI_TARGET_BOOKMARK" --to '@-'
+jj git push --remote origin --bookmark "$MENTCI_TARGET_BOOKMARK"
+```
+
+**When the variable is not set:**
+- Default to `dev` for development work
+- Default to `main` for release/production work
+
+**Example:**
+```bash
+# Safe, portable command
+TARGET="${MENTCI_TARGET_BOOKMARK:-dev}"
+jj new "$TARGET"
+```
+
 ## When This Level Is Enough
 Use this skill by itself for:
 - read-only orientation,
