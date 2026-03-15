@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use mentci_vcs::{
-    component_split_report, ComponentRepoManifest, FlakeLock, Jujutsu, VCS,
+    component_split_report, sync_required_submodules, ComponentRepoManifest, FlakeLock, Jujutsu,
+    VCS,
 };
 use std::env;
 use std::path::PathBuf;
@@ -9,7 +10,7 @@ fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
         eprintln!("Usage: mentci-vcs <command> [args]");
-        eprintln!("Commands: intent-start <task>, status, diff, commit <message>, component-split-status [--manifest <path>] [--flake-lock <path>]");
+        eprintln!("Commands: intent-start <task>, status, diff, commit <message>, component-split-status [--manifest <path>] [--flake-lock <path>], sync-required-submodules [--manifest <path>] [--apply]");
         std::process::exit(1);
     }
 
@@ -43,6 +44,9 @@ fn main() -> Result<()> {
         }
         "component-split-status" => {
             run_component_split_status(&repo_root, &args[2..])?;
+        }
+        "sync-required-submodules" => {
+            run_sync_required_submodules(&repo_root, &args[2..])?;
         }
         _ => {
             eprintln!("Unknown command: {}", args[1]);
@@ -110,6 +114,71 @@ fn run_component_split_status(repo_root: &std::path::Path, args: &[String]) -> R
 
     if report.violation_count() > 0 {
         anyhow::bail!("component split policy violations detected");
+    }
+
+    Ok(())
+}
+
+fn run_sync_required_submodules(repo_root: &std::path::Path, args: &[String]) -> Result<()> {
+    let mut manifest_path = PathBuf::from("Components/contracts/rust-component-repos.toml");
+    let mut apply = false;
+
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "--manifest" => {
+                let value = args.get(i + 1).context("--manifest requires a value")?;
+                manifest_path = PathBuf::from(value);
+                i += 2;
+            }
+            "--apply" => {
+                apply = true;
+                i += 1;
+            }
+            unknown => {
+                anyhow::bail!("Unknown argument for sync-required-submodules: {unknown}");
+            }
+        }
+    }
+
+    let manifest = ComponentRepoManifest::from_path(&repo_root.join(&manifest_path))?;
+    let report = if apply {
+        sync_required_submodules(repo_root, &manifest)?
+    } else {
+        mentci_vcs::required_submodule_sync_report(repo_root, &manifest)?
+    };
+
+    println!(
+        "required submodule sync: {} tracked, {} need sync, {} issues, mode={}",
+        report.statuses.len(),
+        report.needs_sync_count(),
+        report.issue_count(),
+        if apply { "apply" } else { "dry-run" }
+    );
+
+    for status in &report.statuses {
+        let tracked_rev = status.tracked_rev.as_deref().unwrap_or("-");
+        let working_rev = status.working_rev.as_deref().unwrap_or("-");
+        if status.issues.is_empty() && !status.needs_sync {
+            println!(
+                "[ok] {} path={} tracked_rev={} working_rev={}",
+                status.id, status.path, tracked_rev, working_rev
+            );
+        } else {
+            let mut details = Vec::new();
+            if status.needs_sync {
+                details.push("checkout drift".to_owned());
+            }
+            details.extend(status.issues.iter().cloned());
+            println!(
+                "[sync] {} path={} tracked_rev={} working_rev={} issues={}",
+                status.id,
+                status.path,
+                tracked_rev,
+                working_rev,
+                details.join("; ")
+            );
+        }
     }
 
     Ok(())

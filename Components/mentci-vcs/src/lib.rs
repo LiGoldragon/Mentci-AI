@@ -183,6 +183,32 @@ impl ComponentSplitReport {
     }
 }
 
+#[derive(Debug)]
+pub struct RequiredSubmoduleSyncStatus {
+    pub id: String,
+    pub path: String,
+    pub repo: String,
+    pub tracked_rev: Option<String>,
+    pub working_rev: Option<String>,
+    pub needs_sync: bool,
+    pub issues: Vec<String>,
+}
+
+#[derive(Debug)]
+pub struct RequiredSubmoduleSyncReport {
+    pub statuses: Vec<RequiredSubmoduleSyncStatus>,
+}
+
+impl RequiredSubmoduleSyncReport {
+    pub fn needs_sync_count(&self) -> usize {
+        self.statuses.iter().filter(|x| x.needs_sync).count()
+    }
+
+    pub fn issue_count(&self) -> usize {
+        self.statuses.iter().map(|x| x.issues.len()).sum()
+    }
+}
+
 pub fn component_split_report(
     repo_root: &Path,
     manifest: &ComponentRepoManifest,
@@ -191,6 +217,74 @@ pub fn component_split_report(
     component_split_report_with(repo_root, manifest, flake_lock, |root, path| {
         git_path_is_submodule(root, path)
     })
+}
+
+pub fn required_submodule_sync_report(
+    repo_root: &Path,
+    manifest: &ComponentRepoManifest,
+) -> Result<RequiredSubmoduleSyncReport> {
+    required_submodule_sync_report_with(repo_root, manifest, |root, path| {
+        git_path_index_gitlink_rev(root, path)
+    }, |root, path| git_path_head_rev(root, path))
+}
+
+pub fn required_submodule_sync_report_with<F, G>(
+    repo_root: &Path,
+    manifest: &ComponentRepoManifest,
+    mut tracked_rev_for_path: F,
+    mut working_rev_for_path: G,
+) -> Result<RequiredSubmoduleSyncReport>
+where
+    F: FnMut(&Path, &str) -> Result<Option<String>>,
+    G: FnMut(&Path, &str) -> Result<Option<String>>,
+{
+    let mut statuses = Vec::new();
+
+    for component in manifest.components.iter().filter(|x| x.required_submodule) {
+        let tracked_rev = tracked_rev_for_path(repo_root, &component.path)?;
+        let working_rev = working_rev_for_path(repo_root, &component.path)?;
+        let mut issues = Vec::new();
+
+        if tracked_rev.is_none() {
+            issues.push("root gitlink missing".to_owned());
+        }
+        if working_rev.is_none() {
+            issues.push("submodule checkout missing".to_owned());
+        }
+
+        let needs_sync = match (tracked_rev.as_ref(), working_rev.as_ref()) {
+            (Some(tracked), Some(working)) => tracked != working,
+            (Some(_), None) => true,
+            _ => false,
+        };
+
+        statuses.push(RequiredSubmoduleSyncStatus {
+            id: component.id.clone(),
+            path: component.path.clone(),
+            repo: component.repo.clone(),
+            tracked_rev,
+            working_rev,
+            needs_sync,
+            issues,
+        });
+    }
+
+    Ok(RequiredSubmoduleSyncReport { statuses })
+}
+
+pub fn sync_required_submodules(
+    repo_root: &Path,
+    manifest: &ComponentRepoManifest,
+) -> Result<RequiredSubmoduleSyncReport> {
+    let report = required_submodule_sync_report(repo_root, manifest)?;
+
+    for status in report.statuses.iter().filter(|x| x.tracked_rev.is_some()) {
+        if status.needs_sync || status.working_rev.is_none() {
+            git_submodule_update(repo_root, &status.path)?;
+        }
+    }
+
+    required_submodule_sync_report(repo_root, manifest)
 }
 
 pub fn component_split_report_with<F>(
@@ -247,6 +341,10 @@ where
 }
 
 fn git_path_is_submodule(repo_root: &Path, path: &str) -> Result<bool> {
+    Ok(git_path_index_gitlink_rev(repo_root, path)?.is_some())
+}
+
+fn git_path_index_gitlink_rev(repo_root: &Path, path: &str) -> Result<Option<String>> {
     let output = Command::new("git")
         .current_dir(repo_root)
         .arg("ls-files")
@@ -257,19 +355,40 @@ fn git_path_is_submodule(repo_root: &Path, path: &str) -> Result<bool> {
         .with_context(|| format!("Failed to run git ls-files for {path}"))?;
 
     if !output.status.success() {
-        return Ok(false);
+        return Ok(None);
     }
 
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let Some(first_line) = stdout.lines().next() else {
-        return Ok(false);
-    };
+    Ok(gitlink_rev_from_ls_files(&String::from_utf8_lossy(&output.stdout)).map(ToOwned::to_owned))
+}
 
-    let Some(mode) = first_line.split_whitespace().next() else {
-        return Ok(false);
-    };
+fn gitlink_rev_from_ls_files(stdout: &str) -> Option<&str> {
+    let first_line = stdout.lines().next()?;
+    let mut parts = first_line.split_whitespace();
+    let mode = parts.next()?;
+    let rev = parts.next()?;
+    if mode != "160000" {
+        return None;
+    }
+    Some(rev)
+}
 
-    Ok(mode == "160000")
+fn git_submodule_update(repo_root: &Path, path: &str) -> Result<()> {
+    let status = Command::new("git")
+        .current_dir(repo_root)
+        .arg("submodule")
+        .arg("update")
+        .arg("--init")
+        .arg("--checkout")
+        .arg("--")
+        .arg(path)
+        .status()
+        .with_context(|| format!("Failed to run git submodule update for {path}"))?;
+
+    if !status.success() {
+        anyhow::bail!("git submodule update failed for {path} with exit code: {:?}", status.code());
+    }
+
+    Ok(())
 }
 
 fn git_path_head_rev(repo_root: &Path, path: &str) -> Result<Option<String>> {
@@ -378,5 +497,86 @@ required_flake_lock = true
         assert_eq!(report.violation_count(), 2);
         assert_eq!(report.statuses.len(), 1);
         assert_eq!(report.statuses[0].violations.len(), 2);
+    }
+
+    #[test]
+    fn required_submodule_sync_report_flags_revision_drift() {
+        let manifest = ComponentRepoManifest {
+            version: 1,
+            components: vec![
+                ComponentRepoSpec {
+                    id: "mentci-aid".into(),
+                    path: "Components/mentci-aid".into(),
+                    flake_input: "mentci-aid-src".into(),
+                    repo: "git@github.com:LiGoldragon/mentci-aid.git".into(),
+                    required_submodule: true,
+                    required_flake_lock: true,
+                },
+                ComponentRepoSpec {
+                    id: "mentci-execute".into(),
+                    path: "Components/mentci-execute".into(),
+                    flake_input: "mentci-execute-src".into(),
+                    repo: "git@github.com:LiGoldragon/mentci-execute.git".into(),
+                    required_submodule: false,
+                    required_flake_lock: true,
+                },
+            ],
+        };
+
+        let report = required_submodule_sync_report_with(
+            Path::new("."),
+            &manifest,
+            |_root, path| {
+                if path == "Components/mentci-aid" {
+                    Ok(Some("tracked-rev".into()))
+                } else {
+                    Ok(None)
+                }
+            },
+            |_root, path| {
+                if path == "Components/mentci-aid" {
+                    Ok(Some("working-rev".into()))
+                } else {
+                    Ok(None)
+                }
+            },
+        )
+        .expect("sync report");
+
+        assert_eq!(report.statuses.len(), 1);
+        assert_eq!(report.needs_sync_count(), 1);
+        assert_eq!(report.statuses[0].id, "mentci-aid");
+        assert!(report.statuses[0].needs_sync);
+        assert!(report.statuses[0].issues.is_empty());
+    }
+
+    #[test]
+    fn required_submodule_sync_report_flags_missing_checkout() {
+        let manifest = ComponentRepoManifest {
+            version: 1,
+            components: vec![ComponentRepoSpec {
+                id: "mentci-aid".into(),
+                path: "Components/mentci-aid".into(),
+                flake_input: "mentci-aid-src".into(),
+                repo: "git@github.com:LiGoldragon/mentci-aid.git".into(),
+                required_submodule: true,
+                required_flake_lock: true,
+            }],
+        };
+
+        let report = required_submodule_sync_report_with(
+            Path::new("."),
+            &manifest,
+            |_root, _path| Ok(Some("tracked-rev".into())),
+            |_root, _path| Ok(None),
+        )
+        .expect("sync report");
+
+        assert_eq!(report.needs_sync_count(), 1);
+        assert_eq!(report.issue_count(), 1);
+        assert_eq!(
+            report.statuses[0].issues,
+            vec!["submodule checkout missing".to_owned()]
+        );
     }
 }
