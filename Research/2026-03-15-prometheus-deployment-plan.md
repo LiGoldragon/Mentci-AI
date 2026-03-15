@@ -1,13 +1,50 @@
 # Prometheus LLM Model Deployment Plan
 
-## Critical Warning: Service Disruption
+## CRITICAL: Pi Coding Agent IS RUNNING
 
-**Yes, llama-server WILL restart during deployment.** When you rebuild and deploy the NixOS configuration:
+**The Pi coding agent is currently active on Prometheus** and connected to:
+- `prometheus-main-sanity` (port 11436) - Llama-3.2-1B
+- `prometheus-main-reasoning` (port 11437) - Qwen3.5-35B
 
-1. **systemd will stop** the old `prometheus-llama-*` services
-2. **systemd will start** the new `prometheus-llama-*` services with the new model paths
-3. **All in-progress inference requests will be terminated**
-4. **The Pi agent runtime will lose its LLM connection** during the restart
+**When llama-server restarts:**
+1. **Pi coding agent WILL crash** or lose connection
+2. **In-progress work WILL be lost**
+3. **You WILL be disconnected** from the active session
+
+## Phased Deployment Strategy
+
+### Phase 1: Non-Disruptive Changes (DEPLOY NOW) ✅
+
+These changes can be deployed **without restarting llama-server**:
+
+1. ✅ **DeepSeek shards added to Nix store** (already done)
+2. ✅ **Hashes in `prometheus-model-lock.json` fixed** (already done)
+3. ✅ **Nix build succeeds** (local files will be found)
+
+**Status:** These are already completed and ready to use!
+
+### Phase 2: Model Renaming (DEPLOY WITH CAUTION)
+
+These changes require llama-server restart:
+
+1. Update `prometheus-model-catalog.json` with new model names
+2. Update `prometheus-agent-settings.json` 
+3. Update `homeModule/min/default.nix`
+
+**Impact:** llama-server will restart, Pi agent will crash
+
+**Recommended timing:**
+- Schedule during low-usage period
+- Notify Pi coding agent to pause/complete work
+- Have rollback ready
+
+### Phase 3: Full Deployment (LAST STEP)
+
+Deploy the complete NixOS configuration with all changes.
+
+**Impact:** Full service disruption, 5-10 minutes downtime
+
+---
 
 ## Deployment Mechanism
 
