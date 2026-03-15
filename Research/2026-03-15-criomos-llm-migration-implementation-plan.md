@@ -60,38 +60,79 @@ This plan migrates all LLM models on Prometheus to Nix store fixed-output deriva
 
 ---
 
-## Phase 1: Compute SHA256 Hashes
+## Phase 1: Add Local Files to Nix Store
 
-**Goal:** Get integrity hashes for all model files.
+**Goal:** Add all model files from Prometheus's local store to the Nix store to avoid re-downloading during Nix evaluation.
 
-### Steps
+### Option A: Add Local Files to Nix Store (Recommended for Prometheus-only)
 
-1. **SSH to Prometheus and compute hashes:**
+This is the fastest approach - files already on Prometheus are added to the Nix store without any network downloads.
+
+**Steps:**
+
+1. **Add all model files to the Nix store on Prometheus:**
    ```bash
    ssh li@202:68bc:1221:1b13:5397:2a56:4aea:d4a9 "
-   echo 'DeepSeek Shard 1:'
-   nix-hash --type sha256 --flat /home/li/.local/share/prometheus-llama/models/DeepSeek-R1-Distill-Llama-70B-Q8_0-00001-of-00002.gguf
+   cd /home/li/.local/share/prometheus-llama/models/
    
-   echo 'DeepSeek Shard 2:'
-   nix-hash --type sha256 --flat /home/li/.local/share/prometheus-llama/models/DeepSeek-R1-Distill-Llama-70B-Q8_0-00002-of-00002.gguf
+   echo '=== Adding DeepSeek shards ==='
+   DEEPSHARD1=\$(nix-store --add DeepSeek-R1-Distill-Llama-70B-Q8_0-00001-of-00002.gguf)
+   DEEPSHARD2=\$(nix-store --add DeepSeek-R1-Distill-Llama-70B-Q8_0-00002-of-00002.gguf)
    
-   echo 'Qwen3.5:'
-   nix-hash --type sha256 --flat ~/.local/share/prometheus-llama/models/Qwen3.5-35B-A3B-Q8_0.gguf
+   echo '=== Adding Qwen3.5 ==='
+   QWEN35=\$(nix-store --add Qwen3.5-35B-A3B-Q8_0.gguf)
    
-   echo 'Llama-3.2-1B:'
-   nix-hash --type sha256 --flat ~/.local/share/prometheus-llama/models/llama-3.2-1b-instruct-q4_k_m.gguf
-   "
+   echo '=== Adding Llama-3.2-1B ==='
+   LLAMA1B=\$(nix-store --add llama-3.2-1b-instruct-q4_k_m.gguf)
+   
+   # Output store paths for use in Nix expressions
+   echo '{'
+   echo '  deepseekShard1 = "'\$DEEPSHARD1'";'
+   echo '  deepseekShard2 = "'\$DEEPSHARD2'";'
+   echo '  qwen35 = "'\$QWEN35'";'
+   echo '  llama1b = "'\$LLAMA1B'";'
+   echo '}'
+   " > Components/CriomOS/data/config/pi/prometheus-model-store-paths.nix
    ```
 
-2. **Alternative: Use HuggingFace URLs** (if files are available online):
-   - DeepSeek: `https://huggingface.co/unsloth/DeepSeek-R1-Distill-Llama-70B-GGUF`
-   - Qwen3.5: `https://huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF`
-   - Llama-3.2: `https://huggingface.co/hugging-quants/Llama-3.2-1B-Instruct-Q4_K_M-GGUF`
+2. **Verify the mapping file:**
+   ```bash
+   cat Components/CriomOS/data/config/pi/prometheus-model-store-paths.nix
+   # Should show store paths like:
+   # {
+   #   deepseekShard1 = "/nix/store/abc123...-DeepSeek-R1-Distill-Llama-70B-Q8_0-00001-of-00002.gguf";
+   #   ...
+   # }
+   ```
 
-### Verification
+### Option B: Use HuggingFace URLs (Portable but slower)
 
-- All hashes must be valid base64-encoded SHA256 (nix-hash format)
-- For multi-shard models, compute hash for each shard separately
+If you want the configuration to work on any machine (not just Prometheus):
+
+1. **Compute hashes from HuggingFace URLs:**
+   ```bash
+   # On any machine with Nix
+   nix-prefetch-url --unpack "https://huggingface.co/unsloth/DeepSeek-R1-Distill-Llama-70B-GGUF/resolve/main/DeepSeek-R1-Distill-Llama-70B-Q8_0-00001-of-00002.gguf"
+   ```
+
+2. **Use in `prometheus-model-lock.json`:**
+   ```json
+   {
+     "source": {
+       "kind": "fetchurl",
+       "url": "https://huggingface.co/unsloth/DeepSeek-R1-Distill-Llama-70B-GGUF/resolve/main/DeepSeek-R1-Distill-Llama-70B-Q8_0-00001-of-00002.gguf",
+       "sha256": "sha256-abc123..."
+     }
+   }
+   ```
+
+### Recommendation
+
+- **For Prometheus-only deployment:** Use Option A (local files) - fastest, no downloads
+- **For portable configuration:** Use Option B (HuggingFace URLs) - works on any machine
+- **Best of both:** Use Option A for Prometheus, Option B as fallback in Nix expressions
+
+See `Research/2026-03-15-nix-local-files-to-store.md` for detailed explanation.
 
 ---
 
