@@ -101,7 +101,8 @@ Expected: PASS
 
 Ask the `jj-agent` agent to:
 - establish bounded JJ state,
-- finalize the current intent into the correct described revision,
+- finalize the current intent onto the correct non-empty revision,
+- capture it with an explicit commit message rather than pre-emptively describing the working-copy node,
 - push the runtime target bookmark,
 - verify local/remote bookmark alignment.
 Use `jj-expert` only if the `jj-agent` lane is unavailable or misbehaving.

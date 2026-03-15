@@ -19,6 +19,8 @@ Use this skill for normal JJ work: bounded inspection, intent commits, bookmark-
 - **Use no-editor JJ automation.** Prefix automated JJ shell commands with `env JJ_EDITOR=: VISUAL=: EDITOR=:`.
 - **Keep revsets bounded.** Use explicit anchors and limits.
 - **Treat bookmark move + push as one completion moment.** Local completion claims are invalid without remote verification.
+- **Prefer `jj commit -m` on the intended non-empty revision.** Avoid pre-emptive `jj describe` on `@`, on a working-copy wrapper, or on an empty node.
+- **Keep the working copy anonymous while work is still in progress.** Anonymous here means: bounded inspection (`jj status`, bounded `jj log`, `jj diff --summary`) is fine, but do not name/describe the working-copy node before real content is ready to be captured.
 - **Never move a runtime bookmark to an empty commit by accident.** A normal empty working-copy node is not permission to target or push an empty commit.
 
 ## Routine Preflight
@@ -31,6 +33,8 @@ Before non-trivial JJ work:
 ## Routine Execution Pattern
 - Inspect first.
 - Make one logical change at a time.
+- Verify that real non-empty content exists before naming/finalizing the revision.
+- Capture the intended non-empty revision with `jj commit -m` rather than trying to pre-name the working-copy wrapper.
 - Keep completion evidence explicit.
 - Verify bookmark alignment on `origin` before claiming success.
 - Leave a clean handoff state after verified completion.

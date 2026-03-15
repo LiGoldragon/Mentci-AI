@@ -21,6 +21,8 @@ JJ means Jujutsu, the repository's workflow/VCS replacement for Git. You are the
 ## Required Automation Rules
 - Prefix every JJ command with: `env JJ_EDITOR=: VISUAL=: EDITOR=:`
 - Use explicit flags so no command opens an editor.
+- Prefer `jj commit -m` on non-empty content rather than pre-emptive `jj describe` on `@`, a working-copy wrapper, or an empty node.
+- Keep the working copy anonymous until there is real content to capture.
 - Keep revsets bounded and evidence-first.
 - Use `origin` alignment as completion truth.
 - Prefer explanation before risky rewrites.

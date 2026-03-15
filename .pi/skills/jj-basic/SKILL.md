@@ -25,11 +25,15 @@ Use this skill whenever repository state, bookmarks, change IDs, nested repos, o
 - **Change IDs** describe logical intent across rewrites.
 - **Commit IDs** identify the exact instantiated revision.
 - **The empty working-copy node is normal.** Do not treat it as accidental debris by default.
+- **Working-copy wrapper:** the current working-copy node `@` that wraps in-progress edits or handoff state. It may be empty and should not be pre-emptively named/described just to make later bookmarking easier.
 - **Empty working-copy node ≠ empty commit.** A normal empty working-copy node may exist as transient workspace/handoff state. That does not make empty commits valid bookmark targets or valid pushes.
 
 ## Safe Basic Posture
 - Start with bounded inspection, not broad history scans.
 - Prefer explicit revset anchors and small limits.
+- Keep the working copy (`@`) anonymous while work is still in progress.
+- Prefer committing non-empty content with an explicit `jj commit -m` rather than pre-emptively naming an in-progress or empty node.
+- Do not use `jj describe` on a working-copy wrapper or empty node just to get a description in place.
 - Do not claim completion from local state alone.
 - Do not move bookmarks onto empty revisions by accident.
 - If the situation becomes rewrite-, rescue-, or cleanup-heavy, escalate to @.pi/skills/jj-expert/SKILL.md.

@@ -50,7 +50,8 @@ Follow @.pi/skills/jj-intermediate/SKILL.md for routine finalization mechanics a
 #### Option 1: Move bookmark (no tag)
 
 Ask `jj-agent` to:
-- finalize the current intent into the correct described revision,
+- finalize the current intent onto the correct non-empty revision,
+- capture it with an explicit commit message rather than pre-emptively describing the working-copy node,
 - move `$MENTCI_TARGET_BOOKMARK` to that finalized revision,
 - push the bookmark,
 - return bounded verification showing `$MENTCI_TARGET_BOOKMARK` and `$MENTCI_TARGET_BOOKMARK@origin`.
@@ -95,4 +96,4 @@ Confirm intent, then ask `jj-agent` to abandon the target revisions with bounded
 ## Finalization Guardrails
 Use @.pi/skills/jj-intermediate/SKILL.md for bounded preflight, bookmark safety, and empty-working-node hygiene before finalizing. Use @.pi/skills/jj-expert/SKILL.md when duplicate change IDs, side bookmarks, or cleanup classification enter the flow.
 
-After the work is described, run `execute session-guard` and `execute root-guard` through `jj-agent` to certify the session narrative and filesystem invariants. Use `jj-expert` only as fallback/rescue when the JJ state is ambiguous or recovery-heavy. Confirm that a research artifact has been created or updated in `Research/<priority>/<Subject>/` for the completed prompt, because prompts without research coverage are not complete. Include this verification in your completion notes and relay any outstanding bookmark classifications before the final handoff.
+After the work is finalized on the intended non-empty revision, run `execute session-guard` and `execute root-guard` through `jj-agent` to certify the session narrative and filesystem invariants. Use `jj-expert` only as fallback/rescue when the JJ state is ambiguous or recovery-heavy. Confirm that a research artifact has been created or updated in `Research/<priority>/<Subject>/` for the completed prompt, because prompts without research coverage are not complete. Include this verification in your completion notes and relay any outstanding bookmark classifications before the final handoff.
