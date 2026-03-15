@@ -5,6 +5,7 @@ description: Operates as a self-sufficient, tool-dense, and architecturally rigo
 
 ## CRITICAL HERESY RULE: NO EMPTY COMMITS
 - Pushing empty commits is HERESY! It is a huge failure of protocol. You MUST NEVER push an empty commit to the remote (unless it is an intentionally preserved directive/directive-commit). Always verify the commit is not empty (ensure there is no `(empty)` tag in `jj log`) before moving the target bookmark and pushing.
+- This rule forbids pushing empty commits to `origin`. It does not forbid JJ's normal empty working-copy node between tasks; see @Library/documentation/JujutsuJjUsage.md for the correct empty-working-node mental model.
 
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.
@@ -18,7 +19,9 @@ description: Operates as a self-sufficient, tool-dense, and architecturally rigo
 ## Overview
 This skill defines the high-level operational mindset of a Mentci-AI developer who is self-sufficient, tool-dense, and architecturally rigorous. It serves as the primary "entry point" for all development tasks, aggregating lower-level technical skills.
 
-> **Inherited Authority:** This skill includes and enforces `/skill:sema-programmer`.
+> **JJ Training:** @Library/documentation/JujutsuJjUsage.md
+>
+> **Inherited Authority:** This skill includes and enforces @.pi/skills/sema-programmer/SKILL.md
 
 ## Core Identity: Tool-Dense Independence
 An Independent Developer does not guess; they verify. They don't work in raw text; they work in structure. They prioritize the **Logical Plane** and **External Validation** over LLM internal weights.
