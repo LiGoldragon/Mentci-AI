@@ -6,6 +6,14 @@ use mentci_vcs::{
 use std::env;
 use std::path::PathBuf;
 
+fn command_message(args: &[String], command: &str, placeholder: &str) -> Result<String> {
+    if args.len() < 3 {
+        anyhow::bail!("Usage: mentci-vcs {command} <{placeholder}>");
+    }
+
+    Ok(args[2..].join(" "))
+}
+
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
@@ -19,20 +27,13 @@ fn main() -> Result<()> {
 
     match args[1].as_str() {
         "intent-start" => {
-            if args.len() < 3 {
-                eprintln!("Usage: mentci-vcs intent-start <task>");
-                std::process::exit(1);
-            }
-            let task = &args[2];
+            let task = command_message(&args, "intent-start", "task")?;
             println!("Starting intent: {}", task);
             vcs.new_with_message(&format!("intent: {}", task))?;
         }
         "commit" => {
-            if args.len() < 3 {
-                eprintln!("Usage: mentci-vcs commit <message>");
-                std::process::exit(1);
-            }
-            vcs.commit(&args[2])?;
+            let message = command_message(&args, "commit", "message")?;
+            vcs.commit(&message)?;
         }
         "status" => {
             let out = vcs.status()?;
@@ -182,4 +183,31 @@ fn run_sync_required_submodules(repo_root: &std::path::Path, args: &[String]) ->
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn command_message_collects_multiple_words() {
+        let args = vec![
+            "mentci-vcs".to_owned(),
+            "commit".to_owned(),
+            "sync".to_owned(),
+            "required".to_owned(),
+            "subrepos".to_owned(),
+        ];
+
+        let message = command_message(&args, "commit", "message").expect("message");
+        assert_eq!(message, "sync required subrepos");
+    }
+
+    #[test]
+    fn command_message_requires_trailing_words() {
+        let args = vec!["mentci-vcs".to_owned(), "commit".to_owned()];
+
+        let error = command_message(&args, "commit", "message").expect_err("error");
+        assert!(error.to_string().contains("Usage: mentci-vcs commit <message>"));
+    }
 }
