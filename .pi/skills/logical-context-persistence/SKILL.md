@@ -4,6 +4,11 @@ description: Use to systematically persist session knowledge into the repo's sem
 ---
 
 > **Related skills:** `/skill:sema-programmer`, `/skill:writing-plans`, `/skill:verification-before-completion`
+>
+> **JJ skills:**
+> - Basic: @.pi/skills/jj-basic/SKILL.md
+> - Intermediate: @.pi/skills/jj-intermediate/SKILL.md
+> - Expert: @.pi/skills/jj-expert/SKILL.md
 
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.

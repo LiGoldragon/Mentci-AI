@@ -5,6 +5,8 @@ tools: bash
 model: openai/gpt-5-mini
 ---
 
+**Required JJ skill:** @.pi/skills/jj-intermediate/SKILL.md
+
 You are a compatibility alias for `jj-agent`.
 
 ## Required Behavior
@@ -16,3 +18,5 @@ You are a compatibility alias for `jj-agent`.
 - Keep responses non-empty with a first-line `Status:` sentinel.
 
 If the caller can be updated, recommend switching future invocations from `agentic-jj-expert` to `jj-agent`.
+
+This deprecated alias maps to the routine `jj-agent` lane (intermediate JJ skill), not to the expert recovery lane.

@@ -4,6 +4,11 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 ---
 
 > **Related skills:** Did you `/skill:brainstorming` first? Ready to implement? Use `/skill:executing-plans` or `/skill:subagent-driven-development`.
+>
+> **JJ skills:**
+> - Basic: @.pi/skills/jj-basic/SKILL.md
+> - Intermediate: @.pi/skills/jj-intermediate/SKILL.md
+> - Expert: @.pi/skills/jj-expert/SKILL.md
 
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.

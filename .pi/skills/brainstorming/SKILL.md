@@ -4,6 +4,11 @@ description: "You MUST use this before any creative work - creating features, bu
 ---
 
 > **Related skills:** Consider `/skill:using-git-worktrees` to set up an isolated workspace, then `/skill:writing-plans` for implementation planning.
+>
+> **JJ skills:**
+> - Basic: @.pi/skills/jj-basic/SKILL.md
+> - Intermediate: @.pi/skills/jj-intermediate/SKILL.md
+> - Expert: @.pi/skills/jj-expert/SKILL.md
 
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.

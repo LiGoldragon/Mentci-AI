@@ -4,6 +4,11 @@ description: Use when implementing or refactoring Rust/Nix/Cap'n Proto work unde
 ---
 
 > **Related skills:** `/skill:independent-developer`, `/skill:test-driven-development`, `/skill:systematic-debugging`, `/skill:verification-before-completion`
+>
+> **JJ skills:**
+> - Basic: @.pi/skills/jj-basic/SKILL.md
+> - Intermediate: @.pi/skills/jj-intermediate/SKILL.md
+> - Expert: @.pi/skills/jj-expert/SKILL.md
 
 ## Repo-Local Nix Purity Rule
 - Treat every repository as a self-contained world during Nix evaluation.

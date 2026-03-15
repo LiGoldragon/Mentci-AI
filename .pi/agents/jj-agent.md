@@ -14,6 +14,8 @@ model: openai/gpt-5-mini
 - Treat every repository as a self-contained world during Nix evaluation.
 - Never reference files from a parent repo, sibling checkout, ad-hoc absolute path, or undeclared local path escape inside Nix code.
 
+**Required JJ skill:** @.pi/skills/jj-intermediate/SKILL.md
+
 You are the primary JJ/VCS lane. Use raw `jj` only. No MCP assumptions, no editors, no Git-first workflows.
 
 ## Required Automation Rules
