@@ -24,25 +24,8 @@
             }
           },
           {
-            "id": "main-sanity",
-            "name": "main-sanity (alias for Llama 3.2 1B Instruct)",
-            "aliasOf": "llama-3.2-1b-instruct",
-            "reasoning": false,
-            "input": [
-              "text"
-            ],
-            "contextWindow": 8192,
-            "maxTokens": 2048,
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            }
-          },
-          {
             "id": "qwen3.5-35b-a3b",
-            "name": "qwen3.5-35b-a3b (Prometheus reasoning lane)",
+            "name": "qwen3.5-35b-a3b (Prometheus coding lane)",
             "reasoning": true,
             "input": [
               "text"
@@ -57,15 +40,14 @@
             }
           },
           {
-            "id": "main-reasoning",
-            "name": "main-reasoning (alias for Qwen 3.5 35B A3B)",
-            "aliasOf": "qwen3.5-35b-a3b",
+            "id": "deepseek-r1-distill-llama-70b",
+            "name": "deepseek-r1-distill-llama-70b (Prometheus main reasoning)",
             "reasoning": true,
             "input": [
               "text"
             ],
-            "contextWindow": 196608,
-            "maxTokens": 4096,
+            "contextWindow": 131072,
+            "maxTokens": 16384,
             "cost": {
               "input": 0,
               "output": 0,
@@ -80,13 +62,14 @@
   "settings": {
     "theme": "dark",
     "defaultProvider": "prometheus",
-    "defaultModel": "main-reasoning",
+    "defaultModel": "deepseek-r1-distill-llama-70b",
     "enabledModels": [
-      "prometheus/main-sanity",
-      "prometheus/main-reasoning"
+      "prometheus/llama-3.2-1b-instruct",
+      "prometheus/qwen3.5-35b-a3b",
+      "prometheus/deepseek-r1-distill-llama-70b"
     ],
     "hideThinkingBlock": false,
-    "defaultThinkingLevel": "low",
+    "defaultThinkingLevel": "medium",
     "compaction": {
       "enabled": true,
       "reserveTokens": 16384,
