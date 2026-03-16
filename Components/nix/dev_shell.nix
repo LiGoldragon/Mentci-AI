@@ -28,22 +28,31 @@ pkgs.mkShell {
   };
 
   shellHook = ''
-    export MENTCI_REPO_ROOT="$(pwd)"
-    export JJ_CONFIG="$(pwd)/.mentci/jj-project-config.toml"
+    _mentci_pwd="$(pwd)"
+    _mentci_prev_repo_root="''${MENTCI_REPO_ROOT:-}"
+
+    export MENTCI_REPO_ROOT="$_mentci_pwd"
+    export JJ_CONFIG="$_mentci_pwd/.mentci/jj-project-config.toml"
 
     # Short-term dynamic target bookmark contract (session-local, not VC-backed)
-    # Priority: explicit env > directory-name inference > safe default.
-    if [ -z "''${MENTCI_TARGET_BOOKMARK:-}" ]; then
-      _repo_base="$(basename "$(pwd)" | tr '[:upper:]' '[:lower:]')"
-      if [[ "$_repo_base" == *"--"* ]]; then
-        export MENTCI_TARGET_BOOKMARK="''${_repo_base##*--}"
-      elif [ "$_repo_base" = "mentci-ai" ]; then
-        export MENTCI_TARGET_BOOKMARK="main"
-      else
-        export MENTCI_TARGET_BOOKMARK="dev"
-      fi
-      unset _repo_base
+    # Explicit env wins only within the same repo session. If a bookmark value is
+    # inherited from another Mentci repo shell, recompute from the current repo.
+    _repo_base="$(basename "$_mentci_pwd" | tr '[:upper:]' '[:lower:]')"
+    if [[ "$_repo_base" == *"--"* ]]; then
+      _mentci_repo_bookmark="''${_repo_base##*--}"
+    elif [ "$_repo_base" = "mentci-ai" ]; then
+      _mentci_repo_bookmark="main"
+    else
+      _mentci_repo_bookmark="dev"
     fi
+
+    if [ -n "''${MENTCI_TARGET_BOOKMARK:-}" ] && [ -n "$_mentci_prev_repo_root" ] && [ "$_mentci_prev_repo_root" != "$_mentci_pwd" ]; then
+      export MENTCI_TARGET_BOOKMARK="$_mentci_repo_bookmark"
+    elif [ -z "''${MENTCI_TARGET_BOOKMARK:-}" ]; then
+      export MENTCI_TARGET_BOOKMARK="$_mentci_repo_bookmark"
+    fi
+
+    unset _repo_base _mentci_repo_bookmark _mentci_prev_repo_root _mentci_pwd
 
     # Keep pi mutable state inside the repo
     export PI_CODING_AGENT_DIR="$(pwd)/.pi/agent"
