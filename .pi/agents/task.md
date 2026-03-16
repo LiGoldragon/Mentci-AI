@@ -1,7 +1,7 @@
 ---
 name: task
 description: General-purpose subagent with full capabilities for delegated multi-step tasks
-model: openai/gpt-5-mini
+model: openai-codex/gpt-5.1-codex-mini
 ---
 
 ## Repo-Local Nix Purity Rule

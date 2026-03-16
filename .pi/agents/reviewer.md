@@ -2,7 +2,7 @@
 name: reviewer
 description: Expert code reviewer for PRs and implementation changes
 tools: read, grep, find, ls, bash
-model: openai/gpt-5-mini
+model: openai-codex/gpt-5.1-codex-mini
 ---
 
 ## Repo-Local Nix Purity Rule

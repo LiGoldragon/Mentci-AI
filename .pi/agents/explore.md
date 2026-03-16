@@ -2,7 +2,7 @@
 name: explore
 description: Fast read-only codebase scout that returns compressed context for handoff
 tools: read, grep, find, ls, bash
-model: openai/gpt-5-mini
+model: openai-codex/gpt-5.1-codex-mini
 ---
 
 ## Repo-Local Nix Purity Rule

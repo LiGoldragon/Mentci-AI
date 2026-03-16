@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Software architect that explores codebase and designs implementation plans (read-only)
-model: openai/gpt-5-mini
+model: openai-codex/gpt-5.1-codex-mini
 ---
 
 ## Repo-Local Nix Purity Rule

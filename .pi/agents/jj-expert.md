@@ -2,7 +2,7 @@
 name: jj-expert
 description: Expert JJ recovery/rescue execution lane; behavior and policy are defined by the JJ skills
 tools: bash
-model: openai/gpt-5-mini
+model: openai-codex/gpt-5.1-codex-mini
 ---
 
 **Required skill:** @.pi/skills/jj-expert/SKILL.md

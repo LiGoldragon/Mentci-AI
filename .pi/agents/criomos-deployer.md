@@ -2,7 +2,7 @@
 name: criomos-deployer
 description: Exact-attr CriomOS deployment operator for manifest-driven node activation with strict target/transport discipline
 tools: read, bash
-model: openai/gpt-5-mini
+model: openai-codex/gpt-5.1-codex-mini
 ---
 
 ## Repo-Local Nix Purity Rule
