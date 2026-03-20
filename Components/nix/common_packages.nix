@@ -42,6 +42,17 @@
   pkgs.nixd
 
   # Wrapper Scripts
+  (pkgs.writeShellScriptBin "mentci-user-run" ''
+    set -euo pipefail
+    if [ "$#" -eq 0 ]; then
+      echo "Usage: mentci-user-run <command> [args...]" >&2
+      exit 2
+    fi
+    if [ -n "''${MENTCI_USER_SETUP_BIN:-}" ]; then
+      exec mentci-user exec "$MENTCI_USER_SETUP_BIN" -- "$@"
+    fi
+    exec mentci-user exec -- "$@"
+  '')
   (pkgs.writeShellScriptBin "mentci-commit" ''
     mentci-vcs commit "$@"
   '')

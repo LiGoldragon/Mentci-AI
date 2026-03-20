@@ -74,6 +74,7 @@ pkgs.mkShell {
     # This keeps the dev shell repo-local and avoids relying on fetcher-specific
     # path coercion for flake=false source inputs.
     export MENTCI_USER_SETUP_BIN="${repo_root}/Components/mentci-user/data/setup.bin"
+    export MENTCI_USER_PROFILE_JSON="${repo_root}/Components/mentci-user/data/user-profile.json"
 
     # Initialize user-specific extension secrets (Logic-Data Separation)
     # mentci-user resolves default setup source from MENTCI_USER_SETUP_BIN / canonical paths.

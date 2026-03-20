@@ -45,7 +45,7 @@ let
 
   mentci_user = import ./mentci_user.nix {
     inherit craneLib pkgs;
-    src = mentci_user_src;
+    src = ../mentci-user;
   };
 
   mentci_mcp = import ./mentci_mcp.nix {
